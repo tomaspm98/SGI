@@ -1,10 +1,10 @@
 # SGI 2023/2024
 
-## Group T0xG0y
+## Group T02G07
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
-| John Doe         | 201901010 | ...                |
-| Jane Doe         | 201901011 | ...                |
+| Daniel Rodrigues         | 202006562 | up202006562@edu.fe.up.pt |
+| Tomás Pereira Maciel         | 202006845 | up202006845@edu.fe.up.pt |
 
 ----
 
