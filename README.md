@@ -4,7 +4,7 @@
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
 | Daniel Rodrigues         | 202006562 | up202006562@edu.fe.up.pt |
-| Tomás Pereira Maciel         | 202006845 | up202006845@edu.fe.up.pt |
+| Tomás Maciel         | 202006845 | up202006845@edu.fe.up.pt |
 
 ----
 
