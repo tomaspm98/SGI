@@ -4,24 +4,25 @@ class MyCandle {
 
     build(candleRadius, candleHeight, flameRadius, flameHeight, candleMaterial, flameMaterial) {
 
-        let candle = new THREE.CylinderGeometry(candleRadius,candleRadius,candleHeight,32);
-        this.candleMesh = new THREE.Mesh(candle,candleMaterial);
-        this.candleMesh.position.y = -0.5;
+        const candle = new THREE.CylinderGeometry(candleRadius, candleRadius, candleHeight, 32);
+        const candleMesh = new THREE.Mesh(candle, candleMaterial);
 
-        let wire = new THREE.CylinderGeometry(0.002,0.002,0.05,32);
-        this.wireMesh = new THREE.Mesh(wire,candleMaterial); //vai ter um material proprio todo preto
-        this.wireMesh.position.y = -0.1
-        this.candleMesh.add(this.wireMesh);
+        const wire = new THREE.CylinderGeometry(0.002, 0.002, 0.05, 32);
+        const wireMesh = new THREE.Mesh(wire, candleMaterial); //vai ter um material proprio todo preto
+        wireMesh.position.y = -0.1
+        candleMesh.add(wireMesh);
 
-        let flame = new THREE.ConeGeometry(flameRadius,flameHeight,32);
-        this.flameMesh = new THREE.Mesh(flame, flameMaterial);
-        this.flameMesh.position.y = -0.14;
-        this.flameMesh.rotation.x = -Math.PI;
-        this.candleMesh.add(this.flameMesh);
+        const flame = new THREE.ConeGeometry(flameRadius, flameHeight, 32);
+        const flameMesh = new THREE.Mesh(flame, flameMaterial);
+        flameMesh.position.y = -0.14;
+        flameMesh.rotation.x = -Math.PI;
+        candleMesh.add(flameMesh);
 
-        return this.candleMesh;
+        candleMesh.rotation.x = -Math.PI;
+
+        return candleMesh;
 
     }
 }
 
-export {MyCandle};
+export { MyCandle };

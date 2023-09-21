@@ -109,26 +109,16 @@ class MyContents {
         //let table = new MyTable().build(12, 0.15, 16, this.planeMaterial)
         //this.app.scene.add(table);
 
-        let cake = new MyCake().build(2, 3, this.planeMaterial)
-        this.app.scene.add(cake);
 
-
-        let dish = new MyDish().build(0.5,0.7,0.15,this.planeMaterial);
-        
+        let dish = new MyDish().build(0.5, 0.7, 0.15, this.planeMaterial);
         this.app.scene.add(dish);
 
-        let house = new MyHouse().build(20,20,20,15,this.planeMaterial,this.planeMaterial);
+        let house = new MyHouse().build(20, 15, this.planeMaterial, this.planeMaterial);
         this.app.scene.add(house);
-        
-        /*let dish = new MyDish().build(0.5,0.7,0.15,this.planeMaterial);
-        
-        this.house.scene.add(dish);*/
 
-        let candle = new MyCandle().build(0.025,0.2,0.015,0.05,this.planeMaterial,this.planeMaterial);
+        let candle = new MyCandle().build(0.025, 0.2, 0.015, 0.05, this.planeMaterial, this.planeMaterial);
         this.app.scene.add(candle);
         //this.app.scene.add(dish);
-
-        
 
     }
 
