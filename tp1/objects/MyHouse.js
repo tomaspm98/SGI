@@ -19,14 +19,14 @@ class MyHouse {
         this.planeMesh.add(this.wallMesh1);
 
         this.wallMesh2 = new THREE.Mesh(wall, wallMaterial);
-        this.wallMesh2.rotation.x = Math.PI/2;
+        this.wallMesh2.rotation.x = -Math.PI/2;
         this.wallMesh2.position.y= -wallWidth/2;
         this.wallMesh2.position.z = wallHeight/2;
         this.planeMesh.add(this.wallMesh2);
 
         this.wallMesh3 = new THREE.Mesh(wall, wallMaterial);
         this.wallMesh3.rotation.x = Math.PI/2;
-        this.wallMesh3.rotation.y = Math.PI/2;
+        this.wallMesh3.rotation.y = -Math.PI/2;
         this.wallMesh3.position.x = wallWidth/2;
         this.wallMesh3.position.z = wallHeight/2;
         this.planeMesh.add(this.wallMesh3);
