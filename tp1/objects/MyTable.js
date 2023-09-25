@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { MyDish } from './MyDish.js';
 
 class MyTable {
 
@@ -48,6 +47,7 @@ class MyTable {
         tableTopMesh.add(tableLegMesh3);
         tableTopMesh.add(tableLegMesh4);
         tableMesh.add(tableTopMesh);
+        tableMesh.position.y=tableLegHeight;
         //let dish = new MyDish().build(0.5,0.7,0.15,planeMaterial);
         //tableMesh.add(dish);
 

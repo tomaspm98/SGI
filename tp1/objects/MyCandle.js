@@ -4,25 +4,32 @@ class MyCandle {
 
     build(candleRadius, candleHeight, flameRadius, flameHeight, candleMaterial, flameMaterial) {
 
-        const candle = new THREE.CylinderGeometry(candleRadius, candleRadius, candleHeight, 32);
-        const candleMesh = new THREE.Mesh(candle, candleMaterial);
+        let candle = new THREE.CylinderGeometry(candleRadius,candleRadius,candleHeight,32);
+        this.candleMesh = new THREE.Mesh(candle,candleMaterial);
+        //this.candleMesh.position.y = -0.5;
 
-        const wire = new THREE.CylinderGeometry(0.002, 0.002, 0.05, 32);
-        const wireMesh = new THREE.Mesh(wire, candleMaterial); //vai ter um material proprio todo preto
-        wireMesh.position.y = -0.1
-        candleMesh.add(wireMesh);
+        this.diffuseWireColor = "#ffffff"
+        this.specularWireColor = "#777777"
+        this.wireShininess = 30
+        this.wireMaterial = new THREE.MeshPhongMaterial({
+            color: this.diffuseWireColor,
+            specular: this.diffuseWireColor, emissive: "#000000", shininess: this.wireShininess
+        })
+        let wire = new THREE.CylinderGeometry(0.002,0.002,0.025,32);
+        this.wireMesh = new THREE.Mesh(wire,this.wireMaterial);
+        this.wireMesh.position.y = candleHeight/2;
+        this.candleMesh.add(this.wireMesh);
 
-        const flame = new THREE.ConeGeometry(flameRadius, flameHeight, 32);
-        const flameMesh = new THREE.Mesh(flame, flameMaterial);
-        flameMesh.position.y = -0.14;
-        flameMesh.rotation.x = -Math.PI;
-        candleMesh.add(flameMesh);
+        let flame = new THREE.ConeGeometry(flameRadius,flameHeight,32);
+        this.flameMesh = new THREE.Mesh(flame, flameMaterial);
+        //this.flameMesh.position.y = -0.14;
+        //this.flameMesh.rotation.x = -Math.PI;
+        this.flameMesh.position.y = (candleHeight/2)+0.025+0.005;//wireLength + margin
+        this.candleMesh.add(this.flameMesh);
 
-        candleMesh.rotation.x = -Math.PI;
-
-        return candleMesh;
+        return this.candleMesh;
 
     }
 }
 
-export { MyCandle };
+export {MyCandle};

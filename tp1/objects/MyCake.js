@@ -21,6 +21,8 @@ class MyCake {
         cakeMesh.add(face1Mesh)
         cakeMesh.add(face2Mesh)
 
+        //cakeMesh.position.y = 8.15+0.7;
+
         return cakeMesh
 
     }

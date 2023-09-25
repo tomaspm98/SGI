@@ -29,14 +29,67 @@ class MyContents {
         this.boxDisplacement = new THREE.Vector3(0, 2, 0)
 
         // plane related attributes
-        this.diffusePlaneColor = "#00ffff"
+        this.diffusePlaneColor = "#C19A6B"
         this.specularPlaneColor = "#777777"
         this.planeShininess = 30
         this.planeMaterial = new THREE.MeshPhongMaterial({
             color: this.diffusePlaneColor,
             specular: this.diffusePlaneColor, emissive: "#000000", shininess: this.planeShininess
         })
+
+        //wall related attributes
+        this.diffuseWallColor = "#c4b39c"
+        this.specularWallColor = "#777777"
+        this.wallShininess = 30
+        this.wallMaterial = new THREE.MeshPhongMaterial({
+            color: this.diffuseWallColor,
+            specular: this.diffuseWallColor, emissive: "#000000", shininess: this.wallShininess
+        })
+
+        //dish related attributes
+        this.diffuseDishColor = "#ffffff"
+        this.specularDishColor = "#777777"
+        this.dishShininess = 30
+        this.dishMaterial = new THREE.MeshPhongMaterial({
+            color: this.diffuseDishColor,
+            specular: this.diffuseDishColor, emissive: "#000000", shininess: this.dishShininess
+        })
+
+        //dish related attributes
+        this.diffuseCakeColor = "#49332b"
+        this.specularCakeColor = "#777777"
+        this.cakeShininess = 30
+        this.cakeMaterial = new THREE.MeshPhongMaterial({
+            color: this.diffuseCakeColor,
+            specular: this.diffuseCakeColor, emissive: "#000000", shininess: this.cakeShininess
+        })
+
+        this.diffuseCandleColor = "#f4e1c0"
+        this.specularCandleColor = "#777777"
+        this.candleShininess = 30
+        this.candleMaterial = new THREE.MeshPhongMaterial({
+            color: this.diffuseCandleColor,
+            specular: this.diffuseCandleColor, emissive: "#000000", shininess: this.candleShininess
+        })
+
+        this.diffuseFlameColor = "#f8bf61"
+        this.specularFlameColor = "#777777"
+        this.flameShininess = 30
+        this.flameMaterial = new THREE.MeshPhongMaterial({
+            color: this.diffuseFlameColor,
+            specular: this.diffuseFlameColor, emissive: "#000000", shininess: this.flameShininess
+        })
+
+        this.diffuseTableColor = "#8b5a2b"
+        this.specularTableColor = "#777777"
+        this.tableShininess = 30
+        this.tableMaterial = new THREE.MeshPhongMaterial({
+            color: this.diffuseTableColor,
+            specular: this.diffuseTableColor, emissive: "#000000", shininess: this.tableShininess
+        })
+
     }
+    
 
     /**
      * builds the box mesh with material assigned
@@ -106,19 +159,28 @@ class MyContents {
 
         this.planeMesh.add(this.dishMesh);*/
 
-        //let table = new MyTable().build(12, 0.15, 16, this.planeMaterial)
-        //this.app.scene.add(table);
+        let table = new MyTable().build(12, 0.15, 16, this.tableMaterial)
+        this.app.scene.add(table);
 
-
-        let dish = new MyDish().build(0.5, 0.7, 0.15, this.planeMaterial);
-        this.app.scene.add(dish);
-
-        let house = new MyHouse().build(20, 15, this.planeMaterial, this.planeMaterial);
+        let house = new MyHouse().build(20,20,20,15,this.planeMaterial,this.wallMaterial);
         this.app.scene.add(house);
 
-        let candle = new MyCandle().build(0.025, 0.2, 0.015, 0.05, this.planeMaterial, this.planeMaterial);
+        let cake = new MyCake().build(0.5, 0.7, this.cakeMaterial)
+        cake.position.y=8.15+0.15; //tableLegHeight+tableHeight(y translation from y) + dishHeight
+        this.app.scene.add(cake);
+
+        let dish = new MyDish().build(0.5,0.7,0.15,this.dishMaterial);
+        
+        this.app.scene.add(dish);
+        
+    
+
+        let candle = new MyCandle().build(0.025,0.2,0.015,0.05,this.candleMaterial,this.flameMaterial);
+        candle.position.y = cake.position.y+0.7/2;
         this.app.scene.add(candle);
         //this.app.scene.add(dish);
+
+        
 
     }
 
