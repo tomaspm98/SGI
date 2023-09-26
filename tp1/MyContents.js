@@ -223,7 +223,7 @@ class MyContents {
         dish.add(cake);
         cake.position.y = 0.5
 
-        let candle = new MyCandle().build(0.06,0.6,2,2,this.candleMaterial,this.flameMaterial);
+        let candle = new MyCandle().build(0.06,0.6,0.05,0.1,this.candleMaterial,this.flameMaterial);
         cake.add(candle);
         candle.position.y = 0.8
         candle.position.z = -0.1
