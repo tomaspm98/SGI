@@ -162,7 +162,7 @@ class MyContents {
         let table = new MyTable().build(12, 0.15, 16, this.tableMaterial)
         this.app.scene.add(table);
 
-        let house = new MyHouse().build(20,20,20,15,this.planeMaterial,this.wallMaterial);
+        let house = new MyHouse().build(20,15,this.planeMaterial,this.wallMaterial);
         this.app.scene.add(house);
 
         let cake = new MyCake().build(0.5, 0.7, this.cakeMaterial)
