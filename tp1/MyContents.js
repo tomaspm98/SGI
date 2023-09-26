@@ -120,7 +120,7 @@ class MyContents {
         }
 
         // add a point light on top of the model
-        const pointLight = new THREE.PointLight(0xffffff, 500, 0);
+        const pointLight = new THREE.PointLight(0xffffff, 300, 0);
         pointLight.position.set(0, 20, 0);
         this.app.scene.add(pointLight);
 
@@ -132,6 +132,14 @@ class MyContents {
         // add an ambient light
         const ambientLight = new THREE.AmbientLight(0x555555);
         this.app.scene.add(ambientLight);
+
+        const spotLightCake = new THREE.SpotLight(0xffffff,200,25,0.09,0,0)
+        spotLightCake.position.set(0,30,0)
+        this.app.scene.add(spotLightCake)
+
+        const helperSpot = 0.5
+        const spotLightHelper = new THREE.SpotLightHelper(spotLightCake,helperSpot)
+        this.app.scene.add(spotLightHelper)
 
         this.buildBox()
 
