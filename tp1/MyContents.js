@@ -39,8 +39,8 @@ class MyContents {
 
         //wall related attributes
         this.diffuseWallColor = "#c4b39c"
-        this.specularWallColor = "#777777"
-        this.wallShininess = 30
+        this.specularWallColor = "#000000"
+        this.wallShininess = 0
         this.wallMaterial = new THREE.MeshPhongMaterial({
             color: this.diffuseWallColor,
             specular: this.diffuseWallColor, emissive: "#000000", shininess: this.wallShininess
@@ -55,7 +55,7 @@ class MyContents {
             specular: this.diffuseDishColor, emissive: "#000000", shininess: this.dishShininess
         })
 
-        //dish related attributes
+        //cake related attributes
         this.diffuseCakeColor = "#49332b"
         this.specularCakeColor = "#777777"
         this.cakeShininess = 30
@@ -80,13 +80,19 @@ class MyContents {
             specular: this.diffuseFlameColor, emissive: "#000000", shininess: this.flameShininess
         })
 
+        this.tableTexture = new THREE.TextureLoader().load('textures/table.webp')
+        this.tableTexture.wrapS=THREE.RepeatWrapping
+        this.tableTexture.wrapT=THREE.RepeatWrapping
+
         this.diffuseTableColor = "#8b5a2b"
         this.specularTableColor = "#777777"
         this.tableShininess = 30
         this.tableMaterial = new THREE.MeshPhongMaterial({
             color: this.diffuseTableColor,
-            specular: this.diffuseTableColor, emissive: "#000000", shininess: this.tableShininess
+            specular: this.diffuseTableColor, emissive: "#000000", shininess: this.tableShininess, map:this.tableTexture
         })
+
+        
 
     }
     
@@ -120,7 +126,7 @@ class MyContents {
         }
 
         // add a point light on top of the model
-        const pointLight = new THREE.PointLight(0xffffff, 300, 0);
+        const pointLight = new THREE.PointLight(0xffffff, 350, 0);
         pointLight.position.set(0, 20, 0);
         this.app.scene.add(pointLight);
 

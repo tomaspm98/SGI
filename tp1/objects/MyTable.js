@@ -4,6 +4,8 @@ class MyTable {
 
     build(tableWidth, tableHeight, tableLength, tableMaterial) {
 
+        
+
         const tableMesh = new THREE.Mesh()
 
         const tableTop = new THREE.BoxGeometry(tableHeight, tableLength, tableWidth);
@@ -48,8 +50,6 @@ class MyTable {
         tableTopMesh.add(tableLegMesh4);
         tableMesh.add(tableTopMesh);
         tableMesh.position.y=tableLegHeight;
-        //let dish = new MyDish().build(0.5,0.7,0.15,planeMaterial);
-        //tableMesh.add(dish);
 
         return tableMesh
 
