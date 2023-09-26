@@ -135,53 +135,7 @@ class MyContents {
 
         this.buildBox()
 
-        /*let dish = new THREE.CylinderGeometry(0.5,0.7,0.15,32);
-        this.dishMesh = new THREE.Mesh(dish, this.planeMaterial);
-        this.dishMesh.rotation.x = -Math.PI/2;
-        this.dishMesh.position.z = 4;
-
-        let candle = new THREE.CylinderGeometry(0.025,0.025,0.20,32);
-        this.candleMesh = new THREE.Mesh(candle,this.planeMaterial);
-        this.candleMesh.position.y = -0.5;
-
-        let wire = new THREE.CylinderGeometry(0.002,0.002,0.05,32);
-        this.wireMesh = new THREE.Mesh(wire,this.planeMaterial);
-        this.wireMesh.position.y = -0.1
-        this.candleMesh.add(this.wireMesh);
-
-        let flame = new THREE.ConeGeometry(0.015,0.05,32);
-        this.flameMesh = new THREE.Mesh(flame, this.planeMaterial);
-        this.flameMesh.position.y = -0.14;
-        this.flameMesh.rotation.x = -Math.PI;
-        this.candleMesh.add(this.flameMesh);
-
-        this.dishMesh.add(this.candleMesh);
-
-        this.planeMesh.add(this.dishMesh);*/
-
-        let table = new MyTable().build(12, 0.15, 16, this.tableMaterial)
-        this.app.scene.add(table);
-
-        let house = new MyHouse().build(20,15,this.planeMaterial,this.wallMaterial);
-        this.app.scene.add(house);
-
-        let cake = new MyCake().build(0.5, 0.7, this.cakeMaterial)
-        cake.position.y=8.15+0.15; //tableLegHeight+tableHeight(y translation from y) + dishHeight
-        this.app.scene.add(cake);
-
-        let dish = new MyDish().build(0.5,0.7,0.15,this.dishMaterial);
-        
-        this.app.scene.add(dish);
-        
-    
-
-        let candle = new MyCandle().build(0.025,0.2,0.015,0.05,this.candleMaterial,this.flameMaterial);
-        candle.position.y = cake.position.y+0.7/2;
-        this.app.scene.add(candle);
-        //this.app.scene.add(dish);
-
-        
-
+        this.app.scene.add(this.buildHouse());
     }
 
     /**
@@ -253,6 +207,29 @@ class MyContents {
         this.boxMesh.position.y = this.boxDisplacement.y
         this.boxMesh.position.z = this.boxDisplacement.z
 
+    }
+
+    buildHouse(){
+        const house = new MyHouse().build(30,20,this.planeMaterial,this.wallMaterial);
+
+        let table = new MyTable().build(8, 0.25, 12, this.tableMaterial)
+    
+
+        let dish = new MyDish().build(1.5,2.5,0.2,this.dishMaterial);
+        table.add(dish);
+        dish.position.y = 0.20
+
+        let cake = new MyCake().build(2, 1, this.cakeMaterial, 30, 1, 5.5)
+        dish.add(cake);
+        cake.position.y = 0.5
+
+        let candle = new MyCandle().build(0.06,0.6,2,2,this.candleMaterial,this.flameMaterial);
+        cake.add(candle);
+        candle.position.y = 0.8
+        candle.position.z = -0.1
+
+        house.add(table);
+        return house;
     }
 
 }

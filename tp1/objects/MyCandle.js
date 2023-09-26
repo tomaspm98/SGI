@@ -13,10 +13,10 @@ class MyCandle {
         const wireShininess = 30
         const wireMaterial = new THREE.MeshPhongMaterial({
             color: diffuseWireColor,
-            specular: diffuseWireColor, emissive: "#000000", shininess: this.wireShininess
+            specular: diffuseWireColor, emissive: "#000000", shininess: wireShininess
         })
         const wire = new THREE.CylinderGeometry(0.002,0.002,0.025,32);
-        const wireMesh = new THREE.Mesh(wire,this.wireMaterial);
+        const wireMesh = new THREE.Mesh(wire,wireMaterial);
         wireMesh.position.y = candleHeight/2;
         candleMesh.add(this.wireMesh);
 
