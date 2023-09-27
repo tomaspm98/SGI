@@ -1,10 +1,10 @@
 import * as THREE from 'three';
-import { MyAxis } from './MyAxis.js';
-import { MyTable } from './objects/MyTable.js';
-import { MyCake } from './objects/MyCake.js';
-import { MyDish } from './objects/MyDish.js';
-import { MyHouse } from './objects/MyHouse.js';
-import { MyCandle } from './objects/MyCandle.js';
+import {MyAxis} from './MyAxis.js';
+import {MyTable} from './objects/MyTable.js';
+import {MyCake} from './objects/MyCake.js';
+import {MyDish} from './objects/MyDish.js';
+import {MyHouse} from './objects/MyHouse.js';
+import {MyCandle} from './objects/MyCandle.js';
 
 
 /**
@@ -14,9 +14,9 @@ import { MyCandle } from './objects/MyCandle.js';
 class MyContents {
 
     /**
-       constructs the object
-       @param {MyApp} app The application object
-    */
+     constructs the object
+     @param {MyApp} app The application object
+     */
     constructor(app) {
         this.app = app
         this.axis = null
@@ -34,68 +34,60 @@ class MyContents {
         this.planeShininess = 30
         this.planeMaterial = new THREE.MeshPhongMaterial({
             color: this.diffusePlaneColor,
-            specular: this.diffusePlaneColor, emissive: "#000000", shininess: this.planeShininess
+            specular: this.diffusePlaneColor, 
+            emissive: "#000000", 
+            shininess: this.planeShininess
         })
 
         //wall related attributes
-        this.diffuseWallColor = "#c4b39c"
-        this.specularWallColor = "#000000"
-        this.wallShininess = 0
         this.wallMaterial = new THREE.MeshPhongMaterial({
-            color: this.diffuseWallColor,
-            specular: this.diffuseWallColor, emissive: "#000000", shininess: this.wallShininess
+            color: "#c4b39c", 
+            shininess: 0
         })
 
         //dish related attributes
-        this.diffuseDishColor = "#ffffff"
-        this.specularDishColor = "#777777"
-        this.dishShininess = 30
         this.dishMaterial = new THREE.MeshPhongMaterial({
-            color: this.diffuseDishColor,
-            specular: this.diffuseDishColor, emissive: "#000000", shininess: this.dishShininess
+            color: "#ffffff", 
+            shininess: 0,
         })
 
         //cake related attributes
-        this.diffuseCakeColor = "#49332b"
-        this.specularCakeColor = "#777777"
-        this.cakeShininess = 30
         this.cakeMaterial = new THREE.MeshPhongMaterial({
-            color: this.diffuseCakeColor,
-            specular: this.diffuseCakeColor, emissive: "#000000", shininess: this.cakeShininess
+            color: "#49332b", 
+            shininess: 0
         })
 
-        this.diffuseCandleColor = "#f4e1c0"
-        this.specularCandleColor = "#777777"
-        this.candleShininess = 30
+
         this.candleMaterial = new THREE.MeshPhongMaterial({
-            color: this.diffuseCandleColor,
-            specular: this.diffuseCandleColor, emissive: "#000000", shininess: this.candleShininess
+            color: "#f4e1c0",
+            specular: "#ffffff", 
+            shininess: 10
         })
-
-        this.diffuseFlameColor = "#f8bf61"
-        this.specularFlameColor = "#777777"
-        this.flameShininess = 30
+        
         this.flameMaterial = new THREE.MeshPhongMaterial({
-            color: this.diffuseFlameColor,
-            specular: this.diffuseFlameColor, emissive: "#000000", shininess: this.flameShininess
+            color: "#ec8733",
+            specular: "#ffed27",
+            shininess: 100
         })
 
         this.tableTexture = new THREE.TextureLoader().load('textures/table.webp')
-        this.tableTexture.wrapS=THREE.RepeatWrapping
-        this.tableTexture.wrapT=THREE.RepeatWrapping
-
-        this.diffuseTableColor = "#8b5a2b"
-        this.specularTableColor = "#777777"
-        this.tableShininess = 30
+        this.tableTexture.wrapS = THREE.RepeatWrapping
+        this.tableTexture.wrapT = THREE.RepeatWrapping
         this.tableMaterial = new THREE.MeshPhongMaterial({
-            color: this.diffuseTableColor,
-            specular: this.diffuseTableColor, emissive: "#000000", shininess: this.tableShininess, map:this.tableTexture
+            color: "#8b5a2b",
+            specular: "#b47943",
+            shininess: 15,
+            map: this.tableTexture
         })
 
-        
+        //create a specular material for the legs of the table
+        this.legMaterial = new THREE.MeshPhongMaterial({
+            color: "#873e23",
+            specular: "#865e3c", emissive: "#000000", shininess: 40
+        })
 
     }
-    
+
 
     /**
      * builds the box mesh with material assigned
@@ -139,12 +131,12 @@ class MyContents {
         const ambientLight = new THREE.AmbientLight(0x555555);
         this.app.scene.add(ambientLight);
 
-        const spotLightCake = new THREE.SpotLight(0xffffff,200,25,0.09,0,0)
-        spotLightCake.position.set(0,30,0)
+        const spotLightCake = new THREE.SpotLight(0xffffff, 200, 25, 0.09, 0, 0)
+        spotLightCake.position.set(0, 30, 0)
         this.app.scene.add(spotLightCake)
 
         const helperSpot = 0.5
-        const spotLightHelper = new THREE.SpotLightHelper(spotLightCake,helperSpot)
+        const spotLightHelper = new THREE.SpotLightHelper(spotLightCake, helperSpot)
         this.app.scene.add(spotLightHelper)
 
         this.buildBox()
@@ -154,23 +146,25 @@ class MyContents {
 
     /**
      * updates the diffuse plane color and the material
-     * @param {THREE.Color} value 
+     * @param {THREE.Color} value
      */
     updateDiffusePlaneColor(value) {
         this.diffusePlaneColor = value
         this.planeMaterial.color.set(this.diffusePlaneColor)
     }
+
     /**
      * updates the specular plane color and the material
-     * @param {THREE.Color} value 
+     * @param {THREE.Color} value
      */
     updateSpecularPlaneColor(value) {
         this.specularPlaneColor = value
         this.planeMaterial.specular.set(this.specularPlaneColor)
     }
+
     /**
      * updates the plane shininess and the material
-     * @param {number} value 
+     * @param {number} value
      */
     updatePlaneShininess(value) {
         this.planeShininess = value
@@ -200,8 +194,7 @@ class MyContents {
             this.lastBoxEnabled = this.boxEnabled
             if (this.boxEnabled) {
                 this.app.scene.add(this.boxMesh)
-            }
-            else {
+            } else {
                 this.app.scene.remove(this.boxMesh)
             }
         }
@@ -210,7 +203,7 @@ class MyContents {
     /**
      * updates the contents
      * this method is called from the render method of the app
-     * 
+     *
      */
     update() {
         // check if box mesh needs to be updated
@@ -223,13 +216,13 @@ class MyContents {
 
     }
 
-    buildHouse(){
-        const house = new MyHouse().build(30,20,this.planeMaterial,this.wallMaterial);
+    buildHouse() {
+        const house = new MyHouse().build(30, 20, this.planeMaterial, this.wallMaterial);
 
-        let table = new MyTable().build(8, 0.25, 12, this.tableMaterial)
-    
+        let table = new MyTable().build(8, 0.25, 12, this.tableMaterial, this.legMaterial);
 
-        let dish = new MyDish().build(1.5,2.5,0.2,this.dishMaterial);
+
+        let dish = new MyDish().build(1.5, 2.5, 0.2, this.dishMaterial);
         table.add(dish);
         dish.position.y = 0.20
 
@@ -237,7 +230,7 @@ class MyContents {
         dish.add(cake);
         cake.position.y = 0.5
 
-        let candle = new MyCandle().build(0.06,0.6,0.05,0.1,this.candleMaterial,this.flameMaterial);
+        let candle = new MyCandle().build(0.06, 0.6, 0.05, 0.1, this.candleMaterial, this.flameMaterial);
         cake.add(candle);
         candle.position.y = 0.8
         candle.position.z = -0.1
@@ -248,4 +241,4 @@ class MyContents {
 
 }
 
-export { MyContents };
+export {MyContents};

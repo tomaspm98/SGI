@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 class MyTable {
 
-    build(tableWidth, tableHeight, tableLength, tableMaterial) {
+    build(tableWidth, tableHeight, tableLength, tableMaterial, legMaterial) {
 
         
 
@@ -17,10 +17,10 @@ class MyTable {
 
         const tableLeg = new THREE.CylinderGeometry(tableLegRadius, tableLegRadius, tableLegHeight, 20)
 
-        const tableLegMesh1 = new THREE.Mesh(tableLeg, tableMaterial);
-        const tableLegMesh2 = new THREE.Mesh(tableLeg, tableMaterial);
-        const tableLegMesh3 = new THREE.Mesh(tableLeg, tableMaterial);
-        const tableLegMesh4 = new THREE.Mesh(tableLeg, tableMaterial);
+        const tableLegMesh1 = new THREE.Mesh(tableLeg, legMaterial);
+        const tableLegMesh2 = new THREE.Mesh(tableLeg, legMaterial);
+        const tableLegMesh3 = new THREE.Mesh(tableLeg, legMaterial);
+        const tableLegMesh4 = new THREE.Mesh(tableLeg, legMaterial);
 
         const slack = tableLength / 12
 
