@@ -132,30 +132,6 @@ class MyContents {
             this.app.scene.add(this.axis)
         }
 
-        // add a point light on top of the model
-        const pointLight = new THREE.PointLight(0xffffff, 250, 0, 2);
-        pointLight.position.set(-15, 25, 0);
-        this.app.scene.add(pointLight);
-        
-        const pointLight2 = new THREE.PointLight(0xffffff, 250, 0, 2);
-        pointLight2.position.set(0, 25, 15);
-        this.app.scene.add(pointLight2);
-        
-        const pointLight3 = new THREE.PointLight(0xffffff, 250, 0, 2);
-        pointLight3.position.set(0, 25, -15);
-        this.app.scene.add(pointLight3);
-        
-        const pointLight4 = new THREE.PointLight(0xffffff, 250, 0, 2);
-        pointLight4.position.set(15, 25, 0);
-        this.app.scene.add(pointLight4);
-
-        // add a point light helper for the previous point light
-        const sphereSize = 0.5;
-        this.app.scene.add(new THREE.PointLightHelper(pointLight, sphereSize));
-        this.app.scene.add(new THREE.PointLightHelper(pointLight2, sphereSize));
-        this.app.scene.add(new THREE.PointLightHelper(pointLight3, sphereSize));
-        this.app.scene.add(new THREE.PointLightHelper(pointLight4, sphereSize));
-
         // add an ambient light
         const ambientLight = new THREE.AmbientLight(0x555555);
         this.app.scene.add(ambientLight);
@@ -245,10 +221,10 @@ class MyContents {
     }
 
     buildHouse() {
-        const house = new MyHouse().build(50, 25, this.planeMaterial, this.wallMaterial);
+        const house = new MyHouse(50, 25, this.planeMaterial, this.wallMaterial)
+        house.createLights()
 
         let table = new MyTable().build(8, 0.25, 12, this.tableMaterial, this.legMaterial);
-
 
         let dish = new MyDish().build(1.5, 2.5, 0.2, this.dishMaterial);
         table.add(dish);
@@ -263,15 +239,15 @@ class MyContents {
         candle.position.y = 0.8
         candle.position.z = -0.1
 
-        let frame = new THREE.BoxGeometry(1, 5, 5);
+        /*let frame = new THREE.BoxGeometry(1, 5, 5);
         let frameMesh = new THREE.Mesh(frame, this.picture1Material);
         //house.add(frameMesh);
         frameMesh.position.y = 10;
         frameMesh.rotation.z = -Math.PI / 2;
-        //i want to add to the wall1
+        //i want to add to the wall1*/
         
-        house.add(table);
-        return house;
+        house.mesh.add(table);
+        return house.mesh;
     }
 
 }
