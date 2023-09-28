@@ -174,7 +174,10 @@ class MyContents {
     }
 
     buildHouse() {
-        const house = new MyHouse(50, 25, this.planeMaterial, this.wallMaterial)
+        const wallHeight = 25
+        const cakeHeight = 1
+        
+        const house = new MyHouse(50, wallHeight, this.planeMaterial, this.wallMaterial)
         house.createLights()
 
         let table = new MyTable().build(8, 0.25, 12, this.tableMaterial, this.legMaterial);
@@ -183,21 +186,23 @@ class MyContents {
         table.add(dish);
         dish.position.y = 0.20
 
-        let cake = new MyCake().build(2, 1, this.cakeMaterial, 30, 1, 5.5)
+        let cake = new MyCake().build(2, cakeHeight, this.cakeMaterial, 30, 1, 5.5)
         dish.add(cake);
         cake.position.y = 0.5
+        
+        const spotLightCake = new THREE.SpotLight(0xffffff, 400, 19, 0.175, 0.1)
+        spotLightCake.position.y = 11.6
+        cake.add(spotLightCake)
+
+        const spotLightHelper = new THREE.SpotLightHelper(spotLightCake)
+        cake.add(spotLightHelper)
 
         let candle = new MyCandle().build(0.06, 0.6, 0.05, 0.1, this.candleMaterial, this.flameMaterial);
         cake.add(candle);
         candle.position.y = 0.8
         candle.position.z = -0.1
         
-        const spotLightCake = new THREE.SpotLight(0xffffff, 500, 19.5, 0.12, 0.05, 1)
-        spotLightCake.position.set(0, 24.9, 0)
-        this.app.scene.add(spotLightCake)
-
-        const spotLightHelper = new THREE.SpotLightHelper(spotLightCake)
-        this.app.scene.add(spotLightHelper)
+        
 
         /*let frame = new THREE.BoxGeometry(1, 5, 5);
         let frameMesh = new THREE.Mesh(frame, this.picture1Material);
