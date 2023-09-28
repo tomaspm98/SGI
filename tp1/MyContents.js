@@ -103,6 +103,14 @@ class MyContents {
             shininess: 3,
             map: this.picture2Texture
         })
+        
+        this.windowTexture = new THREE.TextureLoader().load('textures/windows.jpg')
+        this.windowMaterial = new THREE.MeshPhongMaterial({
+            color: "#ffffff",
+            specular: "#f2e7b3",
+            shininess: 3,
+            map: this.windowTexture
+        })
     }
 
 
@@ -209,7 +217,7 @@ class MyContents {
         house.addPicture(1, frame1, 10, 0);
         house.addPicture(1, frame2, -10, 0);
         
-        let window1 = new MyWindow().create(5, 5, 0.5, this.tableMaterial, this.picture1Material, house.floorMesh);
+        let window1 = new MyWindow().create(20, 12, 0.5, this.tableMaterial, this.windowMaterial, house.floorMesh);
         house.addPicture(3, window1);
         
         house.mesh.add(table);

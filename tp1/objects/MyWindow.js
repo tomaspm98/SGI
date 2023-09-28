@@ -6,14 +6,14 @@ class MyWindow{
     create(windowWidth, windowHeight, windowDepth, borderMaterial, picture, intensity = 300, colorLight = "#ffffff", target = null){
         const windowMesh = new THREE.Mesh();
 
-        //windowMesh.add(new THREE.Mesh(new THREE.PlaneGeometry(windowWidth, windowHeight), picture))
+        windowMesh.add(new THREE.Mesh(new THREE.PlaneGeometry(windowWidth, windowHeight), picture))
 
         const border1 = new THREE.Mesh(new THREE.BoxGeometry(windowWidth + windowDepth, windowDepth, windowDepth), borderMaterial);
-        border1.position.y = windowWidth / 2;
+        border1.position.y = windowHeight / 2;
         windowMesh.add(border1);
 
         const border2 = new THREE.Mesh(new THREE.BoxGeometry(windowWidth + windowDepth, windowDepth, windowDepth), borderMaterial);
-        border2.position.y = -windowWidth / 2;
+        border2.position.y = -windowHeight / 2;
         windowMesh.add(border2);
 
         const border3 = new THREE.Mesh(new THREE.BoxGeometry(windowDepth, windowHeight, windowDepth), borderMaterial);
@@ -28,12 +28,14 @@ class MyWindow{
         windowMesh.add(border5);
 
         const rectLight = new THREE.RectAreaLight( colorLight, intensity, windowWidth, windowHeight);
+        rectLight.lookAt( 0, 0, 0 );
         //rectLight.target = target;
 
         const rectLightHelper = new RectAreaLightHelper( rectLight );
         rectLight.add( rectLightHelper );
+        
 
-        windowMesh.add( rectLight );
+        windowMesh.add(rectLight );
 
         return windowMesh;
     }
