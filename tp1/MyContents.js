@@ -136,13 +136,6 @@ class MyContents {
         const ambientLight = new THREE.AmbientLight(0x555555);
         this.app.scene.add(ambientLight);
 
-        const spotLightCake = new THREE.SpotLight(0xffffff, 500, 19.5, 0.12, 0.05, 1)
-        spotLightCake.position.set(0, 24.9, 0)
-        this.app.scene.add(spotLightCake)
-
-        const spotLightHelper = new THREE.SpotLightHelper(spotLightCake)
-        this.app.scene.add(spotLightHelper)
-
         this.buildBox()
 
         this.app.scene.add(this.buildHouse());
@@ -175,48 +168,8 @@ class MyContents {
         this.planeMaterial.shininess = this.planeShininess
     }
 
-    /**
-     * rebuilds the box mesh if required
-     * this method is called from the gui interface
-     */
-    rebuildBox() {
-        // remove boxMesh if exists
-        if (this.boxMesh !== undefined && this.boxMesh !== null) {
-            this.app.scene.remove(this.boxMesh)
-        }
-        this.buildBox();
-        this.lastBoxEnabled = null
-    }
 
-    /**
-     * updates the box mesh if required
-     * this method is called from the render method of the app
-     * updates are trigered by boxEnabled property changes
-     */
-    updateBoxIfRequired() {
-        if (this.boxEnabled !== this.lastBoxEnabled) {
-            this.lastBoxEnabled = this.boxEnabled
-            if (this.boxEnabled) {
-                this.app.scene.add(this.boxMesh)
-            } else {
-                this.app.scene.remove(this.boxMesh)
-            }
-        }
-    }
-
-    /**
-     * updates the contents
-     * this method is called from the render method of the app
-     *
-     */
     update() {
-        // check if box mesh needs to be updated
-        //this.updateBoxIfRequired()
-
-        // sets the box mesh position based on the displacement vector
-        this.boxMesh.position.x = this.boxDisplacement.x
-        this.boxMesh.position.y = this.boxDisplacement.y
-        this.boxMesh.position.z = this.boxDisplacement.z
 
     }
 
@@ -238,6 +191,13 @@ class MyContents {
         cake.add(candle);
         candle.position.y = 0.8
         candle.position.z = -0.1
+        
+        const spotLightCake = new THREE.SpotLight(0xffffff, 500, 19.5, 0.12, 0.05, 1)
+        spotLightCake.position.set(0, 24.9, 0)
+        this.app.scene.add(spotLightCake)
+
+        const spotLightHelper = new THREE.SpotLightHelper(spotLightCake)
+        this.app.scene.add(spotLightHelper)
 
         /*let frame = new THREE.BoxGeometry(1, 5, 5);
         let frameMesh = new THREE.Mesh(frame, this.picture1Material);
