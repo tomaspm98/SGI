@@ -24,31 +24,31 @@ class MyHouse {
 
         const wall = new THREE.PlaneGeometry(this.floorWidth, this.wallHeight);
 
-        const wallMesh1 = new THREE.Mesh(wall, this.wallMaterial);
-        wallMesh1.rotation.x = Math.PI / 2;
-        wallMesh1.position.y = this.floorWidth / 2;
-        wallMesh1.position.z = this.wallHeight / 2;
-        floorMesh.add(wallMesh1);
+        this.wallMesh1 = new THREE.Mesh(wall, this.wallMaterial);
+        this.wallMesh1.rotation.x = Math.PI / 2;
+        this.wallMesh1.position.y = this.floorWidth / 2;
+        this.wallMesh1.position.z = this.wallHeight / 2;
+        floorMesh.add(this.wallMesh1);
 
-        const wallMesh2 = new THREE.Mesh(wall, this.wallMaterial);
-        wallMesh2.rotation.x = -Math.PI / 2;
-        wallMesh2.position.y = -this.floorWidth / 2;
-        wallMesh2.position.z = this.wallHeight / 2;
-        floorMesh.add(wallMesh2);
+        this.wallMesh2 = new THREE.Mesh(wall, this.wallMaterial);
+        this.wallMesh2.rotation.x = -Math.PI / 2;
+        this.wallMesh2.position.y = -this.floorWidth / 2;
+        this.wallMesh2.position.z = this.wallHeight / 2;
+        floorMesh.add(this.wallMesh2);
 
-        const wallMesh3 = new THREE.Mesh(wall, this.wallMaterial);
-        wallMesh3.rotation.x = Math.PI / 2;
-        wallMesh3.rotation.y = -Math.PI / 2;
-        wallMesh3.position.x = this.floorWidth / 2;
-        wallMesh3.position.z = this.wallHeight / 2;
-        floorMesh.add(wallMesh3);
+        this.wallMesh3 = new THREE.Mesh(wall, this.wallMaterial);
+        this.wallMesh3.rotation.x = Math.PI / 2;
+        this.wallMesh3.rotation.y = -Math.PI / 2;
+        this.wallMesh3.position.x = this.floorWidth / 2;
+        this.wallMesh3.position.z = this.wallHeight / 2;
+        floorMesh.add(this.wallMesh3);
 
-        const wallMesh4 = new THREE.Mesh(wall, this.wallMaterial);
-        wallMesh4.rotation.x = Math.PI / 2;
-        wallMesh4.rotation.y = Math.PI / 2;
-        wallMesh4.position.x = -this.floorWidth / 2;
-        wallMesh4.position.z = this.wallHeight / 2;
-        floorMesh.add(wallMesh4);
+        this.wallMesh4 = new THREE.Mesh(wall, this.wallMaterial);
+        this.wallMesh4.rotation.x = Math.PI / 2;
+        this.wallMesh4.rotation.y = Math.PI / 2;
+        this.wallMesh4.position.x = -this.floorWidth / 2;
+        this.wallMesh4.position.z = this.wallHeight / 2;
+        floorMesh.add(this.wallMesh4);
 
         this.mesh.add(floorMesh);
     }
@@ -76,6 +76,22 @@ class MyHouse {
         this.mesh.add(new THREE.PointLightHelper(pointLight2, sphereSize));
         this.mesh.add(new THREE.PointLightHelper(pointLight3, sphereSize));
         this.mesh.add(new THREE.PointLightHelper(pointLight4, sphereSize));
+    }
+    
+    addPicture(numWall, frame, x = 0, y = 0, z = 0.1, rotation = 0) {
+        if (numWall == 1) {
+            this.wallMesh1.add(frame);
+        } else if (numWall == 2) {
+            this.wallMesh2.add(frame);
+            frame.rotation.z = Math.PI;
+        } else if (numWall == 3) {
+            this.wallMesh3.add(frame);
+        } else if (numWall == 4) {
+            this.wallMesh4.add(frame);
+        }
+        
+        frame.position.set(x, y, z);
+        frame.rotation.y = rotation;
     }
 }
 

@@ -5,6 +5,7 @@ import {MyCake} from './objects/MyCake.js';
 import {MyDish} from './objects/MyDish.js';
 import {MyHouse} from './objects/MyHouse.js';
 import {MyCandle} from './objects/MyCandle.js';
+import {MyFrame} from "./objects/MyFrame.js";
 
 
 /**
@@ -202,14 +203,10 @@ class MyContents {
         candle.position.y = 0.8
         candle.position.z = -0.1
         
-        
-
-        /*let frame = new THREE.BoxGeometry(1, 5, 5);
-        let frameMesh = new THREE.Mesh(frame, this.picture1Material);
-        //house.add(frameMesh);
-        frameMesh.position.y = 10;
-        frameMesh.rotation.z = -Math.PI / 2;
-        //i want to add to the wall1*/
+        let frame1 = new MyFrame().createFrame(7, 7, 0.5, this.tableMaterial, this.picture1Material);
+        let frame2 = new MyFrame().createFrame(7, 7, 0.5, this.tableMaterial, this.picture2Material);
+        house.addPicture(1, frame1);
+        house.addPicture(2, frame2);
         
         house.mesh.add(table);
         return house.mesh;
