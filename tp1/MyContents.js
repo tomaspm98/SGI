@@ -89,17 +89,17 @@ class MyContents {
 
         this.picture1Texture = new THREE.TextureLoader().load('textures/daniel.jpg')
         this.picture1Material = new THREE.MeshPhongMaterial({
-            color: "#a2a2a2",
-            specular: "#3f3d3d",
-            shininess: 0,
+            color: "#ffffff",
+            specular: "#f2e7b3",
+            shininess: 3,
             map: this.picture1Texture
         })
 
         this.picture2Texture = new THREE.TextureLoader().load('textures/tomas.jpg')
         this.picture2Material = new THREE.MeshPhongMaterial({
-            color: "#a2a2a2",
-            specular: "#ffffff",
-            shininess: 0,
+            color: "#ffffff",
+            specular: "#f2e7b3",
+            shininess: 3,
             map: this.picture2Texture
         })
     }
@@ -205,8 +205,8 @@ class MyContents {
         
         let frame1 = new MyFrame().createFrame(7, 7, 0.5, this.tableMaterial, this.picture1Material);
         let frame2 = new MyFrame().createFrame(7, 7, 0.5, this.tableMaterial, this.picture2Material);
-        house.addPicture(1, frame1);
-        house.addPicture(2, frame2);
+        house.addPicture(1, frame1, 10, 0);
+        house.addPicture(1, frame2, -10, 0);
         
         house.mesh.add(table);
         return house.mesh;
