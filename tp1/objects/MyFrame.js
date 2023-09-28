@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 class MyFrame{
 
-    createFrame(frameWidth, frameHeight, frameDepth, frameMaterial, picture){
+    create(frameWidth, frameHeight, frameDepth, frameMaterial, picture){
         const frameMesh = new THREE.Mesh();
 
         frameMesh.add(new THREE.Mesh(new THREE.PlaneGeometry(frameWidth, frameHeight), picture))

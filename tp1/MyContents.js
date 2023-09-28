@@ -6,6 +6,7 @@ import {MyDish} from './objects/MyDish.js';
 import {MyHouse} from './objects/MyHouse.js';
 import {MyCandle} from './objects/MyCandle.js';
 import {MyFrame} from "./objects/MyFrame.js";
+import {MyWindow} from "./objects/MyWindow.js";
 
 
 /**
@@ -191,7 +192,7 @@ class MyContents {
         dish.add(cake);
         cake.position.y = 0.5
         
-        const spotLightCake = new THREE.SpotLight(0xffffff, 400, 19, 0.175, 0.1)
+        const spotLightCake = new THREE.SpotLight("#ffffff", 400, 19, 0.175, 0.1)
         spotLightCake.position.y = 11.6
         cake.add(spotLightCake)
 
@@ -203,10 +204,13 @@ class MyContents {
         candle.position.y = 0.8
         candle.position.z = -0.1
         
-        let frame1 = new MyFrame().createFrame(7, 7, 0.5, this.tableMaterial, this.picture1Material);
-        let frame2 = new MyFrame().createFrame(7, 7, 0.5, this.tableMaterial, this.picture2Material);
+        let frame1 = new MyFrame().create(7, 7, 0.5, this.tableMaterial, this.picture1Material);
+        let frame2 = new MyFrame().create(7, 7, 0.5, this.tableMaterial, this.picture2Material);
         house.addPicture(1, frame1, 10, 0);
         house.addPicture(1, frame2, -10, 0);
+        
+        let window1 = new MyWindow().create(5, 5, 0.5, this.tableMaterial, this.picture1Material, house.floorMesh);
+        house.addPicture(3, window1);
         
         house.mesh.add(table);
         return house.mesh;
