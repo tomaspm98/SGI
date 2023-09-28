@@ -76,16 +76,31 @@ class MyContents {
         this.tableMaterial = new THREE.MeshPhongMaterial({
             color: "#8b5a2b",
             specular: "#b47943",
-            shininess: 15,
+            shininess: 30,
             map: this.tableTexture
         })
 
         //create a specular material for the legs of the table
         this.legMaterial = new THREE.MeshPhongMaterial({
             color: "#873e23",
-            specular: "#865e3c", emissive: "#000000", shininess: 40
+            specular: "#865e3c", emissive: "#000000", shininess: 50
         })
 
+        this.picture1Texture = new THREE.TextureLoader().load('textures/daniel.jpg')
+        this.picture1Material = new THREE.MeshPhongMaterial({
+            color: "#a2a2a2",
+            specular: "#3f3d3d",
+            shininess: 0,
+            map: this.picture1Texture
+        })
+
+        this.picture2Texture = new THREE.TextureLoader().load('textures/tomas.jpg')
+        this.picture2Material = new THREE.MeshPhongMaterial({
+            color: "#a2a2a2",
+            specular: "#ffffff",
+            shininess: 0,
+            map: this.picture2Texture
+        })
     }
 
 
@@ -118,25 +133,38 @@ class MyContents {
         }
 
         // add a point light on top of the model
-        const pointLight = new THREE.PointLight(0xffffff, 350, 0);
-        pointLight.position.set(0, 20, 0);
+        const pointLight = new THREE.PointLight(0xffffff, 250, 0, 2);
+        pointLight.position.set(-15, 25, 0);
         this.app.scene.add(pointLight);
+        
+        const pointLight2 = new THREE.PointLight(0xffffff, 250, 0, 2);
+        pointLight2.position.set(0, 25, 15);
+        this.app.scene.add(pointLight2);
+        
+        const pointLight3 = new THREE.PointLight(0xffffff, 250, 0, 2);
+        pointLight3.position.set(0, 25, -15);
+        this.app.scene.add(pointLight3);
+        
+        const pointLight4 = new THREE.PointLight(0xffffff, 250, 0, 2);
+        pointLight4.position.set(15, 25, 0);
+        this.app.scene.add(pointLight4);
 
         // add a point light helper for the previous point light
         const sphereSize = 0.5;
-        const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
-        this.app.scene.add(pointLightHelper);
+        this.app.scene.add(new THREE.PointLightHelper(pointLight, sphereSize));
+        this.app.scene.add(new THREE.PointLightHelper(pointLight2, sphereSize));
+        this.app.scene.add(new THREE.PointLightHelper(pointLight3, sphereSize));
+        this.app.scene.add(new THREE.PointLightHelper(pointLight4, sphereSize));
 
         // add an ambient light
         const ambientLight = new THREE.AmbientLight(0x555555);
         this.app.scene.add(ambientLight);
 
-        const spotLightCake = new THREE.SpotLight(0xffffff, 200, 25, 0.09, 0, 0)
-        spotLightCake.position.set(0, 30, 0)
+        const spotLightCake = new THREE.SpotLight(0xffffff, 500, 19.5, 0.12, 0.05, 1)
+        spotLightCake.position.set(0, 24.9, 0)
         this.app.scene.add(spotLightCake)
 
-        const helperSpot = 0.5
-        const spotLightHelper = new THREE.SpotLightHelper(spotLightCake, helperSpot)
+        const spotLightHelper = new THREE.SpotLightHelper(spotLightCake)
         this.app.scene.add(spotLightHelper)
 
         this.buildBox()
@@ -217,7 +245,7 @@ class MyContents {
     }
 
     buildHouse() {
-        const house = new MyHouse().build(30, 20, this.planeMaterial, this.wallMaterial);
+        const house = new MyHouse().build(50, 25, this.planeMaterial, this.wallMaterial);
 
         let table = new MyTable().build(8, 0.25, 12, this.tableMaterial, this.legMaterial);
 
@@ -235,6 +263,13 @@ class MyContents {
         candle.position.y = 0.8
         candle.position.z = -0.1
 
+        let frame = new THREE.BoxGeometry(1, 5, 5);
+        let frameMesh = new THREE.Mesh(frame, this.picture1Material);
+        //house.add(frameMesh);
+        frameMesh.position.y = 10;
+        frameMesh.rotation.z = -Math.PI / 2;
+        //i want to add to the wall1
+        
         house.add(table);
         return house;
     }

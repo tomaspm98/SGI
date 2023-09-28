@@ -14,7 +14,7 @@ class MyTable {
 
         const tableLegHeight = tableLength / 2
         const tableLegRadius = tableLength / 35
-
+        
         const tableLeg = new THREE.CylinderGeometry(tableLegRadius, tableLegRadius, tableLegHeight, 20)
 
         const tableLegMesh1 = new THREE.Mesh(tableLeg, legMaterial);
