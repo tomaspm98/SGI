@@ -7,6 +7,7 @@ import {MyHouse} from './objects/MyHouse.js';
 import {MyCandle} from './objects/MyCandle.js';
 import {MyFrame} from "./objects/MyFrame.js";
 import {MyWindow} from "./objects/MyWindow.js";
+import { MyDoor } from './objects/MyDoor.js';
 
 
 /**
@@ -111,6 +112,14 @@ class MyContents {
             shininess: 3,
             map: this.windowTexture
         })
+        
+        this.doorTexture = new THREE.TextureLoader().load('textures/door_texture.png')
+        this.doorMaterial = new THREE.MeshPhongMaterial({
+            color: "#666666",
+            specular: "#b47943",
+            shininess: 1,
+            map: this.doorTexture
+        })
     }
 
 
@@ -185,9 +194,10 @@ class MyContents {
 
     buildHouse() {
         const wallHeight = 25
+        const floorWidth=50
         const cakeHeight = 1
         
-        const house = new MyHouse(50, wallHeight, this.planeMaterial, this.wallMaterial)
+        const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial)
         house.createLights()
 
         let table = new MyTable().build(8, 0.25, 12, this.tableMaterial, this.legMaterial);
@@ -221,6 +231,10 @@ class MyContents {
         house.addPicture(3, window1);
         
         house.mesh.add(table);
+        let door = new MyDoor().build(10,15,1,this.doorMaterial);
+        door.position.z = floorWidth/2;
+        door.position.y = 15/2;
+        house.mesh.add(door);
         return house.mesh;
     }
 
