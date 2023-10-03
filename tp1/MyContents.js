@@ -1,13 +1,14 @@
 import * as THREE from 'three';
-import {MyAxis} from './MyAxis.js';
-import {MyTable} from './objects/MyTable.js';
-import {MyCake} from './objects/MyCake.js';
-import {MyDish} from './objects/MyDish.js';
-import {MyHouse} from './objects/MyHouse.js';
-import {MyCandle} from './objects/MyCandle.js';
-import {MyFrame} from "./objects/MyFrame.js";
-import {MyWindow} from "./objects/MyWindow.js";
-import {MyDoor} from './objects/MyDoor.js';
+import { MyAxis } from './MyAxis.js';
+import { MyTable } from './objects/MyTable.js';
+import { MyCake } from './objects/MyCake.js';
+import { MyDish } from './objects/MyDish.js';
+import { MyHouse } from './objects/MyHouse.js';
+import { MyCandle } from './objects/MyCandle.js';
+import { MyFrame } from "./objects/MyFrame.js";
+import { MyWindow } from "./objects/MyWindow.js";
+import { MyDoor } from './objects/MyDoor.js';
+import { MyBeetle } from './objects/MyBeetle.js';
 
 
 /**
@@ -157,7 +158,9 @@ class MyContents {
 
         this.buildBox()
 
-        this.app.scene.add(this.buildHouse());
+        //this.app.scene.add(this.buildHouse());
+
+        this.app.scene.add(new MyBeetle().build({ x: 0, y: 0 }, 1));
     }
 
     /**
@@ -234,9 +237,10 @@ class MyContents {
 
         house.addObjectWall(4, new MyDoor().build(15, 25, 1, this.doorMaterial), 0, -5);
 
+
         return house.mesh
     }
 
 }
 
-export {MyContents};
+export { MyContents };
