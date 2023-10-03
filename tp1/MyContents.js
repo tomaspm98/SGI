@@ -7,7 +7,7 @@ import {MyHouse} from './objects/MyHouse.js';
 import {MyCandle} from './objects/MyCandle.js';
 import {MyFrame} from "./objects/MyFrame.js";
 import {MyWindow} from "./objects/MyWindow.js";
-import { MyDoor } from './objects/MyDoor.js';
+import {MyDoor} from './objects/MyDoor.js';
 
 
 /**
@@ -37,36 +37,36 @@ class MyContents {
         this.planeShininess = 30
         this.planeMaterial = new THREE.MeshPhongMaterial({
             color: this.diffusePlaneColor,
-            specular: this.diffusePlaneColor, 
-            emissive: "#000000", 
+            specular: this.diffusePlaneColor,
+            emissive: "#000000",
             shininess: this.planeShininess
         })
 
         //wall related attributes
         this.wallMaterial = new THREE.MeshPhongMaterial({
-            color: "#c4b39c", 
+            color: "#c4b39c",
             shininess: 0
         })
 
         //dish related attributes
         this.dishMaterial = new THREE.MeshPhongMaterial({
-            color: "#ffffff", 
+            color: "#ffffff",
             shininess: 0,
         })
 
         //cake related attributes
         this.cakeMaterial = new THREE.MeshPhongMaterial({
-            color: "#49332b", 
+            color: "#49332b",
             shininess: 0
         })
 
 
         this.candleMaterial = new THREE.MeshPhongMaterial({
             color: "#f4e1c0",
-            specular: "#ffffff", 
+            specular: "#ffffff",
             shininess: 10
         })
-        
+
         this.flameMaterial = new THREE.MeshPhongMaterial({
             color: "#ec8733",
             specular: "#ffed27",
@@ -92,27 +92,27 @@ class MyContents {
         this.picture1Texture = new THREE.TextureLoader().load('textures/daniel.jpg')
         this.picture1Material = new THREE.MeshPhongMaterial({
             color: "#ffffff",
-            specular: "#f2e7b3",
-            shininess: 3,
-            map: this.picture1Texture
+            specular: "#000000",
+            shininess: 5,
+            map: this.picture1Texture,
         })
 
         this.picture2Texture = new THREE.TextureLoader().load('textures/tomas.jpg')
         this.picture2Material = new THREE.MeshPhongMaterial({
             color: "#ffffff",
-            specular: "#f2e7b3",
-            shininess: 3,
+            specular: "#000000",
+            shininess: 5,
             map: this.picture2Texture
         })
-        
+
         this.windowTexture = new THREE.TextureLoader().load('textures/windows.jpg')
         this.windowMaterial = new THREE.MeshPhongMaterial({
             color: "#ffffff",
-            specular: "#f2e7b3",
-            shininess: 3,
+            specular: "#000000",
+            shininess: 5,
             map: this.windowTexture
         })
-        
+
         this.doorTexture = new THREE.TextureLoader().load('textures/door_texture.png')
         this.doorMaterial = new THREE.MeshPhongMaterial({
             color: "#666666",
@@ -193,49 +193,48 @@ class MyContents {
     }
 
     buildHouse() {
-        const wallHeight = 25
-        const floorWidth=50
-        const cakeHeight = 1
-        
+        const wallHeight = 35
+        const floorWidth = 100
+        const cakeHeight = 2
+
         const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial)
         house.createLights()
 
-        let table = new MyTable().build(8, 0.25, 12, this.tableMaterial, this.legMaterial);
+        let table = new MyTable().build(14, 0.5, 20, this.tableMaterial, this.legMaterial);
 
-        let dish = new MyDish().build(1.5, 2.5, 0.2, this.dishMaterial);
+        let dish = new MyDish().build(2.8, 3.8, 0.3, this.dishMaterial);
         table.add(dish);
-        dish.position.y = 0.20
+        dish.position.y = 0.3
 
-        let cake = new MyCake().build(2, cakeHeight, this.cakeMaterial, 30, 1, 5.5)
+        let cake = new MyCake().build(3, cakeHeight, this.cakeMaterial, 40, 1, 5.5)
         dish.add(cake);
         cake.position.y = 0.5
-        
-        const spotLightCake = new THREE.SpotLight("#ffffff", 400, 19, 0.175, 0.1)
-        spotLightCake.position.y = 11.6
+
+        const spotLightCake = new THREE.SpotLight("#ffffff", 500, 27, 0.19, 0.1)
+        spotLightCake.position.y = 18
         cake.add(spotLightCake)
 
         const spotLightHelper = new THREE.SpotLightHelper(spotLightCake)
         cake.add(spotLightHelper)
 
-        let candle = new MyCandle().build(0.06, 0.6, 0.05, 0.1, this.candleMaterial, this.flameMaterial);
+        let candle = new MyCandle().build(0.09, 1, 0.1, 0.15, this.candleMaterial, this.flameMaterial);
         cake.add(candle);
-        candle.position.y = 0.8
+        candle.position.y = 1.4
         candle.position.z = -0.1
-        
-        let frame1 = new MyFrame().create(7, 7, 0.5, this.tableMaterial, this.picture1Material);
-        let frame2 = new MyFrame().create(7, 7, 0.5, this.tableMaterial, this.picture2Material);
-        house.addPicture(1, frame1, 10, 0);
-        house.addPicture(1, frame2, -10, 0);
-        
-        let window1 = new MyWindow().create(20, 12, 0.5, this.tableMaterial, this.windowMaterial, house.floorMesh);
-        house.addPicture(3, window1);
-        
+
+        let frame1 = new MyFrame().create(12, 12, 0.5, this.tableMaterial, this.picture1Material);
+        let frame2 = new MyFrame().create(12, 12, 0.5, this.tableMaterial, this.picture2Material);
+        house.addObjectWall(1, frame1, 10, 0);
+        house.addObjectWall(1, frame2, -10, 0);
+
+        let window1 = new MyWindow().create(40, 18, 0.5, this.tableMaterial, this.windowMaterial);
+        house.addObjectWall(3, window1);
+
         house.mesh.add(table);
-        let door = new MyDoor().build(10,15,1,this.doorMaterial);
-        door.position.z = floorWidth/2;
-        door.position.y = 15/2;
-        house.mesh.add(door);
-        return house.mesh;
+
+        house.addObjectWall(4, new MyDoor().build(15, 25, 1, this.doorMaterial), 0, -5);
+
+        return house.mesh
     }
 
 }

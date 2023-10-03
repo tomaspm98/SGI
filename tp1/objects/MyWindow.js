@@ -3,7 +3,7 @@ import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js
 
 class MyWindow{
 
-    create(windowWidth, windowHeight, windowDepth, borderMaterial, picture, intensity = 500, colorLight = "#ffffff" ){
+    create(windowWidth, windowHeight, windowDepth, borderMaterial, picture, intensity = 300, colorLight = "#ffffff" ){
         const windowMesh = new THREE.Mesh();
 
         windowMesh.add(new THREE.Mesh(new THREE.PlaneGeometry(windowWidth, windowHeight), picture))
@@ -26,17 +26,6 @@ class MyWindow{
 
         const border5 = new THREE.Mesh(new THREE.BoxGeometry(windowDepth, windowHeight, windowDepth), borderMaterial);
         windowMesh.add(border5);
-
-        const rectLight = new THREE.RectAreaLight( colorLight, intensity, windowWidth, windowHeight);
-        rectLight.position.set( 0, 10, 0 );
-        rectLight.lookAt( 0, 0, 0 );
-        //rectLight.target = target;
-
-        const rectLightHelper = new RectAreaLightHelper( rectLight );
-        windowMesh.add( rectLightHelper );
-        
-
-        windowMesh.add(rectLight );
 
         return windowMesh;
     }

@@ -12,7 +12,7 @@ class MyTable {
         const tableTopMesh = new THREE.Mesh(tableTop, tableMaterial);
         tableTopMesh.rotation.z = -Math.PI / 2;
 
-        const tableLegHeight = tableLength / 2
+        const tableLegHeight = tableLength / 2.5
         const tableLegRadius = tableLength / 35
         
         const tableLeg = new THREE.CylinderGeometry(tableLegRadius, tableLegRadius, tableLegHeight, 20)

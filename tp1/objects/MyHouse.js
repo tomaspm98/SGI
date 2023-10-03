@@ -69,6 +69,22 @@ class MyHouse {
         const pointLight4 = new THREE.PointLight(color, itensity, distance, decay);
         pointLight4.position.set(this.floorWidth / 4, this.wallHeight, 0);
         this.mesh.add(pointLight4);
+        
+        const pointLight5 = new THREE.PointLight(color, itensity, distance, decay);
+        pointLight5.position.set(this.floorWidth / 3, this.wallHeight, this.floorWidth / 3);
+        this.mesh.add(pointLight5);
+        
+        const pointLight6 = new THREE.PointLight(color, itensity, distance, decay);
+        pointLight6.position.set(this.floorWidth / 3, this.wallHeight, -this.floorWidth / 3)
+        this.mesh.add(pointLight6);
+        
+        const pointLight7 = new THREE.PointLight(color, itensity, distance, decay);
+        pointLight7.position.set(-this.floorWidth / 3, this.wallHeight, this.floorWidth / 3)
+        this.mesh.add(pointLight7);
+        
+        const pointLight8 = new THREE.PointLight(color, itensity, distance, decay);
+        pointLight8.position.set(-this.floorWidth / 3, this.wallHeight, -this.floorWidth / 3)
+        this.mesh.add(pointLight8);
 
         // add a point light helper for the previous point light
         const sphereSize = 0.5;
@@ -76,22 +92,26 @@ class MyHouse {
         this.mesh.add(new THREE.PointLightHelper(pointLight2, sphereSize));
         this.mesh.add(new THREE.PointLightHelper(pointLight3, sphereSize));
         this.mesh.add(new THREE.PointLightHelper(pointLight4, sphereSize));
+        this.mesh.add(new THREE.PointLightHelper(pointLight5, sphereSize));
+        this.mesh.add(new THREE.PointLightHelper(pointLight6, sphereSize));
+        this.mesh.add(new THREE.PointLightHelper(pointLight7, sphereSize));
+        this.mesh.add(new THREE.PointLightHelper(pointLight8, sphereSize));
     }
     
-    addPicture(numWall, frame, x = 0, y = 0, z = 0.1, rotation = 0) {
-        if (numWall == 1) {
-            this.wallMesh1.add(frame);
-        } else if (numWall == 2) {
-            this.wallMesh2.add(frame);
-            frame.rotation.z = Math.PI;
-        } else if (numWall == 3) {
-            this.wallMesh3.add(frame);
-        } else if (numWall == 4) {
-            this.wallMesh4.add(frame);
+    addObjectWall(numWall, object, x = 0, y = 0, z = 0.1, rotation = 0) {
+        if (numWall === 1) {
+            this.wallMesh1.add(object);
+        } else if (numWall === 2) {
+            this.wallMesh2.add(object);
+            object.rotation.z = Math.PI;
+        } else if (numWall === 3) {
+            this.wallMesh3.add(object);
+        } else if (numWall === 4) {
+            this.wallMesh4.add(object);
         }
         
-        frame.position.set(x, y, z);
-        frame.rotation.y = rotation;
+        object.position.set(x, y, z);
+        object.rotation.y = rotation;
     }
 }
 
