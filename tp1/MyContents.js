@@ -10,6 +10,10 @@ import {MyWindow} from "./objects/MyWindow.js";
 import {MyDoor} from './objects/MyDoor.js';
 import { MyRug } from './objects/MyRug.js';
 import { MyChair } from './objects/MyChair.js';
+import { MyJournal } from './objects/MyJournal.js';
+import { MyGlass } from './objects/MyGlass.js';
+import { MySpotlight } from './objects/MySpotlight.js';
+import { MyJar } from './objects/MyJar.js';
 
 
 /**
@@ -142,6 +146,31 @@ class MyContents {
             shininess: 1,
             map: this.chairTexture
         })
+
+        this.glassMaterial = new THREE.MeshPhongMaterial({
+            color: 0xffffff, // Neutral color for glass  // Add environment map for reflections
+            refractionRatio: 0.98, // You can play with this value
+            reflectivity: 0.9,  // Again, adjust to your liking
+            transparent: true, // Make the material transparent
+            opacity: 0.5,      // Adjust opacity to your liking
+            shininess: 1,    // To give it a shiny effect
+            specular: 0x222222,
+            // map: this.chairTexture  // If you want a texture, but for clear glass, this is optional
+        })
+
+        this.spotlightMaterial = new THREE.MeshPhongMaterial({
+            color: "#333333",
+            specular: "#111111",
+            shininess: 1,
+        })
+
+        this.journalTexture = new THREE.TextureLoader().load('textures/journal_texture.jpg')
+        this.journalMaterial = new THREE.MeshPhongMaterial({
+            color: "#ffffff",
+            specular: "#ffffff",
+            shininess:50,
+            map:this.journalTexture
+        })
     }
 
 
@@ -220,11 +249,13 @@ class MyContents {
         const cakeHeight = 2
         const tableWidth=14
         const tableLength= 20
+        const tableHeight=0.5
+        const glassHeight = 1
 
         const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial)
         house.createLights()
 
-        let table = new MyTable().build(tableWidth, 0.5, tableLength, this.tableMaterial, this.legMaterial);
+        let table = new MyTable().build(tableWidth, tableHeight, tableLength, this.tableMaterial, this.legMaterial);
 
         let chair1 = new MyChair().build(5,6,5,this.chairMaterial)
         chair1.position.z = - tableWidth/2
@@ -277,10 +308,45 @@ class MyContents {
         let mirror = new MyFrame().create(12, 12, 0.5, this.tableMaterial, this.planeMaterial);
         house.addObjectWall(4, mirror, 40, 0,0);
 
-        let rug = new MyRug().build(30,20,0.5, this.rugMaterial)
+        let rug = new MyRug().build(30,25,0.5, this.rugMaterial)
         rug.rotation.x = Math.PI/2
-        rug.position.x= 30
+        rug.position.x = 30
         house.mesh.add(rug)
+
+        let journal = new MyJournal().build(this.journalMaterial)
+        journal.position.y = table.position.y+tableHeight/2+1.5
+        journal.position.x = 8
+        journal.position.z = 5
+        house.mesh.add(journal)
+
+        let glass1 = new MyGlass().build(0.4,0.3,glassHeight, this.glassMaterial)
+        glass1.position.y = table.position.y +tableHeight/2+glassHeight/2
+        glass1.position.x = tableLength/2 -2
+        house.mesh.add(glass1)
+
+        let glass2 = new MyGlass().build(0.4,0.3,glassHeight, this.glassMaterial)
+        glass2.position.y = table.position.y + tableHeight/2+glassHeight/2
+        glass2.position.z = tableWidth/2 - 2
+        house.mesh.add(glass2)
+
+        let glass3 = new MyGlass().build(0.4,0.3,glassHeight, this.glassMaterial)
+        glass3.position.y = table.position.y + tableHeight/2+glassHeight/2
+        glass3.position.z = -tableWidth/2 + 2
+        house.mesh.add(glass3)
+
+        let glass4 = new MyGlass().build(0.4,0.3,glassHeight, this.glassMaterial)
+        glass4.position.y = table.position.y + tableHeight/2+glassHeight/2
+        glass4.position.x = -tableLength/2 + 2
+        house.mesh.add(glass4)
+
+        let spotlight = new MySpotlight().build(3,10,2,this.spotlightMaterial)
+        spotlight.position.y=wallHeight-5
+        house.mesh.add(spotlight)
+
+        let jar = new MyJar().build(this.planeMaterial)
+        jar.position.y = table.position.y+1.0+tableHeight/2
+        jar.position.x = 10
+        house.mesh.add(jar)
 
         return house.mesh
     }
