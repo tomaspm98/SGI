@@ -8,6 +8,8 @@ import {MyCandle} from './objects/MyCandle.js';
 import {MyFrame} from "./objects/MyFrame.js";
 import {MyWindow} from "./objects/MyWindow.js";
 import {MyDoor} from './objects/MyDoor.js';
+import { MyRug } from './objects/MyRug.js';
+import { MyChair } from './objects/MyChair.js';
 
 
 /**
@@ -120,6 +122,26 @@ class MyContents {
             shininess: 1,
             map: this.doorTexture
         })
+
+        this.rugTexture = new THREE.TextureLoader().load('textures/rug_texture.jpg')
+        this.rugTexture.wrapS = THREE.RepeatWrapping
+        this.rugTexture.wrapT = THREE.RepeatWrapping
+        this.rugMaterial = new THREE.MeshPhongMaterial({
+            color: "#ffffff",
+            specular: "000000",
+            shininess:1,
+            map:this.rugTexture
+        })
+
+        this.chairTexture = new THREE.TextureLoader().load('textures/chair_texture.jpg')
+        this.chairTexture.wrapS = THREE.RepeatWrapping
+        this.chairTexture.wrapT = THREE.RepeatWrapping
+        this.chairMaterial = new THREE.MeshPhongMaterial({
+            color: "#a0764b",
+            specular: "#000000",
+            shininess: 1,
+            map: this.chairTexture
+        })
     }
 
 
@@ -196,11 +218,26 @@ class MyContents {
         const wallHeight = 35
         const floorWidth = 100
         const cakeHeight = 2
+        const tableWidth=14
+        const tableLength= 20
 
         const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial)
         house.createLights()
 
-        let table = new MyTable().build(14, 0.5, 20, this.tableMaterial, this.legMaterial);
+        let table = new MyTable().build(tableWidth, 0.5, tableLength, this.tableMaterial, this.legMaterial);
+
+        let chair1 = new MyChair().build(5,6,5,this.chairMaterial)
+        chair1.position.z = - tableWidth/2
+
+        let chair2 = new MyChair().build(5,6,5,this.chairMaterial)
+        chair2.position.z = tableWidth/2
+        chair2.rotation.y = Math.PI
+        let chair3 = new MyChair().build(5,6,5,this.chairMaterial)
+        chair3.rotation.y = Math.PI/2
+        chair3.position.x=-tableLength/2
+        let chair4 = new MyChair().build(5,6,5,this.chairMaterial)
+        chair4.rotation.y = -Math.PI/2
+        chair4.position.x=tableLength/2
 
         let dish = new MyDish().build(2.8, 3.8, 0.3, this.dishMaterial);
         table.add(dish);
@@ -210,7 +247,7 @@ class MyContents {
         dish.add(cake);
         cake.position.y = 0.5
 
-        const spotLightCake = new THREE.SpotLight("#ffffff", 500, 27, 0.19, 0.1)
+        const spotLightCake = new THREE.SpotLight("#ff00ff", 500, 27, 0.19, 0.1)
         spotLightCake.position.y = 18
         cake.add(spotLightCake)
 
@@ -231,8 +268,19 @@ class MyContents {
         house.addObjectWall(3, window1);
 
         house.mesh.add(table);
+        house.mesh.add(chair1)
+        house.mesh.add(chair2)
+        house.mesh.add(chair3)
+        house.mesh.add(chair4)
 
         house.addObjectWall(4, new MyDoor().build(15, 25, 1, this.doorMaterial), 0, -5);
+        let mirror = new MyFrame().create(12, 12, 0.5, this.tableMaterial, this.planeMaterial);
+        house.addObjectWall(4, mirror, 40, 0,0);
+
+        let rug = new MyRug().build(30,20,0.5, this.rugMaterial)
+        rug.rotation.x = Math.PI/2
+        rug.position.x= 30
+        house.mesh.add(rug)
 
         return house.mesh
     }
