@@ -28,8 +28,6 @@ class MyBeetle {
         beetle.add(quarterCircle2)
         beetle.add(quarterCircle3)
 
-
-
         return beetle
     }
 
@@ -48,7 +46,7 @@ class MyBeetle {
         let sampledPoints = curve.getPoints(sampleSize);
         let curveGeometry = new THREE.BufferGeometry().setFromPoints(sampledPoints);
         let lineMaterial = new THREE.LineBasicMaterial({ color: color });
-        console.log(color)
+
         return new THREE.Line(curveGeometry, lineMaterial)
     }
 

@@ -191,12 +191,6 @@ class MyContents {
 
         this.app.scene.add(this.buildHouse());
 
-<<<<<<< HEAD
-        this.app.scene.add(new MyBeetle().build({ x: 0, y: 0 }, 0.5));
-=======
-        //this.app.scene.add(new MyBeetle().buildQuarterCircle({ x: 0, y: 0 }, 4));
-        //this.app.scene.add(new MyBeetle().buildSemiCircle({ x: 0, y: 0 }, 4));
->>>>>>> a315883e198ccd8b43099e4e27160a7147cbb045
     }
 
     /**
@@ -232,7 +226,7 @@ class MyContents {
     }
 
     buildHouse() {
-        
+
         const wallHeight = 35
         const floorWidth = 100
         const cakeHeight = 2
@@ -336,12 +330,12 @@ class MyContents {
         jar.position.y = table.position.y + 1.5 + tableHeight / 2
         jar.position.x = 7
         jar.position.z = -5
-        let circleFlower = new MyCircle().build({x:0,y:0},0.5)
+        let circleFlower = new MyCircle().build({ x: 0, y: 0 }, 0.5)
         circleFlower.position.y = 3
         jar.add(circleFlower);
         house.mesh.add(jar)
-   
-        
+
+
 
         return house.mesh
     }
