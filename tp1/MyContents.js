@@ -17,6 +17,7 @@ import { MyJar } from './objects/MyJar.js';
 import { MyBeetle } from './objects/MyBeetle.js';
 import { MyCircle } from './objects/MyCircle.js';
 import { MySpring } from './objects/MySpring.js';
+import { MyTelevision } from './objects/MyTelevision.js';
 
 /**
  *  This class contains the contents of out application
@@ -172,6 +173,15 @@ class MyContents {
             specular: "#dc5200",
             shininess: 50,
         })
+
+        const video = document.getElementById('video')
+        this.feupKaraokeVideoTexture = new THREE.VideoTexture(video)
+        this.feupKaraokeVideoMaterial = new THREE.MeshPhongMaterial({
+            color: "#ffffff",
+            specular: "#000000",
+            shininess: 5,
+            map: this.feupKaraokeVideoTexture
+        })
     }
 
     /**
@@ -189,6 +199,12 @@ class MyContents {
         // add an ambient light
         const ambientLight = new THREE.AmbientLight(0x555555);
         this.app.scene.add(ambientLight);
+
+        //this.app.scene.add(new THREE.Mesh(new THREE.PlaneGeometry(50, 50), this.feupKaraokeVideoMaterial))
+
+        const pointLight10 = new THREE.PointLight("#FFFFFF", 1000);
+        pointLight10.position.set(0, 20, 20);
+        this.app.scene.add(pointLight10);
 
         this.app.scene.add(this.buildHouse());
 
@@ -289,8 +305,6 @@ class MyContents {
         house.mesh.add(chair4)
 
         house.addObjectWall(4, new MyDoor().build(15, 25, 1, this.doorMaterial), 0, -5);
-        let mirror = new MyFrame().create(12, 12, 0.5, this.tableMaterial, this.planeMaterial);
-        house.addObjectWall(4, mirror, 40, 0, 0);
 
         let rug = new MyRug().build(30, 25, 0.5, this.rugMaterial)
         rug.rotation.x = Math.PI / 2
@@ -346,6 +360,9 @@ class MyContents {
         spring.position.z = 1
         spring.rotation.x = Math.PI / 2
         table.add(spring)
+
+        const television = new MyTelevision().build(18.25, 32.25, 1, 0.5, this.feupKaraokeVideoMaterial, this.tableMaterial)
+        house.addObjectWall(2, television, 0, 0)
 
         return house.mesh
     }
