@@ -16,6 +16,7 @@ import { MySpotlight } from './objects/MySpotlight.js';
 import { MyJar } from './objects/MyJar.js';
 import { MyBeetle } from './objects/MyBeetle.js';
 import { MyCircle } from './objects/MyCircle.js';
+import { MySpring } from './objects/MySpring.js';
 
 /**
  *  This class contains the contents of out application
@@ -261,7 +262,7 @@ class MyContents {
         dish.add(cake);
         cake.position.y = 0.5
 
-        const spotLightCake = new THREE.SpotLight("#ff00ff", 500, 27, 0.19, 0.1)
+        const spotLightCake = new THREE.SpotLight("#fffaf0", 500, 27, 0.19, 0.1)
         spotLightCake.position.y = 18
         cake.add(spotLightCake)
 
@@ -339,7 +340,12 @@ class MyContents {
         let frameBeetle = new MyFrame().create(12, 12, 0.5, this.tableMaterial, beetle, true, { x: -5.15, y: -2.6, z: 0.5 });
         house.addObjectWall(1, frameBeetle, 30, 0);
 
-
+        const spring = new MySpring().build({ x: -7, y: 0, z: -5 }, 0.5, 2, 200, "#706f6f", 0.005)
+        spring.position.x = 1
+        spring.position.y = -4.2
+        spring.position.z = 1
+        spring.rotation.x = Math.PI / 2
+        table.add(spring)
 
         return house.mesh
     }
