@@ -15,6 +15,7 @@ import { MyGlass } from './objects/MyGlass.js';
 import { MySpotlight } from './objects/MySpotlight.js';
 import { MyJar } from './objects/MyJar.js';
 import { MyBeetle } from './objects/MyBeetle.js';
+import { MyCircle } from './objects/MyCircle.js';
 
 /**
  *  This class contains the contents of out application
@@ -164,6 +165,12 @@ class MyContents {
             shininess: 50,
             map: this.journalTexture
         })
+
+        this.jarMaterial = new THREE.MeshPhongMaterial({
+            color: "#dc5200",
+            specular: "#dc5200",
+            shininess: 50,
+        })
     }
 
     /**
@@ -182,9 +189,14 @@ class MyContents {
         const ambientLight = new THREE.AmbientLight(0x555555);
         this.app.scene.add(ambientLight);
 
-        //this.app.scene.add(this.buildHouse());
+        this.app.scene.add(this.buildHouse());
 
+<<<<<<< HEAD
         this.app.scene.add(new MyBeetle().build({ x: 0, y: 0 }, 0.5));
+=======
+        //this.app.scene.add(new MyBeetle().buildQuarterCircle({ x: 0, y: 0 }, 4));
+        //this.app.scene.add(new MyBeetle().buildSemiCircle({ x: 0, y: 0 }, 4));
+>>>>>>> a315883e198ccd8b43099e4e27160a7147cbb045
     }
 
     /**
@@ -220,6 +232,7 @@ class MyContents {
     }
 
     buildHouse() {
+        
         const wallHeight = 35
         const floorWidth = 100
         const cakeHeight = 2
@@ -319,11 +332,16 @@ class MyContents {
         spotlight.position.y = wallHeight - 5
         house.mesh.add(spotlight)
 
-        let jar = new MyJar().build(this.planeMaterial)
-        jar.position.y = table.position.y + 1.0 + tableHeight / 2
-        jar.position.x = 10
+        let jar = new MyJar().build(this.jarMaterial)
+        jar.position.y = table.position.y + 1.5 + tableHeight / 2
+        jar.position.x = 7
+        jar.position.z = -5
+        let circleFlower = new MyCircle().build({x:0,y:0},0.5)
+        circleFlower.position.y = 3
+        jar.add(circleFlower);
         house.mesh.add(jar)
-
+   
+        
 
         return house.mesh
     }

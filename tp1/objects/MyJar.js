@@ -22,25 +22,31 @@ class MyJar {
         let surfaceData;
         let mesh;
         let orderU = 2
-        let orderV = 1
+        let orderV = 3
 
         controlPoints =
         [   // U = 0
-        [ // V = 0..1;
-            [ -1.0, -1.0, 0.0, 1 ],
-            [ -1.0,  1.0, 0.0, 1 ]
-        ],
-    // U = 1
-        [ // V = 0..1
-            [ 0, -1.0, 2.0, 1 ],
-            [ 0,  1.0, 2.0, 1 ]
-        ],
-    // U = 2
-        [ // V = 0..1
-            [ 1.0, -1.0, 0.0, 1 ],
-            [ 1.0,  1.0, 0.0, 1 ]
-        ]
-]
+                [ // V = 0..3;
+                    [ -0.75, -1.5, 0.0, 1 ],
+                    [ -1.0, -2.0, 0.0, 1 ],
+                    [ -1.0,  2.0, 0.0, 1 ],
+                    [ -0.25,  1.5, 0.0, 1 ]
+                ],
+            // U = 1
+                [ // V = 0..3
+                    [ 0.0,  -1.5, 1.5, 1 ],
+                    [ 0.0, -2.0, 1.5, 1 ],
+                    [ 0.0,  2.0, 1.5, 1 ],
+                    [ 0.0,  1.5, 0.5, 1 ]        
+                ],
+            // U = 2
+                [ // V = 0..3
+                    [ 0.75, -1.5, 0.0, 1 ],
+                    [ 1.0, -2.0, 0.0, 1 ],
+                    [ 1.0,  2.0, 0.0, 1 ],
+                    [ 0.25,  1.5, 0.0, 1 ]
+                ]
+         ]
         surfaceData = this.builder.build(controlPoints, orderU, orderV, this.samplesU,this.samplesV, this.material)  
         mesh = new THREE.Mesh( surfaceData, jarMaterial );
         mesh.rotation.x = 0
