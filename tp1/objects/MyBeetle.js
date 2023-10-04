@@ -3,7 +3,7 @@ import * as THREE from 'three';
 class MyBeetle {
 
     build(point, size, color = "0xffffff", sampleSize = 30) {
-        return this.buildQuarterCircle({ x: 0, y: 0 }, 3, sampleSize, color)
+        return this.buildSemiCircle(point, size, sampleSize, color)
     }
 
     buildSemiCircle(point, radius, sampleSize = 50, color = "#ffffff") {
