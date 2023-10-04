@@ -30,13 +30,6 @@ class MyContents {
         this.app = app
         this.axis = null
 
-        // box related attributes
-        this.boxMesh = null
-        this.boxMeshSize = 1.0
-        this.boxEnabled = true
-        this.lastBoxEnabled = null
-        this.boxDisplacement = new THREE.Vector3(0, 2, 0)
-
         // plane related attributes
         this.diffusePlaneColor = "#C19A6B"
         this.specularPlaneColor = "#777777"
@@ -173,23 +166,6 @@ class MyContents {
         })
     }
 
-
-    /**
-     * builds the box mesh with material assigned
-     */
-    buildBox() {
-        let boxMaterial = new THREE.MeshPhongMaterial({
-            color: "#ffff77",
-            specular: "#000000", emissive: "#000000", shininess: 90
-        })
-
-        // Create a Cube Mesh with basic material
-        let box = new THREE.BoxGeometry(this.boxMeshSize, this.boxMeshSize, this.boxMeshSize);
-        this.boxMesh = new THREE.Mesh(box, boxMaterial);
-        this.boxMesh.rotation.x = -Math.PI / 2;
-        this.boxMesh.position.y = this.boxDisplacement.y;
-    }
-
     /**
      * initializes the contents
      */
@@ -206,11 +182,10 @@ class MyContents {
         const ambientLight = new THREE.AmbientLight(0x555555);
         this.app.scene.add(ambientLight);
 
-        this.buildBox()
+        //this.app.scene.add(this.buildHouse());
 
-        this.app.scene.add(this.buildHouse());
-
-        this.app.scene.add(new MyBeetle().build({ x: 0, y: 0 }, 1));
+        this.app.scene.add(new MyBeetle().buildQuarterCircle({ x: 0, y: 0 }, 4));
+        this.app.scene.add(new MyBeetle().buildSemiCircle({ x: 0, y: 0 }, 4));
     }
 
     /**
