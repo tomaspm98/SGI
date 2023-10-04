@@ -1,11 +1,18 @@
 import * as THREE from 'three';
 
-class MyFrame{
+class MyFrame {
 
-    create(frameWidth, frameHeight, frameDepth, frameMaterial, picture){
+    create(frameWidth, frameHeight, frameDepth, frameMaterial, picture, isLineGeo = false, delta = { x: 0, y: 0, z: 0 }) {
         const frameMesh = new THREE.Mesh();
 
-        frameMesh.add(new THREE.Mesh(new THREE.PlaneGeometry(frameWidth, frameHeight), picture))
+        if (isLineGeo) {
+            frameMesh.add(picture);
+            picture.position.x = delta.x;
+            picture.position.y = delta.y;
+            picture.position.z = delta.z;
+        } else {
+            frameMesh.add(new THREE.Mesh(new THREE.PlaneGeometry(frameWidth, frameHeight), picture))
+        }
 
         const border1 = new THREE.Mesh(new THREE.BoxGeometry(frameWidth + frameDepth, frameDepth, frameDepth), frameMaterial);
         border1.position.y = frameHeight / 2;

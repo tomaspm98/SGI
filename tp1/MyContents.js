@@ -126,7 +126,7 @@ class MyContents {
         this.rugTexture.wrapT = THREE.RepeatWrapping
         this.rugMaterial = new THREE.MeshPhongMaterial({
             color: "#ffffff",
-            specular: "000000",
+            specular: "#000000",
             shininess: 1,
             map: this.rugTexture
         })
@@ -334,6 +334,10 @@ class MyContents {
         circleFlower.position.y = 3
         jar.add(circleFlower);
         house.mesh.add(jar)
+
+        const beetle = new MyBeetle().build({ x: 0, y: 0 }, 0.65, "#FFA500")
+        let frameBeetle = new MyFrame().create(12, 12, 0.5, this.tableMaterial, beetle, true, { x: -5.15, y: -2.6, z: 0.5 });
+        house.addObjectWall(1, frameBeetle, 30, 0);
 
 
 
