@@ -184,8 +184,7 @@ class MyContents {
 
         //this.app.scene.add(this.buildHouse());
 
-        this.app.scene.add(new MyBeetle().buildQuarterCircle({ x: 0, y: 0 }, 4));
-        this.app.scene.add(new MyBeetle().buildSemiCircle({ x: 0, y: 0 }, 4));
+        this.app.scene.add(new MyBeetle().build({ x: 0, y: 0 }, 0.5));
     }
 
     /**
