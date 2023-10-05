@@ -203,7 +203,8 @@ class MyContents {
         const ambientLight = new THREE.AmbientLight(0x555555);
         this.app.scene.add(ambientLight);
 
-        this.app.scene.add(new MySideboard().build(20, 5, 3, this.tableMaterial, 5, 0.5, this.legMaterial))
+        //this.app.scene.add(new MySideboard().build(20, 5, 3, this.tableMaterial, 5, 0.5, this.legMaterial))
+        this.app.scene.add(this.buildHouse())
 
         this.constructionLights()
 

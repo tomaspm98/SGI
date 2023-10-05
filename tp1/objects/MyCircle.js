@@ -4,8 +4,8 @@ import { MyBeetle } from './MyBeetle.js';
 class MyCircle {
 
     build(point, size, color = "#ffffff", sampleSize = 30) {
-        let beetle1 = new MyBeetle().build(point, size, color, sampleSize)
-        let beetle2 = new MyBeetle().build(point, size, color, sampleSize)
+        let beetle1 = new MyBeetle().buildSemiCircle(point, size, sampleSize,color)
+        let beetle2 = new MyBeetle().buildSemiCircle(point, size, sampleSize, color)
         beetle2.rotation.x = Math.PI
         const circle = new THREE.Mesh()
         circle.add(beetle1)
