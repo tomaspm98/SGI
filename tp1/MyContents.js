@@ -18,6 +18,7 @@ import { MyBeetle } from './objects/MyBeetle.js';
 import { MyCircle } from './objects/MyCircle.js';
 import { MySpring } from './objects/MySpring.js';
 import { MyTelevision } from './objects/MyTelevision.js';
+import { MyCoffeeTable } from './objects/MyCoffeeTable.js';
 
 /**
  *  This class contains the contents of out application
@@ -174,14 +175,14 @@ class MyContents {
             shininess: 50,
         })
 
-        const video = document.getElementById('video')
+        /*const video = document.getElementById('video')
         this.feupKaraokeVideoTexture = new THREE.VideoTexture(video)
         this.feupKaraokeVideoMaterial = new THREE.MeshPhongMaterial({
             color: "#ffffff",
             specular: "#000000",
             shininess: 5,
             map: this.feupKaraokeVideoTexture
-        })
+        })*/
     }
 
     /**
@@ -200,45 +201,10 @@ class MyContents {
         const ambientLight = new THREE.AmbientLight(0x555555);
         this.app.scene.add(ambientLight);
 
-        //this.app.scene.add(new THREE.Mesh(new THREE.PlaneGeometry(50, 50), this.feupKaraokeVideoMaterial))
-
-        const pointLight10 = new THREE.PointLight("#FFFFFF", 1000);
-        pointLight10.position.set(0, 20, 20);
-        this.app.scene.add(pointLight10);
-
-        this.app.scene.add(this.buildHouse());
-
-    }
-
-    /**
-     * updates the diffuse plane color and the material
-     * @param {THREE.Color} value
-     */
-    updateDiffusePlaneColor(value) {
-        this.diffusePlaneColor = value
-        this.planeMaterial.color.set(this.diffusePlaneColor)
-    }
-
-    /**
-     * updates the specular plane color and the material
-     * @param {THREE.Color} value
-     */
-    updateSpecularPlaneColor(value) {
-        this.specularPlaneColor = value
-        this.planeMaterial.specular.set(this.specularPlaneColor)
-    }
-
-    /**
-     * updates the plane shininess and the material
-     * @param {number} value
-     */
-    updatePlaneShininess(value) {
-        this.planeShininess = value
-        this.planeMaterial.shininess = this.planeShininess
-    }
-
-
-    update() {
+        this.constructionLights()
+        
+        //this.app.scene.add(new MyCoffeeTable().build(5, 0.5, this.tableMaterial, 0.2, 4, this.legMaterial, 32))
+        //this.app.scene.add(this.buildHouse());
 
     }
 
@@ -365,6 +331,81 @@ class MyContents {
         house.addObjectWall(2, television, 0, 0)
 
         return house.mesh
+    }
+
+    /**
+ * updates the diffuse plane color and the material
+ * @param {THREE.Color} value
+ */
+    updateDiffusePlaneColor(value) {
+        this.diffusePlaneColor = value
+        this.planeMaterial.color.set(this.diffusePlaneColor)
+    }
+
+    /**
+     * updates the specular plane color and the material
+     * @param {THREE.Color} value
+     */
+    updateSpecularPlaneColor(value) {
+        this.specularPlaneColor = value
+        this.planeMaterial.specular.set(this.specularPlaneColor)
+    }
+
+    /**
+     * updates the plane shininess and the material
+     * @param {number} value
+     */
+    updatePlaneShininess(value) {
+        this.planeShininess = value
+        this.planeMaterial.shininess = this.planeShininess
+    }
+
+
+    update() {
+
+    }
+
+    constructionLights() {
+        const pointLight1 = new THREE.PointLight("#FFFFFF", 1000);
+        pointLight1.position.set(0, 0, 30);
+        this.app.scene.add(pointLight1);
+
+        const pointLight2 = new THREE.PointLight("#FFFFFF", 1000);
+        pointLight2.position.set(0, 0, -30);
+        this.app.scene.add(pointLight2);
+
+        const pointLight3 = new THREE.PointLight("#FFFFFF", 1000);
+        pointLight3.position.set(30, 0, 0);
+        this.app.scene.add(pointLight3);
+
+        const pointLight4 = new THREE.PointLight("#FFFFFF", 1000);
+        pointLight4.position.set(-30, 0, 0);
+        this.app.scene.add(pointLight4);
+
+        const pointLight5 = new THREE.PointLight("#FFFFFF", 1000);
+        pointLight5.position.set(0, 30, 0);
+        this.app.scene.add(pointLight5);
+
+        const pointLight6 = new THREE.PointLight("#FFFFFF", 1000);
+        pointLight6.position.set(0, -30, 0);
+        this.app.scene.add(pointLight6);
+
+        const pointLight7 = new THREE.PointLight("#FFFFFF", 1000);
+        pointLight7.position.set(30, 30, 0);
+        this.app.scene.add(pointLight7);
+
+        const pointLight8 = new THREE.PointLight("#FFFFFF", 1000);
+        pointLight8.position.set(-30, -30, 0);
+        this.app.scene.add(pointLight8);
+
+        const pointLight9 = new THREE.PointLight("#FFFFFF", 1000);
+        pointLight9.position.set(-30, 30, 0);
+        this.app.scene.add(pointLight9);
+
+        const pointLight10 = new THREE.PointLight("#FFFFFF", 1000);
+        pointLight10.position.set(30, -30, 0);
+        this.app.scene.add(pointLight10);
+
     }
 
 }
