@@ -19,6 +19,7 @@ import { MyCircle } from './objects/MyCircle.js';
 import { MySpring } from './objects/MySpring.js';
 import { MyTelevision } from './objects/MyTelevision.js';
 import { MyCoffeeTable } from './objects/MyCoffeeTable.js';
+import { MySofa, MyArmchair } from './objects/MySofa.js';
 
 /**
  *  This class contains the contents of out application
@@ -203,8 +204,6 @@ class MyContents {
 
         this.constructionLights()
         
-        //this.app.scene.add(new MyCoffeeTable().build(5, 0.5, this.tableMaterial, 0.2, 4, this.legMaterial, 32))
-        //this.app.scene.add(this.buildHouse());
 
     }
 
