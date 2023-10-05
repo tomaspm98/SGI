@@ -20,6 +20,7 @@ import { MySpring } from './objects/MySpring.js';
 import { MyTelevision } from './objects/MyTelevision.js';
 import { MyCoffeeTable } from './objects/MyCoffeeTable.js';
 import { MySofa, MyArmchair } from './objects/MySofa.js';
+import { MySideboard } from './objects/MySideboard.js';
 
 /**
  *  This class contains the contents of out application
@@ -202,8 +203,10 @@ class MyContents {
         const ambientLight = new THREE.AmbientLight(0x555555);
         this.app.scene.add(ambientLight);
 
+        this.app.scene.add(new MySideboard().build(20, 5, 3, this.tableMaterial, 5, 0.5, this.legMaterial))
+
         this.constructionLights()
-        
+
 
     }
 
