@@ -21,6 +21,8 @@ import { MyTelevision } from './objects/MyTelevision.js';
 import { MyCoffeeTable } from './objects/MyCoffeeTable.js';
 import { MySofa, MyArmchair } from './objects/MySofa.js';
 import { MySideboard } from './objects/MySideboard.js';
+import { MyCup } from './objects/MyCup.js';
+import { MyBook } from './objects/MyBook.js';
 
 /**
  *  This class contains the contents of out application
@@ -177,6 +179,40 @@ class MyContents {
             shininess: 50,
         })
 
+        
+        this.cupMaterial = new THREE.MeshPhongMaterial({
+            color: "#c2b7b7",
+            specular: "#c2b7b7",
+            shininess: 50,
+        })
+        this.cupMaterial.side = THREE.DoubleSide;
+
+        this.orangeTexture = new THREE.TextureLoader().load('textures/orange_texture.jpg')
+        this.orangeMaterial = new THREE.MeshPhongMaterial({
+            color: "#ffa500",
+            specular: "#ffa500",
+            shininess: 15,
+            map: this.orangeTexture
+        })
+
+        this.appleTexture = new THREE.TextureLoader().load('textures/apple_texture.jpg')
+        this.appleMaterial = new THREE.MeshPhongMaterial({
+            color: "#ddbbbb",
+            specular: "#ddbbbb",
+            shininess: 10,
+            map: this.appleTexture
+        })
+
+        this.pagesTexture = new THREE.TextureLoader().load('textures/pages_texture.jpg')
+        this.pagesTexture.wrapS = THREE.RepeatWrapping
+        this.pagesTexture.wrapT = THREE.RepeatWrapping
+        this.pagesMaterial = new THREE.MeshPhongMaterial({
+            color:"#aaaaaa",
+            specular:"#aaaaaa",
+            shininess:1,
+            map: this.pagesTexture
+        })
+        
         /*const video = document.getElementById('video')
         this.feupKaraokeVideoTexture = new THREE.VideoTexture(video)
         this.feupKaraokeVideoMaterial = new THREE.MeshPhongMaterial({
@@ -207,7 +243,7 @@ class MyContents {
         this.app.scene.add(this.buildHouse())
 
         this.constructionLights()
-
+        
 
     }
 
@@ -332,6 +368,43 @@ class MyContents {
 
         const television = new MyTelevision().build(18.25, 32.25, 1, 0.5, this.feupKaraokeVideoMaterial, this.tableMaterial)
         house.addObjectWall(2, television, 0, 0)
+
+        let cup = new MyCup().build(1.5,64,32,Math.PI,Math.PI,0,Math.PI, this.cupMaterial)
+        cup.rotation.x = -Math.PI/2
+        cup.position.y=table.position.y+tableHeight+1.25
+        cup.position.x = -tableWidth/3
+        cup.position.z = -tableLength/4
+        
+        let orange = new THREE.SphereGeometry(0.4,64,32,0,2*Math.PI,0,Math.PI)
+        
+        let orangeMesh1 = new THREE.Mesh(orange,this.orangeMaterial)
+        orangeMesh1.position.z = -1.5+0.4 //-cupRadius + orangeRadius
+        cup.add(orangeMesh1)
+
+        let orangeMesh2 = new THREE.Mesh(orange,this.orangeMaterial)
+        orangeMesh2.position.z = -1.1+0.4 //-cupRadius + orangeRadius
+        orangeMesh2.position.y = 0.75
+        cup.add(orangeMesh2)
+
+        let orangeMesh3 = new THREE.Mesh(orange,this.orangeMaterial)
+        orangeMesh3.position.z = -1.1+0.4 //-cupRadius + orangeRadius
+        orangeMesh3.position.y = -0.75
+        cup.add(orangeMesh3)
+
+        let orangeMesh4 = new THREE.Mesh(orange,this.orangeMaterial)
+        orangeMesh4.position.z = -1.1+0.4
+        orangeMesh4.position.x = -0.75 //-cupRadius + orangeRadius
+        cup.add(orangeMesh4)
+        
+        let orangeMesh5 = new THREE.Mesh(orange,this.orangeMaterial)
+        orangeMesh5.position.z = -1.1+0.4
+        orangeMesh5.position.x = 0.75 //-cupRadius + orangeRadius
+        cup.add(orangeMesh5)
+        
+        house.mesh.add(cup)
+
+        let book = new MyBook().build(2,3,0.5, this.pagesMaterial,2.15,3.1,0.1,this.planeMaterial)
+        house.mesh.add(book)
 
         return house.mesh
     }
