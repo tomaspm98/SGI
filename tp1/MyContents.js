@@ -309,6 +309,12 @@ class MyContents {
         const televisionThickness = 1;
         const televisionStandHeight = 0.5;
 
+        const windowSpotlightColor = new THREE.Color("#ffe285");
+        const windowSpotlightIntensity = 250;
+        const windowSpotlightDistance = 150;
+        const windowSpotlightDecay = 1;
+        const windowSpotlightAngle = 0.40;
+
         const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial, windowWidth, windowHeight);
         house.createLights();
 
@@ -464,6 +470,12 @@ class MyContents {
         landscape.position.x = +100;
         landscape.position.y = 20;
         this.app.scene.add(landscape);
+
+        const spotLightWindow = new THREE.SpotLight(windowSpotlightColor, windowSpotlightIntensity, windowSpotlightDistance, windowSpotlightAngle, spotlightPenumbra, windowSpotlightDecay)
+        spotLightWindow.position.set(100, 30, 0)
+        house.mesh.add(spotLightWindow)
+
+        this.app.scene.add(new THREE.SpotLightHelper(spotLightWindow))
 
 
         //END OF WINDOW
