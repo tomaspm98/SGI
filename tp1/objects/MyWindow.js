@@ -6,7 +6,9 @@ class MyWindow{
     create(windowWidth, windowHeight, windowDepth, borderMaterial, picture, intensity = 300, colorLight = "#ffffff" ){
         const windowMesh = new THREE.Mesh();
 
-        windowMesh.add(new THREE.Mesh(new THREE.PlaneGeometry(windowWidth, windowHeight), picture))
+        const glass = new THREE.Mesh(new THREE.PlaneGeometry(windowWidth, windowHeight), picture);
+        glass.rotation.y = Math.PI;
+        windowMesh.add(glass)
 
         const border1 = new THREE.Mesh(new THREE.BoxGeometry(windowWidth + windowDepth, windowDepth, windowDepth), borderMaterial);
         border1.position.y = windowHeight / 2;

@@ -46,13 +46,15 @@ class MyContents {
             color: this.diffusePlaneColor,
             specular: this.diffusePlaneColor,
             emissive: "#000000",
-            shininess: this.planeShininess
+            shininess: this.planeShininess,
+            side: THREE.DoubleSide
         })
 
         //wall related attributes
         this.wallMaterial = new THREE.MeshPhongMaterial({
             color: "#c4b39c",
-            shininess: 0
+            shininess: 0,
+            side: THREE.DoubleSide
         })
 
         //dish related attributes
@@ -307,7 +309,7 @@ class MyContents {
         const televisionThickness = 1;
         const televisionStandHeight = 0.5;
 
-        const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial);
+        const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial, windowWidth, windowHeight);
         house.createLights();
 
         // Table
@@ -315,25 +317,25 @@ class MyContents {
         house.mesh.add(table);
 
         const chair1 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
-        chair1.position.y = - (tableHeight + tableLegHeight);
+        chair1.position.y = - (tableHeight + tableLegHeight) * 0.9;
         chair1.position.z = - tableWidth / 2;
         table.add(chair1);
 
         const chair2 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
-        chair2.position.y = - (tableHeight + tableLegHeight);
+        chair2.position.y = - (tableHeight + tableLegHeight) * 0.9;
         chair2.position.z = tableWidth / 2;
         chair2.rotation.y = Math.PI;
         table.add(chair2);
 
         const chair3 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
         chair3.position.x = -tableLength / 2;
-        chair3.position.y = - (tableHeight + tableLegHeight);
+        chair3.position.y = - (tableHeight + tableLegHeight) * 0.9;
         chair3.rotation.y = Math.PI / 2;
         table.add(chair3);
 
         const chair4 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
         chair4.position.x = tableLength / 2;
-        chair4.position.y = - (tableHeight + tableLegHeight);
+        chair4.position.y = - (tableHeight + tableLegHeight) * 0.9;
         chair4.rotation.y = -Math.PI / 2;
         table.add(chair4);
 
@@ -356,16 +358,16 @@ class MyContents {
         candle.position.z = -0.1;
 
         const frame1 = new MyFrame().create(frameSize, frameSize, frameThickness, this.tableMaterial, this.picture1Material);
-        house.addObjectWall(1, frame1, 10, 0);
+        house.addObjectWall(1, frame1, 10, 0, frameThickness);
 
         const frame2 = new MyFrame().create(frameSize, frameSize, frameThickness, this.tableMaterial, this.picture2Material);
-        house.addObjectWall(1, frame2, -10, 0);
+        house.addObjectWall(1, frame2, -10, 0, frameThickness);
 
-        const window1 = new MyWindow().create(windowWidth, windowHeight, windowThickness, this.tableMaterial, this.windowMaterial);
-        house.addObjectWall(3, window1);
+        const window1 = new MyWindow().create(windowWidth, windowHeight, windowThickness, this.tableMaterial, this.glassMaterial);
+        house.addObjectWall(3, window1, 0, 0, windowThickness);
 
         const door = new MyDoor().build(doorWidth, doorHeight, doorThickness, this.doorMaterial);
-        house.addObjectWall(4, door, 0, -5);
+        house.addObjectWall(4, door, 0, -5, doorThickness);
 
         const journal = new MyJournal().build(this.journalMaterial);
         journal.position.y = tableHeight / 2 + 1.5;
@@ -455,12 +457,23 @@ class MyContents {
 
         //END OF TABLE
 
+        //Window
+
+        const landscape = new THREE.Mesh(new THREE.PlaneGeometry(160, 72), this.windowMaterial);
+        landscape.rotation.y = - Math.PI / 2;
+        landscape.position.x = +100;
+        landscape.position.y = 20;
+        this.app.scene.add(landscape);
+
+
+        //END OF WINDOW
+
         const beetle = new MyBeetle().build({ x: 0, y: 0 }, beetleSize, beetleColor);
         const frameBeetle = new MyFrame().create(frameSize, frameSize, frameThickness, this.tableMaterial, beetle, true, { x: -5.15, y: -2.6, z: 0.5 });
-        house.addObjectWall(1, frameBeetle, 30, 0);
+        house.addObjectWall(1, frameBeetle, 30, 0, frameThickness);
 
         const television = new MyTelevision().build(televisionWidth, televisionHeight, televisionThickness, televisionStandHeight, this.feupKaraokeVideoMaterial, this.tableMaterial);
-        house.addObjectWall(2, television, 0, 0);
+        house.addObjectWall(2, television, 0, 0, televisionThickness);
 
 
         
