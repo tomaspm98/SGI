@@ -12,7 +12,7 @@ import { MyRug } from './objects/MyRug.js';
 import { MyChair } from './objects/MyChair.js';
 import { MyJournal } from './objects/MyJournal.js';
 import { MyGlass } from './objects/MyGlass.js';
-import { MySpotlight } from './objects/MySpotlight.js';
+import { MyLamp } from './objects/MyLamp.js';
 import { MyJar } from './objects/MyJar.js';
 import { MyBeetle } from './objects/MyBeetle.js';
 import { MyCircle } from './objects/MyCircle.js';
@@ -158,9 +158,10 @@ class MyContents {
         })
 
         this.spotlightMaterial = new THREE.MeshPhongMaterial({
-            color: "#333333",
+            color: "#ffffff",
             specular: "#111111",
             shininess: 1,
+            side:THREE.DoubleSide ,
         })
 
         this.journalTexture = new THREE.TextureLoader().load('textures/journal_texture.jpg')
@@ -168,23 +169,25 @@ class MyContents {
             color: "#ffffff",
             specular: "#ffffff",
             shininess: 50,
-            map: this.journalTexture
+            map: this.journalTexture,
+            side:THREE.DoubleSide ,
         })
 
         this.jarMaterial = new THREE.MeshPhongMaterial({
             color: "#dc5200",
             specular: "#dc5200",
             shininess: 50,
+            side:THREE.DoubleSide ,
         })
 
-        /*const video = document.getElementById('video')
+        const video = document.getElementById('video')
         this.feupKaraokeVideoTexture = new THREE.VideoTexture(video)
         this.feupKaraokeVideoMaterial = new THREE.MeshPhongMaterial({
             color: "#ffffff",
             specular: "#000000",
             shininess: 5,
             map: this.feupKaraokeVideoTexture
-        })*/
+        })
     }
 
     /**
@@ -203,135 +206,191 @@ class MyContents {
         const ambientLight = new THREE.AmbientLight(0x555555);
         this.app.scene.add(ambientLight);
 
-        //this.app.scene.add(new MySideboard().build(20, 5, 3, this.tableMaterial, 5, 0.5, this.legMaterial))
         this.app.scene.add(this.buildHouse())
-
-        this.constructionLights()
-
-
     }
 
     buildHouse() {
 
-        const wallHeight = 35
-        const floorWidth = 100
-        const cakeHeight = 2
-        const tableWidth = 14
-        const tableLength = 20
-        const tableHeight = 0.5
-        const glassHeight = 1
+        const wallHeight = 35;
+        const floorWidth = 100;
+        const tableWidth = 14;
+        const tableLength = 20;
+        const tableHeight = 0.5;
+        const tableLegRadius = 0.6;
+        const tableLegHeight = 8;
+        const chairWidth = 5;
+        const chairLength = 5;
+        const chairHeight = 6;
+        const dishRadiusTop = 3.8;
+        const dishRadiusBottom = 2.8;
+        const dishHeight = 0.3;
+        const cakeRadius = 3;
+        const cakeHeight = 2;
+        const cakeRadialSegments = 40;
+        const cakeHeightSegments = 1;
+        const cakeThetaLength = 5.5;
+        const spotlightHeight = 18;
+        const spotlightColor = new THREE.Color("#fffaf0");
+        const spotlightIntensity = 500;
+        const spotlightDistance = 19;
+        const spotlightDecay = 1;
+        const spotlightAngle = 0.22;
+        const spotlightPenumbra = 0.2;
+        const frameSize = 12;
+        const frameThickness = 0.5;
+        const windowWidth = 40;
+        const windowHeight = 18;
+        const windowThickness = 0.5;
+        const doorWidth = 15;
+        const doorHeight = 25;
+        const doorThickness = 1;
+        const rugWidth = 30;
+        const rugHeight = 25;
+        const rugThickness = 0.5;
+        const candleRadius = 0.09;
+        const candleHeight = 1;
+        const candleBaseHeight = 0.1;
+        const candleFlameHeight = 0.15;
+        const glassRadiusBottom = 0.3;
+        const glassRadiusTop = 0.4;
+        const glassHeight = 1;
+        const lampRadius = 3;
+        const lampHeight = 5;
+        const lampWireHeight = 5;
+        const beetleSize = 0.65;
+        const beetleColor = "#FFA500";
+        const springPosition = { x: -7, y: 0, z: -5 };
+        const springRadius = 0.5;
+        const springHeight = 2;
+        const springSegments = 200;
+        const springColor = "#706f6f";
+        const springThickness = 0.005;
+        const televisionWidth = 18.25;
+        const televisionHeight = 32.25;
+        const televisionThickness = 1;
+        const televisionStandHeight = 0.5;
 
-        const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial)
-        house.createLights()
+        const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial);
+        house.createLights();
 
-        let table = new MyTable().build(tableWidth, tableHeight, tableLength, this.tableMaterial, this.legMaterial);
+        // Table
+        const table = new MyTable().build(tableWidth, tableHeight, tableLength, this.tableMaterial, tableLegRadius, tableLegHeight, this.legMaterial);
+        house.mesh.add(table);
 
-        let chair1 = new MyChair().build(5, 6, 5, this.chairMaterial)
-        chair1.position.z = - tableWidth / 2
+        const chair1 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
+        chair1.position.y = - (tableHeight + tableLegHeight);
+        chair1.position.z = - tableWidth / 2;
+        table.add(chair1);
 
-        let chair2 = new MyChair().build(5, 6, 5, this.chairMaterial)
-        chair2.position.z = tableWidth / 2
-        chair2.rotation.y = Math.PI
-        let chair3 = new MyChair().build(5, 6, 5, this.chairMaterial)
-        chair3.rotation.y = Math.PI / 2
-        chair3.position.x = -tableLength / 2
-        let chair4 = new MyChair().build(5, 6, 5, this.chairMaterial)
-        chair4.rotation.y = -Math.PI / 2
-        chair4.position.x = tableLength / 2
+        const chair2 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
+        chair2.position.y = - (tableHeight + tableLegHeight);
+        chair2.position.z = tableWidth / 2;
+        chair2.rotation.y = Math.PI;
+        table.add(chair2);
 
-        let dish = new MyDish().build(2.8, 3.8, 0.3, this.dishMaterial);
+        const chair3 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
+        chair3.position.x = -tableLength / 2;
+        chair3.position.y = - (tableHeight + tableLegHeight);
+        chair3.rotation.y = Math.PI / 2;
+        table.add(chair3);
+
+        const chair4 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
+        chair4.position.x = tableLength / 2;
+        chair4.position.y = - (tableHeight + tableLegHeight);
+        chair4.rotation.y = -Math.PI / 2;
+        table.add(chair4);
+
+        const dish = new MyDish().build(dishRadiusTop, dishRadiusBottom, dishHeight, this.dishMaterial);
         table.add(dish);
-        dish.position.y = 0.3
+        dish.position.y = dishHeight;
 
-        let cake = new MyCake().build(3, cakeHeight, this.cakeMaterial, 40, 1, 5.5)
+        const cake = new MyCake().build(cakeRadius, cakeHeight, this.cakeMaterial, cakeRadialSegments, cakeHeightSegments, cakeThetaLength);
         dish.add(cake);
-        cake.position.y = 0.5
+        cake.position.y = 0.5;
 
-        const spotLightCake = new THREE.SpotLight("#fffaf0", 500, 27, 0.19, 0.1)
-        spotLightCake.position.y = 18
-        cake.add(spotLightCake)
+        const spotLightCake = new THREE.SpotLight(spotlightColor, spotlightIntensity, spotlightDistance, spotlightAngle, spotlightPenumbra, spotlightDecay);
+        spotLightCake.position.y = spotlightHeight;
+        spotLightCake.target = cake;
+        table.add(spotLightCake);
 
-        const spotLightHelper = new THREE.SpotLightHelper(spotLightCake)
-        cake.add(spotLightHelper)
-
-        let candle = new MyCandle().build(0.09, 1, 0.1, 0.15, this.candleMaterial, this.flameMaterial);
+        const candle = new MyCandle().build(candleRadius, candleHeight, candleBaseHeight, candleFlameHeight, this.candleMaterial, this.flameMaterial);
         cake.add(candle);
-        candle.position.y = 1.4
-        candle.position.z = -0.1
+        candle.position.y = 1.4;
+        candle.position.z = -0.1;
 
-        let frame1 = new MyFrame().create(12, 12, 0.5, this.tableMaterial, this.picture1Material);
-        let frame2 = new MyFrame().create(12, 12, 0.5, this.tableMaterial, this.picture2Material);
+        const frame1 = new MyFrame().create(frameSize, frameSize, frameThickness, this.tableMaterial, this.picture1Material);
         house.addObjectWall(1, frame1, 10, 0);
+
+        const frame2 = new MyFrame().create(frameSize, frameSize, frameThickness, this.tableMaterial, this.picture2Material);
         house.addObjectWall(1, frame2, -10, 0);
 
-        let window1 = new MyWindow().create(40, 18, 0.5, this.tableMaterial, this.windowMaterial);
+        const window1 = new MyWindow().create(windowWidth, windowHeight, windowThickness, this.tableMaterial, this.windowMaterial);
         house.addObjectWall(3, window1);
 
-        house.mesh.add(table);
-        house.mesh.add(chair1)
-        house.mesh.add(chair2)
-        house.mesh.add(chair3)
-        house.mesh.add(chair4)
+        const door = new MyDoor().build(doorWidth, doorHeight, doorThickness, this.doorMaterial);
+        house.addObjectWall(4, door, 0, -5);
 
-        house.addObjectWall(4, new MyDoor().build(15, 25, 1, this.doorMaterial), 0, -5);
+        const journal = new MyJournal().build(this.journalMaterial);
+        journal.position.y = tableHeight / 2 + 1.5;
+        journal.position.x = 8;
+        journal.position.z = 5;
+        table.add(journal);
 
-        let rug = new MyRug().build(30, 25, 0.5, this.rugMaterial)
-        rug.rotation.x = Math.PI / 2
-        rug.position.x = 30
-        house.mesh.add(rug)
+        const glass1 = new MyGlass().build(glassRadiusTop, glassRadiusBottom, glassHeight, this.glassMaterial);
+        glass1.position.y = glassHeight / 2 + tableHeight / 2;
+        glass1.position.x = tableLength / 2 - 2;
+        table.add(glass1);
 
-        let journal = new MyJournal().build(this.journalMaterial)
-        journal.position.y = table.position.y + tableHeight / 2 + 1.5
-        journal.position.x = 8
-        journal.position.z = 5
-        house.mesh.add(journal)
+        const glass2 = new MyGlass().build(glassRadiusTop, glassRadiusBottom, glassHeight, this.glassMaterial);
+        glass2.position.y = glassHeight / 2 + tableHeight / 2;
+        glass2.position.x = -tableLength / 2 + 2;
+        table.add(glass2);
 
-        let glass1 = new MyGlass().build(0.4, 0.3, glassHeight, this.glassMaterial)
-        glass1.position.y = table.position.y + tableHeight / 2 + glassHeight / 2
-        glass1.position.x = tableLength / 2 - 2
-        house.mesh.add(glass1)
+        const glass3 = new MyGlass().build(glassRadiusTop, glassRadiusBottom, glassHeight, this.glassMaterial);
+        glass3.position.y = glassHeight / 2 + tableHeight / 2;
+        glass3.position.z = -tableWidth / 2 + 2;
+        table.add(glass3);
 
-        let glass2 = new MyGlass().build(0.4, 0.3, glassHeight, this.glassMaterial)
-        glass2.position.y = table.position.y + tableHeight / 2 + glassHeight / 2
-        glass2.position.z = tableWidth / 2 - 2
-        house.mesh.add(glass2)
+        const glass4 = new MyGlass().build(glassRadiusTop, glassRadiusBottom, glassHeight, this.glassMaterial);
+        glass4.position.y = glassHeight / 2 + tableHeight / 2;
+        glass4.position.z = tableWidth / 2 - 2;
+        table.add(glass4);
 
-        let glass3 = new MyGlass().build(0.4, 0.3, glassHeight, this.glassMaterial)
-        glass3.position.y = table.position.y + tableHeight / 2 + glassHeight / 2
-        glass3.position.z = -tableWidth / 2 + 2
-        house.mesh.add(glass3)
+        const spotlightLamp = new MyLamp().build(lampRadius, lampHeight, lampWireHeight, this.spotlightMaterial);
+        spotlightLamp.position.y = 1.2;
+        spotLightCake.add(spotlightLamp);
 
-        let glass4 = new MyGlass().build(0.4, 0.3, glassHeight, this.glassMaterial)
-        glass4.position.y = table.position.y + tableHeight / 2 + glassHeight / 2
-        glass4.position.x = -tableLength / 2 + 2
-        house.mesh.add(glass4)
+        const jar = new MyJar().build(this.jarMaterial);
+        table.add(jar);
+        jar.position.x = 7;
+        jar.position.z = -5;
+        jar.position.y = tableHeight + 1;
 
-        let spotlight = new MySpotlight().build(3, 10, 2, this.spotlightMaterial)
-        spotlight.position.y = wallHeight - 5
-        house.mesh.add(spotlight)
-
-        let jar = new MyJar().build(this.jarMaterial)
-        jar.position.y = table.position.y + 1.5 + tableHeight / 2
-        jar.position.x = 7
-        jar.position.z = -5
-        let circleFlower = new MyCircle().build({ x: 0, y: 0 }, 0.5)
-        circleFlower.position.y = 3
+        const circleFlower = new MyCircle().build({ x: 0, y: 0 }, 0.5);
+        circleFlower.position.y = 3;
         jar.add(circleFlower);
-        house.mesh.add(jar)
 
-        const beetle = new MyBeetle().build({ x: 0, y: 0 }, 0.65, "#FFA500")
-        let frameBeetle = new MyFrame().create(12, 12, 0.5, this.tableMaterial, beetle, true, { x: -5.15, y: -2.6, z: 0.5 });
+        const spring = new MySpring().build(springPosition, springRadius, springHeight, springSegments, springColor, springThickness);
+        spring.position.x = 1;
+        spring.position.y = -4.2;
+        spring.position.z = 1;
+        spring.rotation.x = Math.PI / 2;
+        table.add(spring);
+
+        table.position.z = -25
+        table.position.x = 25
+
+        this.app.scene.add(new THREE.SpotLightHelper(spotLightCake))
+
+        //END OF TABLE
+
+        const beetle = new MyBeetle().build({ x: 0, y: 0 }, beetleSize, beetleColor);
+        const frameBeetle = new MyFrame().create(frameSize, frameSize, frameThickness, this.tableMaterial, beetle, true, { x: -5.15, y: -2.6, z: 0.5 });
         house.addObjectWall(1, frameBeetle, 30, 0);
 
-        const spring = new MySpring().build({ x: -7, y: 0, z: -5 }, 0.5, 2, 200, "#706f6f", 0.005)
-        spring.position.x = 1
-        spring.position.y = -4.2
-        spring.position.z = 1
-        spring.rotation.x = Math.PI / 2
-        table.add(spring)
+        const television = new MyTelevision().build(televisionWidth, televisionHeight, televisionThickness, televisionStandHeight, this.feupKaraokeVideoMaterial, this.tableMaterial);
+        house.addObjectWall(2, television, 0, 0);
 
-        const television = new MyTelevision().build(18.25, 32.25, 1, 0.5, this.feupKaraokeVideoMaterial, this.tableMaterial)
-        house.addObjectWall(2, television, 0, 0)
 
         return house.mesh
     }
