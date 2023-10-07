@@ -18,6 +18,11 @@ class MyLamp {
         lightBulb.position.y = lampHeight / 4;
         lampMesh.add(lightBulb);
 
+        const top = new THREE.Mesh(new THREE.CircleGeometry(lampRadius * 0.4, 32), lampMaterial);
+        top.position.y = lampHeight / 2;
+        top.rotation.x = Math.PI / 2;
+        lampMesh.add(top);
+
         return lamp;
     }
 }

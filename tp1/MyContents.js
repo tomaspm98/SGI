@@ -21,6 +21,8 @@ import { MyTelevision } from './objects/MyTelevision.js';
 import { MyCoffeeTable } from './objects/MyCoffeeTable.js';
 import { MySofa, MyArmchair } from './objects/MySofa.js';
 import { MySideboard } from './objects/MySideboard.js';
+import { MyCup } from './objects/MyCup.js';
+import { MyBook } from './objects/MyBook.js';
 
 /**
  *  This class contains the contents of out application
@@ -154,6 +156,7 @@ class MyContents {
             opacity: 0.5,      // Adjust opacity to your liking
             shininess: 1,    // To give it a shiny effect
             specular: 0x222222,
+            side: THREE.DoubleSide, // Make sure the material is double sided so it renders on both sides
             // map: this.chairTexture  // If you want a texture, but for clear glass, this is optional
         })
 
@@ -180,6 +183,40 @@ class MyContents {
             side:THREE.DoubleSide ,
         })
 
+        
+        this.cupMaterial = new THREE.MeshPhongMaterial({
+            color: "#c2b7b7",
+            specular: "#c2b7b7",
+            shininess: 50,
+        })
+        this.cupMaterial.side = THREE.DoubleSide;
+
+        this.orangeTexture = new THREE.TextureLoader().load('textures/orange_texture.jpg')
+        this.orangeMaterial = new THREE.MeshPhongMaterial({
+            color: "#ffa500",
+            specular: "#ffa500",
+            shininess: 15,
+            map: this.orangeTexture
+        })
+
+        this.appleTexture = new THREE.TextureLoader().load('textures/apple_texture.jpg')
+        this.appleMaterial = new THREE.MeshPhongMaterial({
+            color: "#ddbbbb",
+            specular: "#ddbbbb",
+            shininess: 10,
+            map: this.appleTexture
+        })
+
+        this.pagesTexture = new THREE.TextureLoader().load('textures/pages_texture.jpg')
+        this.pagesTexture.wrapS = THREE.RepeatWrapping
+        this.pagesTexture.wrapT = THREE.RepeatWrapping
+        this.pagesMaterial = new THREE.MeshPhongMaterial({
+            color:"#aaaaaa",
+            specular:"#aaaaaa",
+            shininess:1,
+            map: this.pagesTexture
+        })
+        
         const video = document.getElementById('video')
         this.feupKaraokeVideoTexture = new THREE.VideoTexture(video)
         this.feupKaraokeVideoMaterial = new THREE.MeshPhongMaterial({
@@ -251,9 +288,9 @@ class MyContents {
         const candleHeight = 1;
         const candleBaseHeight = 0.1;
         const candleFlameHeight = 0.15;
-        const glassRadiusBottom = 0.3;
-        const glassRadiusTop = 0.4;
-        const glassHeight = 1;
+        const glassRadiusBottom = 0.4;
+        const glassRadiusTop = 0.55;
+        const glassHeight = 1.5;
         const lampRadius = 3;
         const lampHeight = 5;
         const lampWireHeight = 5;
@@ -337,22 +374,22 @@ class MyContents {
         table.add(journal);
 
         const glass1 = new MyGlass().build(glassRadiusTop, glassRadiusBottom, glassHeight, this.glassMaterial);
-        glass1.position.y = glassHeight / 2 + tableHeight / 2;
+        glass1.position.y = glassHeight / 2 + tableHeight / 2 + 0.05;
         glass1.position.x = tableLength / 2 - 2;
         table.add(glass1);
 
         const glass2 = new MyGlass().build(glassRadiusTop, glassRadiusBottom, glassHeight, this.glassMaterial);
-        glass2.position.y = glassHeight / 2 + tableHeight / 2;
+        glass2.position.y = glassHeight / 2 + tableHeight / 2 + 0.05;
         glass2.position.x = -tableLength / 2 + 2;
         table.add(glass2);
 
         const glass3 = new MyGlass().build(glassRadiusTop, glassRadiusBottom, glassHeight, this.glassMaterial);
-        glass3.position.y = glassHeight / 2 + tableHeight / 2;
+        glass3.position.y = glassHeight / 2 + tableHeight / 2 + 0.05;
         glass3.position.z = -tableWidth / 2 + 2;
         table.add(glass3);
 
         const glass4 = new MyGlass().build(glassRadiusTop, glassRadiusBottom, glassHeight, this.glassMaterial);
-        glass4.position.y = glassHeight / 2 + tableHeight / 2;
+        glass4.position.y = glassHeight / 2 + tableHeight / 2 + 0.05;
         glass4.position.z = tableWidth / 2 - 2;
         table.add(glass4);
 
@@ -377,6 +414,40 @@ class MyContents {
         spring.rotation.x = Math.PI / 2;
         table.add(spring);
 
+        let cup = new MyCup().build(1.5,64,32,Math.PI,Math.PI,0,Math.PI, this.cupMaterial)
+        cup.rotation.x = -Math.PI/2
+        cup.position.y= tableHeight + 1.68
+        cup.position.x = -tableWidth/3
+        cup.position.z = -tableLength/4
+        table.add(cup)
+        cup.scale.set(1.3,1.3,1.3)
+        
+        let orange = new THREE.SphereGeometry(0.4,64,32,0,2*Math.PI,0,Math.PI)
+        
+        let orangeMesh1 = new THREE.Mesh(orange,this.orangeMaterial)
+        orangeMesh1.position.z = -1.5+0.4 //-cupRadius + orangeRadius
+        cup.add(orangeMesh1)
+
+        let orangeMesh2 = new THREE.Mesh(orange,this.orangeMaterial)
+        orangeMesh2.position.z = -1.1+0.4 //-cupRadius + orangeRadius
+        orangeMesh2.position.y = 0.75
+        cup.add(orangeMesh2)
+
+        let orangeMesh3 = new THREE.Mesh(orange,this.orangeMaterial)
+        orangeMesh3.position.z = -1.1+0.4 //-cupRadius + orangeRadius
+        orangeMesh3.position.y = -0.75
+        cup.add(orangeMesh3)
+
+        let orangeMesh4 = new THREE.Mesh(orange,this.orangeMaterial)
+        orangeMesh4.position.z = -1.1+0.4
+        orangeMesh4.position.x = -0.75 //-cupRadius + orangeRadius
+        cup.add(orangeMesh4)
+        
+        let orangeMesh5 = new THREE.Mesh(orange,this.orangeMaterial)
+        orangeMesh5.position.z = -1.1+0.4
+        orangeMesh5.position.x = 0.75 //-cupRadius + orangeRadius
+        cup.add(orangeMesh5)
+
         table.position.z = -25
         table.position.x = 25
 
@@ -391,6 +462,13 @@ class MyContents {
         const television = new MyTelevision().build(televisionWidth, televisionHeight, televisionThickness, televisionStandHeight, this.feupKaraokeVideoMaterial, this.tableMaterial);
         house.addObjectWall(2, television, 0, 0);
 
+
+        
+        
+        
+
+        let book = new MyBook().build(2,3,0.5, this.pagesMaterial,2.15,3.1,0.1,this.planeMaterial)
+        house.mesh.add(book)
 
         return house.mesh
     }
