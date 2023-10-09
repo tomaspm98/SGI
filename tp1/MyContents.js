@@ -166,7 +166,7 @@ class MyContents {
             color: "#ffffff",
             specular: "#111111",
             shininess: 1,
-            side:THREE.DoubleSide ,
+            side: THREE.DoubleSide,
         })
 
         this.journalTexture = new THREE.TextureLoader().load('textures/journal_texture.jpg')
@@ -175,17 +175,17 @@ class MyContents {
             specular: "#ffffff",
             shininess: 50,
             map: this.journalTexture,
-            side:THREE.DoubleSide ,
+            side: THREE.DoubleSide,
         })
 
         this.jarMaterial = new THREE.MeshPhongMaterial({
             color: "#dc5200",
             specular: "#dc5200",
             shininess: 50,
-            side:THREE.DoubleSide ,
+            side: THREE.DoubleSide,
         })
 
-        
+
         this.cupMaterial = new THREE.MeshPhongMaterial({
             color: "#c2b7b7",
             specular: "#c2b7b7",
@@ -213,12 +213,12 @@ class MyContents {
         this.pagesTexture.wrapS = THREE.RepeatWrapping
         this.pagesTexture.wrapT = THREE.RepeatWrapping
         this.pagesMaterial = new THREE.MeshPhongMaterial({
-            color:"#aaaaaa",
-            specular:"#aaaaaa",
-            shininess:1,
+            color: "#aaaaaa",
+            specular: "#aaaaaa",
+            shininess: 1,
             map: this.pagesTexture
         })
-        
+
         const video = document.getElementById('video')
         this.feupKaraokeVideoTexture = new THREE.VideoTexture(video)
         this.feupKaraokeVideoMaterial = new THREE.MeshPhongMaterial({
@@ -285,7 +285,7 @@ class MyContents {
         const doorThickness = 1;
         const rugWidth = 30;
         const rugHeight = 25;
-        const rugThickness = 0.5;
+        const rugThickness = 0.2;
         const candleRadius = 0.09;
         const candleHeight = 1;
         const candleBaseHeight = 0.1;
@@ -308,17 +308,22 @@ class MyContents {
         const televisionHeight = 32.25;
         const televisionThickness = 1;
         const televisionStandHeight = 0.5;
-
         const windowSpotlightColor = new THREE.Color("#ffe285");
         const windowSpotlightIntensity = 250;
         const windowSpotlightDistance = 150;
         const windowSpotlightDecay = 1;
         const windowSpotlightAngle = 0.40;
 
+        const coffeeTableRadius = 6
+        const coffeeTableHeight = 0.40
+        const coffeeTableLegRadius = 0.5
+        const coffeeTableLegHeight = 4
+
+
         const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial, windowWidth, windowHeight);
         house.createLights();
 
-        // Table
+        //-----------------------------------------------TABLE-----------------------------------------------
         const table = new MyTable().build(tableWidth, tableHeight, tableLength, this.tableMaterial, tableLegRadius, tableLegHeight, this.legMaterial);
         house.mesh.add(table);
 
@@ -382,22 +387,22 @@ class MyContents {
         table.add(journal);
 
         const glass1 = new MyGlass().build(glassRadiusTop, glassRadiusBottom, glassHeight, this.glassMaterial);
-        glass1.position.y = glassHeight / 2 + tableHeight / 2 + 0.05;
+        glass1.position.y = glassHeight / 2 + tableHeight / 2 + 0.06;
         glass1.position.x = tableLength / 2 - 2;
         table.add(glass1);
 
         const glass2 = new MyGlass().build(glassRadiusTop, glassRadiusBottom, glassHeight, this.glassMaterial);
-        glass2.position.y = glassHeight / 2 + tableHeight / 2 + 0.05;
+        glass2.position.y = glassHeight / 2 + tableHeight / 2 + 0.06;
         glass2.position.x = -tableLength / 2 + 2;
         table.add(glass2);
 
         const glass3 = new MyGlass().build(glassRadiusTop, glassRadiusBottom, glassHeight, this.glassMaterial);
-        glass3.position.y = glassHeight / 2 + tableHeight / 2 + 0.05;
+        glass3.position.y = glassHeight / 2 + tableHeight / 2 + 0.06;
         glass3.position.z = -tableWidth / 2 + 2;
         table.add(glass3);
 
         const glass4 = new MyGlass().build(glassRadiusTop, glassRadiusBottom, glassHeight, this.glassMaterial);
-        glass4.position.y = glassHeight / 2 + tableHeight / 2 + 0.05;
+        glass4.position.y = glassHeight / 2 + tableHeight / 2 + 0.06;
         glass4.position.z = tableWidth / 2 - 2;
         table.add(glass4);
 
@@ -422,49 +427,51 @@ class MyContents {
         spring.rotation.x = Math.PI / 2;
         table.add(spring);
 
-        let cup = new MyCup().build(1.5,64,32,Math.PI,Math.PI,0,Math.PI, this.cupMaterial)
-        cup.rotation.x = -Math.PI/2
-        cup.position.y= tableHeight + 1.68
-        cup.position.x = -tableWidth/3
-        cup.position.z = -tableLength/4
+        let cup = new MyCup().build(1.5, 64, 32, Math.PI, Math.PI, 0, Math.PI, this.cupMaterial)
+        cup.rotation.x = -Math.PI / 2
+        cup.position.y = tableHeight + 1.68
+        cup.position.x = -tableWidth / 3
+        cup.position.z = -tableLength / 4
         table.add(cup)
-        cup.scale.set(1.3,1.3,1.3)
-        
-        let orange = new THREE.SphereGeometry(0.4,64,32,0,2*Math.PI,0,Math.PI)
-        
-        let orangeMesh1 = new THREE.Mesh(orange,this.orangeMaterial)
-        orangeMesh1.position.z = -1.5+0.4 //-cupRadius + orangeRadius
+        cup.scale.set(1.3, 1.3, 1.3)
+
+        let orange = new THREE.SphereGeometry(0.4, 64, 32, 0, 2 * Math.PI, 0, Math.PI)
+
+        let orangeMesh1 = new THREE.Mesh(orange, this.orangeMaterial)
+        orangeMesh1.position.z = -1.5 + 0.4 //-cupRadius + orangeRadius
         cup.add(orangeMesh1)
 
-        let orangeMesh2 = new THREE.Mesh(orange,this.orangeMaterial)
-        orangeMesh2.position.z = -1.1+0.4 //-cupRadius + orangeRadius
+        let orangeMesh2 = new THREE.Mesh(orange, this.orangeMaterial)
+        orangeMesh2.position.z = -1.1 + 0.4 //-cupRadius + orangeRadius
         orangeMesh2.position.y = 0.75
         cup.add(orangeMesh2)
 
-        let orangeMesh3 = new THREE.Mesh(orange,this.orangeMaterial)
-        orangeMesh3.position.z = -1.1+0.4 //-cupRadius + orangeRadius
+        let orangeMesh3 = new THREE.Mesh(orange, this.orangeMaterial)
+        orangeMesh3.position.z = -1.1 + 0.4 //-cupRadius + orangeRadius
         orangeMesh3.position.y = -0.75
         cup.add(orangeMesh3)
 
-        let orangeMesh4 = new THREE.Mesh(orange,this.orangeMaterial)
-        orangeMesh4.position.z = -1.1+0.4
+        let orangeMesh4 = new THREE.Mesh(orange, this.orangeMaterial)
+        orangeMesh4.position.z = -1.1 + 0.4
         orangeMesh4.position.x = -0.75 //-cupRadius + orangeRadius
         cup.add(orangeMesh4)
-        
-        let orangeMesh5 = new THREE.Mesh(orange,this.orangeMaterial)
-        orangeMesh5.position.z = -1.1+0.4
+
+        let orangeMesh5 = new THREE.Mesh(orange, this.orangeMaterial)
+        orangeMesh5.position.z = -1.1 + 0.4
         orangeMesh5.position.x = 0.75 //-cupRadius + orangeRadius
         cup.add(orangeMesh5)
+
+        const beetle = new MyBeetle().build({ x: 0, y: 0 }, beetleSize, beetleColor);
+        const frameBeetle = new MyFrame().create(frameSize, frameSize, frameThickness, this.tableMaterial, beetle, true, { x: -5.15, y: -2.6, z: 0.5 });
+        house.addObjectWall(1, frameBeetle, 30, 0, frameThickness);
 
         table.position.z = -25
         table.position.x = 25
 
-        this.app.scene.add(new THREE.SpotLightHelper(spotLightCake))
+        //this.app.scene.add(new THREE.SpotLightHelper(spotLightCake))
+        //-----------------------------------------------END OF TABLE-----------------------------------------------
 
-        //END OF TABLE
-
-        //Window
-
+        //-----------------------------------------------WINDOW-----------------------------------------------
         const landscape = new THREE.Mesh(new THREE.PlaneGeometry(160, 72), this.windowMaterial);
         landscape.rotation.y = - Math.PI / 2;
         landscape.position.x = +100;
@@ -475,25 +482,31 @@ class MyContents {
         spotLightWindow.position.set(100, 30, 0)
         house.mesh.add(spotLightWindow)
 
-        this.app.scene.add(new THREE.SpotLightHelper(spotLightWindow))
+        //this.app.scene.add(new THREE.SpotLightHelper(spotLightWindow))
+        //-----------------------------------------------END OF WINDOW-----------------------------------------------
 
-
-        //END OF WINDOW
-
-        const beetle = new MyBeetle().build({ x: 0, y: 0 }, beetleSize, beetleColor);
-        const frameBeetle = new MyFrame().create(frameSize, frameSize, frameThickness, this.tableMaterial, beetle, true, { x: -5.15, y: -2.6, z: 0.5 });
-        house.addObjectWall(1, frameBeetle, 30, 0, frameThickness);
+        //-----------------------------------------------LIVING ROOM-----------------------------------------------
 
         const television = new MyTelevision().build(televisionWidth, televisionHeight, televisionThickness, televisionStandHeight, this.feupKaraokeVideoMaterial, this.tableMaterial);
         house.addObjectWall(2, television, 0, 0, televisionThickness);
 
+        //-----------------------------------------------END OF LIVING ROOM-----------------------------------------------
 
-        
-        
-        
+        const rug = new MyRug().build(rugWidth, rugHeight, rugThickness, this.rugMaterial);
+        rug.rotation.x = Math.PI / 2;
+        rug.position.y = rugThickness / 2 * 1.05;
+        rug.position.z = 25
+        house.mesh.add(rug);
 
-        let book = new MyBook().build(2,3,0.5, this.pagesMaterial,2.15,3.1,0.1,this.planeMaterial)
-        house.mesh.add(book)
+        const coffeeTable = new MyCoffeeTable().build(coffeeTableRadius, coffeeTableHeight, this.tableMaterial, coffeeTableLegRadius, coffeeTableLegHeight, this.legMaterial)
+        coffeeTable.rotation.x = -Math.PI / 2
+        coffeeTable.position.z = -(coffeeTableHeight + coffeeTableLegHeight) * 0.8
+        rug.add(coffeeTable);
+
+
+
+        /*let book = new MyBook().build(2, 3, 0.5, this.pagesMaterial, 2.15, 3.1, 0.1, this.planeMaterial)
+        house.mesh.add(book)*/
 
         return house.mesh
     }
