@@ -5,6 +5,8 @@ class MyRug{
         const rug = new THREE.BoxGeometry(rugWidth,rugHeight, rugDepth);
         const rugMesh= new THREE.Mesh(rug,rugMaterial);
 
+        rugMesh.rotation.x = Math.PI / 2;
+
         return rugMesh;
     }
 } export{MyRug}

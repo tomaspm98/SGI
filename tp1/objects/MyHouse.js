@@ -84,7 +84,7 @@ class MyHouse {
         this.mesh.add(this.floorMesh);
     }
 
-    createLights(color = "#ffffff", itensity = 300, distance = 0, decay = 2) {
+    createLights(color = "#ffffff", itensity = 200, distance = 0, decay = 2) {
         const pointLight = new THREE.PointLight(color, itensity, distance, decay);
         pointLight.position.set(-this.floorWidth / 4, this.wallHeight, 0);
         this.mesh.add(pointLight);

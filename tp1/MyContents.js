@@ -270,10 +270,10 @@ class MyContents {
         const cakeThetaLength = 5.5;
         const spotlightHeight = 18;
         const spotlightColor = new THREE.Color("#fffaf0");
-        const spotlightIntensity = 500;
+        const spotlightIntensity = 700;
         const spotlightDistance = 19;
         const spotlightDecay = 1;
-        const spotlightAngle = 0.22;
+        const spotlightAngle = 0.5;
         const spotlightPenumbra = 0.2;
         const frameSize = 12;
         const frameThickness = 0.5;
@@ -318,6 +318,9 @@ class MyContents {
         const coffeeTableHeight = 0.40
         const coffeeTableLegRadius = 0.5
         const coffeeTableLegHeight = 4
+
+        const sideboardDepth = 7.5
+        const sideboardHeight = 5.5
 
 
         const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial, windowWidth, windowHeight);
@@ -378,7 +381,7 @@ class MyContents {
         house.addObjectWall(3, window1, 0, 0, windowThickness);
 
         const door = new MyDoor().build(doorWidth, doorHeight, doorThickness, this.doorMaterial);
-        house.addObjectWall(4, door, 0, -5, doorThickness);
+        house.addObjectWall(4, door, 0, -5, doorThickness / 2 + 0.01);
 
         const journal = new MyJournal().build(this.journalMaterial);
         journal.position.y = tableHeight / 2 + 1.5;
@@ -488,12 +491,9 @@ class MyContents {
         //-----------------------------------------------LIVING ROOM-----------------------------------------------
 
         const television = new MyTelevision().build(televisionWidth, televisionHeight, televisionThickness, televisionStandHeight, this.feupKaraokeVideoMaterial, this.tableMaterial);
-        house.addObjectWall(2, television, 0, 0, televisionThickness);
-
-        //-----------------------------------------------END OF LIVING ROOM-----------------------------------------------
+        house.addObjectWall(2, television, 0, 0, televisionThickness / 2 + 0.1);
 
         const rug = new MyRug().build(rugWidth, rugHeight, rugThickness, this.rugMaterial);
-        rug.rotation.x = Math.PI / 2;
         rug.position.y = rugThickness / 2 * 1.05;
         rug.position.z = 25
         house.mesh.add(rug);
@@ -503,7 +503,14 @@ class MyContents {
         coffeeTable.position.z = -(coffeeTableHeight + coffeeTableLegHeight) * 0.8
         rug.add(coffeeTable);
 
+        const sideboard = new MySideboard().build(televisionWidth * 2.3, sideboardHeight, sideboardDepth, this.tableMaterial)
+        sideboard.rotation.x = -Math.PI / 2
+        sideboard.rotation.y = Math.PI
+        sideboard.position.y = 21
+        sideboard.position.z = -sideboardHeight / 2
+        rug.add(sideboard)
 
+        //-----------------------------------------------END OF LIVING ROOM-----------------------------------------------
 
         /*let book = new MyBook().build(2, 3, 0.5, this.pagesMaterial, 2.15, 3.1, 0.1, this.planeMaterial)
         house.mesh.add(book)*/
