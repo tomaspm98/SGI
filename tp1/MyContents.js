@@ -24,6 +24,7 @@ import { MySideboard } from './objects/MySideboard.js';
 import { MyCup } from './objects/MyCup.js';
 import { MyBook } from './objects/MyBook.js';
 import { MyRemote } from './objects/MyRemote.js';
+import { MyCableBox } from './objects/MyCableBox.js';
 
 /**
  *  This class contains the contents of out application
@@ -273,7 +274,7 @@ class MyContents {
         this.app.scene.add(ambientLight);
 
         this.app.scene.add(this.buildHouse())
-        //this.app.scene.add(new MyRemote().build(3,8,1,this.remoteMaterial, 0.5, this.buttonMaterial, this.powernMaterial))
+        //this.app.scene.add(new MyCableBox().build(3.5,1,3,this.remoteMaterial, this.powernMaterial))
     }
 
     buildHouse() {
@@ -354,6 +355,13 @@ class MyContents {
         const coverHeight = 3.6
         const coverDepth = 0.1
         const mapSize = 4096
+        const remoteWidth = 1.0
+        const remoteHeight = 2.5
+        const remoteDepth = 0.5
+        const buttonSize = 0.15
+        const cableBoxWidth = 4.0
+        const cableBoxHeight=1.0
+        const cableBoxDepth=3.0
 
 
         const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial, windowWidth, windowHeight);
@@ -611,8 +619,17 @@ class MyContents {
         spring.rotation.x = Math.PI / 2;
         sideboard.add(spring);
 
-        const remote = new MyRemote().build(3,8,1,this.remoteMaterial, 0.5, this.buttonMaterial, this.powernMaterial);
-        house.mesh.add(remote)
+        const remote = new MyRemote().build(remoteWidth,remoteHeight,remoteDepth,this.remoteMaterial, buttonSize, this.buttonMaterial, this.powernMaterial);
+        remote.rotation.x=-Math.PI/2
+        remote.position.x = -10;
+        remote.position.y = remoteDepth;
+        sideboard.add(remote);
+
+        const cableBox = new MyCableBox().build(cableBoxWidth,cableBoxHeight,cableBoxDepth,this.remoteMaterial, this.powerMaterial);
+        cableBox.rotation.y = -Math.PI/2;
+        cableBox.position.x = -13;
+        cableBox.position.y = cableBoxHeight;
+        sideboard.add(cableBox);
 
         //-----------------------------------------------END OF LIVING ROOM-----------------------------------------------
 
