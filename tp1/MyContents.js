@@ -15,7 +15,7 @@ import { MyGlass } from './objects/MyGlass.js';
 import { MyLamp } from './objects/MyLamp.js';
 import { MyJar } from './objects/MyJar.js';
 import { MyBeetle } from './objects/MyBeetle.js';
-import { MyCircle } from './objects/MyCircle.js';
+import { MyCircle } from './objects/MyFlower.js';
 import { MySpring } from './objects/MySpring.js';
 import { MyTelevision } from './objects/MyTelevision.js';
 import { MyCoffeeTable } from './objects/MyCoffeeTable.js';
@@ -23,6 +23,7 @@ import { MySofa, MyArmchair } from './objects/MySofa.js';
 import { MySideboard } from './objects/MySideboard.js';
 import { MyCup } from './objects/MyCup.js';
 import { MyBook } from './objects/MyBook.js';
+import { MyRemote } from './objects/MyRemote.js';
 
 /**
  *  This class contains the contents of out application
@@ -233,6 +234,26 @@ class MyContents {
             specular: "#ae6f2f",
             shininess: 10,
         })
+
+        this.remoteMaterial = new THREE.MeshPhongMaterial({
+            color: "#888888",
+            specular: "#888888",
+            shininess: 10,
+        })
+
+        this.buttonMaterial = new THREE.MeshPhongMaterial({
+            color: "#ffffff",
+            specular: "#ffffff",
+            shininess: 10,
+        })
+
+        this.powernMaterial = new THREE.MeshPhongMaterial({
+            color: "#ff0000",
+            specular: "#ff0000",
+            shininess: 10,
+        })
+
+
     }
 
     /**
@@ -252,7 +273,7 @@ class MyContents {
         this.app.scene.add(ambientLight);
 
         this.app.scene.add(this.buildHouse())
-        //this.constructionLights()
+        //this.app.scene.add(new MyRemote().build(3,8,1,this.remoteMaterial, 0.5, this.buttonMaterial, this.powernMaterial))
     }
 
     buildHouse() {
@@ -589,6 +610,9 @@ class MyContents {
         spring.position.y = -4.1;
         spring.rotation.x = Math.PI / 2;
         sideboard.add(spring);
+
+        const remote = new MyRemote().build(3,8,1,this.remoteMaterial, 0.5, this.buttonMaterial, this.powernMaterial);
+        house.mesh.add(remote)
 
         //-----------------------------------------------END OF LIVING ROOM-----------------------------------------------
 
