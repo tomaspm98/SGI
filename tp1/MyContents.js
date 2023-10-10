@@ -227,6 +227,12 @@ class MyContents {
             shininess: 5,
             map: this.feupKaraokeVideoTexture
         })
+
+        this.flowerCenterMaterial = new THREE.MeshPhongMaterial({
+            color: "#ae6f2f",
+            specular: "#ae6f2f",
+            shininess: 10,
+        })
     }
 
     /**
@@ -246,6 +252,7 @@ class MyContents {
         this.app.scene.add(ambientLight);
 
         this.app.scene.add(this.buildHouse())
+        //this.constructionLights()
     }
 
     buildHouse() {
@@ -270,10 +277,10 @@ class MyContents {
         const cakeThetaLength = 5.5;
         const spotlightHeight = 18;
         const spotlightColor = new THREE.Color("#fffaf0");
-        const spotlightIntensity = 700;
+        const spotlightIntensity = 1000;
         const spotlightDistance = 19;
         const spotlightDecay = 1;
-        const spotlightAngle = 0.5;
+        const spotlightAngle = 0.25;
         const spotlightPenumbra = 0.2;
         const frameSize = 12;
         const frameThickness = 0.5;
@@ -325,6 +332,7 @@ class MyContents {
         const coverWidth = 2.63
         const coverHeight = 3.6
         const coverDepth = 0.1
+        const mapSize = 4096
 
 
         const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial, windowWidth, windowHeight);
@@ -332,6 +340,8 @@ class MyContents {
 
         //-----------------------------------------------TABLE-----------------------------------------------
         const table = new MyTable().build(tableWidth, tableHeight, tableLength, this.tableMaterial, tableLegRadius, tableLegHeight, this.legMaterial);
+        table.receiveShadow = true;
+        table.castShadow=true;
         house.mesh.add(table);
 
         const chair1 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
@@ -343,6 +353,7 @@ class MyContents {
         chair2.position.y = - (tableHeight + tableLegHeight) * 0.9;
         chair2.position.z = tableWidth / 2;
         chair2.rotation.y = Math.PI;
+        chair2.castShadow = true;
         table.add(chair2);
 
         const chair3 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
@@ -358,14 +369,26 @@ class MyContents {
         table.add(chair4);
 
         const dish = new MyDish().build(dishRadiusTop, dishRadiusBottom, dishHeight, this.dishMaterial);
+        dish.receiveShadow=true;
+        dish.castShadow = true;
         table.add(dish);
         dish.position.y = dishHeight;
 
         const cake = new MyCake().build(cakeRadius, cakeHeight, this.cakeMaterial, cakeRadialSegments, cakeHeightSegments, cakeThetaLength);
+        cake.castShadow=true;
         dish.add(cake);
         cake.position.y = 0.5;
 
         const spotLightCake = new THREE.SpotLight(spotlightColor, spotlightIntensity, spotlightDistance, spotlightAngle, spotlightPenumbra, spotlightDecay);
+        spotLightCake.castShadow = true;
+        spotLightCake.shadow.mapSize.width = mapSize;
+        spotLightCake.shadow.mapSize.height = mapSize;
+        spotLightCake.shadow.camera.near = 0.5
+        spotLightCake.shadow.camera.far = 100;
+        spotLightCake.shadow.camera.left = -30;
+        spotLightCake.shadow.camera.right = 30;
+        spotLightCake.shadow.camera.bottom = -30;
+        spotLightCake.shadow.camera.top = 30;
         spotLightCake.position.y = spotlightHeight;
         spotLightCake.target = cake;
         table.add(spotLightCake);
@@ -388,9 +411,10 @@ class MyContents {
         house.addObjectWall(4, door, 0, -5, doorThickness / 2 + 0.01);
 
         const journal = new MyJournal().build(this.journalMaterial);
-        journal.position.y = tableHeight / 2 + 1.5;
-        journal.position.x = 8;
+        journal.position.y = tableHeight / 2;
+        journal.position.x = 5.5;
         journal.position.z = 5;
+        journal.rotation.x=-Math.PI/2
         table.add(journal);
 
         const glass1 = new MyGlass().build(glassRadiusTop, glassRadiusBottom, glassHeight, this.glassMaterial);
@@ -423,7 +447,7 @@ class MyContents {
         jar.position.z = -5;
         jar.position.y = tableHeight + 1;
 
-        const circleFlower = new MyCircle().build({ x: 0, y: 0 }, 0.5);
+        const circleFlower = new MyCircle().build({ x: 0, y: 0 }, 0.5,this.flowerCenterMaterial);
         circleFlower.position.y = 3;
         jar.add(circleFlower);
 
@@ -468,7 +492,7 @@ class MyContents {
         table.position.z = -25
         table.position.x = 25
 
-        //this.app.scene.add(new THREE.SpotLightHelper(spotLightCake))
+        this.app.scene.add(new THREE.SpotLightHelper(spotLightCake))
         //-----------------------------------------------END OF TABLE-----------------------------------------------
 
         //-----------------------------------------------WINDOW-----------------------------------------------
@@ -498,6 +522,7 @@ class MyContents {
         const coffeeTable = new MyCoffeeTable().build(coffeeTableRadius, coffeeTableHeight, this.tableMaterial, coffeeTableLegRadius, coffeeTableLegHeight, this.legMaterial)
         coffeeTable.rotation.x = -Math.PI / 2
         coffeeTable.position.z = -(coffeeTableHeight + coffeeTableLegHeight) * 0.8
+
         rug.add(coffeeTable);
 
         const sideboard = new MySideboard().build(televisionWidth * 2.3, sideboardHeight, sideboardDepth, this.tableMaterial)
@@ -609,6 +634,7 @@ class MyContents {
         const pointLight1 = new THREE.PointLight("#FFFFFF", 1000);
         pointLight1.position.set(0, 0, 30);
         this.app.scene.add(pointLight1);
+        
 
         const pointLight2 = new THREE.PointLight("#FFFFFF", 1000);
         pointLight2.position.set(0, 0, -30);

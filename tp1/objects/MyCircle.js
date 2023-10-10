@@ -3,7 +3,7 @@ import { MyBeetle } from './MyBeetle.js';
 
 class MyCircle {
 
-    build(point, size, color = "#ffffff", sampleSize = 30) {
+    build(point, size, centerMaterial, color = "#ffffff", sampleSize = 30) {
         let beetle1 = new MyBeetle().buildSemiCircle(point, size, sampleSize,color)
         let beetle2 = new MyBeetle().buildSemiCircle(point, size, sampleSize, color)
         beetle2.rotation.x = Math.PI
@@ -25,6 +25,12 @@ class MyCircle {
         this.lineObj.position.set(point.x + size, -3 - size, point.z)
         circle.add(this.lineObj)
 
+        const center = new THREE.SphereGeometry(size,32,16)
+        const centerMesh = new THREE.Mesh(center,centerMaterial)
+        centerMesh.position.x = size
+        centerMesh.scale.set(1,1,0.25)
+        circle.add(centerMesh)
+        
         const petal = new THREE.CylinderGeometry(0.2, 0.1, 0.1, 32)
 
         const numberOfPetals = 8;

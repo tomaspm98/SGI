@@ -18,7 +18,7 @@ class MyHouse {
         const floor = new THREE.PlaneGeometry(this.floorWidth, this.floorWidth)
         this.floorMesh = new THREE.Mesh(floor, this.floorMaterial)
         this.floorMesh.rotation.x = -Math.PI / 2
-
+        this.floorMesh.receiveShadow = true
         const roofMesh = new THREE.Mesh(floor, this.wallMaterial)
         roofMesh.position.z = this.wallHeight
         roofMesh.rotation.x = Math.PI
@@ -69,6 +69,7 @@ class MyHouse {
             const wallMesh32 = new THREE.Mesh(topGeometry, this.wallMaterial);
             const wallMesh33 = new THREE.Mesh(sideGeometry, this.wallMaterial);
             const wallMesh34 = new THREE.Mesh(sideGeometry, this.wallMaterial);
+            
             wallMesh31.position.y = 13.25
             wallMesh32.position.y = -13.25
             wallMesh33.position.x = -35
@@ -84,7 +85,7 @@ class MyHouse {
         this.mesh.add(this.floorMesh);
     }
 
-    createLights(color = "#ffffff", itensity = 200, distance = 0, decay = 2) {
+    createLights(color = "#ffffff", itensity = 0, distance = 100, decay = 0) {
         const pointLight = new THREE.PointLight(color, itensity, distance, decay);
         pointLight.position.set(-this.floorWidth / 4, this.wallHeight, 0);
         this.mesh.add(pointLight);
@@ -107,6 +108,15 @@ class MyHouse {
 
         const pointLight6 = new THREE.PointLight(color, itensity, distance, decay);
         pointLight6.position.set(this.floorWidth / 3, this.wallHeight, -this.floorWidth / 3)
+        pointLight6.castShadow = true;
+        pointLight6.shadow.mapSize.width = 4096;
+        pointLight6.shadow.mapSize.height = 4096;
+        pointLight6.shadow.camera.near = 0.5;
+        pointLight6.shadow.camera.far = 100;
+        pointLight6.shadow.camera.left = -35;
+        pointLight6.shadow.camera.right = 35;
+        pointLight6.shadow.camera.bottom = -35;
+        pointLight6.shadow.camera.top = 35;
         this.mesh.add(pointLight6);
 
         const pointLight7 = new THREE.PointLight(color, itensity, distance, decay);

@@ -100,6 +100,15 @@ class MyApp {
         orthoFront.position.set(0, 0, this.frustumSize / 4)
         orthoFront.lookAt(new THREE.Vector3(0, 0, 0));
         this.cameras['Front'] = orthoFront
+
+        const perspectiveCorner = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)
+        perspectiveCorner.position.set(-45, 35, -45)
+        this.cameras['Corner Perspective'] = perspectiveCorner
+
+        const perspectiveChair = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)
+        perspectiveChair.position.set(25, 15, -32)
+        perspectiveChair.lookAt(new THREE.Vector3(25, 0, 0));
+        this.cameras['Chair Perspective'] = perspectiveChair
     }
 
     /**
@@ -134,6 +143,9 @@ class MyApp {
                 // Orbit controls allow the camera to orbit around a target.
                 this.controls = new OrbitControls(this.activeCamera, this.renderer.domElement);
                 this.controls.enableZoom = true;
+                if (this.activeCameraName === 'Chair Perspective'){
+                    this.controls.target.set(new THREE.Vector3(25, 0, 0))
+            }
                 this.controls.update();
             }
             else {
@@ -184,7 +196,8 @@ class MyApp {
 
         // render the scene
         this.renderer.render(this.scene, this.activeCamera);
-
+        this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         // subsequent async calls to the render loop
         requestAnimationFrame(this.render.bind(this));
 
