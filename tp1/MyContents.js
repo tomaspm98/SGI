@@ -300,8 +300,8 @@ class MyContents {
         const beetleColor = "#FFA500";
         const springPosition = { x: -7, y: 0, z: -5 };
         const springRadius = 0.5;
-        const springHeight = 2;
-        const springSegments = 200;
+        const springHeight = 3;
+        const springSegments = 300;
         const springColor = "#706f6f";
         const springThickness = 0.005;
         const televisionWidth = 18.25;
@@ -313,14 +313,18 @@ class MyContents {
         const windowSpotlightDistance = 150;
         const windowSpotlightDecay = 1;
         const windowSpotlightAngle = 0.40;
-
         const coffeeTableRadius = 6
         const coffeeTableHeight = 0.40
         const coffeeTableLegRadius = 0.5
         const coffeeTableLegHeight = 4
-
         const sideboardDepth = 7.5
         const sideboardHeight = 5.5
+        const bookWidth = 2.5
+        const bookHeight = 3.5
+        const bookDepth = 0.7
+        const coverWidth = 2.63
+        const coverHeight = 3.6
+        const coverDepth = 0.1
 
 
         const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial, windowWidth, windowHeight);
@@ -423,13 +427,6 @@ class MyContents {
         circleFlower.position.y = 3;
         jar.add(circleFlower);
 
-        const spring = new MySpring().build(springPosition, springRadius, springHeight, springSegments, springColor, springThickness);
-        spring.position.x = 1;
-        spring.position.y = -4.2;
-        spring.position.z = 1;
-        spring.rotation.x = Math.PI / 2;
-        table.add(spring);
-
         let cup = new MyCup().build(1.5, 64, 32, Math.PI, Math.PI, 0, Math.PI, this.cupMaterial)
         cup.rotation.x = -Math.PI / 2
         cup.position.y = tableHeight + 1.68
@@ -509,6 +506,64 @@ class MyContents {
         sideboard.position.y = 21
         sideboard.position.z = -sideboardHeight / 2
         rug.add(sideboard)
+
+        const book = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.planeMaterial)
+        book.rotation.x = Math.PI / 2
+        book.position.y = coffeeTableHeight + 0.2
+        book.position.z = -2
+        book.position.x = -3
+        coffeeTable.add(book)
+
+        const book2 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.planeMaterial)
+        book2.rotation.y = Math.PI / 2
+        book2.position.x = 0.5
+        book2.position.y = 1.85
+        book2.position.z = -1
+        sideboard.add(book2)
+
+        const book3 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.planeMaterial)
+        book3.rotation.y = Math.PI / 2
+        book3.rotation.x = Math.PI
+        book3.position.x = bookDepth + coverDepth + 0.7
+        book3.position.y = 1.85
+        book3.position.z = -1
+        sideboard.add(book3)
+
+        const book4 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.planeMaterial)
+        book4.rotation.y = Math.PI / 2
+        book4.position.x = (0.5 + bookDepth + coverDepth) * 2
+        book4.position.y = 1.85
+        book4.position.z = -1
+        sideboard.add(book4)
+
+        const book5 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.planeMaterial)
+        book5.rotation.y = Math.PI / 2
+        book5.rotation.x = Math.PI
+        book5.position.x = (0.5 + bookDepth + coverDepth) * 3
+        book5.position.y = 1.85
+        book5.position.z = -1
+        sideboard.add(book5)
+
+        const book6 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.planeMaterial)
+        book6.rotation.y = Math.PI / 2
+        book6.position.x = (0.5 + bookDepth + coverDepth) * 4
+        book6.position.y = 1.85
+        book6.position.z = -1
+        sideboard.add(book6)
+
+        const book7 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.planeMaterial)
+        book7.rotation.y = Math.PI / 2
+        book7.rotation.x = Math.PI
+        book7.position.x = (0.5 + bookDepth + coverDepth) * 5   
+        book7.position.y = 1.85
+        book7.position.z = -1
+        sideboard.add(book7)
+
+        const spring = new MySpring().build(springPosition, springRadius, springHeight, springSegments, springColor, springThickness);
+        spring.position.x = 3;
+        spring.position.y = -4.1;
+        spring.rotation.x = Math.PI / 2;
+        sideboard.add(spring);
 
         //-----------------------------------------------END OF LIVING ROOM-----------------------------------------------
 
