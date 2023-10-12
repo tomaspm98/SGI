@@ -565,6 +565,10 @@ class MyContents {
         spring.rotation.x = Math.PI / 2;
         sideboard.add(spring);
 
+        //build(baseWidth, baseDepth, baseHeight, armWidth, armHeight, backHeight, backDepth, baseMaterial, armMaterial, backMaterial) {
+        const sofa = new MySofa().build()
+
+
         //-----------------------------------------------END OF LIVING ROOM-----------------------------------------------
 
         /*let book = new MyBook().build(2, 3, 0.5, this.pagesMaterial, 2.15, 3.1, 0.1, this.planeMaterial)
