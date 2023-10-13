@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 class MySpring {
 
-    build(point, width, height, sampleSize = 200, color = "#ffffff", incrementHeight = 0.01) {
+    build(point, width, height, sampleSize = 500, color = "#ffffff", incrementHeight = 1) {
         let points = new Array();
 
         //i - actual height
@@ -13,9 +13,8 @@ class MySpring {
 
 
         const curve = new THREE.CatmullRomCurve3(points);
-        const sampledPoints = curve.getPoints(sampleSize);
-        const curveGeometry = new THREE.BufferGeometry().setFromPoints(sampledPoints);
-        const lineMaterial = new THREE.LineBasicMaterial({ color: color});
+        const curveGeometry = new THREE.TubeGeometry(curve, sampleSize, 0.03, sampleSize);
+        const lineMaterial = new THREE.MeshBasicMaterial({ color: color});
 
         return new THREE.Line(curveGeometry, lineMaterial)
 

@@ -330,9 +330,9 @@ class MyContents {
         const springPosition = { x: -7, y: 0, z: -5 };
         const springRadius = 0.5;
         const springHeight = 3;
-        const springSegments = 300;
+        const springSegments = 500;
         const springColor = "#706f6f";
-        const springThickness = 0.005;
+        const springThickness = 0.009;
         const televisionWidth = 18.25;
         const televisionHeight = 32.25;
         const televisionThickness = 1;
@@ -360,8 +360,26 @@ class MyContents {
         const remoteDepth = 0.35
         const buttonSize = 0.15
         const cableBoxWidth = 4.0
-        const cableBoxHeight=1.0
-        const cableBoxDepth=3.0
+        const cableBoxHeight = 1.0
+        const cableBoxDepth = 3.0
+        const sofaBaseWidth = 23
+        const sofaBaseDepth = 7
+        const sofaBaseHeight = 4
+        const sofaArmWidth = 2
+        const sofaArmHeight = 3
+        const sofaBackHeight = 6
+        const sofaBackDepth = 2.5
+
+        const armchairBaseWidth = 6
+        const armchairBaseDepth = 6
+        const armchairBaseHeight = 2
+        const armchairBackHeight = 6
+        const armchairBackDepth = 2
+        const armchairArmWidth = 2
+        const armchairArmHeight = 2
+        const armchairLegHeight = 5
+        const armchairLegRadius = 0.7
+
 
 
         const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial, windowWidth, windowHeight);
@@ -370,7 +388,7 @@ class MyContents {
         //-----------------------------------------------TABLE-----------------------------------------------
         const table = new MyTable().build(tableWidth, tableHeight, tableLength, this.tableMaterial, tableLegRadius, tableLegHeight, this.legMaterial);
         table.receiveShadow = true;
-        table.castShadow=true;
+        table.castShadow = true;
         house.mesh.add(table);
 
         const chair1 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
@@ -398,13 +416,13 @@ class MyContents {
         table.add(chair4);
 
         const dish = new MyDish().build(dishRadiusTop, dishRadiusBottom, dishHeight, this.dishMaterial);
-        dish.receiveShadow=true;
+        dish.receiveShadow = true;
         dish.castShadow = true;
         table.add(dish);
         dish.position.y = dishHeight;
 
         const cake = new MyCake().build(cakeRadius, cakeHeight, this.cakeMaterial, cakeRadialSegments, cakeHeightSegments, cakeThetaLength);
-        cake.castShadow=true;
+        cake.castShadow = true;
         dish.add(cake);
         cake.position.y = 0.5;
 
@@ -443,7 +461,7 @@ class MyContents {
         journal.position.y = tableHeight / 2;
         journal.position.x = 5.5;
         journal.position.z = 5;
-        journal.rotation.x=-Math.PI/2
+        journal.rotation.x = -Math.PI / 2
         table.add(journal);
 
         const glass1 = new MyGlass().build(glassRadiusTop, glassRadiusBottom, glassHeight, this.glassMaterial);
@@ -476,7 +494,7 @@ class MyContents {
         jar.position.z = -5;
         jar.position.y = tableHeight + 1;
 
-        const circleFlower = new MyCircle().build({ x: 0, y: 0 }, 0.5,this.flowerCenterMaterial);
+        const circleFlower = new MyCircle().build({ x: 0, y: 0 }, 0.5, this.flowerCenterMaterial);
         circleFlower.position.y = 3;
         jar.add(circleFlower);
 
@@ -608,7 +626,7 @@ class MyContents {
         const book7 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.planeMaterial)
         book7.rotation.y = Math.PI / 2
         book7.rotation.x = Math.PI
-        book7.position.x = (0.5 + bookDepth + coverDepth) * 5   
+        book7.position.x = (0.5 + bookDepth + coverDepth) * 5
         book7.position.y = 1.85
         book7.position.z = -1
         sideboard.add(book7)
@@ -619,18 +637,31 @@ class MyContents {
         spring.rotation.x = Math.PI / 2;
         sideboard.add(spring);
 
-        const remote = new MyRemote().build(remoteWidth,remoteHeight,remoteDepth,this.remoteMaterial, buttonSize, this.buttonMaterial, this.powernMaterial);
-        remote.rotation.x=-Math.PI/2
+        const remote = new MyRemote().build(remoteWidth, remoteHeight, remoteDepth, this.remoteMaterial, buttonSize, this.buttonMaterial, this.powernMaterial);
+        remote.rotation.x = -Math.PI / 2
         remote.position.x = -10;
         remote.position.y = remoteDepth;
         sideboard.add(remote);
 
-        const cableBox = new MyCableBox().build(cableBoxWidth,cableBoxHeight,cableBoxDepth,this.remoteMaterial, this.powerMaterial);
-        cableBox.rotation.y = -Math.PI/2;
+        const cableBox = new MyCableBox().build(cableBoxWidth, cableBoxHeight, cableBoxDepth, this.remoteMaterial, this.powerMaterial);
+        cableBox.rotation.y = -Math.PI / 2;
         cableBox.position.x = -13;
-        cableBox.position.y = cableBoxHeight *0.8;
+        cableBox.position.y = cableBoxHeight * 0.8;
         sideboard.add(cableBox);
 
+        const sofa = new MySofa().build(sofaBaseWidth, sofaBaseDepth, sofaBaseHeight, sofaArmWidth, sofaArmHeight, sofaBackHeight, sofaBackDepth, this.tableMaterial, this.tableMaterial, this.tableMaterial);
+        sofa.rotation.x = -Math.PI / 2;
+        sofa.position.y = -rugHeight / 2 - sofaBaseDepth / 2;
+        sofa.position.z = -sofaBaseHeight / 2;
+        rug.add(sofa);
+
+        //build(baseWidth, baseDepth, baseHeight, armWidth, armHeight, backHeight, backDepth, legHeight, legRadius, legMaterial, baseMaterial, armMaterial, backMaterial)
+        const armchair = new MyArmchair().build(armchairBaseWidth, armchairBaseDepth, armchairBaseHeight, armchairArmWidth, armchairArmHeight, armchairBackHeight, armchairBackDepth, armchairLegHeight, armchairLegRadius, this.tableMaterial, this.tableMaterial, this.tableMaterial, this.tableMaterial);
+        armchair.rotation.x = -Math.PI / 2;
+        armchair.rotation.y = -Math.PI / 2;
+        armchair.position.z = -(armchairLegHeight + armchairBaseHeight) / 1.8;
+        armchair.position.x = rugWidth / 1.7
+        rug.add(armchair);
         //-----------------------------------------------END OF LIVING ROOM-----------------------------------------------
 
         /*let book = new MyBook().build(2, 3, 0.5, this.pagesMaterial, 2.15, 3.1, 0.1, this.planeMaterial)

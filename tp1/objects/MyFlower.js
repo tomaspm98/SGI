@@ -4,7 +4,7 @@ import { MyBeetle } from './MyBeetle.js';
 class MyCircle {
 
     build(point, size, centerMaterial, color = "#ffffff", sampleSize = 30) {
-        let beetle1 = new MyBeetle().buildSemiCircle(point, size, sampleSize,color)
+        let beetle1 = new MyBeetle().buildSemiCircle(point, size, sampleSize, color)
         let beetle2 = new MyBeetle().buildSemiCircle(point, size, sampleSize, color)
         beetle2.rotation.x = Math.PI
         const circle = new THREE.Mesh()
@@ -17,20 +17,19 @@ class MyCircle {
             new THREE.Vector3(-1.0, 2.0, 0.0),  // ending point
             new THREE.Vector3(0.0, 3.0, 0.0)
         ]
-        let curve = new THREE.CubicBezierCurve3(points[0], points[1], points[2], points[3])
-        let sampledPoints = curve.getPoints(sampleSize);
-        this.curveGeometry = new THREE.BufferGeometry().setFromPoints(sampledPoints)
-        this.lineMaterial = new THREE.LineBasicMaterial({ color: "#007a00" })
-        this.lineObj = new THREE.Line(this.curveGeometry, this.lineMaterial)
+        let curve = new THREE.CubicBezierCurve3(...points)
+        this.lineMaterial = new THREE.MeshBasicMaterial({ color: "#007a00" })
+        this.curveGeometry = new THREE.TubeGeometry(curve, 64, 0.05)
+        this.lineObj = new THREE.Mesh(this.curveGeometry, this.lineMaterial)
         this.lineObj.position.set(point.x + size, -3 - size, point.z)
         circle.add(this.lineObj)
 
-        const center = new THREE.SphereGeometry(size,32,16)
-        const centerMesh = new THREE.Mesh(center,centerMaterial)
+        const center = new THREE.SphereGeometry(size, 32, 16)
+        const centerMesh = new THREE.Mesh(center, centerMaterial)
         centerMesh.position.x = size
-        centerMesh.scale.set(1,1,0.25)
+        centerMesh.scale.set(1, 1, 0.25)
         circle.add(centerMesh)
-        
+
         const petal = new THREE.CylinderGeometry(0.2, 0.1, 0.1, 32)
 
         const numberOfPetals = 8;
