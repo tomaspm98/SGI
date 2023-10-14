@@ -58,6 +58,7 @@ class MyContents {
             shininess: 0,
             side: THREE.DoubleSide
         })
+        this.wallMaterial.receiveShadow=true;
 
         //dish related attributes
         this.dishMaterial = new THREE.MeshPhongMaterial({
@@ -274,7 +275,6 @@ class MyContents {
         this.app.scene.add(ambientLight);
 
         this.app.scene.add(this.buildHouse())
-        //this.app.scene.add(new MyCableBox().build(3.5,1,3,this.remoteMaterial, this.powernMaterial))
     }
 
     buildHouse() {
@@ -338,8 +338,8 @@ class MyContents {
         const televisionThickness = 1;
         const televisionStandHeight = 0.5;
         const windowSpotlightColor = new THREE.Color("#ffe285");
-        const windowSpotlightIntensity = 250;
-        const windowSpotlightDistance = 150;
+        const windowSpotlightIntensity = 1000;
+        const windowSpotlightDistance = 200;
         const windowSpotlightDecay = 1;
         const windowSpotlightAngle = 0.40;
         const coffeeTableRadius = 6
@@ -354,7 +354,7 @@ class MyContents {
         const coverWidth = 2.63
         const coverHeight = 3.6
         const coverDepth = 0.1
-        const mapSize = 4096
+        const mapSize = 512
         const remoteWidth = 1.0
         const remoteHeight = 2.5
         const remoteDepth = 0.35
@@ -383,41 +383,44 @@ class MyContents {
 
 
         const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial, windowWidth, windowHeight);
+        house.receiveShadow = true;
         house.createLights();
 
         //-----------------------------------------------TABLE-----------------------------------------------
         const table = new MyTable().build(tableWidth, tableHeight, tableLength, this.tableMaterial, tableLegRadius, tableLegHeight, this.legMaterial);
         table.receiveShadow = true;
-        table.castShadow = true;
+        //table.castShadow = true;
         house.mesh.add(table);
 
         const chair1 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
         chair1.position.y = - (tableHeight + tableLegHeight) * 0.9;
         chair1.position.z = - tableWidth / 2;
+        chair1.castShadow = true;
         table.add(chair1);
 
         const chair2 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
         chair2.position.y = - (tableHeight + tableLegHeight) * 0.9;
         chair2.position.z = tableWidth / 2;
         chair2.rotation.y = Math.PI;
-        chair2.castShadow = true;
+        //chair2.castShadow = true;
         table.add(chair2);
 
         const chair3 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
         chair3.position.x = -tableLength / 2;
         chair3.position.y = - (tableHeight + tableLegHeight) * 0.9;
         chair3.rotation.y = Math.PI / 2;
+        //chair3.castShadow = true;
         table.add(chair3);
 
         const chair4 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
         chair4.position.x = tableLength / 2;
         chair4.position.y = - (tableHeight + tableLegHeight) * 0.9;
         chair4.rotation.y = -Math.PI / 2;
+        //chair4.castShadow = true;
         table.add(chair4);
 
         const dish = new MyDish().build(dishRadiusTop, dishRadiusBottom, dishHeight, this.dishMaterial);
         dish.receiveShadow = true;
-        dish.castShadow = true;
         table.add(dish);
         dish.position.y = dishHeight;
 
@@ -459,7 +462,7 @@ class MyContents {
 
         const journal = new MyJournal().build(this.journalMaterial);
         journal.position.y = tableHeight / 2;
-        journal.position.x = 5.5;
+        journal.position.x = 6.5;
         journal.position.z = 5;
         journal.rotation.x = -Math.PI / 2
         table.add(journal);
@@ -550,7 +553,25 @@ class MyContents {
         this.app.scene.add(landscape);
 
         const spotLightWindow = new THREE.SpotLight(windowSpotlightColor, windowSpotlightIntensity, windowSpotlightDistance, windowSpotlightAngle, spotlightPenumbra, windowSpotlightDecay)
-        spotLightWindow.position.set(100, 30, 0)
+        spotLightWindow.position.set(100,15,0)
+        spotLightWindow.castShadow = true;
+        spotLightWindow.shadow.mapSize.width = mapSize;
+        spotLightWindow.shadow.mapSize.height = mapSize;
+        spotLightWindow.shadow.camera.near = 0.5;
+        spotLightWindow.shadow.camera.far = 300;
+        spotLightWindow.shadow.camera.left = -100;
+        spotLightWindow.shadow.camera.right = 100;
+        spotLightWindow.shadow.camera.bottom = -50;
+        spotLightWindow.shadow.camera.top = 50;
+        const targetObject = new THREE.Object3D();
+        targetObject.position.set(-200,15,0); // Replace with your desired coordinates
+        spotLightWindow.target = targetObject;
+        this.app.scene.add(targetObject); // Add it to the scene
+        
+
+        //const helper1 = new THREE.SpotLightHelper( spotLightWindow);
+        //this.app.scene.add( helper1 );
+
         house.mesh.add(spotLightWindow)
 
         //this.app.scene.add(new THREE.SpotLightHelper(spotLightWindow))
@@ -567,6 +588,7 @@ class MyContents {
         house.mesh.add(rug);
 
         const coffeeTable = new MyCoffeeTable().build(coffeeTableRadius, coffeeTableHeight, this.tableMaterial, coffeeTableLegRadius, coffeeTableLegHeight, this.legMaterial)
+        coffeeTable.castShadow = true;
         coffeeTable.rotation.x = -Math.PI / 2
         coffeeTable.position.z = -(coffeeTableHeight + coffeeTableLegHeight) * 0.8
 
@@ -653,6 +675,7 @@ class MyContents {
         sofa.rotation.x = -Math.PI / 2;
         sofa.position.y = -rugHeight / 2 - sofaBaseDepth / 2;
         sofa.position.z = -sofaBaseHeight / 2;
+        sofa.castShadow = true;
         rug.add(sofa);
 
         //build(baseWidth, baseDepth, baseHeight, armWidth, armHeight, backHeight, backDepth, legHeight, legRadius, legMaterial, baseMaterial, armMaterial, backMaterial)

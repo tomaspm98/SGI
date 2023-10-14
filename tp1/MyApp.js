@@ -50,6 +50,8 @@ class MyApp {
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setClearColor("#000000");
+        this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
         // Configure renderer size
         this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -196,8 +198,6 @@ class MyApp {
 
         // render the scene
         this.renderer.render(this.scene, this.activeCamera);
-        this.renderer.shadowMap.enabled = true;
-        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         // subsequent async calls to the render loop
         requestAnimationFrame(this.render.bind(this));
 
