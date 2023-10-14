@@ -46,14 +46,6 @@ class MyWindow {
         const border5 = border3.clone();
         windowMesh.add(border5);
 
-        // Create the window light
-        const light = new THREE.RectAreaLight(colorLight, intensity, windowWidth, windowHeight);
-        light.position.set(0, 0, windowDepth);
-        windowMesh.add(light);
-
-        // Create the light helper
-        const lightHelper = new RectAreaLightHelper(light);
-        windowMesh.add(lightHelper);
 
         // Enable shadows for all meshes
         windowMesh.traverse((child) => {

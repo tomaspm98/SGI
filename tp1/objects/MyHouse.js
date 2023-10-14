@@ -117,7 +117,7 @@ class MyHouse {
      * @param {number} distance - The distance of the lights.
      * @param {number} decay - The decay of the lights.
      */
-    createLights(color = "#ffffff", intensity = 200, distance = 100, decay = 2) {
+    createLights(color = "#ffffff", intensity = 150, distance = 50, decay = 2) {
         const pointLight = new THREE.PointLight(color, intensity, distance, decay);
         pointLight.position.set(-this.floorWidth / 4, this.wallHeight, 0);
         this.mesh.add(pointLight);

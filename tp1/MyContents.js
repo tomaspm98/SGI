@@ -273,12 +273,13 @@ class MyContents {
         // add an ambient light
         const ambientLight = new THREE.AmbientLight(0x555555);
         this.app.scene.add(ambientLight);
-
         this.app.scene.add(this.buildHouse())
 
     }
 
     buildHouse() {
+
+        // ------------------------------------ CONSTANTS ------------------------------------
 
         const wallHeight = 35;
         const floorWidth = 100;
@@ -301,10 +302,10 @@ class MyContents {
         const spotlightHeight = 18;
         const spotlightColor = new THREE.Color("#fffaf0");
         const spotlightIntensity = 1000;
-        const spotlightDistance = 19;
+        const spotlightDistance = 18;
         const spotlightDecay = 1;
-        const spotlightAngle = 0.25;
-        const spotlightPenumbra = 0.2;
+        const spotlightAngle = 0.2;
+        const spotlightPenumbra = 0.1;
         const frameSize = 12;
         const frameThickness = 0.5;
         const windowWidth = 40;
@@ -339,7 +340,7 @@ class MyContents {
         const televisionThickness = 1;
         const televisionStandHeight = 0.5;
         const windowSpotlightColor = new THREE.Color("#ffe285");
-        const windowSpotlightIntensity = 300;
+        const windowSpotlightIntensity = 150;
         const windowSpotlightDistance = 200;
         const windowSpotlightDecay = 1;
         const windowSpotlightAngle = 0.50;
@@ -355,7 +356,6 @@ class MyContents {
         const coverWidth = 2.63
         const coverHeight = 3.6
         const coverDepth = 0.1
-        const mapSize = 512
         const remoteWidth = 1.0
         const remoteHeight = 2.5
         const remoteDepth = 0.35
@@ -370,7 +370,6 @@ class MyContents {
         const sofaArmHeight = 3
         const sofaBackHeight = 6.5
         const sofaBackDepth = 3
-
         const armchairBaseWidth = 6.5
         const armchairBaseDepth = 6.5
         const armchairBaseHeight = 2
@@ -381,16 +380,19 @@ class MyContents {
         const armchairLegHeight = 5
         const armchairLegRadius = 0.6
 
+        // ------------------------------------ END CONSTANTS ------------------------------------
 
+        // ------------------------------------ HOUSE ------------------------------------
 
         const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial, windowWidth, windowHeight);
         house.receiveShadow = true;
-        //house.createLights();
+        house.createLights();
+
+        // ------------------------------------ END HOUSE ------------------------------------
+
 
         //-----------------------------------------------TABLE-----------------------------------------------
         const table = new MyTable().build(tableWidth, tableHeight, tableLength, this.tableMaterial, tableLegRadius, tableLegHeight, this.legMaterial);
-        table.receiveShadow = true;
-        //table.castShadow = true;
         house.mesh.add(table);
 
         const chair1 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
@@ -403,51 +405,38 @@ class MyContents {
         chair2.position.y = - (tableHeight + tableLegHeight) * 0.9;
         chair2.position.z = tableWidth / 2;
         chair2.rotation.y = Math.PI;
-        //chair2.castShadow = true;
         table.add(chair2);
 
         const chair3 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
         chair3.position.x = -tableLength / 2;
         chair3.position.y = - (tableHeight + tableLegHeight) * 0.9;
         chair3.rotation.y = Math.PI / 2;
-        //chair3.castShadow = true;
         table.add(chair3);
 
         const chair4 = new MyChair().build(chairWidth, chairLength, chairHeight, this.chairMaterial);
         chair4.position.x = tableLength / 2;
         chair4.position.y = - (tableHeight + tableLegHeight) * 0.9;
         chair4.rotation.y = -Math.PI / 2;
-        //chair4.castShadow = true;
         table.add(chair4);
 
         const dish = new MyDish().build(dishRadiusTop, dishRadiusBottom, dishHeight, this.dishMaterial);
-        dish.receiveShadow = true;
-        table.add(dish);
         dish.position.y = dishHeight;
+        table.add(dish);
 
         const cake = new MyCake().build(cakeRadius, cakeHeight, this.cakeMaterial, cakeRadialSegments, cakeHeightSegments, cakeThetaLength);
-        cake.castShadow = true;
-        dish.add(cake);
         cake.position.y = 0.5;
+        dish.add(cake);
 
         const spotLightCake = new THREE.SpotLight(spotlightColor, spotlightIntensity, spotlightDistance, spotlightAngle, spotlightPenumbra, spotlightDecay);
         spotLightCake.castShadow = true;
-        spotLightCake.shadow.mapSize.width = mapSize;
-        spotLightCake.shadow.mapSize.height = mapSize;
-        spotLightCake.shadow.camera.near = 0.5
-        spotLightCake.shadow.camera.far = 100;
-        spotLightCake.shadow.camera.left = -30;
-        spotLightCake.shadow.camera.right = 30;
-        spotLightCake.shadow.camera.bottom = -30;
-        spotLightCake.shadow.camera.top = 30;
         spotLightCake.position.y = spotlightHeight;
         spotLightCake.target = cake;
         table.add(spotLightCake);
 
         const candle = new MyCandle().build(candleRadius, candleHeight, candleBaseHeight, candleFlameHeight, this.candleMaterial, this.flameMaterial);
-        cake.add(candle);
         candle.position.y = 1.4;
         candle.position.z = -0.1;
+        cake.add(candle);
 
         const frame1 = new MyFrame().create(frameSize, frameSize, frameThickness, this.tableMaterial, this.picture1Material);
         house.addObjectWall(1, frame1, 10, 0, frameThickness);
@@ -456,7 +445,7 @@ class MyContents {
         house.addObjectWall(1, frame2, -10, 0, frameThickness);
 
         const window1 = new MyWindow().create(windowWidth, windowHeight, windowThickness, this.tableMaterial, this.glassMaterial);
-        //house.addObjectWall(3, window1, 0, 0, windowThickness);
+        house.addObjectWall(3, window1, 0, 0, windowThickness);
 
         const door = new MyDoor().build(doorWidth, doorHeight, doorThickness, this.doorMaterial);
         house.addObjectWall(4, door, 0, -5, doorThickness / 2 + 0.01);
