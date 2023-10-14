@@ -1,59 +1,79 @@
 import * as THREE from 'three';
 import { MyNurbsBuilder } from './MyNurbsBuilder.js';
 
+/**
+ * A class representing a journal object.
+ */
 class MyJournal {
-
-    build(journalMaterial) {
-        this.builder = new MyNurbsBuilder()
-        this.meshes = []
-        this.samplesU = 8        
-        this.samplesV = 8         
-        if (this.meshes !== null) {
-            for (let i=0; i<this.meshes.length; i++) {
-                this.app.scene.remove(this.meshes[i])
-            }
-            this.meshes = [] // empty the array  
-        }
-
-        let controlPoints;
-        let surfaceData;
-        let mesh;
-        let orderU = 2
-        let orderV = 1
-
-        controlPoints =
-        [   // U = 0
-        [ // V = 0..1;
-            [ -1.5, -1.0, 0.0, 1 ],
-            [ -1.5,  1.0, 0.0, 1 ],
-        ],
-    // U = 1
-        [ // V = 0..1
-            [ 0, -1.0, 1.0, 1 ],
-            [ 0,  1.0, 1.0, 1 ]
-        ],
-    // U = 2
-        [ // V = 0..1
-            [ 1.5, -1.0, 0.0, 1 ],
-            [ 1.5,  1.0, 0.0, 1 ]
-        ],
-
-
-]
-        surfaceData = this.builder.build(controlPoints, orderU, orderV, this.samplesU,this.samplesV, this.material)  
-        mesh = new THREE.Mesh( surfaceData, journalMaterial );
-        mesh.rotation.x = 0
-        mesh.rotation.y = 0
-        mesh.rotation.z = 0
-        mesh.scale.set( 1,1,1 )
-        mesh.position.set( 0,0,0 )
-        const mesh2=new THREE.Mesh( surfaceData, journalMaterial );
-        mesh2.position.x = 3;
-        mesh.add(mesh2);
-        return mesh
+    constructor() {
+        this.builder = new MyNurbsBuilder();
+        this.meshes = [];
+        this.samplesU = 8;
+        this.samplesV = 8;
     }
 
-    
+    /**
+     * Builds a journal object with the given material.
+     * @param {THREE.Material} journalMaterial - The material for the journal.
+     * @returns {THREE.Mesh} The journal object.
+     */
+    build(journalMaterial) {
+        const journalMesh = new THREE.Mesh();
+
+        // Remove any existing meshes
+        if (this.meshes !== null) {
+            for (let i = 0; i < this.meshes.length; i++) {
+                journalMesh.remove(this.meshes[i]);
+            }
+            this.meshes = []; // empty the array
+        }
+
+        // Define the control points for the journal surface
+        const controlPoints = [
+            // U = 0
+            [
+                // V = 0..1;
+                [-1.5, -1.0, 0.0, 1],
+                [-1.5, 1.0, 0.0, 1],
+            ],
+            // U = 1
+            [
+                // V = 0..1
+                [0, -1.0, 1.0, 1],
+                [0, 1.0, 1.0, 1]
+            ],
+            // U = 2
+            [
+                // V = 0..1
+                [1.5, -1.0, 0.0, 1],
+                [1.5, 1.0, 0.0, 1]
+            ]
+        ];
+
+        // Build the journal surface
+        const orderU = 2;
+        const orderV = 1;
+        const surfaceData = this.builder.build(controlPoints, orderU, orderV, this.samplesU, this.samplesV, journalMaterial);
+        const mesh1 = new THREE.Mesh(surfaceData, journalMaterial);
+        mesh1.rotation.set(0, 0, 0);
+        mesh1.scale.set(1, 1, 1);
+        mesh1.position.set(0, 0, 0);
+        journalMesh.add(mesh1);
+
+        const mesh2 = new THREE.Mesh(surfaceData, journalMaterial);
+        mesh2.position.x = 3;
+        mesh1.add(mesh2);
+
+        // Enable shadows for all meshes
+        journalMesh.traverse((child) => {
+            if (child instanceof THREE.Mesh) {
+                child.castShadow = false;
+                child.receiveShadow = false;
+            }
+        });
+
+        return journalMesh;
+    }
 }
 
 export { MyJournal };

@@ -15,7 +15,7 @@ import { MyGlass } from './objects/MyGlass.js';
 import { MyLamp } from './objects/MyLamp.js';
 import { MyJar } from './objects/MyJar.js';
 import { MyBeetle } from './objects/MyBeetle.js';
-import { MyCircle } from './objects/MyFlower.js';
+import { MyFlower } from './objects/MyFlower.js';
 import { MySpring } from './objects/MySpring.js';
 import { MyTelevision } from './objects/MyTelevision.js';
 import { MyCoffeeTable } from './objects/MyCoffeeTable.js';
@@ -58,7 +58,7 @@ class MyContents {
             shininess: 0,
             side: THREE.DoubleSide
         })
-        this.wallMaterial.receiveShadow=true;
+        this.wallMaterial.receiveShadow = true;
 
         //dish related attributes
         this.dishMaterial = new THREE.MeshPhongMaterial({
@@ -275,7 +275,7 @@ class MyContents {
         this.app.scene.add(ambientLight);
 
         this.app.scene.add(this.buildHouse())
-        
+
     }
 
     buildHouse() {
@@ -339,10 +339,10 @@ class MyContents {
         const televisionThickness = 1;
         const televisionStandHeight = 0.5;
         const windowSpotlightColor = new THREE.Color("#ffe285");
-        const windowSpotlightIntensity = 1000;
+        const windowSpotlightIntensity = 300;
         const windowSpotlightDistance = 200;
         const windowSpotlightDecay = 1;
-        const windowSpotlightAngle = 0.40;
+        const windowSpotlightAngle = 0.50;
         const coffeeTableRadius = 6
         const coffeeTableHeight = 0.40
         const coffeeTableLegRadius = 0.5
@@ -378,14 +378,14 @@ class MyContents {
         const armchairBackDepth = 2
         const armchairArmWidth = 2
         const armchairArmHeight = 2
-        const armchairLegHeight = 5 
+        const armchairLegHeight = 5
         const armchairLegRadius = 0.6
 
 
 
         const house = new MyHouse(floorWidth, wallHeight, this.planeMaterial, this.wallMaterial, windowWidth, windowHeight);
         house.receiveShadow = true;
-        house.createLights();
+        //house.createLights();
 
         //-----------------------------------------------TABLE-----------------------------------------------
         const table = new MyTable().build(tableWidth, tableHeight, tableLength, this.tableMaterial, tableLegRadius, tableLegHeight, this.legMaterial);
@@ -456,7 +456,7 @@ class MyContents {
         house.addObjectWall(1, frame2, -10, 0, frameThickness);
 
         const window1 = new MyWindow().create(windowWidth, windowHeight, windowThickness, this.tableMaterial, this.glassMaterial);
-        house.addObjectWall(3, window1, 0, 0, windowThickness);
+        //house.addObjectWall(3, window1, 0, 0, windowThickness);
 
         const door = new MyDoor().build(doorWidth, doorHeight, doorThickness, this.doorMaterial);
         house.addObjectWall(4, door, 0, -5, doorThickness / 2 + 0.01);
@@ -498,7 +498,7 @@ class MyContents {
         jar.position.z = -5;
         jar.position.y = tableHeight + 1;
 
-        const circleFlower = new MyCircle().build({ x: 0, y: 0 }, 0.5, this.flowerCenterMaterial);
+        const circleFlower = new MyFlower().build({ x: 0, y: 0 }, 0.5, this.flowerCenterMaterial);
         circleFlower.position.y = 3;
         jar.add(circleFlower);
 
@@ -554,28 +554,17 @@ class MyContents {
         this.app.scene.add(landscape);
 
         const spotLightWindow = new THREE.SpotLight(windowSpotlightColor, windowSpotlightIntensity, windowSpotlightDistance, windowSpotlightAngle, spotlightPenumbra, windowSpotlightDecay)
-        spotLightWindow.position.set(100,15,0)
+        spotLightWindow.position.set(100, 25, 0)
         spotLightWindow.castShadow = true;
-        spotLightWindow.shadow.mapSize.width = mapSize;
-        spotLightWindow.shadow.mapSize.height = mapSize;
-        spotLightWindow.shadow.camera.near = 0.5;
-        spotLightWindow.shadow.camera.far = 300;
-        spotLightWindow.shadow.camera.left = -100;
-        spotLightWindow.shadow.camera.right = 100;
-        spotLightWindow.shadow.camera.bottom = -50;
-        spotLightWindow.shadow.camera.top = 50;
-        const targetObject = new THREE.Object3D();
+        /*const targetObject = new THREE.Object3D();
         targetObject.position.set(-200,15,0); // Replace with your desired coordinates
         spotLightWindow.target = targetObject;
-        this.app.scene.add(targetObject); // Add it to the scene
-        
+        this.app.scene.add(targetObject); */// Add it to the scene
 
-        //const helper1 = new THREE.SpotLightHelper( spotLightWindow);
-        //this.app.scene.add( helper1 );
 
-        house.mesh.add(spotLightWindow)
+        this.app.scene.add(new THREE.SpotLightHelper(spotLightWindow));
+        this.app.scene.add(spotLightWindow)
 
-        //this.app.scene.add(new THREE.SpotLightHelper(spotLightWindow))
         //-----------------------------------------------END OF WINDOW-----------------------------------------------
 
         //-----------------------------------------------LIVING ROOM-----------------------------------------------
@@ -677,6 +666,7 @@ class MyContents {
         sofa.position.y = -rugHeight / 2 - sofaBaseDepth / 2;
         sofa.position.z = -sofaBaseHeight / 2;
         sofa.castShadow = true;
+        sofa.receiveShadow = true;
         rug.add(sofa);
 
         //build(baseWidth, baseDepth, baseHeight, armWidth, armHeight, backHeight, backDepth, legHeight, legRadius, legMaterial, baseMaterial, armMaterial, backMaterial)
@@ -685,6 +675,8 @@ class MyContents {
         armchair.rotation.y = -Math.PI / 2;
         armchair.position.z = -(armchairBaseHeight + armchairBackHeight) / 2;
         armchair.position.x = rugWidth / 1.6
+        armchair.castShadow = true;
+        armchair.receiveShadow = true;
         rug.add(armchair);
         //-----------------------------------------------END OF LIVING ROOM-----------------------------------------------
 
