@@ -74,43 +74,19 @@ class MyApp {
         perspective1.position.set(10, 10, 3)
         this.cameras['Perspective'] = perspective1
 
-        // defines the frustum size for the orthographic cameras
-        const left = -this.frustumSize / 2 * aspect
-        const right = this.frustumSize / 2 * aspect
-        const top = this.frustumSize / 2
-        const bottom = -this.frustumSize / 2
-        const near = -this.frustumSize / 2
-        const far = this.frustumSize
-
-        // create a left view orthographic camera
-        const orthoLeft = new THREE.OrthographicCamera(left, right, top, bottom, near, far);
-        orthoLeft.up = new THREE.Vector3(0, 1, 0);
-        orthoLeft.position.set(-this.frustumSize / 4, 0, 0)
-        orthoLeft.lookAt(new THREE.Vector3(0, 0, 0));
-        this.cameras['Left'] = orthoLeft
-
-        // create a top view orthographic camera
-        const orthoTop = new THREE.OrthographicCamera(left, right, top, bottom, near, far);
-        orthoTop.up = new THREE.Vector3(0, 0, 1);
-        orthoTop.position.set(0, this.frustumSize / 4, 0)
-        orthoTop.lookAt(new THREE.Vector3(0, 0, 0));
-        this.cameras['Top'] = orthoTop
-
-        // create a front view orthographic camera
-        const orthoFront = new THREE.OrthographicCamera(left, right, top, bottom, near, far);
-        orthoFront.up = new THREE.Vector3(0, 1, 0);
-        orthoFront.position.set(0, 0, this.frustumSize / 4)
-        orthoFront.lookAt(new THREE.Vector3(0, 0, 0));
-        this.cameras['Front'] = orthoFront
-
         const perspectiveCorner = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)
-        perspectiveCorner.position.set(-45, 35, -45)
+        perspectiveCorner.position.set(-45, 30, -45)
         this.cameras['Corner Perspective'] = perspectiveCorner
 
-        const perspectiveChair = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)
-        perspectiveChair.position.set(25, 15, -32)
-        perspectiveChair.lookAt(new THREE.Vector3(25, 0, 0));
-        this.cameras['Chair Perspective'] = perspectiveChair
+        const perspectiveTable = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)
+        perspectiveTable.position.set(35, 15, -35)
+        perspectiveTable.lookAt(new THREE.Vector3(25, 0, 0));
+        this.cameras['Table Perspective'] = perspectiveTable
+
+        const perspectiveSofa = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)
+        perspectiveSofa.position.set(0, 13, 7)
+        perspectiveSofa.lookAt(new THREE.Vector3(-25, 0, 0));
+        this.cameras['Sofa Perspective'] = perspectiveSofa
     }
 
     /**
@@ -145,8 +121,10 @@ class MyApp {
                 // Orbit controls allow the camera to orbit around a target.
                 this.controls = new OrbitControls(this.activeCamera, this.renderer.domElement);
                 this.controls.enableZoom = true;
-                if (this.activeCameraName === 'Chair Perspective') {
+                if (this.activeCameraName === 'Table Perspective') {
                     this.controls.target.set(new THREE.Vector3(25, 0, 0))
+                } else if(this.activeCameraName === 'Sofa Perspective') {
+                    this.controls.target.set(new THREE.Vector3(-25, 0, 0))
                 }
                 this.controls.update();
             }
