@@ -24,18 +24,18 @@ class MyJournal {
         controlPoints =
         [   // U = 0
         [ // V = 0..1;
-            [ -0.5, -1.5, 0.0, 1 ],
-            [ -0.5,  1.5, 0.0, 1 ],
+            [ -1.5, -1.0, 0.0, 1 ],
+            [ -1.5,  1.0, 0.0, 1 ],
         ],
     // U = 1
         [ // V = 0..1
-            [ 0, -1.5, 3.0, 1 ],
-            [ 0,  1.5, 3.0, 1 ]
+            [ 0, -1.0, 1.0, 1 ],
+            [ 0,  1.0, 1.0, 1 ]
         ],
     // U = 2
         [ // V = 0..1
-            [ 0.5, -1.5, 0.0, 1 ],
-            [ 0.5,  1.5, 0.0, 1 ]
+            [ 1.5, -1.0, 0.0, 1 ],
+            [ 1.5,  1.0, 0.0, 1 ]
         ],
 
 
@@ -48,7 +48,7 @@ class MyJournal {
         mesh.scale.set( 1,1,1 )
         mesh.position.set( 0,0,0 )
         const mesh2=new THREE.Mesh( surfaceData, journalMaterial );
-        mesh2.position.x = 1;
+        mesh2.position.x = 3;
         mesh.add(mesh2);
         return mesh
     }

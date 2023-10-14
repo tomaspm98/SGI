@@ -1,0 +1,354 @@
+[33mcommit 5ce5f942724ca65a2107cd02046e8d4b66980cfc[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Fri Oct 13 09:54:15 2023 +0100
+
+    .
+
+[33mcommit 7f5763181b34d7d0e0f0243802c64bf055e1b32d[m
+Merge: 839e4d9 af81629
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Oct 12 10:46:06 2023 +0100
+
+    adjusted the position of the box
+
+[33mcommit 839e4d9e6cc3f83b20bd97a3078fd2627079d38e[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Oct 12 10:35:58 2023 +0100
+
+    .
+
+[33mcommit af816293062dcdac2f8c5d3b4f523ef2be989124[m
+Author: tomaspm98 <up202006845@up.pt>
+Date:   Tue Oct 10 18:55:49 2023 +0100
+
+    Remote + box added
+
+[33mcommit 7c192bc8ab442f7d1c401ebe80f694a351c175b1[m
+Author: tomaspm98 <up202006845@up.pt>
+Date:   Tue Oct 10 14:42:54 2023 +0100
+
+    Remote geometry done
+
+[33mcommit 6244a6093138fa0a3fff62aadf33a0734ca9679d[m
+Author: tomaspm98 <up202006845@up.pt>
+Date:   Tue Oct 10 13:16:03 2023 +0100
+
+    Objects modifications (still need to improve shadows)
+
+[33mcommit dab0d44fc75416499603987ac2edbea24f77099a[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Tue Oct 10 09:52:14 2023 +0100
+
+    Update book dimensions and positions on the sideboard
+
+[33mcommit fbd2c062ca9170e444fe77caa7d564ebd1ee3265[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Mon Oct 9 18:30:31 2023 +0100
+
+    Update spotlight intensity and angle, add sideboard in living room.Fixed spotlight intensity and angle, added sideboard in living room
+
+[33mcommit 12eed8f7313de4b5f6498218a6cea465163680be[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Mon Oct 9 16:50:20 2023 +0100
+
+    added coffee table in the scene
+
+[33mcommit 0b3b06f97139376d8e2617f5817fc3a8daa90b4c[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Sat Oct 7 21:16:27 2023 +0100
+
+    Add window spotlight in MyContents.js
+
+[33mcommit 11dbe481d3699f8af35835a83032b5b37197b86f[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Sat Oct 7 19:53:43 2023 +0100
+
+    Add window to MyHouse
+
+[33mcommit 9596758694f30ded9eb47cbff9a2229b8c397e99[m
+Merge: 06ad322 2eb6cf1
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Sat Oct 7 18:23:53 2023 +0100
+
+    improve glass and lamp
+
+[33mcommit 06ad32233750631cca0b7e5e494bd01c68b8c9c3[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Sat Oct 7 18:02:19 2023 +0100
+
+    refactor hierarchy table
+
+[33mcommit 2eb6cf18e66382af45cd560ebe19220489eb6829[m
+Author: tomaspm98 <up202006845@up.pt>
+Date:   Sat Oct 7 00:34:01 2023 +0100
+
+    Books + cup with fruits
+
+[33mcommit a401a5ed54d7d4647fff047c16fdf51326da142c[m
+Author: tomaspm98 <up202006845@up.pt>
+Date:   Thu Oct 5 17:25:32 2023 +0100
+
+    Flower problem corrected
+
+[33mcommit bdd291c3b011828a929430f01046a873d71eeff8[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Oct 5 16:29:15 2023 +0100
+
+    sideboard done
+
+[33mcommit f8deed162599646d2018f2d39c38260a6f646911[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Oct 5 13:10:39 2023 +0100
+
+    added arm chair
+
+[33mcommit 2b667b60c2fdf4c6dd5fb8bbabca464f093fb080[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Oct 5 11:03:11 2023 +0100
+
+    coffe table done
+
+[33mcommit 522714f7a468a67d3131d5de1ba3d1e9e933f4b4[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Wed Oct 4 23:24:12 2023 +0100
+
+    added television
+
+[33mcommit ce3c478963b1fe294197ed864af2acbb52d5a15d[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Wed Oct 4 19:29:59 2023 +0100
+
+    added spring
+
+[33mcommit 96afd9e31034baa30a8432e474b95ca8d331ed43[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Wed Oct 4 18:13:26 2023 +0100
+
+    beetle finished
+
+[33mcommit 1c7048e66bc4e9eada4cd2135cd4acad7cf98422[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Wed Oct 4 17:58:26 2023 +0100
+
+    .
+
+[33mcommit fc68aef2352647245f8fc15ffcee5b79643c1555[m
+Merge: cb874e4 a315883
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Wed Oct 4 17:16:02 2023 +0100
+
+    .
+
+[33mcommit cb874e4e17828c16c86becd2d6a00ee620309574[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Wed Oct 4 17:15:17 2023 +0100
+
+    beetle done
+
+[33mcommit a315883e198ccd8b43099e4e27160a7147cbb045[m
+Author: tomaspm98 <up202006845@up.pt>
+Date:   Wed Oct 4 16:50:32 2023 +0100
+
+    More advance on flower and jar
+
+[33mcommit 8340957210e5bf70ae665f2a77a5e00710d412f0[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Wed Oct 4 16:34:29 2023 +0100
+
+    added quarter circle
+
+[33mcommit 056c805567d036a6f66aa5f5621b60290be844a1[m
+Merge: 200b845 7352817
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Tue Oct 3 21:40:20 2023 +0100
+
+    merge
+
+[33mcommit 200b8457bf3bd3500b68325e9619060d8a29d87a[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Tue Oct 3 21:37:12 2023 +0100
+
+    added semi circle
+
+[33mcommit 7352817c50c1a429645ad04dadc46107c7716431[m
+Author: tomaspm98 <up202006845@up.pt>
+Date:   Tue Oct 3 20:04:14 2023 +0100
+
+    Advance in scene
+
+[33mcommit a153db83093ad627cac155ce24db90be9a95e043[m
+Author: tomaspm98 <up202006845@up.pt>
+Date:   Tue Oct 3 13:19:34 2023 +0100
+
+    rug + chairs + mirror structure
+
+[33mcommit 039d79570c6a0169c3a7e341f032852394498c0e[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Tue Oct 3 09:29:44 2023 +0100
+
+    aumentei o tamanho da casa e ajustei o tamanho dos objetos
+
+[33mcommit 1e1f1c6ad2d1cbd367fc2824e2d2946448fce2dc[m
+Author: tomaspm98 <up202006845@up.pt>
+Date:   Fri Sep 29 14:50:15 2023 +0100
+
+    Door added
+
+[33mcommit df689048fd1aa1965cc28f708b66ad1fb4957c8a[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Sep 28 22:22:29 2023 +0100
+
+    last touches on the window
+
+[33mcommit 3cc6ae86fd0b7b271a1b25e3b8a0cc1999f8b0b7[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Sep 28 22:09:55 2023 +0100
+
+    added window
+
+[33mcommit 445cf0a9072de4141b383b1d9b776f911f56ab11[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Sep 28 21:50:30 2023 +0100
+
+    quick fix
+
+[33mcommit c26cde4a3495c7f0c981ecd2bc1e44087c0ca4c7[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Sep 28 21:25:05 2023 +0100
+
+    .
+
+[33mcommit fa3214e9dcb60eaa236f7f1b8369828b0281f45c[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Sep 28 21:18:17 2023 +0100
+
+    frame added
+
+[33mcommit 98f1cd155f3ed391963b9b01355dbff02272f766[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Sep 28 12:31:02 2023 +0100
+
+    refactor spotLight
+
+[33mcommit b4e26b6a7c3f692b80fcc2c46e21499743e44bd1[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Sep 28 11:37:38 2023 +0100
+
+    updated gui
+
+[33mcommit 386d539784a47dc159e3657e6ce2998260f3786c[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Sep 28 11:34:00 2023 +0100
+
+    refactored house class: added the creation of lights
+
+[33mcommit 50a997e3b21b9043ed9706ce782ac28381a5fba5[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Sep 28 11:11:00 2023 +0100
+
+    refactor lights
+
+[33mcommit 3199acdfda8a3c2ed6e2679f7ba6713e9f62ac7b[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Wed Sep 27 19:06:08 2023 +0100
+
+    refactor materials
+
+[33mcommit 64aebaef3cc34b7727b37bb9dff9a0e6a26c439e[m
+Author: tomaspm98 <up202006845@up.pt>
+Date:   Tue Sep 26 12:12:31 2023 +0100
+
+    Week 2 - point 1,3,6
+
+[33mcommit 9d657384d4ceb0be9aa6e3fefdc294fbf890893c[m
+Author: tomaspm98 <up202006845@up.pt>
+Date:   Tue Sep 26 11:58:48 2023 +0100
+
+    Spotlight on cake
+
+[33mcommit 8a818dca43f5b4043b2cf6c59ca073aedc8abb92[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Tue Sep 26 09:11:53 2023 +0100
+
+    house finished
+
+[33mcommit 0fb2885ee9eeac3bef35eabfd592b397cca08de5[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Tue Sep 26 09:01:31 2023 +0100
+
+    build house
+
+[33mcommit 0cea87299e05ee3247e8c00b52bfcdd3571e72af[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Tue Sep 26 08:41:51 2023 +0100
+
+    merge
+
+[33mcommit 9f7f0af631b226887aced6499f9415b04cc09234[m
+Author: tomaspm98 <up202006845@up.pt>
+Date:   Mon Sep 25 12:12:17 2023 +0100
+
+    Final merge with github
+
+[33mcommit f80c9372de5956d394feadf5e0664df04a1a8288[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Sep 21 11:57:59 2023 +0100
+
+    refactor
+
+[33mcommit 2020d18dfaf98703687dcd60cf1b8164fbc29085[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Sep 21 11:22:43 2023 +0100
+
+    fix house
+
+[33mcommit c6f451a94b80ae81a07f11c26d1b824abfde2f25[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Sep 21 11:05:35 2023 +0100
+
+    .
+
+[33mcommit 9ead03f193f175720387f55617936933d4ceb362[m
+Merge: d829048 272df0d
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Sep 21 10:56:36 2023 +0100
+
+    .
+
+[33mcommit d829048691d02cc53d3d1a56e00569948dc8dd6d[m
+Author: Daniel Rodrigues <up202006562@up.pt>
+Date:   Thu Sep 21 10:55:00 2023 +0100
+
+    added tp1
+
+[33mcommit 272df0da44bd35e0c7af5c317457f9787a0ef67f[m
+Author: Daniel JosA(c) Mendes Rodrigues <up202006562@fe.up.pt>
+Date:   Thu Sep 21 09:49:17 2023 +0000
+
+    Update README.md
+
+[33mcommit 04787c2a0d6e6a2e2077cc9be6e67fc7f85b6723[m
+Author: Daniel JosA(c) Mendes Rodrigues <up202006562@fe.up.pt>
+Date:   Thu Sep 21 09:47:17 2023 +0000
+
+    Update README.md
+
+[33mcommit 8c04d6be0e8161748138cc3eed315d1936d0f065[m
+Author: Daniel JosA(c) Mendes Rodrigues <up202006562@fe.up.pt>
+Date:   Thu Sep 21 09:46:50 2023 +0000
+
+    Update README.md
+
+[33mcommit a090c684a3970f51e853359ae5d3d46241a7d3bb[m
+Author: Teresa Matos <tccm@fe.up.pt>
+Date:   Mon Sep 18 13:19:52 2023 +0100
+
+    [upd] Added base code for TP1
+
+[33mcommit f1b776ebc2c89f20768959cb85c80aac06693f14[m
+Author: Teresa Matos <tccm@fe.up.pt>
+Date:   Thu Sep 14 10:27:01 2023 +0100
+
+    [init] Basic structure of TP folders
+    
+    Added READMEs to be edited by groups.

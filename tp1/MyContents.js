@@ -275,6 +275,7 @@ class MyContents {
         this.app.scene.add(ambientLight);
 
         this.app.scene.add(this.buildHouse())
+        
     }
 
     buildHouse() {
@@ -462,7 +463,7 @@ class MyContents {
 
         const journal = new MyJournal().build(this.journalMaterial);
         journal.position.y = tableHeight / 2;
-        journal.position.x = 6.5;
+        journal.position.x = 5;
         journal.position.z = 5;
         journal.rotation.x = -Math.PI / 2
         table.add(journal);
