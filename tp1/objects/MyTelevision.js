@@ -15,11 +15,17 @@ class MyTelevision {
      * @param {THREE.Material} texture - The material for the television borders.
      * @returns {THREE.Mesh} The television object.
      */
-    build(height, width, depth, border, video, texture) {
+    build(height, width, depth, border, video) {
         const tvMesh = new THREE.Mesh();
 
+        const televisionMaterial = new THREE.MeshPhongMaterial({
+            color: "#000000",
+            specular: "#333333",
+            shininess: 20,
+        })
+        
         // Create the back plate of the television
-        const backPlate = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth - border), texture);
+        const backPlate = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth - border), televisionMaterial);
         tvMesh.add(backPlate);
 
         // Create the television screen
@@ -28,7 +34,7 @@ class MyTelevision {
         tvMesh.add(tvScreen);
 
         // Create the borders of the television
-        const border1 = new THREE.Mesh(new THREE.BoxGeometry(width, border, border), texture);
+        const border1 = new THREE.Mesh(new THREE.BoxGeometry(width, border, border), televisionMaterial);
         border1.position.y = height / 2 - border / 2;
         border1.position.z = depth - border;
         tvMesh.add(border1);
@@ -38,7 +44,7 @@ class MyTelevision {
         border2.position.z = depth - border;
         tvMesh.add(border2);
 
-        const border3 = new THREE.Mesh(new THREE.BoxGeometry(border, height, border), texture);
+        const border3 = new THREE.Mesh(new THREE.BoxGeometry(border, height, border), televisionMaterial);
         border3.geometry = new THREE.BoxGeometry(border, height, border);
         border3.position.x = width / 2 - border / 2;
         border3.position.z = depth - border;

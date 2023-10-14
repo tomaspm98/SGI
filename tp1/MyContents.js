@@ -67,9 +67,11 @@ class MyContents {
         })
 
         //cake related attributes
+        this.cakeTexture = new THREE.TextureLoader().load('textures/cake_texture.jpg')
         this.cakeMaterial = new THREE.MeshPhongMaterial({
             color: "#49332b",
-            shininess: 0
+            shininess: 0,
+            map:this.cakeTexture
         })
 
 
@@ -123,6 +125,14 @@ class MyContents {
             specular: "#000000",
             shininess: 5,
             map: this.windowTexture
+        })
+
+        this.windowBoardTexture = new THREE.TextureLoader().load('textures/window_texture.jpg')
+        this.windowBoardMaterial = new THREE.MeshPhongMaterial({
+            color: "#ffffff",
+            specular: "#000000",
+            shininess: 5,
+            map: this.windowBoardTexture
         })
 
         this.doorTexture = new THREE.TextureLoader().load('textures/door_texture.png')
@@ -204,14 +214,6 @@ class MyContents {
             map: this.orangeTexture
         })
 
-        this.appleTexture = new THREE.TextureLoader().load('textures/apple_texture.jpg')
-        this.appleMaterial = new THREE.MeshPhongMaterial({
-            color: "#ddbbbb",
-            specular: "#ddbbbb",
-            shininess: 10,
-            map: this.appleTexture
-        })
-
         this.pagesTexture = new THREE.TextureLoader().load('textures/pages_texture.jpg')
         this.pagesTexture.wrapS = THREE.RepeatWrapping
         this.pagesTexture.wrapT = THREE.RepeatWrapping
@@ -253,6 +255,93 @@ class MyContents {
             color: "#ff0000",
             specular: "#ff0000",
             shininess: 10,
+        })
+
+        this.frameMaterial = new THREE.MeshPhongMaterial({
+            color: "#b8860b",
+            specular: "#ffffff",
+            shininess: 50,
+        })
+
+        this.sofaTexture = new THREE.TextureLoader().load('textures/sofa_texture.jpg');
+        this.sofaMaterial = new THREE.MeshPhongMaterial({
+            color: "#ffffff",
+            specular: "#ffffff",
+            shininess: 10,
+            map: this.sofaTexture
+        })
+
+        this.sofaSitTexture = new THREE.TextureLoader().load('textures/sofa_sit_texture.jpg');
+        this.sofaSitMaterial = new THREE.MeshPhongMaterial({
+            color: "#ffffff",
+            specular: "#ffffff",
+            shininess: 20,
+            map: this.sofaSitTexture
+        })
+
+        this.armChairTexture = new THREE.TextureLoader().load('textures/armchair_texture.webp');
+        this.armChairMaterial = new THREE.MeshPhongMaterial({
+            color: "#ffffff",
+            specular: "#ffffff",
+            shininess: 10,
+            map: this.armChairTexture
+        })
+
+
+
+        this.coverTexture = new THREE.TextureLoader().load('textures/book_cover.png');
+        this.coverTexture.wrapS = THREE.RepeatWrapping;
+        this.coverTexture.wrapT = THREE.RepeatWrapping;
+
+        // Create the material using the loaded texture
+        this.coverMaterial = new THREE.MeshPhongMaterial({
+            map: this.coverTexture
+        })
+
+        this.spineTexture = new THREE.TextureLoader().load('textures/spine_book.png');
+        this.spineTexture.wrapS = THREE.RepeatWrapping;
+        this.spineTexture.wrapT = THREE.RepeatWrapping;
+        this.spineTexture.rotation=Math.PI;
+
+        // Create the material using the loaded texture
+        this.spineMaterial = new THREE.MeshPhongMaterial({
+            map: this.spineTexture
+        })
+
+        this.cover2Texture = new THREE.TextureLoader().load('textures/book2_cover.png');
+        this.cover2Texture.wrapS = THREE.RepeatWrapping;
+        this.cover2Texture.wrapT = THREE.RepeatWrapping;
+
+        // Create the material using the loaded texture
+        this.cover2Material = new THREE.MeshPhongMaterial({
+            map: this.cover2Texture
+        })
+
+        this.spine2Texture = new THREE.TextureLoader().load('textures/book2_spine.png');
+        this.spine2Texture.wrapS = THREE.RepeatWrapping;
+        this.spine2Texture.wrapT = THREE.RepeatWrapping;
+
+        // Create the material using the loaded texture
+        this.spine2Material = new THREE.MeshPhongMaterial({
+            map: this.spine2Texture
+        })
+
+        this.cover3Texture = new THREE.TextureLoader().load('textures/book3_cover.png');
+        this.cover3Texture.wrapS = THREE.RepeatWrapping;
+        this.cover3Texture.wrapT = THREE.RepeatWrapping;
+
+        // Create the material using the loaded texture
+        this.cover3Material = new THREE.MeshPhongMaterial({
+            map: this.cover3Texture
+        })
+
+        this.spine3Texture = new THREE.TextureLoader().load('textures/book3_spine.png');
+        this.spine3Texture.wrapS = THREE.RepeatWrapping;
+        this.spine3Texture.wrapT = THREE.RepeatWrapping;
+
+        // Create the material using the loaded texture
+        this.spine3Material = new THREE.MeshPhongMaterial({
+            map: this.spine3Texture
         })
 
 
@@ -438,13 +527,40 @@ class MyContents {
         candle.position.z = -0.1;
         cake.add(candle);
 
-        const frame1 = new MyFrame().create(frameSize, frameSize, frameThickness, this.tableMaterial, this.picture1Material);
+        const candle2 = new MyCandle().build(candleRadius, candleHeight, candleBaseHeight, candleFlameHeight, this.candleMaterial, this.flameMaterial);
+        candle2.position.y = 1.4;
+        candle2.position.z = -1;
+        cake.add(candle2);
+
+        const candle3 = new MyCandle().build(candleRadius, candleHeight, candleBaseHeight, candleFlameHeight, this.candleMaterial, this.flameMaterial);
+        candle3.position.y = 1.4;
+        candle3.position.x = 1;
+        cake.add(candle3);
+
+        const candle4 = new MyCandle().build(candleRadius, candleHeight, candleBaseHeight, candleFlameHeight, this.candleMaterial, this.flameMaterial);
+        candle4.position.y = 1.4;
+        candle4.position.x = -1;
+        cake.add(candle4);
+
+        const candle5 = new MyCandle().build(candleRadius, candleHeight, candleBaseHeight, candleFlameHeight, this.candleMaterial, this.flameMaterial);
+        candle5.position.y = 1.4;
+        candle5.position.z = -0.5;
+        candle5.position.x = -0.5;
+        cake.add(candle5);
+
+        const candle6 = new MyCandle().build(candleRadius, candleHeight, candleBaseHeight, candleFlameHeight, this.candleMaterial, this.flameMaterial);
+        candle6.position.y = 1.4;
+        candle6.position.z = -0.5;
+        candle6.position.x = 0.5;
+        cake.add(candle6);
+
+        const frame1 = new MyFrame().create(frameSize, frameSize, frameThickness, this.frameMaterial, this.picture1Material);
         house.addObjectWall(1, frame1, 10, 0, frameThickness);
 
-        const frame2 = new MyFrame().create(frameSize, frameSize, frameThickness, this.tableMaterial, this.picture2Material);
+        const frame2 = new MyFrame().create(frameSize, frameSize, frameThickness, this.frameMaterial, this.picture2Material);
         house.addObjectWall(1, frame2, -10, 0, frameThickness);
 
-        const window1 = new MyWindow().create(windowWidth, windowHeight, windowThickness, this.tableMaterial, this.glassMaterial);
+        const window1 = new MyWindow().create(windowWidth, windowHeight, windowThickness, this.windowBoardMaterial, this.glassMaterial);
         house.addObjectWall(3, window1, 0, 0, 0);
 
         const door = new MyDoor().build(doorWidth, doorHeight, doorThickness, this.doorMaterial);
@@ -494,7 +610,7 @@ class MyContents {
         let cup = new MyCup().build(1.5, 64, 32, Math.PI, Math.PI, 0, Math.PI, this.cupMaterial)
         cup.rotation.x = -Math.PI / 2
         cup.position.y = tableHeight + 1.68
-        cup.position.x = -tableWidth / 3
+        cup.position.x = -tableWidth / 2
         cup.position.z = -tableLength / 4
         table.add(cup)
         cup.scale.set(1.3, 1.3, 1.3)
@@ -555,7 +671,7 @@ class MyContents {
 
         //-----------------------------------------------LIVING ROOM-----------------------------------------------
 
-        const television = new MyTelevision().build(televisionWidth, televisionHeight, televisionThickness, televisionStandHeight, this.feupKaraokeVideoMaterial, this.tableMaterial);
+        const television = new MyTelevision().build(televisionWidth, televisionHeight, televisionThickness, televisionStandHeight, this.feupKaraokeVideoMaterial);
         house.addObjectWall(2, television, 0, 0, televisionThickness / 2 + 0.1);
 
         const rug = new MyRug().build(rugWidth, rugHeight, rugThickness, this.rugMaterial);
@@ -577,21 +693,21 @@ class MyContents {
         sideboard.position.z = -sideboardHeight / 2
         rug.add(sideboard)
 
-        const book = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.planeMaterial)
+        const book = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.coverMaterial,this.spineMaterial)
         book.rotation.x = Math.PI / 2
         book.position.y = coffeeTableHeight + 0.2
         book.position.z = -2
         book.position.x = -3
         coffeeTable.add(book)
 
-        const book2 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.planeMaterial)
+        const book2 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.cover2Material, this.spine2Material)
         book2.rotation.y = Math.PI / 2
         book2.position.x = 0.5
         book2.position.y = 1.85
         book2.position.z = -1
         sideboard.add(book2)
 
-        const book3 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.planeMaterial)
+        const book3 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.cover3Material, this.spine3Material)
         book3.rotation.y = Math.PI / 2
         book3.rotation.x = Math.PI
         book3.position.x = bookDepth + coverDepth + 0.7
@@ -599,14 +715,14 @@ class MyContents {
         book3.position.z = -1
         sideboard.add(book3)
 
-        const book4 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.planeMaterial)
+        const book4 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.cover3Material, this.spine3Material)
         book4.rotation.y = Math.PI / 2
         book4.position.x = (0.5 + bookDepth + coverDepth) * 2
         book4.position.y = 1.85
         book4.position.z = -1
         sideboard.add(book4)
 
-        const book5 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.planeMaterial)
+        const book5 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.cover2Material, this.spine2Material)
         book5.rotation.y = Math.PI / 2
         book5.rotation.x = Math.PI
         book5.position.x = (0.5 + bookDepth + coverDepth) * 3
@@ -614,14 +730,14 @@ class MyContents {
         book5.position.z = -1
         sideboard.add(book5)
 
-        const book6 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.planeMaterial)
+        const book6 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.cover2Material, this.spine2Material)
         book6.rotation.y = Math.PI / 2
         book6.position.x = (0.5 + bookDepth + coverDepth) * 4
         book6.position.y = 1.85
         book6.position.z = -1
         sideboard.add(book6)
 
-        const book7 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.planeMaterial)
+        const book7 = new MyBook().build(bookWidth, bookHeight, bookDepth, this.pagesMaterial, coverWidth, coverHeight, coverDepth, this.cover3Material, this.spine3Material)
         book7.rotation.y = Math.PI / 2
         book7.rotation.x = Math.PI
         book7.position.x = (0.5 + bookDepth + coverDepth) * 5
@@ -647,7 +763,7 @@ class MyContents {
         cableBox.position.y = cableBoxHeight * 0.8;
         sideboard.add(cableBox);
 
-        const sofa = new MySofa().build(sofaBaseWidth, sofaBaseDepth, sofaBaseHeight, sofaArmWidth, sofaArmHeight, sofaBackHeight, sofaBackDepth, this.tableMaterial, this.tableMaterial, this.tableMaterial);
+        const sofa = new MySofa().build(sofaBaseWidth, sofaBaseDepth, sofaBaseHeight, sofaArmWidth, sofaArmHeight, sofaBackHeight, sofaBackDepth, this.sofaSitMaterial, this.sofaMaterial, this.sofaMaterial);
         sofa.rotation.x = -Math.PI / 2;
         sofa.position.y = -rugHeight / 2 - sofaBaseDepth / 2;
         sofa.position.z = -sofaBaseHeight / 2;
@@ -656,7 +772,7 @@ class MyContents {
         rug.add(sofa);
 
         //build(baseWidth, baseDepth, baseHeight, armWidth, armHeight, backHeight, backDepth, legHeight, legRadius, legMaterial, baseMaterial, armMaterial, backMaterial)
-        const armchair = new MyArmchair().build(armchairBaseWidth, armchairBaseDepth, armchairBaseHeight, armchairArmWidth, armchairArmHeight, armchairBackHeight, armchairBackDepth, armchairLegHeight, armchairLegRadius, this.tableMaterial, this.tableMaterial, this.tableMaterial, this.tableMaterial);
+        const armchair = new MyArmchair().build(armchairBaseWidth, armchairBaseDepth, armchairBaseHeight, armchairArmWidth, armchairArmHeight, armchairBackHeight, armchairBackDepth, armchairLegHeight, armchairLegRadius, this.tableMaterial, this.armChairMaterial, this.armChairMaterial, this.armChairMaterial);
         armchair.rotation.x = -Math.PI / 2;
         armchair.rotation.y = -Math.PI / 2;
         armchair.position.z = -(armchairBaseHeight + armchairBackHeight) / 2;

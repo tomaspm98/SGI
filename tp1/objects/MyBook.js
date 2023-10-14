@@ -17,7 +17,7 @@ class MyBook {
      * @param {THREE.Material} coverMaterial - The material for the book cover.
      * @returns {THREE.Mesh} The book object.
      */
-    build(bookWidth, bookHeight, bookDepth, bookMaterial, coverWidth, coverHeight, coverDepth, coverMaterial) {
+    build(bookWidth, bookHeight, bookDepth, bookMaterial, coverWidth, coverHeight, coverDepth, coverMaterial, spineMaterial) {
         const book = new THREE.Mesh();
 
         // Build the pages and add them to the book
@@ -45,7 +45,7 @@ class MyBook {
 
         // Build the spine and add it to the book
         const back = new THREE.BoxGeometry(bookDepth + coverDepth, coverHeight, coverDepth);
-        const backMesh = new THREE.Mesh(back, coverMaterial);
+        const backMesh = new THREE.Mesh(back, spineMaterial);
         backMesh.rotation.y = Math.PI / 2;
         backMesh.position.x = -coverWidth / 2;
         backMesh.castShadow = true;

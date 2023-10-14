@@ -21,7 +21,7 @@ class MyApp {
         this.activeCameraName = null
         this.lastCameraName = null
         this.cameras = []
-        this.frustumSize = 20
+        this.frustumSize=60
 
         // other attributes
         this.renderer = null
@@ -79,14 +79,38 @@ class MyApp {
         this.cameras['Corner Perspective'] = perspectiveCorner
 
         const perspectiveTable = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)
-        perspectiveTable.position.set(35, 15, -35)
-        perspectiveTable.lookAt(new THREE.Vector3(25, 0, 0));
+        perspectiveTable.position.set(25, 15, -35)
         this.cameras['Table Perspective'] = perspectiveTable
 
         const perspectiveSofa = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)
-        perspectiveSofa.position.set(0, 20, -30)
+        perspectiveSofa.position.set(0, 20, 5)
         this.cameras['Sofa Perspective'] = perspectiveSofa
+
+        const perspectiveDoor = new THREE.PerspectiveCamera(75,aspect,0.1,1000)
+        perspectiveDoor.position.set(-49,20,0)
+        this.cameras['Door Perspective'] = perspectiveDoor
+        
+        const left = -this.frustumSize / 2 * aspect
+        const right = this.frustumSize /2 * aspect 
+        const top = this.frustumSize / 2 
+        const bottom = -this.frustumSize / 2
+        const near = this.frustumSize /2
+        const far =  this.frustumSize
+
+        const orthoRight = new THREE.OrthographicCamera( left, right, top, bottom, 0.1, far);
+        orthoRight.up = new THREE.Vector3(0,1,0);
+        orthoRight.position.set(35,20,0) 
+        orthoRight.lookAt( new THREE.Vector3(0,0,0) );
+        this.cameras['Right'] = orthoRight
+
+        const orthoTop = new THREE.OrthographicCamera( left*2, right*2, top*2, bottom*2, 0.1, far*2);
+        orthoTop.up = new THREE.Vector3(0,0,1);
+        orthoTop.position.set(0,34,0) 
+        orthoTop.lookAt( new THREE.Vector3(0,0,0) );
+        this.cameras['Top'] = orthoTop
+
     }
+
 
     /**
      * sets the active camera by name
@@ -120,15 +144,15 @@ class MyApp {
                 // Orbit controls allow the camera to orbit around a target.
                 this.controls = new OrbitControls(this.activeCamera, this.renderer.domElement);
                 this.controls.enableZoom = true;
-                if (this.activeCameraName === 'Table Perspective') {
-                    this.controls.target.set(new THREE.Vector3(25, 0, 0))
-                } else if(this.activeCameraName === 'Sofa Perspective') {
-                    this.controls.target.set(new THREE.Vector3(-25, 0, 0))
-                }
                 this.controls.update();
             }
             else {
                 this.controls.object = this.activeCamera
+                if (this.activeCameraName === 'Table Perspective') {
+                    this.controls.target = new THREE.Vector3(25, 0, 0)
+                } else if(this.activeCameraName === 'Sofa Perspective') {
+                    this.controls.target =new THREE.Vector3(0, 0, 50)
+                }
             }
         }
     }
