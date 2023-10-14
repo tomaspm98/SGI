@@ -18,42 +18,47 @@ class MyWindow {
      * @returns {THREE.Mesh} The window object.
      */
     create(windowWidth, windowHeight, windowDepth, borderMaterial, picture, intensity = 300, colorLight = "#ffffff") {
-        const windowMesh = new THREE.Mesh();
+        const windowMesh = new THREE.Group();
 
         // Create the window glass
         const glass = new THREE.Mesh(new THREE.PlaneGeometry(windowWidth, windowHeight), picture);
         glass.rotation.y = Math.PI;
+        glass.castShadow = false;
+        glass.receiveShadow = false;
         windowMesh.add(glass);
+
 
         // Create the window borders
         const border1 = new THREE.Mesh(new THREE.BoxGeometry(windowWidth + windowDepth, windowDepth, windowDepth), borderMaterial);
         border1.position.y = windowHeight / 2;
+        border1.castShadow = false;
+        border1.receiveShadow = false;
         windowMesh.add(border1);
+
 
         const border2 = border1.clone();
         border2.position.y = -windowHeight / 2;
+        border2.castShadow = false;
+        border2.receiveShadow = false;
         windowMesh.add(border2);
 
-        const border3 = border1.clone();
-        border3.geometry = new THREE.BoxGeometry(windowDepth, windowHeight, windowDepth);
+        const border3 = new THREE.Mesh(new THREE.BoxGeometry(windowDepth, windowHeight, windowDepth), borderMaterial);
         border3.position.x = windowWidth / 2;
+        border3.castShadow = false;
+        border3.receiveShadow = false;
         windowMesh.add(border3);
 
         const border4 = border3.clone();
         border4.position.x = -windowWidth / 2;
+        border4.castShadow = false;
+        border4.receiveShadow = false;
         windowMesh.add(border4);
 
-        const border5 = border3.clone();
+        const border5 = new THREE.Mesh(new THREE.BoxGeometry(windowDepth, windowHeight, windowDepth), borderMaterial);
+        border5.castShadow = true;
+        border5.receiveShadow = false;
         windowMesh.add(border5);
 
-
-        // Enable shadows for all meshes
-        windowMesh.traverse((child) => {
-            if (child instanceof THREE.Mesh) {
-                child.castShadow = false;
-                child.receiveShadow = false;
-            }
-        });
 
         return windowMesh;
     }

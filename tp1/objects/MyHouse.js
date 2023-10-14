@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { MyLed } from './MyLed.js';
 
 /**
  * A class representing a house object.
@@ -42,6 +43,7 @@ class MyHouse {
         roofMesh.castShadow = false;
         roofMesh.position.z = this.wallHeight;
         roofMesh.rotation.x = Math.PI;
+        roofMesh.castShadow = true;
         this.floorMesh.add(roofMesh);
 
         // Create the walls
@@ -99,8 +101,12 @@ class MyHouse {
             this.wallMesh3.add(wallMesh33);
             this.wallMesh3.add(wallMesh34);
         }
-        this.wallMesh3.receiveShadow = false;
-        this.wallMesh3.castShadow = false;
+        this.wallMesh3.traverse((child) => {
+            if (child instanceof THREE.Mesh) {
+                child.castShadow = true;
+                child.receiveShadow = false;
+            }
+        });
         this.wallMesh3.rotation.x = Math.PI / 2;
         this.wallMesh3.rotation.y = -Math.PI / 2;
         this.wallMesh3.position.x = this.floorWidth / 2;
@@ -118,37 +124,25 @@ class MyHouse {
      * @param {number} decay - The decay of the lights.
      */
     createLights(color = "#ffffff", intensity = 150, distance = 50, decay = 2) {
-        const pointLight = new THREE.PointLight(color, intensity, distance, decay);
-        pointLight.position.set(-this.floorWidth / 4, this.wallHeight, 0);
-        this.mesh.add(pointLight);
+        const pointLightsPositions = [
+            [-this.floorWidth / 4, this.wallHeight * 0.9, 0],
+            [0, this.wallHeight * 0.9, this.floorWidth / 4],
+            [0, this.wallHeight * 0.9, -this.floorWidth / 4],
+            [this.floorWidth / 4, this.wallHeight * 0.9, 0],
+            [this.floorWidth / 3, this.wallHeight * 0.9, this.floorWidth / 3],
+            [this.floorWidth / 3, this.wallHeight * 0.9, -this.floorWidth / 3],
+            [-this.floorWidth / 3, this.wallHeight * 0.9, this.floorWidth / 3],
+            [-this.floorWidth / 3, this.wallHeight * 0.9, -this.floorWidth / 3]
+        ];
 
-        const pointLight2 = new THREE.PointLight(color, intensity, distance, decay);
-        pointLight2.position.set(0, this.wallHeight, this.floorWidth / 4);
-        this.mesh.add(pointLight2);
-
-        const pointLight3 = new THREE.PointLight(color, intensity, distance, decay);
-        pointLight3.position.set(0, this.wallHeight, -this.floorWidth / 4);
-        this.mesh.add(pointLight3);
-
-        const pointLight4 = new THREE.PointLight(color, intensity, distance, decay);
-        pointLight4.position.set(this.floorWidth / 4, this.wallHeight, 0);
-        this.mesh.add(pointLight4);
-
-        const pointLight5 = new THREE.PointLight(color, intensity, distance, decay);
-        pointLight5.position.set(this.floorWidth / 3, this.wallHeight, this.floorWidth / 3);
-        this.mesh.add(pointLight5);
-
-        const pointLight6 = new THREE.PointLight(color, intensity, distance, decay);
-        pointLight6.position.set(this.floorWidth / 3, this.wallHeight, -this.floorWidth / 3);
-        this.mesh.add(pointLight6);
-
-        const pointLight7 = new THREE.PointLight(color, intensity, distance, decay);
-        pointLight7.position.set(-this.floorWidth / 3, this.wallHeight, this.floorWidth / 3);
-        this.mesh.add(pointLight7);
-
-        const pointLight8 = new THREE.PointLight(color, intensity, distance, decay);
-        pointLight8.position.set(-this.floorWidth / 3, this.wallHeight, -this.floorWidth / 3);
-        this.mesh.add(pointLight8);
+        for (const pointLightPosition of pointLightsPositions) {
+            const pointLight = new THREE.PointLight(color, intensity, distance, decay);
+            pointLight.position.set(...pointLightPosition);
+            const led = new MyLed().build(2, 0.7);
+            led.position.y = 3.05;
+            pointLight.add(led);
+            this.mesh.add(pointLight);
+        }
     }
 
     /**

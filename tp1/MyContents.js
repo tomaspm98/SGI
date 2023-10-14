@@ -304,7 +304,7 @@ class MyContents {
         const spotlightIntensity = 1000;
         const spotlightDistance = 18;
         const spotlightDecay = 1;
-        const spotlightAngle = 0.2;
+        const spotlightAngle = 0.25;
         const spotlightPenumbra = 0.1;
         const frameSize = 12;
         const frameThickness = 0.5;
@@ -445,7 +445,7 @@ class MyContents {
         house.addObjectWall(1, frame2, -10, 0, frameThickness);
 
         const window1 = new MyWindow().create(windowWidth, windowHeight, windowThickness, this.tableMaterial, this.glassMaterial);
-        house.addObjectWall(3, window1, 0, 0, windowThickness);
+        house.addObjectWall(3, window1, 0, 0, 0);
 
         const door = new MyDoor().build(doorWidth, doorHeight, doorThickness, this.doorMaterial);
         house.addObjectWall(4, door, 0, -5, doorThickness / 2 + 0.01);
@@ -543,12 +543,9 @@ class MyContents {
         this.app.scene.add(landscape);
 
         const spotLightWindow = new THREE.SpotLight(windowSpotlightColor, windowSpotlightIntensity, windowSpotlightDistance, windowSpotlightAngle, spotlightPenumbra, windowSpotlightDecay)
-        spotLightWindow.position.set(100, 25, 0)
+        spotLightWindow.position.set(100, 30, 0)
+        spotLightWindow.target.position.set(0, -15, 0)
         spotLightWindow.castShadow = true;
-        /*const targetObject = new THREE.Object3D();
-        targetObject.position.set(-200,15,0); // Replace with your desired coordinates
-        spotLightWindow.target = targetObject;
-        this.app.scene.add(targetObject); */// Add it to the scene
 
 
         this.app.scene.add(new THREE.SpotLightHelper(spotLightWindow));
@@ -668,9 +665,6 @@ class MyContents {
         armchair.receiveShadow = true;
         rug.add(armchair);
         //-----------------------------------------------END OF LIVING ROOM-----------------------------------------------
-
-        /*let book = new MyBook().build(2, 3, 0.5, this.pagesMaterial, 2.15, 3.1, 0.1, this.planeMaterial)
-        house.mesh.add(book)*/
 
         return house.mesh
     }

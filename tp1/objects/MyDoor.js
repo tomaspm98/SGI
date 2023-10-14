@@ -21,7 +21,7 @@ class MyDoor {
 
         // Enable shadows for the mesh
         doorMesh.castShadow = false;
-        doorMesh.receiveShadow = false;
+        doorMesh.receiveShadow = true;
 
         return doorMesh;
     }
