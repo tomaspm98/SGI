@@ -18,7 +18,6 @@ class MyHouse {
         const floor = new THREE.PlaneGeometry(this.floorWidth, this.floorWidth)
         this.floorMesh = new THREE.Mesh(floor, this.floorMaterial)
         this.floorMesh.rotation.x = -Math.PI / 2
-        this.floorMesh.receiveShadow = true
         const roofMesh = new THREE.Mesh(floor, this.wallMaterial)
         roofMesh.position.z = this.wallHeight
         roofMesh.rotation.x = Math.PI
@@ -36,6 +35,8 @@ class MyHouse {
         this.wallMesh2.rotation.x = -Math.PI / 2;
         this.wallMesh2.position.y = -this.floorWidth / 2;
         this.wallMesh2.position.z = this.wallHeight / 2;
+
+
         this.floorMesh.add(this.wallMesh2);
 
         this.wallMesh4 = new THREE.Mesh(wall, this.wallMaterial);
@@ -43,6 +44,8 @@ class MyHouse {
         this.wallMesh4.rotation.y = Math.PI / 2;
         this.wallMesh4.position.x = -this.floorWidth / 2;
         this.wallMesh4.position.z = this.wallHeight / 2;
+        this.wallMesh4.receiveShadow = true;
+
         this.floorMesh.add(this.wallMesh4);
 
         if (this.windowHeight === 0 || this.windowWidth === 0) {
@@ -79,6 +82,7 @@ class MyHouse {
             this.wallMesh3.add(wallMesh32);
             this.wallMesh3.add(wallMesh33);
             this.wallMesh3.add(wallMesh34);
+
         }
 
         this.floorMesh.add(this.wallMesh3);
@@ -108,15 +112,15 @@ class MyHouse {
 
         const pointLight6 = new THREE.PointLight(color, itensity, distance, decay);
         pointLight6.position.set(this.floorWidth / 3, this.wallHeight, -this.floorWidth / 3)
-        pointLight6.castShadow = true;
+        /*pointLight6.castShadow = true;
         pointLight6.shadow.mapSize.width = 4096;
         pointLight6.shadow.mapSize.height = 4096;
         pointLight6.shadow.camera.near = 0.5;
         pointLight6.shadow.camera.far = 100;
-        pointLight6.shadow.camera.left = -35;
-        pointLight6.shadow.camera.right = 35;
-        pointLight6.shadow.camera.bottom = -35;
-        pointLight6.shadow.camera.top = 35;
+        pointLight6.shadow.camera.left = -50;
+        pointLight6.shadow.camera.right = 50;
+        pointLight6.shadow.camera.bottom = -50;
+        pointLight6.shadow.camera.top = 50;*/
         this.mesh.add(pointLight6);
 
         const pointLight7 = new THREE.PointLight(color, itensity, distance, decay);
