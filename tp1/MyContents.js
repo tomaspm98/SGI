@@ -363,22 +363,22 @@ class MyContents {
         const cableBoxHeight = 1.0
         const cableBoxDepth = 3.0
         const sofaBaseWidth = 23
-        const sofaBaseDepth = 7
-        const sofaBaseHeight = 4
-        const sofaArmWidth = 2
+        const sofaBaseDepth = 7.5
+        const sofaBaseHeight = 4.5
+        const sofaArmWidth = 2.5
         const sofaArmHeight = 3
-        const sofaBackHeight = 6
-        const sofaBackDepth = 2.5
+        const sofaBackHeight = 6.5
+        const sofaBackDepth = 3
 
-        const armchairBaseWidth = 6
-        const armchairBaseDepth = 6
+        const armchairBaseWidth = 6.5
+        const armchairBaseDepth = 6.5
         const armchairBaseHeight = 2
-        const armchairBackHeight = 6
+        const armchairBackHeight = 7
         const armchairBackDepth = 2
         const armchairArmWidth = 2
         const armchairArmHeight = 2
-        const armchairLegHeight = 5
-        const armchairLegRadius = 0.7
+        const armchairLegHeight = 5 
+        const armchairLegRadius = 0.6
 
 
 
@@ -659,8 +659,8 @@ class MyContents {
         const armchair = new MyArmchair().build(armchairBaseWidth, armchairBaseDepth, armchairBaseHeight, armchairArmWidth, armchairArmHeight, armchairBackHeight, armchairBackDepth, armchairLegHeight, armchairLegRadius, this.tableMaterial, this.tableMaterial, this.tableMaterial, this.tableMaterial);
         armchair.rotation.x = -Math.PI / 2;
         armchair.rotation.y = -Math.PI / 2;
-        armchair.position.z = -(armchairLegHeight + armchairBaseHeight) / 1.8;
-        armchair.position.x = rugWidth / 1.7
+        armchair.position.z = -(armchairBaseHeight + armchairBackHeight) / 2;
+        armchair.position.x = rugWidth / 1.6
         rug.add(armchair);
         //-----------------------------------------------END OF LIVING ROOM-----------------------------------------------
 
