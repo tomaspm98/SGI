@@ -19,7 +19,7 @@ class MySofa {
      * @param {THREE.Material} backMaterial - The material for the sofa back.
      * @returns {THREE.Mesh} The sofa object.
      */
-    build(baseWidth, baseDepth, baseHeight, armWidth, armHeight, backHeight, backDepth, baseMaterial, armMaterial, backMaterial) {
+    build(baseWidth, baseDepth, baseHeight, armWidth, armHeight, backHeight, backDepth, baseMaterial, armMaterial, armMaterialTop, backMaterial) {
         if (armMaterial === null) {
             armMaterial = baseMaterial;
         }
@@ -40,7 +40,7 @@ class MySofa {
         sofaArm1.position.x = baseWidth / 2 + armWidth / 2;
         sofaArm1.position.z = -backDepth / 2;
 
-        const sofaArmTop1 = new THREE.Mesh(new THREE.CylinderGeometry(armWidth / 2, armWidth / 2, baseDepth + backDepth, 32, 1, false, Math.PI / 2, Math.PI), armMaterial);
+        const sofaArmTop1 = new THREE.Mesh(new THREE.CylinderGeometry(armWidth / 2, armWidth / 2, baseDepth + backDepth, 32, 1, false, Math.PI / 2, Math.PI), armMaterialTop);
         sofaArmTop1.position.y = (armHeight + baseHeight) / 2;
         sofaArmTop1.rotation.x = Math.PI / 2;
         sofaArm1.add(sofaArmTop1);
@@ -51,7 +51,7 @@ class MySofa {
         sofaArm2.position.x = -baseWidth / 2 - armWidth / 2;
         sofaArm2.position.z = -backDepth / 2;
 
-        const sofaArmTop2 = new THREE.Mesh(new THREE.CylinderGeometry(armWidth / 2, armWidth / 2, baseDepth + backDepth, 32, 1, false, Math.PI / 2, Math.PI), armMaterial);
+        const sofaArmTop2 = new THREE.Mesh(new THREE.CylinderGeometry(armWidth / 2, armWidth / 2, baseDepth + backDepth, 32, 1, false, Math.PI / 2, Math.PI), armMaterialTop);
         sofaArmTop2.position.y = (armHeight + baseHeight) / 2;
         sofaArmTop2.rotation.x = Math.PI / 2;
         sofaArm2.add(sofaArmTop2);
@@ -97,7 +97,7 @@ class MyArmchair {
      * @returns {THREE.Mesh} The armchair object.
      */
     build(baseWidth, baseDepth, baseHeight, armWidth, armHeight, backHeight, backDepth, legHeight, legRadius, legMaterial, baseMaterial, armMaterial, backMaterial) {
-        const armchair = new MySofa().build(baseWidth, baseDepth, baseHeight, armWidth, armHeight, backHeight, backDepth, baseMaterial, armMaterial, backMaterial);
+        const armchair = new MySofa().build(baseWidth, baseDepth, baseHeight, armWidth, armHeight, backHeight, backDepth, baseMaterial, armMaterial, armMaterial, backMaterial);
 
         const sofaBack = armchair.children[3];
 

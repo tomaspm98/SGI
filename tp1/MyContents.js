@@ -41,22 +41,25 @@ class MyContents {
         this.axis = null
 
         // plane related attributes
-        this.diffusePlaneColor = "#C19A6B"
-        this.specularPlaneColor = "#777777"
-        this.planeShininess = 30
+        this.planeTexture = new THREE.TextureLoader().load('textures/floor_texture.jpg')
+        this.planeTexture.wrapS = THREE.RepeatWrapping
+        this.planeTexture.wrapT = THREE.RepeatWrapping
+        this.planeTexture.repeat.set(5, 5)
         this.planeMaterial = new THREE.MeshPhongMaterial({
-            color: this.diffusePlaneColor,
-            specular: this.diffusePlaneColor,
-            emissive: "#000000",
-            shininess: this.planeShininess,
+            color: "#deb887",
+            specular: "#777777",
+            shininess: 10,
+            map:this.planeTexture,
             side: THREE.DoubleSide
         })
 
         //wall related attributes
+        this.wallTexture = new THREE.TextureLoader().load('textures/wall_texture.png')
         this.wallMaterial = new THREE.MeshPhongMaterial({
             color: "#c4b39c",
             shininess: 0,
-            side: THREE.DoubleSide
+            side: THREE.DoubleSide,
+            map:this.wallTexture
         })
         this.wallMaterial.receiveShadow = true;
 
@@ -84,7 +87,7 @@ class MyContents {
         this.flameMaterial = new THREE.MeshPhongMaterial({
             color: "#ec8733",
             specular: "#ffed27",
-            shininess: 100
+            shininess: 10
         })
 
         this.tableTexture = new THREE.TextureLoader().load('textures/table.webp')
@@ -158,7 +161,7 @@ class MyContents {
         this.chairTexture.wrapT = THREE.RepeatWrapping
         this.chairMaterial = new THREE.MeshPhongMaterial({
             color: "#a0764b",
-            specular: "#000000",
+            specular: "#a0764b",
             shininess: 1,
             map: this.chairTexture
         })
@@ -182,15 +185,6 @@ class MyContents {
             side: THREE.DoubleSide,
         })
 
-        this.journalTexture = new THREE.TextureLoader().load('textures/journal_texture.jpg')
-        this.journalMaterial = new THREE.MeshPhongMaterial({
-            color: "#ffffff",
-            specular: "#ffffff",
-            shininess: 50,
-            map: this.journalTexture,
-            side: THREE.DoubleSide,
-        })
-
         this.jarMaterial = new THREE.MeshPhongMaterial({
             color: "#dc5200",
             specular: "#dc5200",
@@ -210,7 +204,7 @@ class MyContents {
         this.orangeMaterial = new THREE.MeshPhongMaterial({
             color: "#ffa500",
             specular: "#ffa500",
-            shininess: 15,
+            shininess: 5,
             map: this.orangeTexture
         })
 
@@ -236,19 +230,19 @@ class MyContents {
         this.flowerCenterMaterial = new THREE.MeshPhongMaterial({
             color: "#ae6f2f",
             specular: "#ae6f2f",
-            shininess: 10,
+            shininess: 5,
         })
 
         this.remoteMaterial = new THREE.MeshPhongMaterial({
             color: "#888888",
-            specular: "#888888",
-            shininess: 10,
+            specular: "#111111",
+            shininess: 0,
         })
 
         this.buttonMaterial = new THREE.MeshPhongMaterial({
             color: "#ffffff",
             specular: "#ffffff",
-            shininess: 10,
+            shininess: 5,
         })
 
         this.powernMaterial = new THREE.MeshPhongMaterial({
@@ -267,27 +261,33 @@ class MyContents {
         this.sofaMaterial = new THREE.MeshPhongMaterial({
             color: "#ffffff",
             specular: "#ffffff",
-            shininess: 10,
+            shininess: 0,
             map: this.sofaTexture
         })
 
-        this.sofaSitTexture = new THREE.TextureLoader().load('textures/sofa_sit_texture.jpg');
-        this.sofaSitMaterial = new THREE.MeshPhongMaterial({
+        this.sideboardTexture = new THREE.TextureLoader().load('textures/sideboard_texture.jpg');
+        this.sideboardMaterial = new THREE.MeshPhongMaterial({
+            color: "#ffffff",
+            specular: "#eeeeee",
+            shininess: 0,
+            map: this.sideboardTexture
+        })
+
+        this.sofaSimpleTexture = new THREE.TextureLoader().load('textures/sofa_sit_texture.jpg');
+        this.sofaSimpleMaterial = new THREE.MeshPhongMaterial({
             color: "#ffffff",
             specular: "#ffffff",
-            shininess: 20,
-            map: this.sofaSitTexture
+            shininess: 0,
+            map: this.sofaSimpleTexture
         })
 
         this.armChairTexture = new THREE.TextureLoader().load('textures/armchair_texture.webp');
         this.armChairMaterial = new THREE.MeshPhongMaterial({
             color: "#ffffff",
             specular: "#ffffff",
-            shininess: 10,
+            shininess: 0,
             map: this.armChairTexture
         })
-
-
 
         this.coverTexture = new THREE.TextureLoader().load('textures/book_cover.png');
         this.coverTexture.wrapS = THREE.RepeatWrapping;
@@ -363,7 +363,6 @@ class MyContents {
         const ambientLight = new THREE.AmbientLight(0x555555);
         this.app.scene.add(ambientLight);
         this.app.scene.add(this.buildHouse())
-
     }
 
     buildHouse() {
@@ -566,7 +565,7 @@ class MyContents {
         const door = new MyDoor().build(doorWidth, doorHeight, doorThickness, this.doorMaterial);
         house.addObjectWall(4, door, 0, -5, doorThickness / 2 + 0.01);
 
-        const journal = new MyJournal().build(this.journalMaterial);
+        const journal = new MyJournal().build();
         journal.position.y = tableHeight / 2;
         journal.position.x = 5;
         journal.position.z = 5;
@@ -648,7 +647,6 @@ class MyContents {
         table.position.z = -25
         table.position.x = 25
 
-        this.app.scene.add(new THREE.SpotLightHelper(spotLightCake))
         //-----------------------------------------------END OF TABLE-----------------------------------------------
 
         //-----------------------------------------------WINDOW-----------------------------------------------
@@ -663,8 +661,6 @@ class MyContents {
         spotLightWindow.target.position.set(0, -15, 0)
         spotLightWindow.castShadow = true;
 
-
-        this.app.scene.add(new THREE.SpotLightHelper(spotLightWindow));
         this.app.scene.add(spotLightWindow)
 
         //-----------------------------------------------END OF WINDOW-----------------------------------------------
@@ -686,7 +682,7 @@ class MyContents {
 
         rug.add(coffeeTable);
 
-        const sideboard = new MySideboard().build(televisionWidth * 2.3, sideboardHeight, sideboardDepth, this.tableMaterial)
+        const sideboard = new MySideboard().build(televisionWidth * 2.3, sideboardHeight, sideboardDepth, this.sideboardMaterial)
         sideboard.rotation.x = -Math.PI / 2
         sideboard.rotation.y = Math.PI
         sideboard.position.y = 21
@@ -763,7 +759,7 @@ class MyContents {
         cableBox.position.y = cableBoxHeight * 0.8;
         sideboard.add(cableBox);
 
-        const sofa = new MySofa().build(sofaBaseWidth, sofaBaseDepth, sofaBaseHeight, sofaArmWidth, sofaArmHeight, sofaBackHeight, sofaBackDepth, this.sofaSitMaterial, this.sofaMaterial, this.sofaMaterial);
+        const sofa = new MySofa().build(sofaBaseWidth, sofaBaseDepth, sofaBaseHeight, sofaArmWidth, sofaArmHeight, sofaBackHeight, sofaBackDepth, this.sofaMaterial, this.sofaMaterial, this.sofaSimpleMaterial, this.sofaMaterial);
         sofa.rotation.x = -Math.PI / 2;
         sofa.position.y = -rugHeight / 2 - sofaBaseDepth / 2;
         sofa.position.z = -sofaBaseHeight / 2;
