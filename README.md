@@ -12,11 +12,15 @@
 
 ### [TP1 - ThreeJS Basics](tp1)
 
-TODO: Insert a photo of the scene
+![Example Image](tp1/textures/scene_photo_1.png)
+Figure 1: Scene
+
+![Example Image](tp1/textures/scene_photo_2.png)
+Figure 2: Scene
 
 #### Description
 
-The [scene](tp1/MyContents.js) aims to mimic a living room where objects are centered around two tables: the dining table and the coffee table. To achieve this, we have developed the following objects:
+The [scene](tp1/MyContents.js) aims to mimic a living room where objects are centered around two tables: the dining table and the coffee table. It has some cameras so that we can see it from various perspectives. To achieve this, we have developed the following objects:
 
 - A [table](tp1/objects/MyTable.js) where the following objects are placed:
   - 4 [glass cups](tp1/objects/MyCup.js)
