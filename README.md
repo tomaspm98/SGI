@@ -12,10 +12,10 @@
 
 ### [TP1 - ThreeJS Basics](tp1)
 
-![Example Image](tp1/textures/scene_photo_1.png)
+![Example Image](docs/images/scene_photo_1.png)
 Figure 1: Scene
 
-![Example Image](tp1/textures/scene_photo_2.png)
+![Example Image](docs/images/scene_photo_2.png)
 Figure 2: Scene
 
 #### Description
