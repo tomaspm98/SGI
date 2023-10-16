@@ -8,10 +8,10 @@
 
 ## Project information
 
-![Scene](../docs/images/scene_photo_1.png)
+![Scene](screenshots/scene_photo_1.png)
 Figure 1: Scene
 
-![Scene](../docs/images/scene_photo_2.png)
+![Scene](screenshots/scene_photo_2.png)
 Figure 2: Scene
 
 
