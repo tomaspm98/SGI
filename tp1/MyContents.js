@@ -390,10 +390,10 @@ class MyContents {
         const spotlightHeight = 18;
         const spotlightColor = new THREE.Color("#fffaf0");
         const spotlightIntensity = 1000;
-        const spotlightDistance = 18;
+        const spotlightDistance = 20;
         const spotlightDecay = 1;
-        const spotlightAngle = 0.25;
-        const spotlightPenumbra = 0.1;
+        const spotlightAngle = 0.4;
+        const spotlightPenumbra = 0.3;
         const frameSize = 12;
         const frameThickness = 0.5;
         const windowWidth = 40;
