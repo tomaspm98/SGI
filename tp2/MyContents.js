@@ -15,7 +15,10 @@ class MyContents  {
         this.axis = null
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-		this.reader.open("scenes/demo/demo.xml");		
+		this.reader.open("scenes/demo/demo.xml");
+        
+        this.dict_textures = []
+        this.dict_materials = []
     }
 
     /**
@@ -43,25 +46,65 @@ class MyContents  {
         console.log("" + new Array(indent * 4).join(' ') + " - " + obj.type + " " + (obj.id !== undefined ? "'" + obj.id + "'" : ""))
     }
 
-    onAfterSceneLoadedAndBeforeRender(data) {
-       
-        // refer to descriptors in class MySceneData.js
-        // to see the data structure for each item
+    onAfterSceneLoadedAndBeforeRender(data) { 
+        this.renderTextures(data) //renders the textures
+        this.renderMaterials(data) //renders materials     
 
-        this.output(data.options)
+        //para testar objetos hardcoded (se necessario adicionar mais fontes de luz)
+        const light = new THREE.PointLight( 0xffffff, 1000, 20 );
+        light.position.set( 10, 10, 10 );
+        this.app.scene.add( light );
+        const box = new THREE.BoxGeometry(5,5,5);
+        const boxMesh = new THREE.Mesh(box, this.dict_materials['crimeWeaponApp']);
+        this.app.scene.add(boxMesh)
+
+
+    }
+
+    renderTextures(data){
+        for (let key in data.textures){
+            let texture = data.textures[key]
+            this.dict_textures[texture.id]= new THREE.TextureLoader().load(texture.filepath)
+        }
+    }
+
+    renderMaterials(data){
+        for (let key in data.materials){
+            let material = data.materials[key]
+            this.dict_materials[material.id]= new THREE.MeshPhongMaterial({
+                color:this.rgbToHex(material.color),
+                specular: this.rgbToHex(material.specular),
+                emissive: this.rgbToHex(material.emissive),
+                shininess: material.shininess,
+                map:this.dict_textures[material.textureref],
+                wireframe: material.wireframe,
+                bumpScale: material.bump_scale,
+            })
+        }
+    }
+    
+
+    update() {
+        
+    }
+
+    printData(data){
+        /*this.output(data.options)
         console.log("textures:")
+        console.log(data.textures)
         for (var key in data.textures) {
             let texture = data.textures[key]
             this.output(texture, 1)
-        }
+        }*/
 
         console.log("materials:")
         for (var key in data.materials) {
             let material = data.materials[key]
             this.output(material, 1)
         }
+        console.log(data.materials)
 
-        console.log("cameras:")
+        /*console.log("cameras:")
         for (var key in data.cameras) {
             let camera = data.cameras[key]
             this.output(camera, 1)
@@ -83,12 +126,17 @@ class MyContents  {
                     this.output(child, 2)
                 }
             }
-        }
+        }*/
     }
 
-    update() {
-        
-    }
+    rgbToHex(color) {
+      
+        // Convert to hexadecimal and return
+        return '#' +
+          ('0' + Math.round(color.r * 255).toString(16)).slice(-2) +
+          ('0' + Math.round(color.g * 255).toString(16)).slice(-2) +
+          ('0' + Math.round(color.b * 255).toString(16)).slice(-2);
+      }
 }
 
 export { MyContents };
