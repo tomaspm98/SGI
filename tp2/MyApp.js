@@ -16,6 +16,7 @@ class MyApp  {
         this.scene = null
         this.stats = null
 
+
         // camera related attributes
         this.activeCamera = null
         this.activeCameraName = null
@@ -100,6 +101,8 @@ class MyApp  {
         orthoFront.position.set(0,0, this.frustumSize /4) 
         orthoFront.lookAt( new THREE.Vector3(0,0,0) );
         this.cameras['Front'] = orthoFront
+
+        console.log(this.cameras)
     }
 
     /**
