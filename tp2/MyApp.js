@@ -165,11 +165,10 @@ class MyApp  {
     }
     
     updateGui(){
-        this.gui.init()
         for(const [key, value] of this.contents.cameras_map)
             this.cameras[key] = value
         this.setActiveCamera(this.contents.activeCamera)
-        console.log(this.cameras["cam1"])
+        this.gui.init()
     }
 }
 
