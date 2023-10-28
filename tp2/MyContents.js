@@ -109,15 +109,18 @@ class MyContents {
         for (let key in data.cameras) {
             let camera = data.cameras[key]
             if (camera.type === 'orthogonal') {
+                console.log(camera.left, camera.right, camera.top, camera.bottom, camera.near, camera.far)
                 this.cameras_map.set(camera.id, new THREE.OrthographicCamera(camera.left, camera.right, camera.top, camera.bottom, camera.near, camera.far))
-                this.cameras_map.get(camera.id).position.set(camera.location)
-                this.cameras_map.get(camera.id).lookAt(camera.target)
+                this.cameras_map.get(camera.id).position.set(...camera.location)
+                this.cameras_map.get(camera.id).lookAt(...camera.target)
+                
             } else if (camera.type === 'perspective') {
                 this.cameras_map.set(camera.id, new THREE.PerspectiveCamera(camera.angle, 1, camera.near, camera.far))
-                this.cameras_map.get(camera.id).position.set(camera.location)
-                this.cameras_map.get(camera.id).lookAt(camera.target)
+                this.cameras_map.get(camera.id).position.set(...camera.location)
+                this.cameras_map.get(camera.id).lookAt(...camera.target)
             }
         }
+        this.activeCamera = data.activeCameraId
     }
 
 
