@@ -72,14 +72,14 @@ class MyFileReader  {
 		if (this.status == 200) {  // HTTP status code  ( 200 => OK )
 			
 			let reader = this.reader;
-			console.info("------------------ " + reader.xmlfilename + " file read. begin parsing ------------------");
+			//console.info("------------------ " + reader.xmlfilename + " file read. begin parsing ------------------");
         
 			let parser = new window.DOMParser();
 			reader.xmlDoc = parser.parseFromString(this.response, "text/xml");
 			reader.readXML();
 			
 			if (reader.errorMessage != null) {
-				console.error(reader.errorMessage);
+				//console.error(reader.errorMessage);
 				return;
 			}
 			try {
@@ -90,7 +90,7 @@ class MyFileReader  {
 				reader.onSceneLoadedCallback.bind(reader.contents)(reader.data);			
 			}
 			catch (error) {
-				console.error(error);
+				//console.error(error);
 				return;
 			}
 		  } 

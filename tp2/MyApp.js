@@ -102,7 +102,7 @@ class MyApp  {
         orthoFront.lookAt( new THREE.Vector3(0,0,0) );
         this.cameras['Front'] = orthoFront
 
-        console.log(this.cameras)
+        //console.log(this.cameras)
     }
 
     /**
@@ -193,6 +193,10 @@ class MyApp  {
 
         this.lastCameraName = this.activeCameraName
         this.stats.end()
+    }
+    
+    updateGui(){
+        this.gui.init()
     }
 }
 
