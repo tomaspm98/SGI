@@ -18,6 +18,8 @@ class MyContents {
         this.textures_map = new Map()
         this.materials_map = new Map()
         this.cameras_map = new Map()
+        this.lights_map = new Map()
+        this.lights_enabled = new Map()
         
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
         this.reader.open("scenes/demo/demo.xml");
@@ -56,15 +58,23 @@ class MyContents {
         this.renderBackground(data)
         this.renderFog(data)
         this.renderCameras(data)
+        this.renderLights(data)
+        console.log(data.nodes)
+        //this.renderGeometries(data)        
             
         //para testar objetos hardcoded (se necessario adicionar mais fontes de luz)
         const light = new THREE.PointLight(0xffffff, 1000, 20);
         light.position.set(10, 10, 10);
-        this.app.scene.add(light);
+        //this.app.scene.add(light);
         const box = new THREE.BoxGeometry(5, 5, 5);
         const boxMesh = new THREE.Mesh(box, this.materials_map.get('crimeWeaponApp'));
         this.app.scene.add(boxMesh)
-    }
+        for (const [key, value] of this.lights_map.entries()) {
+           this.app.scene.add(value);
+          }
+
+        }
+    
 
     renderTextures(data) {
         for (let key in data.textures) {
@@ -121,6 +131,95 @@ class MyContents {
             }
         }
         this.activeCamera = data.activeCameraId
+    }
+
+    renderLights(data){
+        for (let key in data.nodes){
+            let child = data.nodes[key]
+            if (child.id == data.rootId)
+                for (let key in child.children){
+                    let light = child.children[key]
+                    if (light.type === 'spotlight'){
+                        this.lights_map.set(light.id, new THREE.SpotLight(this.rgbToHex(light.color), light.intensity, light.distance, light.angle, light.penumbra, light.decay))
+                        this.lights_map.get(light.id).position.set(...light.position)
+                        const targetObject = new THREE.Object3D();
+                        targetObject.position.set(light.target);
+                        this.app.scene.add(targetObject);
+                        light.target = targetObject;
+                        if (light.castshadow === 'true'){
+                            this.lights_map.get(light.id).castShadow = true
+                            this.lights_map.get(light.id).shadow.camera.far = light.shadowfar;
+                            this.lights_map.get(light.id).shadow.mapSize = light.shadowmapsize;
+                        }
+                        this.lights_enabled.set(light.id, light.enabled)
+
+                    } else if (light.type === 'pointlight'){
+                        this.lights_map.set(light.id, new THREE.PointLight(this.rgbToHex(light.color), light.intensity, light.distance, light.decay))
+                        this.lights_map.get(light.id).position.set(...light.position)
+                        const targetObject = new THREE.Object3D();
+                        targetObject.position.set(light.target);
+                        this.app.scene.add(targetObject);
+                        light.target = targetObject;
+                        if (light.castshadow === 'true'){
+                            this.lights_map.get(light.id).castShadow = true
+                            this.lights_map.get(light.id).shadow.camera.far = light.shadowfar;
+                            this.lights_map.get(light.id).shadow.mapSize = light.shadowmapsize;
+                        }
+                        this.lights_enabled.set(light.id, light.enabled)
+
+                    } else if (light.type === 'directionallight'){
+                        this.lights_map.set(light.id, new THREE.DirectionalLight(this.rgbToHex(light.color),light.intensity))
+                        this.lights_map.get(light.id).position.set(...light.position)
+                        if (light.castshadow === 'true'){
+                            this.lights_map.get(light.id).castShadow = true
+                            this.lights_map.get(light.id).shadow.camera.far = light.shadowfar;
+                            this.lights_map.get(light.id).shadow.mapSize = light.shadowmapsize;
+                            this.lights_map.get(light.id).shadow.camera.left = light.shadowleft;
+                            this.lights_map.get(light.id).shadow.camera.right = light.shadowright;
+                            this.lights_map.get(light.id).shadow.camera.bottom = light.shadowbottom;
+                            this.lights_map.get(light.id).shadow.camera.top = light.shadowtop;
+                        }
+                        this.lights_enabled.set(light.id, light.enabled)
+
+                    }
+        }
+    }
+}
+
+    renderGeometries(data){
+        for (let key in data.nodes){
+            let child = data.nodes[key]
+            for (let key in child.children){
+                if (child.children[key].type === 'primitive'){
+                    let primitive = child.children[key]
+                    console.log(primitive)
+                    switch(primitive.subtype){
+                        case 'rectangle':
+                            const width = Math.abs(primitive.xy2[0] - primitive.xy1[0])
+                            const height = Math.abs(primitive.xy2[1] - primitive.xy1[1])
+                            const rectangle = new THREE.BoxGeometry(width, height, primitive.parts_x, primitive.parts_y)
+                            break;
+                        case 'model3d':
+                            const model = new THREE.ObjectLoader().load(primitive.filepath)
+                            break;  
+                        case 'sphere':
+                            const sphere = new THREE.SphereGeometry(primitive.radius, primitive.slices, primitive.stacks, primitive.phistart, primitive.philength, primitive.thetastart, primitive.thetalength)   
+                            break;
+                        case 'box':
+                            const widthBox = Math.abs(primitive.xy2[0] - primitive.xy1[0])
+                            const heightBox = Math.abs(primitive.xy2[1] - primitive.xy1[1])        
+                            const depthBox = Math.abs(primitive.xy2[2] - primitive.xy1[2])
+                            const box = new THREE.BoxGeometry(widthBox, heightBox, depthBox, primitive.parts_x, primitive.parts_y, primitive.parts_z)
+                            break;
+                        case 'cylinder':
+                            const cylinder = new THREE.CylinderGeometry(primitive.top, primitive.base, primitive.height, primitive.slices, primitive.stacks, primitive.capsclose, primitive.thetastart, primitive.thetalength)
+                            break;
+                        //falta nurbs e control points  
+
+                    }
+                }
+             }
+        }       
     }
 
 
