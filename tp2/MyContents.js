@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import {MyAxis} from './MyAxis.js';
 import {MyFileReader} from './parser/MyFileReader.js';
+import { MyNurbsBuilder } from './MyNurbsBuilder.js';
 
 /**
  *  This class contains the contents of out application
@@ -20,7 +21,8 @@ class MyContents {
         this.cameras_map = new Map()
         this.lights_map = new Map()
         this.lights_enabled = new Map()
-        this.geometries = new Map()
+        this.geometries = []
+        this.builder = new MyNurbsBuilder()
         
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
         this.reader.open("scenes/demo/demo.xml");
@@ -190,42 +192,47 @@ class MyContents {
     renderGeometries(data){
         for (let key in data.nodes){
             let child = data.nodes[key]
-            console.log("DATA.NODES:")
-            console.log(child)
             for (let key in child.children){
                 if (child.children[key].type === 'primitive'){
                     let primitive = child.children[key]
-                    console.log(primitive)
                     if (primitive.subtype === 'rectangle'){
                             const width = Math.abs(primitive.representations[0].xy2.x - primitive.representations[0].xy1.x)
                             const height = Math.abs(primitive.representations[0].xy2.y - primitive.representations[0].xy1.y)
                             const rectangle = new THREE.BoxGeometry(width, height, primitive.representations[0].parts_x, primitive.representations[0].parts_y)
-                            this.geometries.set(child.id, rectangle)
+                            this.geometries.push({id:child.id, geometry: rectangle})
                     }
                     else if (primitive.subtype === 'model3d'){
                             const model = new THREE.ObjectLoader().load(primitive.representations[0].filepath)
-                            this.geometries.set(child.id, model)  
+                            this.geometries.push({id:child.id, geometry: model})  
                     }
                     else if (primitive.subtype === 'sphere'){
                             const sphere = new THREE.SphereGeometry(primitive.representations[0].radius, primitive.representations[0].slices, primitive.representations[0].stacks, primitive.representations[0].phistart, primitive.representations[0].philength, primitive.representations[0].thetastart, primitive.representations[0].thetalength)   
-                            this.geometries.set(child.id, sphere)
+                            this.geometries.push({id:child.id, geometry: sphere})
                     }
                     else if (primitive.subtype === 'box'){
                             const widthBox = Math.abs(primitive.representations[0].xyz2.x - primitive.representations[0].xyz1.x)
                             const heightBox = Math.abs(primitive.representations[0].xyz2.y - primitive.representations[0].xyz1.y)        
                             const depthBox = Math.abs(primitive.representations[0].xyz2.z - primitive.representations[0].xyz1.z)
                             const box = new THREE.BoxGeometry(widthBox, heightBox, depthBox, primitive.representations[0].parts_x, primitive.representations[0].parts_y, primitive.representations[0].parts_z)
-                            this.geometries.set(child.id, box)
+                            this.geometries.push({id:child.id, geometry: box})
                     }
                     else if (primitive.subtype === 'cylinder'){
                             const cylinder = new THREE.CylinderGeometry(primitive.representations[0].top, primitive.representations[0].base, primitive.representations[0].height, primitive.representations[0].slices, primitive.representations[0].stacks, primitive.representations[0].capsclose, primitive.representations[0].thetastart, primitive.representations[0].thetalength)
-                            this.geometries.set(child.id, cylinder)
+                            this.geometries.push({id:child.id, geometry: cylinder})
                 }
-                        //falta nurbs e control points  
-
+                    else if (primitive.subtype === 'nurbs'){
+                        const length = (primitive.representations[0].degree_u + 1)* (primitive.representations[0].degree_v + 1)/ Math.min(primitive.representations[0].degree_u + 1, primitive.representations[0].degree_v + 1)
+                        const controlPoints = []
+                        for (let i = 0; i < primitive.representations[0].controlpoints.length; i+=length){
+                            let row = primitive.representations[0].controlpoints.slice(i, i+length)
+                            controlPoints.push(row)
+                        }    
+                        const surface = this.builder.build(controlPoints, primitive.representations[0].degree_u, primitive.representations[0].degree_v, primitive.representations[0].parts_u, primitive.representations[0].parts_v)
+                        this.geometries.push({id:child.id, geometry: surface})    
                     }
                 }
              }
+        }
         console.log("GEOMETRIES:")     
         console.log(this.geometries)
     }
