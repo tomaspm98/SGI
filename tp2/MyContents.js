@@ -20,6 +20,7 @@ class MyContents {
         this.cameras_map = new Map()
         this.lights_map = new Map()
         this.lights_enabled = new Map()
+        this.geometries = new Map()
         
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
         this.reader.open("scenes/demo/demo.xml");
@@ -59,8 +60,8 @@ class MyContents {
         this.renderFog(data)
         this.renderCameras(data)
         this.renderLights(data)
-        console.log(data.nodes)
-        //this.renderGeometries(data)        
+        this.renderGeometries(data)     
+        //console.log(data.nodes)   
             
         //para testar objetos hardcoded (se necessario adicionar mais fontes de luz)
         const light = new THREE.PointLight(0xffffff, 1000, 20);
@@ -189,37 +190,44 @@ class MyContents {
     renderGeometries(data){
         for (let key in data.nodes){
             let child = data.nodes[key]
+            console.log("DATA.NODES:")
+            console.log(child)
             for (let key in child.children){
                 if (child.children[key].type === 'primitive'){
                     let primitive = child.children[key]
                     console.log(primitive)
-                    switch(primitive.subtype){
-                        case 'rectangle':
-                            const width = Math.abs(primitive.xy2[0] - primitive.xy1[0])
-                            const height = Math.abs(primitive.xy2[1] - primitive.xy1[1])
-                            const rectangle = new THREE.BoxGeometry(width, height, primitive.parts_x, primitive.parts_y)
-                            break;
-                        case 'model3d':
-                            const model = new THREE.ObjectLoader().load(primitive.filepath)
-                            break;  
-                        case 'sphere':
-                            const sphere = new THREE.SphereGeometry(primitive.radius, primitive.slices, primitive.stacks, primitive.phistart, primitive.philength, primitive.thetastart, primitive.thetalength)   
-                            break;
-                        case 'box':
-                            const widthBox = Math.abs(primitive.xy2[0] - primitive.xy1[0])
-                            const heightBox = Math.abs(primitive.xy2[1] - primitive.xy1[1])        
-                            const depthBox = Math.abs(primitive.xy2[2] - primitive.xy1[2])
-                            const box = new THREE.BoxGeometry(widthBox, heightBox, depthBox, primitive.parts_x, primitive.parts_y, primitive.parts_z)
-                            break;
-                        case 'cylinder':
-                            const cylinder = new THREE.CylinderGeometry(primitive.top, primitive.base, primitive.height, primitive.slices, primitive.stacks, primitive.capsclose, primitive.thetastart, primitive.thetalength)
-                            break;
+                    if (primitive.subtype === 'rectangle'){
+                            const width = Math.abs(primitive.representations[0].xy2.x - primitive.representations[0].xy1.x)
+                            const height = Math.abs(primitive.representations[0].xy2.y - primitive.representations[0].xy1.y)
+                            const rectangle = new THREE.BoxGeometry(width, height, primitive.representations[0].parts_x, primitive.representations[0].parts_y)
+                            this.geometries.set(child.id, rectangle)
+                    }
+                    else if (primitive.subtype === 'model3d'){
+                            const model = new THREE.ObjectLoader().load(primitive.representations[0].filepath)
+                            this.geometries.set(child.id, model)  
+                    }
+                    else if (primitive.subtype === 'sphere'){
+                            const sphere = new THREE.SphereGeometry(primitive.representations[0].radius, primitive.representations[0].slices, primitive.representations[0].stacks, primitive.representations[0].phistart, primitive.representations[0].philength, primitive.representations[0].thetastart, primitive.representations[0].thetalength)   
+                            this.geometries.set(child.id, sphere)
+                    }
+                    else if (primitive.subtype === 'box'){
+                            const widthBox = Math.abs(primitive.representations[0].xyz2.x - primitive.representations[0].xyz1.x)
+                            const heightBox = Math.abs(primitive.representations[0].xyz2.y - primitive.representations[0].xyz1.y)        
+                            const depthBox = Math.abs(primitive.representations[0].xyz2.z - primitive.representations[0].xyz1.z)
+                            const box = new THREE.BoxGeometry(widthBox, heightBox, depthBox, primitive.representations[0].parts_x, primitive.representations[0].parts_y, primitive.representations[0].parts_z)
+                            this.geometries.set(child.id, box)
+                    }
+                    else if (primitive.subtype === 'cylinder'){
+                            const cylinder = new THREE.CylinderGeometry(primitive.representations[0].top, primitive.representations[0].base, primitive.representations[0].height, primitive.representations[0].slices, primitive.representations[0].stacks, primitive.representations[0].capsclose, primitive.representations[0].thetastart, primitive.representations[0].thetalength)
+                            this.geometries.set(child.id, cylinder)
+                }
                         //falta nurbs e control points  
 
                     }
                 }
              }
-        }       
+        console.log("GEOMETRIES:")     
+        console.log(this.geometries)
     }
 
 
@@ -259,9 +267,9 @@ class MyContents {
             for (let i = 0; i < node.children.length; i++) {
                 let child = node.children[i]
                 if (child.type === "primitive") {
-                    console.log("" + new Array(2 * 4).join(' ') + " - " + child.type + " with " + child.representations.length + " " + child.subtype + " representation(s)")
+                    console.log("" + new Array(2 * 4).join(' ') + " - " + child.type + " with " + child.representations[0].length + " " + child.subtype + " representation(s)")
                     if (child.subtype === "nurbs") {
-                        console.log("" + new Array(3 * 4).join(' ') + " - " + child.representations[0].controlpoints.length + " control points")
+                        console.log("" + new Array(3 * 4).join(' ') + " - " + child.representations[0][0].controlpoints.length + " control points")
                     }
                 } else {
                     this.output(child, 2)
