@@ -35,8 +35,6 @@ class MyNurbsBuilder  {
             let newRow = []
             for (var j = 0; j < row.length; j++) {
                 let item = row[j]
-                console.log("item")
-                console.log(item)
                 newRow.push(new THREE.Vector4(item.xx,
                 item.yy, item.zz,1));
             }
