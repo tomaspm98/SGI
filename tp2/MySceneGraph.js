@@ -23,6 +23,8 @@ class MySceneGraph{
             visited = new Set();
 
         visited.add(node_id);
+        let children = this.getChildrenIds(node_id);
+        for(let child of this.getChildrenIds(node_id))
 
     }
 
