@@ -3,6 +3,7 @@ import {MyAxis} from './MyAxis.js';
 import {MyFileReader} from './parser/MyFileReader.js';
 import {MyNurbsBuilder} from './MyNurbsBuilder.js';
 import {MySceneGraph} from "./MySceneGraph.js";
+import * as Utils from "./utils.js";
 
 /**
  *  This class contains the contents of out application
@@ -60,9 +61,8 @@ class MyContents {
         this.renderMaterials(data)//renders materials
         this.renderBackground(data)
         this.renderFog(data)
-        this.renderLights(data)
         
-        this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials_map, this.lights_map, this.lights_enabled)
+        this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials_map)
         this.sceneGraph.constructSceneGraph()
         this.app.scene.add(this.sceneGraph.graph)
         console.log(data.nodes["scene"])
@@ -83,9 +83,9 @@ class MyContents {
             let material = data.materials[key]
             if (material.type === 'material')
                 this.materials_map.set(material.id, new THREE.MeshPhongMaterial({
-                    color: this.rgbToHex(material.color),
-                    specular: this.rgbToHex(material.specular),
-                    emissive: this.rgbToHex(material.emissive),
+                    color: Utils.rgbToHex(material.color),
+                    specular: Utils.rgbToHex(material.specular),
+                    emissive: Utils.rgbToHex(material.emissive),
                     shininess: material.shininess,
                     map: this.textures_map.get(material.textureref),
                     wireframe: material.wireframe,
@@ -96,16 +96,16 @@ class MyContents {
 
     renderBackground(data) {
         if (data.options.type === 'globals') {
-            const ambientLight = new THREE.AmbientLight(this.rgbToHex(data.options.ambient))
+            const ambientLight = new THREE.AmbientLight(Utils.rgbToHex(data.options.ambient))
             this.app.scene.add(ambientLight)
-            this.app.scene.background = new THREE.Color(this.rgbToHex(data.options.background))
+            this.app.scene.background = new THREE.Color(Utils.rgbToHex(data.options.background))
         }
 
     }
 
     renderFog(data) {
         if (data.fog.type === 'fog') {
-            this.app.scene.fog = new THREE.Fog(this.rgbToHex(data.fog.color), data.fog.near, data.fog.far)
+            this.app.scene.fog = new THREE.Fog(Utils.rgbToHex(data.fog.color), data.fog.near, data.fog.far)
         }
     }
 
@@ -124,59 +124,6 @@ class MyContents {
             }
         }
         this.activeCamera = data.activeCameraId
-    }
-
-    renderLights(data) {
-        for (let key in data.nodes) {
-            let child = data.nodes[key]
-            if (child.id === data.rootId)
-                for (let key in child.children) {
-                    let light = child.children[key]
-                    if (light.type === 'spotlight') {
-                        this.lights_map.set(light.id, new THREE.SpotLight(this.rgbToHex(light.color), light.intensity, light.distance, light.angle, light.penumbra, light.decay))
-                        this.lights_map.get(light.id).position.set(...light.position)
-                        const targetObject = new THREE.Object3D();
-                        targetObject.position.set(light.target);
-                        //this.app.scene.add(targetObject);
-                        //light.target = targetObject;
-                        if (light.castshadow === 'true') {
-                            this.lights_map.get(light.id).castShadow = true
-                            this.lights_map.get(light.id).shadow.camera.far = light.shadowfar;
-                            this.lights_map.get(light.id).shadow.mapSize = light.shadowmapsize;
-                        }
-                        this.lights_enabled.set(light.id, light.enabled)
-
-                    } else if (light.type === 'pointlight') {
-                        this.lights_map.set(light.id, new THREE.PointLight(this.rgbToHex(light.color), light.intensity, light.distance, light.decay))
-                        this.lights_map.get(light.id).position.set(...light.position)
-                        const targetObject = new THREE.Object3D();
-                        targetObject.position.set(light.target);
-                        //this.app.scene.add(targetObject);
-                        //light.target = targetObject;
-                        if (light.castshadow === 'true') {
-                            this.lights_map.get(light.id).castShadow = true
-                            this.lights_map.get(light.id).shadow.camera.far = light.shadowfar;
-                            this.lights_map.get(light.id).shadow.mapSize = light.shadowmapsize;
-                        }
-                        this.lights_enabled.set(light.id, light.enabled)
-
-                    } else if (light.type === 'directionallight') {
-                        this.lights_map.set(light.id, new THREE.DirectionalLight(this.rgbToHex(light.color), light.intensity))
-                        this.lights_map.get(light.id).position.set(...light.position)
-                        if (light.castshadow === 'true') {
-                            this.lights_map.get(light.id).castShadow = true
-                            this.lights_map.get(light.id).shadow.camera.far = light.shadowfar;
-                            this.lights_map.get(light.id).shadow.mapSize = light.shadowmapsize;
-                            this.lights_map.get(light.id).shadow.camera.left = light.shadowleft;
-                            this.lights_map.get(light.id).shadow.camera.right = light.shadowright;
-                            this.lights_map.get(light.id).shadow.camera.bottom = light.shadowbottom;
-                            this.lights_map.get(light.id).shadow.camera.top = light.shadowtop;
-                        }
-                        this.lights_enabled.set(light.id, light.enabled)
-
-                    }
-                }
-        }
     }
     
 
@@ -228,14 +175,7 @@ class MyContents {
     }
 
 
-    rgbToHex(color) {
-
-        // Convert to hexadecimal and return
-        return '#' +
-            ('0' + Math.round(color.r * 255).toString(16)).slice(-2) +
-            ('0' + Math.round(color.g * 255).toString(16)).slice(-2) +
-            ('0' + Math.round(color.b * 255).toString(16)).slice(-2);
-    }
+    
 }
 
 export {MyContents};

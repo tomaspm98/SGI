@@ -1,8 +1,16 @@
 import * as THREE from 'three';
 import {MyNurbsBuilder} from './MyNurbsBuilder.js';
 
+function rgbToHex(color) {
 
-function getThreeGeometry(primitive) {
+    // Convert to hexadecimal and return
+    return '#' +
+        ('0' + Math.round(color.r * 255).toString(16)).slice(-2) +
+        ('0' + Math.round(color.g * 255).toString(16)).slice(-2) +
+        ('0' + Math.round(color.b * 255).toString(16)).slice(-2);
+}
+
+function createThreeGeometry(primitive) {
     switch (primitive.subtype) {
         case "rectangle":
             const point1 = primitive.representations[0]["xy1"];
@@ -14,13 +22,13 @@ function getThreeGeometry(primitive) {
                 primitive.representations["parts_x"],
                 primitive.representations["parts_y"]
             );
-            
+
             plane.translate(
                 (point2[0] + point1[0]) / 2,
                 (point2[1] + point1[1]) / 2,
                 0
             );
-            
+
             return plane;
         case "model3d":
             return new THREE.ObjectLoader().load(primitive.representations[0].filepath)
@@ -53,8 +61,8 @@ function getThreeGeometry(primitive) {
                 primitive.representations[0].height,
                 primitive.representations[0].slices,
                 primitive.representations[0].stacks,
-                primitive.representations[0].capsclose, 
-                primitive.representations[0].thetastart, 
+                primitive.representations[0].capsclose,
+                primitive.representations[0].thetastart,
                 primitive.representations[0].thetalength
             )
         case "nurbs":
@@ -70,19 +78,72 @@ function getThreeGeometry(primitive) {
     }
 }
 
+function createThreeLight(light) {
+    switch (light.type) {
+        case 'spotlight':
+            const spotLight = new THREE.SpotLight(
+                rgbToHex(light.color),
+                light.intensity,
+                light.distance,
+                light.angle * Math.PI / 180,
+                light.penumbra,
+                light.decay
+            )
+            
+            spotLight.position.set(...light.position)
+            spotLight.target.position.set(...light.target)
+            spotLight.castShadow = light.castshadow
+            spotLight.shadow.camera.far = light.shadowfar
+            spotLight.shadow.mapSize = light.shadowmapsize
+            
+            return spotLight
+        case 'pointlight':
+            const pointLight = new THREE.PointLight(
+                rgbToHex(light.color),
+                light.intensity,
+                light.distance,
+                light.decay
+            )
+            
+            pointLight.position.set(...light.position)
+            pointLight.castShadow = light.castshadow
+            pointLight.shadow.camera.far = light.shadowfar
+            pointLight.shadow.mapSize = light.shadowmapsize
+            
+            return pointLight
+        case 'directionallight':
+            const directionalLight = new THREE.DirectionalLight(
+                rgbToHex(light.color),
+                light.intensity
+            )
+            
+            directionalLight.position.set(...light.position)
+            directionalLight.castShadow = light.castshadow
+            directionalLight.shadow.camera.far = light.shadowfar
+            directionalLight.shadow.mapSize = light.shadowmapsize
+            directionalLight.shadow.camera.left = light.shadowleft
+            directionalLight.shadow.camera.right = light.shadowright
+            directionalLight.shadow.camera.bottom = light.shadowbottom
+            directionalLight.shadow.camera.top = light.shadowtop
+            
+            return directionalLight
+        default:
+            console.error("ERROR: light not found")
+            return
+    }
+}
+
 function applyTransformation(sceneNode, transformations) {
     if (transformations === undefined)
         return;
     for (let transformation of transformations) {
         switch (transformation.type) {
             case 'S':
-                //sceneNode.scale.set(...transformation.scale)
                 sceneNode.scale.x *= transformation.scale[0]
                 sceneNode.scale.y *= transformation.scale[1]
                 sceneNode.scale.z *= transformation.scale[2]
                 break;
             case 'T':
-                //sceneNode.position.set(...transformation.translate)
                 sceneNode.position.x += transformation.translate[0]
                 sceneNode.position.y += transformation.translate[1]
                 sceneNode.position.z += transformation.translate[2]
@@ -92,7 +153,6 @@ function applyTransformation(sceneNode, transformations) {
                 sceneNode.rotation.x += rotations[0]
                 sceneNode.rotation.y += rotations[1]
                 sceneNode.rotation.z += rotations[2]
-                //sceneNode.rotation.set(...transformation.rotation.map(angle => angle * Math.PI / 180))
                 break;
             default:
                 break;
@@ -100,4 +160,4 @@ function applyTransformation(sceneNode, transformations) {
     }
 }
 
-export {getThreeGeometry, applyTransformation};
+export {createThreeGeometry, applyTransformation, rgbToHex, createThreeLight};

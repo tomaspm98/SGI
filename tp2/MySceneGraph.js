@@ -2,13 +2,11 @@ import * as THREE from 'three';
 import * as Utils from './utils.js'
 
 class MySceneGraph {
-    constructor(nodes, root_id, materials, lights, lights_enabled) {
+    constructor(nodes, root_id, materials) {
         this.graph = new THREE.Group();
         this.nodes = nodes;
         this.root_id = root_id;
         this.materials = materials;
-        this.lights = lights;
-        this.lights_enabled = lights_enabled;
     }
 
     constructSceneGraph() {
@@ -16,11 +14,11 @@ class MySceneGraph {
     }
 
     dfs(node, visited = new Set(), materialId = undefined) {
-        //this.printDfsNode(node.id, visited)
         visited.add(node.id);
-        if (this.lights.has(node.id)) {
-            if (this.lights_enabled.get(node.id))
-                return this.lights.get(node.id)
+
+        if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
+            if (node.enabled)
+                return Utils.createThreeLight(node);
             else
                 return
         }
@@ -30,7 +28,7 @@ class MySceneGraph {
         if (node.children !== undefined) {
             for (let child of node.children) {
                 if (child.type === "primitive") {
-                    const geometry = Utils.getThreeGeometry(child);
+                    const geometry = Utils.createThreeGeometry(child);
                     if (node.materialIds.length > 0) {
                         sceneNode.add(new THREE.Mesh(geometry, this.materials.get(node.materialIds[0])))
                     } else if (materialId !== undefined) {
@@ -48,10 +46,6 @@ class MySceneGraph {
         Utils.applyTransformation(sceneNode, node.transformations);
         sceneNode.name = node.id;
         return sceneNode;
-    }
-
-    updateMaterialsNode(node) {
-
     }
 
     printDfsNode(node_id, visited) {
