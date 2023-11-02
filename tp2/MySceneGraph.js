@@ -37,8 +37,10 @@ class MySceneGraph {
                         sceneNode.add(new THREE.Mesh(geometry))
                     }
                 } else if (child.id !== undefined) {
-                    let material = node.materialIds.length > 0 ? node.materialIds[0] : materialId
-                    sceneNode.add(this.dfs(child, visited, material))
+                    const material = node.materialIds.length > 0 ? node.materialIds[0] : materialId
+                    const childNode = this.dfs(child, visited, material) 
+                    if (childNode !== undefined)
+                        sceneNode.add(childNode);
                 }
             }
         }
