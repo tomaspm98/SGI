@@ -22,8 +22,6 @@ class MyContents {
         this.cameras_map = new Map()
         this.lights_map = new Map()
         this.lights_enabled = new Map()
-        this.geometries = []
-        this.builder = new MyNurbsBuilder()
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
         this.reader.open("scenes/demo/demo.xml");
@@ -57,29 +55,17 @@ class MyContents {
     }
 
     onAfterSceneLoadedAndBeforeRender(data) {
+        this.renderCameras(data)
         this.renderTextures(data)//renders the textures
-        this.renderMaterials(data)//renders materials  
+        this.renderMaterials(data)//renders materials
         this.renderBackground(data)
         this.renderFog(data)
-        this.renderCameras(data)
         this.renderLights(data)
-        this.renderGeometries(data)
         
-        this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.geometries, this.materials_map, this.lights_map, this.lights_enabled)
-        
-
-
-        //para testar objetos hardcoded (se necessario adicionar mais fontes de luz)
-        const light = new THREE.PointLight(0xffffff, 1000, 20);
-        light.position.set(10, 10, 10);
-        //this.app.scene.add(light);
-        const box = new THREE.BoxGeometry(5, 5, 5);
-        const boxMesh = new THREE.Mesh(box, this.materials_map.get('crimeWeaponApp'));
-        this.app.scene.add(boxMesh)
-        for (const [key, value] of this.lights_map.entries()) {
-            this.app.scene.add(value);
-        }
-
+        this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials_map, this.lights_map, this.lights_enabled)
+        this.sceneGraph.constructSceneGraph()
+        this.app.scene.add(this.sceneGraph.graph)
+        console.log(this.app.scene)
     }
 
 
@@ -95,7 +81,7 @@ class MyContents {
         for (let key in data.materials) {
             let material = data.materials[key]
             if (material.type === 'material')
-            this.materials_map.set(material.id, new THREE.MeshPhongMaterial({
+                this.materials_map.set(material.id, new THREE.MeshPhongMaterial({
                     color: this.rgbToHex(material.color),
                     specular: this.rgbToHex(material.specular),
                     emissive: this.rgbToHex(material.emissive),
@@ -142,7 +128,7 @@ class MyContents {
     renderLights(data) {
         for (let key in data.nodes) {
             let child = data.nodes[key]
-            if (child.id == data.rootId)
+            if (child.id === data.rootId)
                 for (let key in child.children) {
                     let light = child.children[key]
                     if (light.type === 'spotlight') {
@@ -150,8 +136,8 @@ class MyContents {
                         this.lights_map.get(light.id).position.set(...light.position)
                         const targetObject = new THREE.Object3D();
                         targetObject.position.set(light.target);
-                        this.app.scene.add(targetObject);
-                        light.target = targetObject;
+                        //this.app.scene.add(targetObject);
+                        //light.target = targetObject;
                         if (light.castshadow === 'true') {
                             this.lights_map.get(light.id).castShadow = true
                             this.lights_map.get(light.id).shadow.camera.far = light.shadowfar;
@@ -164,8 +150,8 @@ class MyContents {
                         this.lights_map.get(light.id).position.set(...light.position)
                         const targetObject = new THREE.Object3D();
                         targetObject.position.set(light.target);
-                        this.app.scene.add(targetObject);
-                        light.target = targetObject;
+                        //this.app.scene.add(targetObject);
+                        //light.target = targetObject;
                         if (light.castshadow === 'true') {
                             this.lights_map.get(light.id).castShadow = true
                             this.lights_map.get(light.id).shadow.camera.far = light.shadowfar;
@@ -191,48 +177,7 @@ class MyContents {
                 }
         }
     }
-
-    renderGeometries(data) {
-        for (let key in data.nodes) {
-            let child = data.nodes[key]
-            for (let key in child.children) {
-                if (child.children[key].type === 'primitive') {
-                    let primitive = child.children[key]
-                    if (primitive.subtype === 'rectangle') {
-                        const width = Math.abs(primitive.representations[0].xy2.x - primitive.representations[0].xy1.x)
-                        const height = Math.abs(primitive.representations[0].xy2.y - primitive.representations[0].xy1.y)
-                        const rectangle = new THREE.BoxGeometry(width, height, primitive.representations[0].parts_x, primitive.representations[0].parts_y)
-                        this.geometries.push({id: child.id, geometry: rectangle})
-                    } else if (primitive.subtype === 'model3d') {
-                        const model = new THREE.ObjectLoader().load(primitive.representations[0].filepath)
-                        this.geometries.push({id: child.id, geometry: model})
-                    } else if (primitive.subtype === 'sphere') {
-                        const sphere = new THREE.SphereGeometry(primitive.representations[0].radius, primitive.representations[0].slices, primitive.representations[0].stacks, primitive.representations[0].phistart, primitive.representations[0].philength, primitive.representations[0].thetastart, primitive.representations[0].thetalength)
-                        this.geometries.push({id: child.id, geometry: sphere})
-                    } else if (primitive.subtype === 'box') {
-                        const widthBox = Math.abs(primitive.representations[0].xyz2.x - primitive.representations[0].xyz1.x)
-                        const heightBox = Math.abs(primitive.representations[0].xyz2.y - primitive.representations[0].xyz1.y)
-                        const depthBox = Math.abs(primitive.representations[0].xyz2.z - primitive.representations[0].xyz1.z)
-                        const box = new THREE.BoxGeometry(widthBox, heightBox, depthBox, primitive.representations[0].parts_x, primitive.representations[0].parts_y, primitive.representations[0].parts_z)
-                        this.geometries.push({id: child.id, geometry: box})
-                    } else if (primitive.subtype === 'cylinder') {
-                        const cylinder = new THREE.CylinderGeometry(primitive.representations[0].top, primitive.representations[0].base, primitive.representations[0].height, primitive.representations[0].slices, primitive.representations[0].stacks, primitive.representations[0].capsclose, primitive.representations[0].thetastart, primitive.representations[0].thetalength)
-                        this.geometries.push({id: child.id, geometry: cylinder})
-                    } else if (primitive.subtype === 'nurbs') {
-                        const length = (primitive.representations[0].degree_u + 1) * (primitive.representations[0].degree_v + 1) / Math.min(primitive.representations[0].degree_u + 1, primitive.representations[0].degree_v + 1)
-                        const controlPoints = []
-                        for (let i = 0; i < primitive.representations[0].controlpoints.length; i += length) {
-                            let row = primitive.representations[0].controlpoints.slice(i, i + length)
-                            controlPoints.push(row)
-                        }
-                        const surface = this.builder.build(controlPoints, primitive.representations[0].degree_u, primitive.representations[0].degree_v, primitive.representations[0].parts_u, primitive.representations[0].parts_v)
-                        this.geometries.push({id: child.id, geometry: surface})
-                    }
-                }
-            }
-        }
-    }
-
+    
 
     update() {
 

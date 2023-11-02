@@ -79,7 +79,7 @@ class MyFileReader  {
 			reader.readXML();
 			
 			if (reader.errorMessage != null) {
-				//console.error(reader.errorMessage);
+				console.error(reader.errorMessage);
 				return;
 			}
 			try {
@@ -90,7 +90,7 @@ class MyFileReader  {
 				reader.onSceneLoadedCallback.bind(reader.contents)(reader.data);			
 			}
 			catch (error) {
-				//console.error(error);
+				console.error(error);
 				return;
 			}
 		  } 
