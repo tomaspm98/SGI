@@ -65,7 +65,8 @@ class MyContents {
         this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials_map, this.lights_map, this.lights_enabled)
         this.sceneGraph.constructSceneGraph()
         this.app.scene.add(this.sceneGraph.graph)
-        console.log(this.app.scene)
+        console.log(data.nodes["scene"])
+        console.log(this.sceneGraph.graph)
     }
 
 

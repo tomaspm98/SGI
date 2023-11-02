@@ -15,26 +15,32 @@ class MySceneGraph {
         this.graph = this.dfs(this.nodes[this.root_id]);
     }
 
-    dfs(node, visited = new Set()) {
+    dfs(node, visited = new Set(), materialId = undefined) {
         //this.printDfsNode(node.id, visited)
         visited.add(node.id);
-        const sceneNode = new THREE.Group();
-
-        if (this.lights.has(node.id) && this.lights_enabled.get(node.id)) {
-            sceneNode.add(this.lights.get(node.id))
+        if (this.lights.has(node.id)) {
+            if (this.lights_enabled.get(node.id))
+                return this.lights.get(node.id)
+            else
+                return
         }
+
+        const sceneNode = new THREE.Group();
 
         if (node.children !== undefined) {
             for (let child of node.children) {
                 if (child.type === "primitive") {
                     const geometry = Utils.getThreeGeometry(child);
-                    try{
+                    if (node.materialIds.length > 0) {
                         sceneNode.add(new THREE.Mesh(geometry, this.materials.get(node.materialIds[0])))
-                    }catch (Exception){
+                    } else if (materialId !== undefined) {
+                        sceneNode.add(new THREE.Mesh(geometry, this.materials.get(materialId)))
+                    } else {
                         sceneNode.add(new THREE.Mesh(geometry))
                     }
                 } else if (child.id !== undefined) {
-                    sceneNode.add(this.dfs(child, visited))
+                    let material = node.materialIds.length > 0 ? node.materialIds[0] : materialId
+                    sceneNode.add(this.dfs(child, visited, material))
                 }
             }
         }
@@ -42,6 +48,10 @@ class MySceneGraph {
         Utils.applyTransformation(sceneNode, node.transformations);
         sceneNode.name = node.id;
         return sceneNode;
+    }
+
+    updateMaterialsNode(node) {
+
     }
 
     printDfsNode(node_id, visited) {
