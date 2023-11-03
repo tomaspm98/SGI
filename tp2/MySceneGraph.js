@@ -13,13 +13,20 @@ class MySceneGraph {
         this.graph = this.dfs(this.nodes[this.root_id]);
     }
 
-    dfs(node, visited = new Set(), materialId = undefined) {
-        visited.add(node.id);
+    dfs(node, visited = [], materialId = undefined) {
+        if (visited.hasOwnProperty(node.id)) {
+            const objClone = visited[node.id].clone()
+            objClone["isCloned"] = true
+            return objClone
+        }
 
         if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
-            if (node.enabled)
-                return Utils.createThreeLight(node);
-            else
+            if (node.enabled) {
+                const light = Utils.createThreeLight(node)
+                light.name = node.id
+                visited[node.id] = light
+                return light
+            } else
                 return
         }
 
@@ -34,22 +41,24 @@ class MySceneGraph {
                         material = this.materials[node.materialIds[0]]
                     } else if (materialId !== undefined) {
                         material = this.materials[materialId]
-                    } 
+                    }
                     let mesh = new THREE.Mesh(geometry, material);
                     mesh.castShadow = true; //TODO check another way to do this
                     mesh.receiveShadow = true; //TODO check another way to do this
                     sceneNode.add(mesh);
                 } else if (child.id !== undefined) {
                     const material = node.materialIds.length > 0 ? node.materialIds[0] : materialId
-                    const childNode = this.dfs(child, visited, material) 
+                    const childNode = this.dfs(child, visited, material)
                     if (childNode !== undefined)
                         sceneNode.add(childNode);
                 }
             }
         }
+        
 
         Utils.applyTransformation(sceneNode, node.transformations);
         sceneNode.name = node.id;
+        visited[node.id] = sceneNode;
         return sceneNode;
     }
 
