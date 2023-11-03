@@ -140,9 +140,22 @@
                 <noderef id="ball1" />
                 <noderef id="ball2" />
 
+                <primitive>
+                    <skybox
+                        width="60"
+                        height="50"
+                        depth="70"
+                        texture_lt_ref="textures/skybox.jpg"
+                        texture_rt_ref="textures/skybox.jpg"
+                        texture_ft_ref="textures/skybox.jpg"
+                        texture_bk_ref="textures/skybox.jpg"
+                        texture_up_ref="textures/skybox.jpg"
+                        texture_dn_ref="textures/skybox.jpg" />
+                </primitive>
+
                 <pointlight id="light1" enabled="true"
                     color="1.0 1.0 1.0 1" 
-                    intensity="1"
+                    intensity="5.0"
                     distance="100"
                     decay="0.0"
                     castshadow="false"
@@ -158,7 +171,7 @@
                     position="20 20 0"
                 /> 
                        
-                <spotlight id="light4" enabled="true"
+                <spotlight id="light3" enabled="true"
                     color="1.0 1.0 1.0 1" 
                     intensity="10.0"
                     distance="50"
@@ -170,7 +183,7 @@
                     angle="20.0"
                 /> 
 
-                <directionallight id="light5" enabled="true"
+                <directionallight id="light4" enabled="true"
                     color="1.0 1.0 1.0 1" 
                     intensity="5.0"
                     castshadow="true"
@@ -394,7 +407,7 @@
         </node>
 
         <node id="playerChair">
-        
+
             <materialref id="chairApp" />
 
             <children>             
