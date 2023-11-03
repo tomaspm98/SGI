@@ -37,30 +37,26 @@ class MySceneGraph {
             for (let child of node.children) {
                 if (child.type === "primitive") {
                     const geometry = Utils.createThreeGeometry(child);
+                    let material;
                     if (child.subtype === "skybox") {
                         const textOrder = ["texture_ft_ref", "texture_bk_ref", "texture_up_ref", "texture_dn_ref", "texture_rt_ref", "texture_lt_ref"]
-                        const materialArrays = textOrder.map(text => new THREE.MeshBasicMaterial({
+                        material = textOrder.map(text => new THREE.MeshBasicMaterial({
                             map: this.textures[child.representations[0][text]],
                             side: THREE.BackSide
                         }))
-                        const skybox = new THREE.Mesh(geometry, materialArrays);
-                        skybox.castShadow = false
-                        skybox.receiveShadow = false
-                        sceneNode.add(skybox);
+                    } else if (node.materialIds.length > 0) {
+                        material = this.materials[node.materialIds[0]]
+                    } else if (materialId !== undefined) {
+                        material = this.materials[materialId]
+                    }
+                    let mesh = new THREE.Mesh(geometry, material);
 
-
-                    } else {
-                        let material;
-                        if (node.materialIds.length > 0) {
-                            material = this.materials[node.materialIds[0]]
-                        } else if (materialId !== undefined) {
-                            material = this.materials[materialId]
-                        }
-                        let mesh = new THREE.Mesh(geometry, material);
+                    if (child.subtype !== "skybox") {
                         mesh.castShadow = true; //TODO check another way to do this
                         mesh.receiveShadow = true; //TODO check another way to do this
-                        sceneNode.add(mesh);
                     }
+                    sceneNode.add(mesh);
+
                 } else if (child.id !== undefined) {
                     const material = node.materialIds.length > 0 ? node.materialIds[0] : materialId
                     const childNode = this.dfs(child, visited, material)
@@ -69,8 +65,7 @@ class MySceneGraph {
                 }
             }
         }
-
-
+        
         Utils.applyTransformation(sceneNode, node.transformations);
         sceneNode.name = node.id;
         visited[node.id] = sceneNode;
