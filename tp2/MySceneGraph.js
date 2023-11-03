@@ -3,7 +3,7 @@ import * as Utils from './utils.js'
 
 class MySceneGraph {
     constructor(nodes, root_id, materials) {
-        this.graph = new THREE.Group();
+        this.graph = null;
         this.nodes = nodes;
         this.root_id = root_id;
         this.materials = materials;
@@ -30,9 +30,9 @@ class MySceneGraph {
                 if (child.type === "primitive") {
                     const geometry = Utils.createThreeGeometry(child);
                     if (node.materialIds.length > 0) {
-                        sceneNode.add(new THREE.Mesh(geometry, this.materials.get(node.materialIds[0])))
+                        sceneNode.add(new THREE.Mesh(geometry, this.materials[node.materialIds[0]]))
                     } else if (materialId !== undefined) {
-                        sceneNode.add(new THREE.Mesh(geometry, this.materials.get(materialId)))
+                        sceneNode.add(new THREE.Mesh(geometry, this.materials[materialId]))
                     } else {
                         sceneNode.add(new THREE.Mesh(geometry))
                     }

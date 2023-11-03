@@ -160,4 +160,24 @@ function applyTransformation(sceneNode, transformations) {
     }
 }
 
-export {createThreeGeometry, applyTransformation, rgbToHex, createThreeLight};
+function convertFilterThree(filter) {
+    switch (filter){
+        case "LinearFilter":
+            return THREE.LinearFilter
+        case "NearestFilter":
+            return THREE.NearestFilter
+        case "NearestMipmapNearestFilter":
+            return THREE.NearestMipmapNearestFilter
+        case "NearestMipmapLinearFilter":
+            return THREE.NearestMipmapLinearFilter
+        case "LinearMipmapNearestFilter":
+            return THREE.LinearMipmapNearestFilter
+        case "LinearMipmapLinearFilter":
+            return THREE.LinearMipmapLinearFilter
+        default:
+            console.warn("WARNING: filter not found, using LinearFilter | Filter: " + filter)
+            return THREE.LinearFilter
+    }
+}
+
+export {createThreeGeometry, applyTransformation, rgbToHex, createThreeLight, convertFilterThree};

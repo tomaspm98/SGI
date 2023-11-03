@@ -28,16 +28,6 @@ class MyGuiInterface {
         const cameraFolder = this.datgui.addFolder('Camera')
         cameraFolder.add(this.app, 'activeCameraName', [... this.contents.cameras_map.keys()]).name("active camera");
         cameraFolder.close()
-
-
-        const lightsFolder = this.datgui.addFolder('Lights');
-        this.contents.lights_map.forEach((light, name) => {
-            const lightState = { enabled: light.visible };
-            lightsFolder.add(lightState, 'enabled').name(name).onChange(value => {
-              light.visible = value;
-            });
-          });
-          lightsFolder.close()
     }
 }
 

@@ -4,6 +4,7 @@ import {MyFileReader} from './parser/MyFileReader.js';
 import {MyNurbsBuilder} from './MyNurbsBuilder.js';
 import {MySceneGraph} from "./MySceneGraph.js";
 import * as Utils from "./utils.js";
+import {TextureLoader} from "three";
 
 /**
  *  This class contains the contents of out application
@@ -18,11 +19,9 @@ class MyContents {
         this.app = app
         this.axis = null
 
-        this.textures_map = new Map()
-        this.materials_map = new Map()
+        this.textures = []
+        this.materials = []
         this.cameras_map = new Map()
-        this.lights_map = new Map()
-        this.lights_enabled = new Map()
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
         this.reader.open("scenes/demo/demo.xml");
@@ -61,8 +60,8 @@ class MyContents {
         this.renderMaterials(data)//renders materials
         this.renderBackground(data)
         this.renderFog(data)
-        
-        this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials_map)
+
+        this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials)
         this.sceneGraph.constructSceneGraph()
         this.app.scene.add(this.sceneGraph.graph)
         console.log(data.nodes["scene"])
@@ -73,24 +72,34 @@ class MyContents {
     renderTextures(data) {
         for (let key in data.textures) {
             let texture = data.textures[key]
-            if (texture.type === 'texture')
-                this.textures_map.set(texture.id, new THREE.TextureLoader().load(texture.filepath))
+            let newTexture;
+            if (texture.isVideo) {
+                newTexture = new THREE.VideoTexture(texture.filepath)
+            } else {
+                newTexture = new TextureLoader().load(texture.filepath)
+            }
+            newTexture.magFilter = Utils.convertFilterThree(texture.magFilter)
+            newTexture.minFilter = Utils.convertFilterThree(texture.minFilter)
+            newTexture.generateMipmaps = texture.mipmaps
+            newTexture.anisotropy = texture.anisotropy
+            this.textures[key] = newTexture
         }
     }
 
     renderMaterials(data) {
         for (let key in data.materials) {
-            let material = data.materials[key]
-            if (material.type === 'material')
-                this.materials_map.set(material.id, new THREE.MeshPhongMaterial({
-                    color: Utils.rgbToHex(material.color),
-                    specular: Utils.rgbToHex(material.specular),
-                    emissive: Utils.rgbToHex(material.emissive),
-                    shininess: material.shininess,
-                    map: this.textures_map.get(material.textureref),
-                    wireframe: material.wireframe,
-                    bumpScale: material.bump_scale,
-                }))
+            const material = data.materials[key]
+            const newMaterial = new THREE.MeshPhongMaterial({
+                color: Utils.rgbToHex(material.color),
+                specular: Utils.rgbToHex(material.specular),
+                emissive: Utils.rgbToHex(material.emissive),
+                shininess: material.shininess,
+                wireframe: material.wireframe,
+                flatShading: material.shading === "flat",
+                side: material.twosided ? THREE.DoubleSide : THREE.FrontSide,
+                map: material.textureref !== undefined ? this.textures[material.textureref] : undefined,
+            })
+            this.materials[key] = newMaterial
         }
     }
 
@@ -125,7 +134,7 @@ class MyContents {
         }
         this.activeCamera = data.activeCameraId
     }
-    
+
 
     update() {
 
@@ -175,7 +184,6 @@ class MyContents {
     }
 
 
-    
 }
 
 export {MyContents};
