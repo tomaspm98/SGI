@@ -38,32 +38,11 @@ class MySceneGraph {
                 if (child.type === "primitive") {
                     const geometry = Utils.createThreeGeometry(child);
                     if (child.subtype === "skybox") {
-                        const materialArrays = [
-                            new THREE.MeshBasicMaterial({
-                                map: this.textures[child.representations[0].texture_ft_ref],
-                                side: THREE.BackSide
-                            }),
-                            new THREE.MeshBasicMaterial({
-                                map: this.textures[child.representations[0].texture_bk_ref],
-                                side: THREE.BackSide
-                            }),
-                            new THREE.MeshBasicMaterial({
-                                map: this.textures[child.representations[0].texture_up_ref],
-                                side: THREE.BackSide
-                            }),
-                            new THREE.MeshBasicMaterial({
-                                map: this.textures[child.representations[0].texture_dn_ref],
-                                side: THREE.BackSide
-                            }),
-                            new THREE.MeshBasicMaterial({
-                                map: this.textures[child.representations[0].texture_rt_ref],
-                                side: THREE.BackSide
-                            }),
-                            new THREE.MeshBasicMaterial({
-                                map: this.textures[child.representations[0].texture_lt_ref],
-                                side: THREE.BackSide
-                            }),
-                        ]
+                        const textOrder = ["texture_ft_ref", "texture_bk_ref", "texture_up_ref", "texture_dn_ref", "texture_rt_ref", "texture_lt_ref"]
+                        const materialArrays = textOrder.map(text => new THREE.MeshBasicMaterial({
+                            map: this.textures[child.representations[0][text]],
+                            side: THREE.BackSide
+                        }))
                         const skybox = new THREE.Mesh(geometry, materialArrays);
                         skybox.castShadow = false
                         skybox.receiveShadow = false
