@@ -29,13 +29,18 @@ class MySceneGraph {
             for (let child of node.children) {
                 if (child.type === "primitive") {
                     const geometry = Utils.createThreeGeometry(child);
+                    let material;
                     if (node.materialIds.length > 0) {
-                        sceneNode.add(new THREE.Mesh(geometry, this.materials[node.materialIds[0]]))
+                        material = this.materials[node.materialIds[0]]
                     } else if (materialId !== undefined) {
-                        sceneNode.add(new THREE.Mesh(geometry, this.materials[materialId]))
+                        material = this.materials[materialId]
                     } else {
-                        sceneNode.add(new THREE.Mesh(geometry))
+                        material = null
                     }
+                    let mesh = new THREE.Mesh(geometry, material);
+                    mesh.castShadow = true; //TODO check another way to do this
+                    mesh.receiveShadow = true; //TODO check another way to do this
+                    sceneNode.add(mesh);
                 } else if (child.id !== undefined) {
                     const material = node.materialIds.length > 0 ? node.materialIds[0] : materialId
                     const childNode = this.dfs(child, visited, material) 
