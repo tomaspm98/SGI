@@ -73,6 +73,10 @@ function createThreeGeometry(primitive) {
                 controlPoints.push(row)
             }
             return new MyNurbsBuilder().build(controlPoints, primitive.representations[0].degree_u, primitive.representations[0].degree_v, primitive.representations[0].parts_u, primitive.representations[0].parts_v)
+        case "skybox":
+            return new THREE.BoxGeometry(primitive.representations[0].width,
+                primitive.representations[0].height,
+                primitive.representations[0].depth)
         default:
             console.log("ERROR: primitive not found")
     }
@@ -89,13 +93,13 @@ function createThreeLight(light) {
                 light.penumbra,
                 light.decay
             )
-            
+
             spotLight.position.set(...light.position)
             spotLight.target.position.set(...light.target)
             spotLight.castShadow = light.castshadow
             spotLight.shadow.camera.far = light.shadowfar
             spotLight.shadow.mapSize = light.shadowmapsize
-            
+
             return spotLight
         case 'pointlight':
             const pointLight = new THREE.PointLight(
@@ -104,19 +108,19 @@ function createThreeLight(light) {
                 light.distance,
                 light.decay
             )
-            
+
             pointLight.position.set(...light.position)
             pointLight.castShadow = light.castshadow
             pointLight.shadow.camera.far = light.shadowfar
             pointLight.shadow.mapSize = light.shadowmapsize
-            
+
             return pointLight
         case 'directionallight':
             const directionalLight = new THREE.DirectionalLight(
                 rgbToHex(light.color),
                 light.intensity
             )
-            
+
             directionalLight.position.set(...light.position)
             directionalLight.castShadow = light.castshadow
             directionalLight.shadow.camera.far = light.shadowfar
@@ -125,7 +129,7 @@ function createThreeLight(light) {
             directionalLight.shadow.camera.right = light.shadowright
             directionalLight.shadow.camera.bottom = light.shadowbottom
             directionalLight.shadow.camera.top = light.shadowtop
-            
+
             return directionalLight
         default:
             console.error("ERROR: light not found")
@@ -161,7 +165,7 @@ function applyTransformation(sceneNode, transformations) {
 }
 
 function convertFilterThree(filter) {
-    switch (filter){
+    switch (filter) {
         case "LinearFilter":
             return THREE.LinearFilter
         case "NearestFilter":

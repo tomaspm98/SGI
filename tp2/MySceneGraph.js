@@ -2,11 +2,12 @@ import * as THREE from 'three';
 import * as Utils from './utils.js'
 
 class MySceneGraph {
-    constructor(nodes, root_id, materials) {
+    constructor(nodes, root_id, materials, textures) {
         this.graph = null;
         this.nodes = nodes;
         this.root_id = root_id;
         this.materials = materials;
+        this.textures = textures;
     }
 
     constructSceneGraph() {
@@ -36,16 +37,51 @@ class MySceneGraph {
             for (let child of node.children) {
                 if (child.type === "primitive") {
                     const geometry = Utils.createThreeGeometry(child);
-                    let material;
-                    if (node.materialIds.length > 0) {
-                        material = this.materials[node.materialIds[0]]
-                    } else if (materialId !== undefined) {
-                        material = this.materials[materialId]
+                    if (child.subtype === "skybox") {
+                        const materialArrays = [
+                            new THREE.MeshBasicMaterial({
+                                map: this.textures[child.representations[0].texture_ft_ref],
+                                side: THREE.BackSide
+                            }),
+                            new THREE.MeshBasicMaterial({
+                                map: this.textures[child.representations[0].texture_bk_ref],
+                                side: THREE.BackSide
+                            }),
+                            new THREE.MeshBasicMaterial({
+                                map: this.textures[child.representations[0].texture_up_ref],
+                                side: THREE.BackSide
+                            }),
+                            new THREE.MeshBasicMaterial({
+                                map: this.textures[child.representations[0].texture_dn_ref],
+                                side: THREE.BackSide
+                            }),
+                            new THREE.MeshBasicMaterial({
+                                map: this.textures[child.representations[0].texture_rt_ref],
+                                side: THREE.BackSide
+                            }),
+                            new THREE.MeshBasicMaterial({
+                                map: this.textures[child.representations[0].texture_lt_ref],
+                                side: THREE.BackSide
+                            }),
+                        ]
+                        const skybox = new THREE.Mesh(geometry, materialArrays);
+                        skybox.castShadow = false
+                        skybox.receiveShadow = false
+                        sceneNode.add(skybox);
+
+
+                    } else {
+                        let material;
+                        if (node.materialIds.length > 0) {
+                            material = this.materials[node.materialIds[0]]
+                        } else if (materialId !== undefined) {
+                            material = this.materials[materialId]
+                        }
+                        let mesh = new THREE.Mesh(geometry, material);
+                        mesh.castShadow = true; //TODO check another way to do this
+                        mesh.receiveShadow = true; //TODO check another way to do this
+                        sceneNode.add(mesh);
                     }
-                    let mesh = new THREE.Mesh(geometry, material);
-                    mesh.castShadow = true; //TODO check another way to do this
-                    mesh.receiveShadow = true; //TODO check another way to do this
-                    sceneNode.add(mesh);
                 } else if (child.id !== undefined) {
                     const material = node.materialIds.length > 0 ? node.materialIds[0] : materialId
                     const childNode = this.dfs(child, visited, material)
@@ -54,7 +90,7 @@ class MySceneGraph {
                 }
             }
         }
-        
+
 
         Utils.applyTransformation(sceneNode, node.transformations);
         sceneNode.name = node.id;

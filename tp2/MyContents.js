@@ -61,7 +61,7 @@ class MyContents {
         this.renderBackground(data)
         this.renderFog(data)
 
-        this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials)
+        this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials, this.textures)
         this.sceneGraph.constructSceneGraph()
         this.app.scene.add(this.sceneGraph.graph)
         console.log(data.nodes["scene"])
