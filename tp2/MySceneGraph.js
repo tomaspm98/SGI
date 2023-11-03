@@ -34,9 +34,7 @@ class MySceneGraph {
                         material = this.materials[node.materialIds[0]]
                     } else if (materialId !== undefined) {
                         material = this.materials[materialId]
-                    } else {
-                        material = null
-                    }
+                    } 
                     let mesh = new THREE.Mesh(geometry, material);
                     mesh.castShadow = true; //TODO check another way to do this
                     mesh.receiveShadow = true; //TODO check another way to do this
