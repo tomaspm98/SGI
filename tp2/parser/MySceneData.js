@@ -15,6 +15,7 @@ class MySceneData  {
 
     constructor() {
         this.options = null;
+        this.skyboxes = []
         this.fog = null;
 
         this.materials = []
@@ -26,6 +27,8 @@ class MySceneData  {
         
         this.nodes = [];
         this.rootId = null;
+
+        this.lods = [];
     
         this.descriptors = [];
 
@@ -50,7 +53,15 @@ class MySceneData  {
             {name: "minFilter", type: "string", required: false, default: "LinearMipmapLinearFilter"}, // to be used in later classes
             {name: "mipmaps", type: "boolean", required: false, default: true}, // by default threejs generates mipmaps for you
             {name: "anisotropy", type: "integer", required: false, default: 1}, // default is 1. A higher value gives a less blurry result than a basic mipmap, at the cost of more texture samples being used
-		]
+            {name: "mipmap0", type: "string", required: false, default: null}, //   mipmap level 0. Default null.
+            {name: "mipmap1", type: "string", required: false, default: null}, // mipmap level 1. Default null.
+            {name: "mipmap2", type: "string", required: false, default: null}, // mipmap level 2. Default null.
+            {name: "mipmap3", type: "string", required: false, default: null}, // mipmap level 3. Default null.
+            {name: "mipmap4", type: "string", required: false, default: null}, // mipmap level 4. Default null.
+            {name: "mipmap5", type: "string", required: false, default: null}, // mipmap level 5. Default null.
+            {name: "mipmap6", type: "string", required: false, default: null}, // mipmap level 6. Default null.
+            {name: "mipmap7", type: "string", required: false, default: null}, // mipmap level 7. Default null.
+        ]
         
 
         this.descriptors["material"] = [
@@ -65,8 +76,9 @@ class MySceneData  {
 			{name: "texlength_s", type: "float", required: false, default: 1.0},
 			{name: "texlength_t", type: "float", required: false, default: 1.0},
             {name: "twosided", type: "boolean", required: false, default: false},
-            {name: "bump_ref", type: "string", required: false, default: null}, // bump map is to be used in later classes
-            {name: "bump_scale", type: "float", required: false, default: 1.0},
+            {name: "bumpref", type: "string", required: false, default: null}, // bump map is to be used in later classes
+            {name: "bumpscale", type: "float", required: false, default: 1.0},
+            {name: "specularref", type: "string", required: false, default: null}, // specular map is to be used in later classes
 		]
 
         this.descriptors["orthogonal"] = [
@@ -162,15 +174,16 @@ class MySceneData  {
 		]
 
         this.descriptors["skybox"] = [
-            {name: "width", type: "float" },
-			{name: "height", type: "float" },
-			{name: "depth", type: "float" },
-			{name: "texture_up_ref", type: "string"}, // up
-			{name: "texture_dn_ref", type: "string"}, // down
-			{name: "texture_bk_ref", type: "string"}, // back
-            {name: "texture_lt_ref", type: "string"}, // left
-			{name: "texture_ft_ref", type: "string"}, // front
-			{name: "texture_rt_ref", type: "string"}, // right
+            {name: "size", type: "vector3" },
+			{name: "center", type: "vector3" },
+			{name: "emissive", type: "rgba" },
+            {name: "intensity", type: "float" },
+			{name: "up", type: "string"}, 
+			{name: "down", type: "string"},
+			{name: "left", type: "string"},
+            {name: "right", type: "string"},
+			{name: "front", type: "string"},
+			{name: "back", type: "string"}, 
         ]
 
 		this.descriptors["spotlight"] = [
@@ -217,9 +230,9 @@ class MySceneData  {
             {name: "shadowmapsize", type: "integer", required: false, default: 512},
 		]
 
-        this.primaryNodeIds = ["globals", "fog" ,"textures", "materials", "cameras", "graph"]
+        this.primaryNodeIds = ["globals", "fog", "skybox" ,"textures", "materials", "cameras", "graph"]
 
-        this.primitiveIds = ["cylinder", "rectangle", "triangle", "sphere", "nurbs" , "box", "model3d", "skybox" ]
+        this.primitiveIds = ["cylinder", "rectangle", "triangle", "sphere", "nurbs" , "box", "model3d", "skybox", "lod" ]
     }
 
     createCustomAttributeIfNotExists(obj) {
@@ -229,17 +242,30 @@ class MySceneData  {
     setOptions(options) {
         this.options = options;
         this.createCustomAttributeIfNotExists(options)
-        //console.debug("added options " + JSON.stringify(options));
+        console.debug("added options " + JSON.stringify(options));
     }
 
     getOptions() {
         return this.options;
     }
 
+    setSkybox(skybox) {
+        if (skybox.id === undefined) {
+            skybox.id = "default"
+        }
+        this.skyboxes[skybox.id] = skybox;
+        this.createCustomAttributeIfNotExists(skybox)
+        console.debug("added skybox " + JSON.stringify(skybox));
+    }
+
+    getSkybox() {
+        return this.skyboxes["default"]
+    }
+
     setFog(fog) {
         this.fog = fog;
         this.createCustomAttributeIfNotExists(fog)
-        //console.debug("added fog " + JSON.stringify(fog));
+        console.debug("added fog " + JSON.stringify(fog));
     }
 
     getFog() {
@@ -262,7 +288,7 @@ class MySceneData  {
         }
         this.materials[material.id] = material;
         this.createCustomAttributeIfNotExists(material)
-        //console.debug("added material " + JSON.stringify(material));
+        console.debug("added material " + JSON.stringify(material));
     };
 
     addTexture(texture) {
@@ -272,7 +298,7 @@ class MySceneData  {
         }
         this.textures[texture.id] = texture;
         this.createCustomAttributeIfNotExists(texture)
-        //console.debug("added texture" + JSON.stringify(texture))
+        console.debug("added texture" + JSON.stringify(texture))
     };
 
     getTexture(id) {
@@ -306,7 +332,7 @@ class MySceneData  {
         }
         this.cameras[camera.id] = camera
         this.createCustomAttributeIfNotExists(camera)
-        //console.debug("added camera " + JSON.stringify(camera))
+        console.debug("added camera " + JSON.stringify(camera))
     }
 
     getLight(id) {	
@@ -322,7 +348,7 @@ class MySceneData  {
         }
         this.lights[light.id] = light;
         this.createCustomAttributeIfNotExists(light)
-        //console.debug("added light " + JSON.stringify(light));
+        console.debug("added light " + JSON.stringify(light));
     }
 
     getNode(id) {	
@@ -337,7 +363,7 @@ class MySceneData  {
             throw new Error("inconsistency: a node with id " + id + " already exists!");		
         }
 
-		obj = {id: id, transformations: [], materialIds : [], children: [], loaded: false, type:"node"};
+		obj = {id: id, transformations: [], materialIds : [], children: [], loaded: false, type:"node", castShadows: false, receiveShadows: false};
         this.addNode(obj);
         return obj;
 	}
@@ -350,7 +376,7 @@ class MySceneData  {
         }
         this.nodes[node.id] = node;
         this.createCustomAttributeIfNotExists(node)
-        //console.debug("added node " + JSON.stringify(node));
+        console.debug("added node " + JSON.stringify(node));
     };
 
     addChildToNode(node, child) {
@@ -364,7 +390,7 @@ class MySceneData  {
         }
         node.children.push(child)
         this.createCustomAttributeIfNotExists(child)
-        //console.debug("added node child" + JSON.stringify(child));
+        console.debug("added node child" + JSON.stringify(child));
     }
 
     createEmptyPrimitive() {
@@ -374,19 +400,47 @@ class MySceneData  {
 
     onLoadFinished(app, contents) {
         
-        //console.info("------------------ consolidating data structures ------------------");
+        console.info("------------------ consolidating data structures ------------------");
         
-        //console.debug("consolidating materials...");
+        console.debug("consolidating materials...");
         // TODO: check material refs and replace with material objects
         
-        //console.debug("consolidating scene graph root...");
+        console.debug("consolidating scene graph root...");
         // TODO: check root not null and root exists
         
-        //console.debug("consolidating camera...");
+        console.debug("consolidating camera...");
         // TODO: check active camera not null and exists
         
         // TODO: continue consolidation checks
     }
+
+    getLOD(id) {	
+        let value = this.lods[id];
+        if (value === undefined) return null
+        return value
+    }
+
+    createEmptyLOD(id) {
+        let obj = this.getLOD(id) 
+        if (obj !== null && obj !== undefined) {
+            throw new Error("inconsistency: a LOD with id " + id + " already exists!");		
+        }
+
+		obj = {id: id, children: [], loaded: false, type:"lod"};
+        this.addLOD(obj);
+        return obj;
+	}
+
+
+    addLOD(lod) {
+        let obj = this.getLOD(lod.id) 
+        if (obj !== null && obj !== undefined) {
+            throw new Error("inconsistency: a LOD with id " + lod.id + " already exists!");		
+        }
+        this.lods[lod.id] = lod;
+        this.createCustomAttributeIfNotExists(lod)
+        console.debug("added lod " + JSON.stringify(lod));
+    };
 }
 export { MySceneData };
 
