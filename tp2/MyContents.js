@@ -92,9 +92,14 @@ class MyContents {
             let texture = data.textures[key]
             let newTexture;
             if (texture.isVideo) {
-                newTexture = new THREE.VideoTexture(texture.filepath)
+                console.log("OK")
+                const video = document.getElementById('video')
+                newTexture = new THREE.VideoTexture(video)
+                newTexture.needsUpdate=true
+                console.log(newTexture)
             } else {
                 newTexture = new TextureLoader().load(texture.filepath)
+                console.log(newTexture)
             }
             newTexture.magFilter = Utils.convertFilterThree(texture.magFilter)
             newTexture.minFilter = Utils.convertFilterThree(texture.minFilter)
@@ -116,8 +121,12 @@ class MyContents {
                 flatShading: material.shading === "flat",
                 side: material.twosided ? THREE.DoubleSide : THREE.FrontSide,
                 map: this.textures[material.textureref] !== undefined ? this.textures[material.textureref] : null,
+                bumpMap: this.textures[material.bumpref] !== undefined ? this.textures[material.bumpref] : null,
+                bumpScale: material.bumpscale,
+                specularMap: this.textures[material.specularref] !== undefined ? this.textures[material.specularref] : null,
             })
             this.materials[key] = newMaterial
+            console.log(newMaterial)
         }
     }
 
