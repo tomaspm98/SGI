@@ -165,6 +165,7 @@ class MyApp  {
     }
     
     updateGui(){
+        console.log(this.contents)
         for(const [key, value] of this.contents.cameras_map)
             this.cameras[key] = value
         this.setActiveCamera(this.contents.activeCamera)

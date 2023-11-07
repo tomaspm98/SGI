@@ -400,7 +400,7 @@ class MySceneData  {
 
     onLoadFinished(app, contents) {
         
-        console.info("------------------ consolidating data structures ------------------");
+        //console.info("------------------ consolidating data structures ------------------");
         
         console.debug("consolidating materials...");
         // TODO: check material refs and replace with material objects

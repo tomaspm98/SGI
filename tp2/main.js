@@ -24,6 +24,7 @@ gui.setContents(contents)
 // interface elements may control contents items
 
 app.setGui(gui)
+app.updateGui()
 
 // main animation loop - calls every 50-60 ms.
 app.render()

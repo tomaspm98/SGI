@@ -47,7 +47,7 @@ class MyContents {
     onSceneLoaded(data) {
         //console.info("scene data loaded " + data + ". visit MySceneData javascript class to check contents for each data item.")
         this.onAfterSceneLoadedAndBeforeRender(data);
-        this.app.updateGui()
+        
     }
 
     output(obj, indent = 0) {
@@ -97,7 +97,7 @@ class MyContents {
                 wireframe: material.wireframe,
                 flatShading: material.shading === "flat",
                 side: material.twosided ? THREE.DoubleSide : THREE.FrontSide,
-                map: material.textureref !== undefined ? this.textures[material.textureref] : undefined,
+                map: this.textures[material.textureref] !== undefined ? this.textures[material.textureref] : null,
             })
             this.materials[key] = newMaterial
         }
