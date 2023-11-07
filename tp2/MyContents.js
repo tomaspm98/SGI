@@ -96,14 +96,42 @@ class MyContents {
                 const video = document.getElementById('video')
                 newTexture = new THREE.VideoTexture(video)
                 newTexture.needsUpdate=true
+                console.log("NEW TEXTURE")
                 console.log(newTexture)
             } else {
                 newTexture = new TextureLoader().load(texture.filepath)
                 console.log(newTexture)
             }
-            newTexture.magFilter = Utils.convertFilterThree(texture.magFilter)
-            newTexture.minFilter = Utils.convertFilterThree(texture.minFilter)
             newTexture.generateMipmaps = texture.mipmaps
+            if (texture.mipmaps == false) {
+                if (texture.mipmap0 != undefined){
+                    Utils.loadMipmap(newTexture,0,texture.mipmap0)
+                }
+                if (texture.mipmap1 != undefined){
+                    Utils.loadMipmap(newTexture,1,texture.mipmap1)
+                }
+                if (texture.mipmap2 != undefined){
+                    Utils.loadMipmap(newTexture,2,texture.mipmap2)
+                }
+                if (texture.mipmap3 != undefined){
+                    Utils.loadMipmap(newTexture,3,texture.mipmap3)
+                }
+                if (texture.mipmap4 != undefined){
+                    Utils.loadMipmap(newTexture,4,texture.mipmap4)
+                }
+                if (texture.mipmap5 != undefined){
+                    Utils.loadMipmap(newTexture,5,texture.mipmap5)
+                }
+                if (texture.mipmap6 != undefined){
+                    Utils.loadMipmap(newTexture,6,texture.mipmap6)
+                }
+                if (texture.mipmap7 != undefined){
+                    Utils.loadMipmap(newTexture,7,texture.mipmap7)
+                }      
+            } else {
+                newTexture.magFilter = Utils.convertFilterThree(texture.magFilter)
+                newTexture.minFilter = Utils.convertFilterThree(texture.minFilter)
+            }
             newTexture.anisotropy = texture.anisotropy
             this.textures[key] = newTexture
         }
