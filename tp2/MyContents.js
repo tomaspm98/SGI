@@ -60,12 +60,30 @@ class MyContents {
         this.renderMaterials(data)//renders materials
         this.renderBackground(data)
         this.renderFog(data)
+        this.renderSkybox(data)
+        console.log(data)
 
         this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials, this.textures)
         this.sceneGraph.constructSceneGraph()
         this.app.scene.add(this.sceneGraph.graph)
         console.log(data.nodes["scene"])
         console.log(this.sceneGraph.graph)
+    }
+
+    renderSkybox(data){
+        let skybox= data.skyboxes.default
+        let skyboxGeometry = new THREE.BoxGeometry(skybox.size[0], skybox.size[1], skybox.size[2])
+        let material;
+        const textOrder = ["front", "back", "up", "down", "right", "left"]
+                        material = textOrder.map(text => new THREE.MeshPhongMaterial({
+                            map: new TextureLoader().load(skybox[text]),
+                            side: THREE.BackSide,
+                            emissive: Utils.rgbToHex(skybox.emissive),
+                            emissiveIntensity: skybox.intensity,
+                        }))
+        const skyboxMesh = new THREE.Mesh(skyboxGeometry, material)
+        skyboxMesh.position.set(...skybox.center)
+        this.app.scene.add(skyboxMesh)    
     }
 
 
