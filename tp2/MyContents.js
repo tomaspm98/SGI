@@ -22,6 +22,7 @@ class MyContents {
         this.textures = []
         this.materials = []
         this.cameras_map = new Map()
+        this.videoTextureCount = 0
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
         this.reader.open("scenes/demo/MyScene.xml");
@@ -93,7 +94,9 @@ class MyContents {
             let newTexture;
             if (texture.isVideo) {
                 console.log("OK")
-                const video = document.getElementById('video')
+                const videoId = 'video${this.videoTextureCount++}'
+                this.addVideoTagToHTML(texture.filepath, videoId);
+                const video = document.getElementById(videoId)
                 newTexture = new THREE.VideoTexture(video)
                 newTexture.needsUpdate=true
                 console.log("NEW TEXTURE")
@@ -236,6 +239,24 @@ class MyContents {
                 }
             }
         }
+    }
+
+    addVideoTagToHTML(videoPath, videoId) {
+        // Create video element
+        const video = document.createElement('video');
+        video.id = videoId;
+        video.playsInline = true;
+        video.webkitPlaysInline = true;
+        video.muted = true;
+        video.loop = true;
+        video.autoplay = true;
+        video.width = 640;
+        video.height = 360;
+        video.preload = 'auto';
+        video.src = videoPath;
+    
+        // Append video to the document body or a specific container
+        document.body.appendChild(video); // or use a specific container like document.getElementById('yourContainerId').appendChild(video);
     }
 
 
