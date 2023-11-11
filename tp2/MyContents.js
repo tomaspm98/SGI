@@ -52,7 +52,7 @@ class MyContents {
     }
 
     output(obj, indent = 0) {
-        console.log("" + new Array(indent * 4).join(' ') + " - " + obj.type + " " + (obj.id !== undefined ? "'" + obj.id + "'" : ""))
+        //console.log("" + new Array(indent * 4).join(' ') + " - " + obj.type + " " + (obj.id !== undefined ? "'" + obj.id + "'" : ""))
     }
 
     onAfterSceneLoadedAndBeforeRender(data) {
@@ -62,7 +62,6 @@ class MyContents {
         this.renderBackground(data)
         this.renderFog(data)
         this.renderSkybox(data)
-        console.log(data)
 
         this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials, this.textures)
         this.sceneGraph.constructSceneGraph()
@@ -93,20 +92,16 @@ class MyContents {
             let texture = data.textures[key]
             let newTexture;
             if (texture.isVideo) {
-                console.log("OK")
                 const videoId = 'video${this.videoTextureCount++}'
                 this.addVideoTagToHTML(texture.filepath, videoId);
                 const video = document.getElementById(videoId)
                 newTexture = new THREE.VideoTexture(video)
                 newTexture.needsUpdate=true
-                console.log("NEW TEXTURE")
-                console.log(newTexture)
             } else {
                 newTexture = new TextureLoader().load(texture.filepath)
-                console.log(newTexture)
             }
             newTexture.generateMipmaps = texture.mipmaps
-            if (texture.mipmaps == false) {
+            if (texture.mipmaps === false) {
                 if (texture.mipmap0 != undefined){
                     Utils.loadMipmap(newTexture,0,texture.mipmap0)
                 }
@@ -157,7 +152,6 @@ class MyContents {
                 specularMap: this.textures[material.specularref] !== undefined ? this.textures[material.specularref] : null,
             })
             this.materials[key] = newMaterial
-            console.log(newMaterial)
         }
     }
 
