@@ -19,8 +19,8 @@ function createThreeGeometry(primitive) {
             const plane = new THREE.PlaneGeometry(
                 point2[0] - point1[0],
                 point2[1] - point1[1],
-                primitive.representations["parts_x"],
-                primitive.representations["parts_y"]
+                primitive.representations[0]["parts_x"],
+                primitive.representations[0]["parts_y"]
             );
 
             plane.translate(
