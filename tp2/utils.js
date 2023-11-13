@@ -97,10 +97,10 @@ function createThreeLight(light) {
             spotLight.position.set(...light.position)
             spotLight.target.position.set(...light.target)
             spotLight.castShadow = light.castshadow
-            spotLight.shadow.camera.far = light.shadowfar
-            spotLight.shadow.mapSize = light.shadowmapsize
-
+            spotLight.shadowFar = light.shadowfar
+            spotLight.shadowMap = light.shadowmapsize
             return spotLight
+
         case 'pointlight':
             const pointLight = new THREE.PointLight(
                 rgbToHex(light.color),
@@ -111,8 +111,8 @@ function createThreeLight(light) {
 
             pointLight.position.set(...light.position)
             pointLight.castShadow = light.castshadow
-            pointLight.shadow.camera.far = light.shadowfar
-            pointLight.shadow.mapSize = light.shadowmapsize
+            pointLight.shadowFar = light.shadowfar
+            pointLight.shadowMap = light.shadowmapsize
 
             return pointLight
         case 'directionallight':
@@ -123,12 +123,12 @@ function createThreeLight(light) {
 
             directionalLight.position.set(...light.position)
             directionalLight.castShadow = light.castshadow
-            directionalLight.shadow.camera.far = light.shadowfar
-            directionalLight.shadow.mapSize = light.shadowmapsize
-            directionalLight.shadow.camera.left = light.shadowleft
-            directionalLight.shadow.camera.right = light.shadowright
-            directionalLight.shadow.camera.bottom = light.shadowbottom
-            directionalLight.shadow.camera.top = light.shadowtop
+            directionalLight.shadowFar = light.shadowfar
+            directionalLight.shadowMap = light.shadowmapsize
+            directionalLight.shadowCameraLeft = light.shadowleft
+            directionalLight.shadowCameraRight = light.shadowright
+            directionalLight.shadowCameraBottom = light.shadowbottom
+            directionalLight.shadowCameraTop = light.shadowtop
 
             return directionalLight
         default:
@@ -184,29 +184,28 @@ function convertFilterThree(filter) {
     }
 }
 
-function  loadMipmap(parentTexture, level, path)
-{
+function loadMipmap(parentTexture, level, path) {
     // load texture. On loaded call the function to create the mipmap for the specified level 
-    new THREE.TextureLoader().load(path, 
-        function(mipmapTexture)  // onLoad callback
+    new THREE.TextureLoader().load(path,
+        function (mipmapTexture)  // onLoad callback
         {
             const canvas = document.createElement('canvas')
             const ctx = canvas.getContext('2d')
             ctx.scale(1, 1);
-            
+
             // const fontSize = 48
-            const img = mipmapTexture.image         
+            const img = mipmapTexture.image
             canvas.width = img.width;
             canvas.height = img.height
 
             // first draw the image
-            ctx.drawImage(img, 0, 0 )
-                         
+            ctx.drawImage(img, 0, 0)
+
             // set the mipmap image in the parent texture in the appropriate level
             parentTexture.mipmaps[level] = canvas
         },
         undefined, // onProgress callback currently not supported
-        function(err) {
+        function (err) {
             console.error('Unable to load the image ' + path + ' as mipmap level ' + level + ".", err)
         }
     )
