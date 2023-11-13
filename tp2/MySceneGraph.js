@@ -15,11 +15,11 @@ class MySceneGraph {
     }
 
     dfs(node, visited = [], materialId = undefined) {
-        if (visited.hasOwnProperty(node.id)) {
+        /*if (visited.hasOwnProperty(node.id)) {
             const objClone = visited[node.id].clone()
             objClone["isCloned"] = true
             return objClone
-          }
+          }*/
 
         if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
             if (node.enabled) {
