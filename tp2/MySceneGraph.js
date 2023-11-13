@@ -14,7 +14,7 @@ class MySceneGraph {
         this.graph = this.dfs(this.nodes[this.root_id]);
     }
 
-    dfs(node, visited = [], materialId = undefined) {
+    dfs(node, visited = [], materialId = undefined, castShadow = false, receiveShadow = false) {
         /*if (visited.hasOwnProperty(node.id)) {
             const objClone = visited[node.id].clone()
             objClone["isCloned"] = true
@@ -44,11 +44,13 @@ class MySceneGraph {
                         material = this.materials[materialId]
                     }
                     let mesh = new THREE.Mesh(geometry, material);
+                    mesh.castShadow = castShadow || child.castShadow
+                    mesh.receiveShadow = receiveShadow || child.receiveShadow
                     sceneNode.add(mesh);
 
                 } else if (child.id !== undefined) {
                     const material = node.materialIds.length > 0 ? node.materialIds[0] : materialId
-                    const childNode = this.dfs(child, visited, material)
+                    const childNode = this.dfs(child, visited, material, castShadow || child.castShadow, receiveShadow || child.receiveShadow)
                     if (childNode !== undefined)
                         sceneNode.add(childNode);
                 }
@@ -57,7 +59,7 @@ class MySceneGraph {
         
         Utils.applyTransformation(sceneNode, node.transformations);
         sceneNode.name = node.id;
-        visited[node.id] = sceneNode;
+        //visited[node.id] = sceneNode;
         return sceneNode;
     }
 

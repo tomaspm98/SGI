@@ -51,6 +51,7 @@ class MyApp  {
         this.renderer = new THREE.WebGLRenderer({antialias:true});
         this.renderer.setPixelRatio( window.devicePixelRatio );
         this.renderer.setClearColor("#000000");
+        
 
         // Configure renderer size
         this.renderer.setSize( window.innerWidth, window.innerHeight );
