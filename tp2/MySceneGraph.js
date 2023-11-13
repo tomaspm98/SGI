@@ -38,23 +38,12 @@ class MySceneGraph {
                 if (child.type === "primitive") {
                     const geometry = Utils.createThreeGeometry(child);
                     let material;
-                    if (child.subtype === "skybox") {
-                        const textOrder = ["texture_ft_ref", "texture_bk_ref", "texture_up_ref", "texture_dn_ref", "texture_rt_ref", "texture_lt_ref"]
-                        material = textOrder.map(text => new THREE.MeshBasicMaterial({
-                            map: this.textures[child.representations[0][text]],
-                            side: THREE.BackSide
-                        }))
-                    } else if (node.materialIds.length > 0) {
+                    if (node.materialIds.length > 0) {
                         material = this.materials[node.materialIds[0]]
                     } else if (materialId !== undefined) {
                         material = this.materials[materialId]
                     }
                     let mesh = new THREE.Mesh(geometry, material);
-
-                    if (child.subtype !== "skybox") {
-                        mesh.castShadow = true; //TODO check another way to do this
-                        mesh.receiveShadow = true; //TODO check another way to do this
-                    }
                     sceneNode.add(mesh);
 
                 } else if (child.id !== undefined) {
