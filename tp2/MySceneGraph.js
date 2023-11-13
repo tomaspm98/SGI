@@ -11,7 +11,8 @@ class MySceneGraph {
     }
 
     constructSceneGraph() {
-        this.graph = this.dfs(this.nodes[this.root_id]);
+        const root = this.nodes[this.root_id];
+        this.graph = this.dfs(root, [], this.materials[root.materialIds[0]], root.castShadows, root.receiveShadows);
     }
 
     dfs(node, visited = [], materialId = undefined, castShadow = false, receiveShadow = false) {
@@ -30,7 +31,7 @@ class MySceneGraph {
             } else
                 return
         }
-
+        this.printDfsNode(node.id, visited, castShadow, receiveShadow)
         const sceneNode = new THREE.Group();
 
         if (node.children !== undefined) {
@@ -44,29 +45,33 @@ class MySceneGraph {
                         material = this.materials[materialId]
                     }
                     let mesh = new THREE.Mesh(geometry, material);
-                    mesh.castShadow = castShadow || child.castShadow
-                    mesh.receiveShadow = receiveShadow || child.receiveShadow
+                    mesh.castShadow = castShadow
+                    mesh.receiveShadow = receiveShadow
                     sceneNode.add(mesh);
-
                 } else if (child.id !== undefined) {
                     const material = node.materialIds.length > 0 ? node.materialIds[0] : materialId
-                    const childNode = this.dfs(child, visited, material, castShadow || child.castShadow, receiveShadow || child.receiveShadow)
+                    const childNode = this.dfs(child, visited, material, castShadow || child.castShadows, receiveShadow || child.receiveShadows)
                     if (childNode !== undefined)
                         sceneNode.add(childNode);
                 }
             }
         }
-        
+        sceneNode.castShadow = castShadow
+        sceneNode.receiveShadow = receiveShadow
         Utils.applyTransformation(sceneNode, node.transformations);
         sceneNode.name = node.id;
         //visited[node.id] = sceneNode;
         return sceneNode;
     }
 
-    printDfsNode(node_id, visited) {
+    printDfsNode(node_id, visited, castShadow, receiveShadow) {
         console.log("-------------------")
         console.log("visiting node: " + node_id);
         console.log("visited: " + new Array(...visited).join(' '));
+        console.log("CastShadow Object: " + this.nodes[node_id].castShadows);
+        console.log("ReceiveShadow Object: " + this.nodes[node_id].receiveShadows);
+        console.log("CastShadow inherited: " + castShadow);
+        console.log("ReceiveShadow inherited: " + receiveShadow);
         try {
             console.log("children: " + this.nodes[node_id].children.map(child => child.id).join(' '))
 

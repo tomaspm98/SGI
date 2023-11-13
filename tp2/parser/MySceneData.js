@@ -242,7 +242,7 @@ class MySceneData  {
     setOptions(options) {
         this.options = options;
         this.createCustomAttributeIfNotExists(options)
-        console.debug("added options " + JSON.stringify(options));
+        //console.debug("added options " + JSON.stringify(options));
     }
 
     getOptions() {
@@ -255,7 +255,7 @@ class MySceneData  {
         }
         this.skyboxes[skybox.id] = skybox;
         this.createCustomAttributeIfNotExists(skybox)
-        console.debug("added skybox " + JSON.stringify(skybox));
+        //console.debug("added skybox " + JSON.stringify(skybox));
     }
 
     getSkybox() {
@@ -265,7 +265,7 @@ class MySceneData  {
     setFog(fog) {
         this.fog = fog;
         this.createCustomAttributeIfNotExists(fog)
-        console.debug("added fog " + JSON.stringify(fog));
+        //console.debug("added fog " + JSON.stringify(fog));
     }
 
     getFog() {
@@ -288,7 +288,7 @@ class MySceneData  {
         }
         this.materials[material.id] = material;
         this.createCustomAttributeIfNotExists(material)
-        console.debug("added material " + JSON.stringify(material));
+        //console.debug("added material " + JSON.stringify(material));
     };
 
     addTexture(texture) {
@@ -298,7 +298,7 @@ class MySceneData  {
         }
         this.textures[texture.id] = texture;
         this.createCustomAttributeIfNotExists(texture)
-        console.debug("added texture" + JSON.stringify(texture))
+        //console.debug("added texture" + JSON.stringify(texture))
     };
 
     getTexture(id) {
@@ -332,7 +332,7 @@ class MySceneData  {
         }
         this.cameras[camera.id] = camera
         this.createCustomAttributeIfNotExists(camera)
-        console.debug("added camera " + JSON.stringify(camera))
+        //console.debug("added camera " + JSON.stringify(camera))
     }
 
     getLight(id) {	
@@ -348,7 +348,7 @@ class MySceneData  {
         }
         this.lights[light.id] = light;
         this.createCustomAttributeIfNotExists(light)
-        console.debug("added light " + JSON.stringify(light));
+        //console.debug("added light " + JSON.stringify(light));
     }
 
     getNode(id) {	
@@ -376,7 +376,7 @@ class MySceneData  {
         }
         this.nodes[node.id] = node;
         this.createCustomAttributeIfNotExists(node)
-        console.debug("added node " + JSON.stringify(node));
+        //console.debug("added node " + JSON.stringify(node));
     };
 
     addChildToNode(node, child) {
@@ -390,7 +390,7 @@ class MySceneData  {
         }
         node.children.push(child)
         this.createCustomAttributeIfNotExists(child)
-        console.debug("added node child" + JSON.stringify(child));
+        //console.debug("added node child" + JSON.stringify(child));
     }
 
     createEmptyPrimitive() {
@@ -400,15 +400,15 @@ class MySceneData  {
 
     onLoadFinished(app, contents) {
         
-        //console.info("------------------ consolidating data structures ------------------");
+        ////console.info("------------------ consolidating data structures ------------------");
         
-        console.debug("consolidating materials...");
+        //console.debug("consolidating materials...");
         // TODO: check material refs and replace with material objects
         
-        console.debug("consolidating scene graph root...");
+        //console.debug("consolidating scene graph root...");
         // TODO: check root not null and root exists
         
-        console.debug("consolidating camera...");
+        //console.debug("consolidating camera...");
         // TODO: check active camera not null and exists
         
         // TODO: continue consolidation checks
@@ -439,7 +439,7 @@ class MySceneData  {
         }
         this.lods[lod.id] = lod;
         this.createCustomAttributeIfNotExists(lod)
-        console.debug("added lod " + JSON.stringify(lod));
+        //console.debug("added lod " + JSON.stringify(lod));
     };
 }
 export { MySceneData };
