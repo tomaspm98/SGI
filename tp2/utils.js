@@ -4,10 +4,11 @@ import {MyNurbsBuilder} from './MyNurbsBuilder.js';
 function rgbToHex(color) {
 
     // Convert to hexadecimal and return
-    return '#' +
-        ('0' + Math.round(color.r * 255).toString(16)).slice(-2) +
-        ('0' + Math.round(color.g * 255).toString(16)).slice(-2) +
-        ('0' + Math.round(color.b * 255).toString(16)).slice(-2);
+    //return '#' +
+    //    ('0' + Math.round(color.r * 255).toString(16)).slice(-2) +
+    //    ('0' + Math.round(color.g * 255).toString(16)).slice(-2) +
+    //    ('0' + Math.round(color.b * 255).toString(16)).slice(-2);
+    return new THREE.Color(color.r, color.g, color.b)
 }
 
 function createThreeGeometry(primitive) {
@@ -34,34 +35,44 @@ function createThreeGeometry(primitive) {
             return new THREE.ObjectLoader().load(primitive.representations[0].filepath)
         case "sphere":
             return new THREE.SphereGeometry(
-                primitive.representations["radius"],
-                primitive.representations["slices"],
-                primitive.representations["stacks"],
-                primitive.representations["phistart"],
-                primitive.representations["philength"],
-                primitive.representations["thetastart"],
-                primitive.representations["thetalength"]
+                primitive.representations[0]["radius"],
+                primitive.representations[0]["slices"],
+                primitive.representations[0]["stacks"],
+                primitive.representations[0]["phistart"],
+                primitive.representations[0]["philength"],
+                primitive.representations[0]["thetastart"],
+                primitive.representations[0]["thetalength"]
             );
         case "box":
             const point3 = primitive.representations[0]["xyz1"];
             const point4 = primitive.representations[0]["xyz2"];
 
-            return new THREE.BoxGeometry(
+            const box = new THREE.BoxGeometry(
                 point4[0] - point3[0],
                 point4[1] - point3[1],
                 point4[2] - point3[2],
                 primitive.representations["parts_x"],
                 primitive.representations["parts_y"],
                 primitive.representations["parts_z"]
+            )
+            
+            
+            box.translate(
+                (point4[0] + point3[0]) / 2,
+                (point4[1] + point3[1]) / 2,
+                (point4[2] + point3[2]) / 2
             );
+
+            return box;
         case "cylinder":
+            console.log(primitive.representations[0].capsclose)
             return new THREE.CylinderGeometry(
-                primitive.representations[0].top,
-                primitive.representations[0].base,
+                primitive.representations[0].top ,
+                primitive.representations[0].base ,
                 primitive.representations[0].height,
                 primitive.representations[0].slices,
                 primitive.representations[0].stacks,
-                primitive.representations[0].capsclose,
+                !primitive.representations[0].capsclose,
                 primitive.representations[0].thetastart,
                 primitive.representations[0].thetalength
             )
@@ -143,9 +154,8 @@ function applyTransformation(sceneNode, transformations) {
     for (let transformation of transformations) {
         switch (transformation.type) {
             case 'S':
-                sceneNode.scale.x *= transformation.scale[0]
-                sceneNode.scale.y *= transformation.scale[1]
-                sceneNode.scale.z *= transformation.scale[2]
+                const scales = [sceneNode.scale.x * transformation.scale[0], sceneNode.scale.y * transformation.scale[1], sceneNode.scale.z * transformation.scale[2]]
+                sceneNode.scale.set(...scales)
                 break;
             case 'T':
                 sceneNode.translateX(transformation.translate[0]);
@@ -154,9 +164,8 @@ function applyTransformation(sceneNode, transformations) {
                 break;
             case 'R':
                 let rotations = transformation.rotation.map(angle => angle * Math.PI / 180)
-                sceneNode.rotation.x += rotations[0]
-                sceneNode.rotation.y += rotations[1]
-                sceneNode.rotation.z += rotations[2]
+                rotations = [rotations[0] + sceneNode.rotation.x, rotations[1] + sceneNode.rotation.y, rotations[2] + sceneNode.rotation.z]
+                sceneNode.rotation.set(...rotations)
                 break;
             default:
                 break;

@@ -6,9 +6,69 @@
   <component name="ChangeListManager">
     <list default="true" id="85110545-45ea-4a9a-8b22-bcac45ef9e5e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyContents.js" beforeDir="false" afterPath="$PROJECT_DIR$/MyContents.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MySceneGraph.js" beforeDir="false" afterPath="$PROJECT_DIR$/MySceneGraph.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/scene.xml" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/spacescene/scene.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/scene.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/background_sky.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/background_sky_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/background_sky_square.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/book_spine.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/door.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth/earth0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth/earth1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth/earth2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth/earth3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth/earth4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth/earth5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth/earth6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth/earth7.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth/earthbump.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth7.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/floor.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/got_book_spine.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/got_front0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/got_front1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/got_front2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/got_front3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/got_front4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/got_front5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/got_spines.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/jupyter.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/keyboard.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/leather_back.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/leather_couch_2.avif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/lotr_book_spine.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/lotr_front_cover0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/lotr_front_cover1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/lotr_front_cover2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/lotr_front_cover3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/sun.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/sun2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/vent.avif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/video.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/video_original.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/wall1_0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/wall1_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/wall1_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/wall1_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/wall2_0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/wall2_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/wall2_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/wall2_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/wall2_4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/wall2bump.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/wall_0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/wall_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/wall_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/walls.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/wood.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,27 +102,35 @@
   &quot;associatedIndex&quot;: 8
 }</component>
   <component name="ProjectId" id="2XCdNzJqSbdSEyreCLwlccoYGqq" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/daniel/Desktop/SGI/tp2&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;settings.editor.splitter.proportion&quot;: &quot;0.24193548&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/daniel/Desktop/SGI/tp2/scenes",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.splitter.proportion": "0.24193548",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/scenes" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -74,7 +142,7 @@
       <workItem from="1698136962424" duration="267000" />
       <workItem from="1698504034379" duration="12323000" />
       <workItem from="1699979227074" duration="3441000" />
-      <workItem from="1699984002560" duration="3822000" />
+      <workItem from="1699984002560" duration="8169000" />
     </task>
     <servers />
   </component>

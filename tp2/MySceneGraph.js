@@ -32,11 +32,12 @@ class MySceneGraph {
             const node = nodeStack.node
             const parent = nodeStack.parent
 
-            if (visited.hasOwnProperty(node.id)) {
+            /*if (visited.hasOwnProperty(node.id)) {
                 const objCloned = visited[node.id].clone()
                 objCloned["isCloned"] = true
                 parent.add(objCloned)
-            } else if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
+            }*/
+            if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
                 if (node.enabled) {
                     const light = Utils.createThreeLight(node)
                     light.name = node.id
