@@ -72,7 +72,7 @@ class MyFileReader  {
 		if (this.status == 200) {  // HTTP status code  ( 200 => OK )
 			
 			let reader = this.reader;
-			//console.info("------------------ " + reader.xmlfilename + " file read. begin parsing ------------------");
+			console.info("------------------ " + reader.xmlfilename + " file read. begin parsing ------------------");
         
 			let parser = new window.DOMParser();
 			reader.xmlDoc = parser.parseFromString(this.response, "text/xml");
