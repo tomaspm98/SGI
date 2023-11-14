@@ -23,7 +23,7 @@ class MyContents {
         this.videoTextureCount = 0
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-        this.reader.open("scenes/spacescene/scene.xml");
+        this.reader.open("scenes/demo/MyScene.xml");
 
     }
 

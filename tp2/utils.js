@@ -65,7 +65,6 @@ function createThreeGeometry(primitive) {
 
             return box;
         case "cylinder":
-            console.log(primitive.representations[0].capsclose)
             return new THREE.CylinderGeometry(
                 primitive.representations[0].top ,
                 primitive.representations[0].base ,
