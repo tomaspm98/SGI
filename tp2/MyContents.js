@@ -64,9 +64,9 @@ class MyContents {
         this.renderSkybox(data)
 
         this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials, this.textures)
+        console.log(data.nodes["scene"])
         this.sceneGraph.constructSceneGraph()
         this.app.scene.add(this.sceneGraph.graph)
-        console.log(data.nodes["scene"])
         console.log(this.sceneGraph.graph)
     }
 

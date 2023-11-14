@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import * as Utils from './utils.js'
+import {Stack} from "./Stack.js"
 
 class MySceneGraph {
     constructor(nodes, root_id, materials, textures) {
@@ -12,15 +13,15 @@ class MySceneGraph {
 
     constructSceneGraph() {
         const root = this.nodes[this.root_id];
-        this.graph = this.dfs(root, [], this.materials[root.materialIds[0]], root.castShadows, root.receiveShadows);
+        this.graph = this.constructMeshGraph(root)
     }
 
     dfs(node, visited = [], materialId = undefined, castShadow = false, receiveShadow = false) {
-        /*if (visited.hasOwnProperty(node.id)) {
+        if (visited.hasOwnProperty(node.id)) {
             const objClone = visited[node.id].clone()
             objClone["isCloned"] = true
             return objClone
-          }*/
+        }
 
         if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
             if (node.enabled) {
@@ -60,8 +61,37 @@ class MySceneGraph {
         sceneNode.receiveShadow = receiveShadow
         Utils.applyTransformation(sceneNode, node.transformations);
         sceneNode.name = node.id;
-        //visited[node.id] = sceneNode;
+        visited[node.id] = sceneNode;
         return sceneNode;
+    }
+
+    constructMeshGraph(root) {
+        const meshGraph = new THREE.Group()
+        const stack = new Stack()
+        stack.push({node: root, parent: meshGraph})
+        while (!stack.isEmpty()) {
+            const nodeStack = stack.pop()
+            const node = nodeStack.node
+            const parent = nodeStack.parent
+
+            if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
+                if (node.enabled) {
+                    const light = Utils.createThreeLight(node)
+                    light.name = node.id
+                    parent.add(light)
+                }
+            } else if (node.type === 'primitive') {
+                parent.add(new THREE.Mesh(Utils.createThreeGeometry(node)))
+            } else {
+                const newSceneNode = new THREE.Group()
+                Utils.applyTransformation(newSceneNode, node.transformations)
+                parent.add(newSceneNode)
+                for (let i = node.children.length - 1; i >= 0; i--) {
+                    stack.push({node: node.children[i], parent: newSceneNode});
+                }
+            }
+        }
+        return meshGraph
     }
 
     printDfsNode(node_id, visited, castShadow, receiveShadow) {
