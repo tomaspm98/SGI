@@ -64,7 +64,8 @@ class MyContents {
         this.renderSkybox(data)
 
         this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials, this.textures)
-        console.log(data.nodes["scene"])
+        this.lights = this.sceneGraph.getLightsMap();
+        console.log("AGAIN")
         this.sceneGraph.constructSceneGraph()
         this.app.scene.add(this.sceneGraph.graph)
         console.log(this.sceneGraph.graph)
@@ -151,6 +152,8 @@ class MyContents {
                 bumpScale: material.bumpscale,
                 specularMap: this.textures[material.specularref] !== undefined ? this.textures[material.specularref] : null,
             })
+            if (material.texlength_s !== undefined && material.texlength_t !== undefined && this.textures[material.textureref] !== undefined)    
+                this.textures[material.textureref].repeat.set(material.texlength_s, material.texlength_t)
             this.materials[key] = newMaterial
         }
     }

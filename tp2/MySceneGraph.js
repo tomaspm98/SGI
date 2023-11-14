@@ -9,7 +9,12 @@ class MySceneGraph {
         this.root_id = root_id;
         this.materials = materials;
         this.textures = textures;
+        this.lightsMap = new Map();
     }
+
+    getLightsMap() {    
+        return this.lightsMap;
+    }   
 
     constructSceneGraph() {
         this.graph = this.constructMeshGraph()
@@ -37,6 +42,7 @@ class MySceneGraph {
                     light.name = node.id
                     parent.add(light)
                     visited[node.id] = light
+                    this.lightsMap.set(node.id,light)
                 }
             } else if (node.type === 'primitive') {
                 parent.add(new THREE.Mesh(Utils.createThreeGeometry(node)))
