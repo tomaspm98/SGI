@@ -22,6 +22,7 @@ class MySceneGraph {
     }
 
     constructMeshGraph() {
+        console.log(this.nodes[this.root_id])
         const meshGraph = new THREE.Group()
         const stack = new Stack()
         stack.push({node: this.nodes[this.root_id], parent: meshGraph})
@@ -31,7 +32,7 @@ class MySceneGraph {
             const nodeStack = stack.pop()
             const node = nodeStack.node
             const parent = nodeStack.parent
-
+            
             if (visited.hasOwnProperty(node.id)) {
                 const objCloned = visited[node.id].clone()
                 objCloned["isCloned"] = true
@@ -57,7 +58,7 @@ class MySceneGraph {
                 visited[node.id] = newSceneNode
             }
         }
-
+        
         return meshGraph.children.length === 1 ? meshGraph.children[0] : meshGraph
     }
 

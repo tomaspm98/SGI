@@ -1,10 +1,8 @@
 import * as THREE from 'three';
 import {MyAxis} from './MyAxis.js';
 import {MyFileReader} from './parser/MyFileReader.js';
-import {MyNurbsBuilder} from './MyNurbsBuilder.js';
 import {MySceneGraph} from "./MySceneGraph.js";
 import * as Utils from "./utils.js";
-import {TextureLoader} from "three";
 
 /**
  *  This class contains the contents of out application
@@ -64,11 +62,13 @@ class MyContents {
         this.renderSkybox(data)
 
         this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials, this.textures)
-        this.lights = this.sceneGraph.getLightsMap();
-        console.log("AGAIN")
+        
+        console.log(data.nodes)
         this.sceneGraph.constructSceneGraph()
         this.app.scene.add(this.sceneGraph.graph)
         console.log(this.sceneGraph.graph)
+        
+        this.lights = this.sceneGraph.getLightsMap();
     }
 
     renderSkybox(data){
@@ -77,7 +77,7 @@ class MyContents {
         let material;
         const textOrder = ["front", "back", "up", "down", "right", "left"]
                         material = textOrder.map(text => new THREE.MeshPhongMaterial({
-                            map: new TextureLoader().load(skybox[text]),
+                            map: new THREE.TextureLoader().load(skybox[text]),
                             side: THREE.BackSide,
                             emissive: Utils.rgbToHex(skybox.emissive),
                             emissiveIntensity: skybox.intensity,
@@ -93,13 +93,13 @@ class MyContents {
             let texture = data.textures[key]
             let newTexture;
             if (texture.isVideo) {
-                const videoId = 'video${this.videoTextureCount++}'
+                const videoId = `video${this.videoTextureCount++}`
                 this.addVideoTagToHTML(texture.filepath, videoId);
                 const video = document.getElementById(videoId)
                 newTexture = new THREE.VideoTexture(video)
                 newTexture.needsUpdate=true
             } else {
-                newTexture = new TextureLoader().load(texture.filepath)
+                newTexture = new THREE.TextureLoader().load(texture.filepath)
             }
             newTexture.generateMipmaps = texture.mipmaps
             if (texture.mipmaps === false) {
