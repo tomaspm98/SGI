@@ -23,7 +23,7 @@ class MyContents {
         this.videoTextureCount = 0
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-        this.reader.open("scenes/demo/MyScene.xml");
+        this.reader.open("scenes/spacescene/scene.xml");
 
     }
 
@@ -46,7 +46,7 @@ class MyContents {
     onSceneLoaded(data) {
         //console.info("scene data loaded " + data + ". visit MySceneData javascript class to check contents for each data item.")
         this.onAfterSceneLoadedAndBeforeRender(data);
-        
+
     }
 
     output(obj, indent = 0) {
@@ -62,29 +62,35 @@ class MyContents {
         this.renderSkybox(data)
 
         this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials, this.textures)
-        
-        console.log(data.nodes)
+
+        console.log("Raw Data: ")
+        console.log(data.nodes[data.rootId])
+        console.log("--------------------------------------------------------------------------")
+
         this.sceneGraph.constructSceneGraph()
         this.app.scene.add(this.sceneGraph.graph)
-        console.log(this.sceneGraph.graph)
         
+        console.log("Scene Graph: ")
+        console.log(this.sceneGraph.graph)
+        console.log("--------------------------------------------------------------------------")
+
         this.lights = this.sceneGraph.getLightsMap();
     }
 
-    renderSkybox(data){
-        let skybox= data.skyboxes.default
+    renderSkybox(data) {
+        let skybox = data.skyboxes.default
         let skyboxGeometry = new THREE.BoxGeometry(skybox.size[0], skybox.size[1], skybox.size[2])
         let material;
         const textOrder = ["front", "back", "up", "down", "right", "left"]
-                        material = textOrder.map(text => new THREE.MeshPhongMaterial({
-                            map: new THREE.TextureLoader().load(skybox[text]),
-                            side: THREE.BackSide,
-                            emissive: Utils.rgbToHex(skybox.emissive),
-                            emissiveIntensity: skybox.intensity,
-                        }))
+        material = textOrder.map(text => new THREE.MeshPhongMaterial({
+            map: new THREE.TextureLoader().load(skybox[text]),
+            side: THREE.BackSide,
+            emissive: Utils.rgbToHex(skybox.emissive),
+            emissiveIntensity: skybox.intensity,
+        }))
         const skyboxMesh = new THREE.Mesh(skyboxGeometry, material)
         skyboxMesh.position.set(...skybox.center)
-        this.app.scene.add(skyboxMesh)    
+        this.app.scene.add(skyboxMesh)
     }
 
 
@@ -97,36 +103,36 @@ class MyContents {
                 this.addVideoTagToHTML(texture.filepath, videoId);
                 const video = document.getElementById(videoId)
                 newTexture = new THREE.VideoTexture(video)
-                newTexture.needsUpdate=true
+                newTexture.needsUpdate = true
             } else {
                 newTexture = new THREE.TextureLoader().load(texture.filepath)
             }
             newTexture.generateMipmaps = texture.mipmaps
             if (texture.mipmaps === false) {
-                if (texture.mipmap0 != undefined){
-                    Utils.loadMipmap(newTexture,0,texture.mipmap0)
+                if (texture.mipmap0 != undefined) {
+                    Utils.loadMipmap(newTexture, 0, texture.mipmap0)
                 }
-                if (texture.mipmap1 != undefined){
-                    Utils.loadMipmap(newTexture,1,texture.mipmap1)
+                if (texture.mipmap1 != undefined) {
+                    Utils.loadMipmap(newTexture, 1, texture.mipmap1)
                 }
-                if (texture.mipmap2 != undefined){
-                    Utils.loadMipmap(newTexture,2,texture.mipmap2)
+                if (texture.mipmap2 != undefined) {
+                    Utils.loadMipmap(newTexture, 2, texture.mipmap2)
                 }
-                if (texture.mipmap3 != undefined){
-                    Utils.loadMipmap(newTexture,3,texture.mipmap3)
+                if (texture.mipmap3 != undefined) {
+                    Utils.loadMipmap(newTexture, 3, texture.mipmap3)
                 }
-                if (texture.mipmap4 != undefined){
-                    Utils.loadMipmap(newTexture,4,texture.mipmap4)
+                if (texture.mipmap4 != undefined) {
+                    Utils.loadMipmap(newTexture, 4, texture.mipmap4)
                 }
-                if (texture.mipmap5 != undefined){
-                    Utils.loadMipmap(newTexture,5,texture.mipmap5)
+                if (texture.mipmap5 != undefined) {
+                    Utils.loadMipmap(newTexture, 5, texture.mipmap5)
                 }
-                if (texture.mipmap6 != undefined){
-                    Utils.loadMipmap(newTexture,6,texture.mipmap6)
+                if (texture.mipmap6 != undefined) {
+                    Utils.loadMipmap(newTexture, 6, texture.mipmap6)
                 }
-                if (texture.mipmap7 != undefined){
-                    Utils.loadMipmap(newTexture,7,texture.mipmap7)
-                }      
+                if (texture.mipmap7 != undefined) {
+                    Utils.loadMipmap(newTexture, 7, texture.mipmap7)
+                }
             } else {
                 newTexture.magFilter = Utils.convertFilterThree(texture.magFilter)
                 newTexture.minFilter = Utils.convertFilterThree(texture.minFilter)
@@ -152,7 +158,7 @@ class MyContents {
                 bumpScale: material.bumpscale,
                 specularMap: this.textures[material.specularref] !== undefined ? this.textures[material.specularref] : null,
             })
-            if (material.texlength_s !== undefined && material.texlength_t !== undefined && this.textures[material.textureref] !== undefined)    
+            if (material.texlength_s !== undefined && material.texlength_t !== undefined && this.textures[material.textureref] !== undefined)
                 this.textures[material.textureref].repeat.set(material.texlength_s, material.texlength_t)
             this.materials[key] = newMaterial
         }
@@ -251,7 +257,7 @@ class MyContents {
         video.height = 360;
         video.preload = 'auto';
         video.src = videoPath;
-    
+
         // Append video to the document body or a specific container
         document.body.appendChild(video); // or use a specific container like document.getElementById('yourContainerId').appendChild(video);
     }

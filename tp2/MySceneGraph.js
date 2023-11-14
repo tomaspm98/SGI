@@ -12,9 +12,9 @@ class MySceneGraph {
         this.lightsMap = new Map();
     }
 
-    getLightsMap() {    
+    getLightsMap() {
         return this.lightsMap;
-    }   
+    }
 
     constructSceneGraph() {
         this.graph = this.constructMeshGraph()
@@ -22,7 +22,6 @@ class MySceneGraph {
     }
 
     constructMeshGraph() {
-        console.log(this.nodes[this.root_id])
         const meshGraph = new THREE.Group()
         const stack = new Stack()
         stack.push({node: this.nodes[this.root_id], parent: meshGraph})
@@ -32,7 +31,7 @@ class MySceneGraph {
             const nodeStack = stack.pop()
             const node = nodeStack.node
             const parent = nodeStack.parent
-            
+
             if (visited.hasOwnProperty(node.id)) {
                 const objCloned = visited[node.id].clone()
                 objCloned["isCloned"] = true
@@ -43,22 +42,32 @@ class MySceneGraph {
                     light.name = node.id
                     parent.add(light)
                     visited[node.id] = light
-                    this.lightsMap.set(node.id,light)
+                    this.lightsMap.set(node.id, light)
                 }
             } else if (node.type === 'primitive') {
                 parent.add(new THREE.Mesh(Utils.createThreeGeometry(node)))
             } else {
-                const newSceneNode = new THREE.Group()
-                newSceneNode.name = node.id
-                Utils.applyTransformation(newSceneNode, node.transformations)
+                let newSceneNode = node.type === 'lod' ? new THREE.LOD() : new THREE.Group()
+                newSceneNode.name = node.type === 'lodnoderef' ? 'lodnoderef' : node.id
+
+                if (node.type === 'lodnoderef') {
+                    parent.addLevel(newSceneNode, node.mindist)
+                    stack.push({node: node.node, parent: newSceneNode})
+                    continue
+                }
+
                 parent.add(newSceneNode)
+
+                if (node.type !== 'lod')
+                    Utils.applyTransformation(newSceneNode, node.transformations)
+
                 for (let i = node.children.length - 1; i >= 0; i--) {
                     stack.push({node: node.children[i], parent: newSceneNode});
                 }
                 visited[node.id] = newSceneNode
             }
+
         }
-        
         return meshGraph.children.length === 1 ? meshGraph.children[0] : meshGraph
     }
 
@@ -77,10 +86,10 @@ class MySceneGraph {
 
             const node = element.node
             const sceneNode = element.sceneNode
-            
+
             if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight")
                 continue
-            
+
             const castShadow = element.castShadow || node.castShadows
             const receiveShadow = element.receiveShadow || node.receiveShadows
 
