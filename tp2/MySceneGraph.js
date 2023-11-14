@@ -70,7 +70,10 @@ class MySceneGraph {
 
             const node = element.node
             const sceneNode = element.sceneNode
-
+            
+            if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight")
+                continue
+            
             const castShadow = element.castShadow || node.castShadows
             const receiveShadow = element.receiveShadow || node.receiveShadows
 
