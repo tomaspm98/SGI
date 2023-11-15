@@ -23,7 +23,7 @@ class MyContents {
         this.videoTextureCount = 0
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-        this.reader.open("scenes/tennis_court/scene.xml");
+        this.reader.open("scenes/spacescene/scene.xml");
 
     }
 
@@ -60,7 +60,7 @@ class MyContents {
         this.renderBackground(data)
         this.renderFog(data)
         this.renderSkybox(data)
-
+        
         this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials, this.textures)
 
         console.log("Raw Data: ")
@@ -162,6 +162,7 @@ class MyContents {
             })
             if (material.texlength_s !== undefined && material.texlength_t !== undefined && this.textures[material.textureref] !== undefined)
                 this.textures[material.textureref].repeat.set(material.texlength_s, material.texlength_t)
+            newMaterial.name = material.id
             this.materials[key] = newMaterial
         }
     }

@@ -33,7 +33,7 @@ class MySceneGraph {
             const parent = nodeStack.parent
 
             if (node.type === 'primitive') {
-                parent.add(new THREE.Mesh(Utils.createThreeGeometry(node), new THREE.MeshPhongMaterial({color: 0x555555})))
+                parent.add(new THREE.Mesh(Utils.createThreeGeometry(node)))
             } else if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
                 if (node.enabled) {
                     const light = Utils.createThreeLight(node)
@@ -85,6 +85,8 @@ class MySceneGraph {
             const element = stack.pop()
             const node = element.node
             const sceneNode = element.sceneNode
+            
+            
 
             if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
                 //do nothing
@@ -119,8 +121,14 @@ class MySceneGraph {
                 sceneNode.castShadow = castShadow
                 sceneNode.receiveShadow = receiveShadow
 
-                if (node.type === 'primitive')
+                if (node.type === 'primitive') {
+                    // This should never happen! But to add some robustness, a default material will be applied
+                    if (sceneNode.material === undefined) {
+                        console.warn("WARNING! Primitive ( " + node.subtype + " ) with no material. A default material will be applied.")
+                        sceneNode.material = new THREE.MeshBasicMaterial({color: 0x555555})
+                    }
                     continue // Primitives don't have children
+                }
 
                 for (let i = node.children.length - 1; i >= 0; i--) {
                     stack.push({
