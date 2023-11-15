@@ -90,6 +90,28 @@ class MySceneGraph {
 
             if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight")
                 continue
+            else if (node.type === 'lod') {
+                for (let i = node.children.length - 1; i >= 0; i--) {
+                    stack.push({
+                        node: node.children[i],
+                        sceneNode: sceneNode.children[i],
+                        castShadow: element.castShadow,
+                        receiveShadow: element.receiveShadow,
+                        material: sceneNode.parent.material
+                    });
+                }
+                continue
+            } else if (node.type === 'lodnoderef') {
+                console.log(node)
+                sceneNode.material = element.material
+                stack.push({
+                    node: node.node,
+                    sceneNode: sceneNode.children[0],
+                    castShadow: element.castShadow,
+                    receiveShadow: element.receiveShadow
+                })
+                continue
+            }
 
             const castShadow = element.castShadow || node.castShadows
             const receiveShadow = element.receiveShadow || node.receiveShadows
