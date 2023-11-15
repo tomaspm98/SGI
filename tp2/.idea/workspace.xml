@@ -4,31 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="85110545-45ea-4a9a-8b22-bcac45ef9e5e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyContents.js" beforeDir="false" afterPath="$PROJECT_DIR$/MyContents.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/scene.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/background_sky.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/book_spine.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/door.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/earth.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/floor.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/got_book_spine.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/got_front.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/got_spines.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/jupyter.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/keyboard.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/leather_back.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/leather_couch_2.avif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/lotr_book_spine.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/lotr_front_cover.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/sun.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/sun2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/vent.avif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/walls.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/spacescene/textures/wood.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils.js" afterDir="false" />
-    </list>
+    <list default="true" id="85110545-45ea-4a9a-8b22-bcac45ef9e5e" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
