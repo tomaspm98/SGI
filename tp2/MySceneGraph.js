@@ -32,21 +32,19 @@ class MySceneGraph {
             const node = nodeStack.node
             const parent = nodeStack.parent
 
-            /*if (visited.hasOwnProperty(node.id)) {
-                const objCloned = visited[node.id].clone()
-                objCloned["isCloned"] = true
-                parent.add(objCloned)
-            }*/
-            if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
+            if (node.type === 'primitive') {
+                parent.add(new THREE.Mesh(Utils.createThreeGeometry(node), new THREE.MeshPhongMaterial({color: 0x555555})))
+            } else if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
                 if (node.enabled) {
                     const light = Utils.createThreeLight(node)
                     light.name = node.id
                     parent.add(light)
-                    visited[node.id] = light
                     this.lightsMap.set(node.id, light)
                 }
-            } else if (node.type === 'primitive') {
-                parent.add(new THREE.Mesh(Utils.createThreeGeometry(node)))
+            } else if (visited.hasOwnProperty(node.id + node.type)) {
+                const objCloned = visited[node.id + node.type].clone()
+                objCloned["isCloned"] = true
+                parent.add(objCloned)
             } else {
                 let newSceneNode = node.type === 'lod' ? new THREE.LOD() : new THREE.Group()
                 newSceneNode.name = node.type === 'lodnoderef' ? 'lodnoderef' : node.id
@@ -65,9 +63,10 @@ class MySceneGraph {
                 for (let i = node.children.length - 1; i >= 0; i--) {
                     stack.push({node: node.children[i], parent: newSceneNode});
                 }
-                visited[node.id] = newSceneNode
-            }
 
+                //The key is the id + type to avoid collisions when the id is the same but the type is different
+                visited[node.id + node.type] = newSceneNode
+            }
         }
         return meshGraph.children.length === 1 ? meshGraph.children[0] : meshGraph
     }
@@ -84,13 +83,12 @@ class MySceneGraph {
 
         while (!stack.isEmpty()) {
             const element = stack.pop()
-
             const node = element.node
             const sceneNode = element.sceneNode
 
-            if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight")
-                continue
-            else if (node.type === 'lod') {
+            if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
+                //do nothing
+            } else if (node.type === 'lod') {
                 for (let i = node.children.length - 1; i >= 0; i--) {
                     stack.push({
                         node: node.children[i],
@@ -100,9 +98,7 @@ class MySceneGraph {
                         material: sceneNode.parent.material
                     });
                 }
-                continue
             } else if (node.type === 'lodnoderef') {
-                console.log(node)
                 sceneNode.material = element.material
                 stack.push({
                     node: node.node,
@@ -110,30 +106,30 @@ class MySceneGraph {
                     castShadow: element.castShadow,
                     receiveShadow: element.receiveShadow
                 })
-                continue
-            }
+            } else {
+                const castShadow = element.castShadow || node.castShadows
+                const receiveShadow = element.receiveShadow || node.receiveShadows
 
-            const castShadow = element.castShadow || node.castShadows
-            const receiveShadow = element.receiveShadow || node.receiveShadows
+                if (node.materialIds !== undefined && node.materialIds.length > 0) {
+                    sceneNode.material = this.materials[node.materialIds[0]]
+                } else if (sceneNode.parent !== undefined) {
+                    sceneNode.material = sceneNode.parent.material
+                }
 
-            if (node.materialIds !== undefined && node.materialIds.length > 0) {
-                sceneNode.material = this.materials[node.materialIds[0]]
-            } else if (sceneNode.parent.material !== undefined) {
-                sceneNode.material = sceneNode.parent.material
-            }
+                sceneNode.castShadow = castShadow
+                sceneNode.receiveShadow = receiveShadow
 
-            sceneNode.castShadow = castShadow
-            sceneNode.receiveShadow = receiveShadow
+                if (node.type === 'primitive')
+                    continue // Primitives don't have children
 
-            if (node.children === undefined) continue
-
-            for (let i = node.children.length - 1; i >= 0; i--) {
-                stack.push({
-                    node: node.children[i],
-                    sceneNode: sceneNode.children[i],
-                    castShadow: castShadow,
-                    receiveShadow: receiveShadow,
-                });
+                for (let i = node.children.length - 1; i >= 0; i--) {
+                    stack.push({
+                        node: node.children[i],
+                        sceneNode: sceneNode.children[i],
+                        castShadow: castShadow,
+                        receiveShadow: receiveShadow,
+                    });
+                }
             }
         }
     }
