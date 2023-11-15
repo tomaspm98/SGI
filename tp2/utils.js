@@ -2,12 +2,6 @@ import * as THREE from 'three';
 import {MyNurbsBuilder} from './MyNurbsBuilder.js';
 
 function rgbToHex(color) {
-
-    // Convert to hexadecimal and return
-    //return '#' +
-    //    ('0' + Math.round(color.r * 255).toString(16)).slice(-2) +
-    //    ('0' + Math.round(color.g * 255).toString(16)).slice(-2) +
-    //    ('0' + Math.round(color.b * 255).toString(16)).slice(-2);
     return new THREE.Color(color.r, color.g, color.b)
 }
 

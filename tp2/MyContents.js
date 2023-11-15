@@ -23,7 +23,7 @@ class MyContents {
         this.videoTextureCount = 0
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-        this.reader.open("scenes/demo/MyScene.xml");
+        this.reader.open("scenes/spacescene/scene.xml");
 
     }
 
@@ -69,7 +69,7 @@ class MyContents {
 
         this.sceneGraph.constructSceneGraph()
         this.app.scene.add(this.sceneGraph.graph)
-        
+
         console.log("Scene Graph: ")
         console.log(this.sceneGraph.graph)
         console.log("--------------------------------------------------------------------------")
@@ -80,14 +80,16 @@ class MyContents {
     renderSkybox(data) {
         let skybox = data.skyboxes.default
         let skyboxGeometry = new THREE.BoxGeometry(skybox.size[0], skybox.size[1], skybox.size[2])
-        let material;
-        const textOrder = ["front", "back", "up", "down", "right", "left"]
-        material = textOrder.map(text => new THREE.MeshPhongMaterial({
-            map: new THREE.TextureLoader().load(skybox[text]),
+        const textures = ["front", "back", "up", "down", "right", "left"].map(text => new THREE.TextureLoader().load(skybox[text]))
+
+        const material = textures.map(text => new THREE.MeshPhongMaterial({
+            map: text,
             side: THREE.BackSide,
-            emissive: Utils.rgbToHex(skybox.emissive),
+            emissive: skybox.emissive,
             emissiveIntensity: skybox.intensity,
+            emissiveMap: text
         }))
+
         const skyboxMesh = new THREE.Mesh(skyboxGeometry, material)
         skyboxMesh.position.set(...skybox.center)
         this.app.scene.add(skyboxMesh)
