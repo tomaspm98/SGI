@@ -49,8 +49,8 @@ function createThreeGeometry(primitive) {
                 primitive.representations["parts_y"],
                 primitive.representations["parts_z"]
             )
-            
-            
+
+
             box.translate(
                 (point4[0] + point3[0]) / 2,
                 (point4[1] + point3[1]) / 2,
@@ -60,8 +60,8 @@ function createThreeGeometry(primitive) {
             return box;
         case "cylinder":
             return new THREE.CylinderGeometry(
-                primitive.representations[0].top ,
-                primitive.representations[0].base ,
+                primitive.representations[0].top,
+                primitive.representations[0].base,
                 primitive.representations[0].height,
                 primitive.representations[0].slices,
                 primitive.representations[0].stacks,
@@ -77,10 +77,8 @@ function createThreeGeometry(primitive) {
                 controlPoints.push(row)
             }
             return new MyNurbsBuilder().build(controlPoints, primitive.representations[0].degree_u, primitive.representations[0].degree_v, primitive.representations[0].parts_u, primitive.representations[0].parts_v)
-        case "skybox":
-            return new THREE.BoxGeometry(primitive.representations[0].width,
-                primitive.representations[0].height,
-                primitive.representations[0].depth)
+        case "polygon":
+            return createPolygon(primitive.representations[0].stacks, primitive.representations[0].slices, primitive.representations[0].radius)
         default:
             console.log("ERROR: primitive not found")
     }
@@ -212,6 +210,31 @@ function loadMipmap(parentTexture, level, path) {
             console.error('Unable to load the image ' + path + ' as mipmap level ' + level + ".", err)
         }
     )
+}
+
+function createPolygon(stacks, slices, radius) {
+    const geometry = new THREE.BufferGeometry();
+
+    const vertices = [0, 0, 0]
+    const indices = []
+
+    const inc = 2 * Math.PI / slices
+
+
+    for (let i = 0; i <= 2 * Math.PI; i += inc) {
+        vertices.push(...[Math.cos(i) * radius, Math.sin(i) * radius, 0])
+    }
+
+    for (let i = 0; i < slices; i++) {
+        indices.push(0, i + 1, (i + 1) % slices + 1)
+    }
+
+
+    console.log(indices)
+
+    geometry.setIndex(indices)
+    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3))
+    return geometry
 }
 
 export {createThreeGeometry, applyTransformation, rgbToHex, createThreeLight, convertFilterThree, loadMipmap};
