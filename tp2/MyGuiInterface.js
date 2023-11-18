@@ -34,18 +34,44 @@ class MyGuiInterface {
         cameraFolder.add(this.app, 'activeCameraName', [...this.contents.cameras_map.keys()]).name('Active Camera:');
         cameraFolder.close()
 
-        const lightsFolder = this.datgui.addFolder('Lights');
+        //Save the default values of the lights
+        const lightBackup = []
         for (let light of this.contents.lights.values()) {
-            //const lightSubFolder = lightsFolder.addFolder(light.name)
-
+            lightBackup.push({
+                name: light.name,
+                enabled: light.visible,
+                castShadow: light.castShadow,
+                color: light.color.getHex(),
+                intensity: light.intensity
+            })
         }
 
-        /*for (let [key, light] of this.contents.lights.entries()) {
-            const lightState = {enabled: light.visible};
-            lightsFolder.add(lightState, 'enabled').name(key).onChange(value => {
+        const lightControllers = []
+
+        const lightsFolder = this.datgui.addFolder('Lights');
+        for (let light of this.contents.lights.values()) {
+            const lightSubFolder = lightsFolder.addFolder(light.name)
+
+            const lightVisibleController = lightSubFolder.add({enabled: light.visible}, 'enabled').name('Enabled').onChange(value => {
                 light.visible = value;
-            });
-        }*/
+            })
+            const lightShadowController = lightSubFolder.add({enabled: light.castShadow}, 'enabled').name('Cast Shadow').onChange(value => {
+                light.castShadow = value;
+            })
+            const lightColorController = lightSubFolder.addColor({color: light.color.getHex()}, 'color').name('Color').onChange(value => {
+                light.color.setHex(value);
+            })
+            const lightItensityController = lightSubFolder.add({intensity: light.intensity}, 'intensity').name('Intensity').onChange(value => {
+                light.intensity = value;
+            })
+            lightControllers[light.name] = {
+                'visible': lightVisibleController,
+                'shadow': lightShadowController,
+                'color': lightColorController,
+                'itensity': lightItensityController
+            }
+            lightSubFolder.close()
+        }
         lightsFolder.close()
 
         const polygonalModesFolder = this.datgui.addFolder('Polygonal Mode')
@@ -59,11 +85,18 @@ class MyGuiInterface {
             this.app.contents.sceneGraph.updateShadowMode(value)
         })
         shadowModesFolder.close()
-        
+
         this.datgui.add({
             'Reset': () => {
                 controllerShadow.setValue('Default')
                 controllerPolygonal.setValue('Default')
+                for (const i in lightBackup) {
+                    const light = lightBackup[i]
+                    lightControllers[light.name].visible.setValue(light.enabled)
+                    lightControllers[light.name].shadow.setValue(light.castShadow)
+                    lightControllers[light.name].color.setValue(light.color)
+                    lightControllers[light.name].itensity.setValue(light.intensity)
+                }
             }
         }, 'Reset')
     }

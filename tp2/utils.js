@@ -103,6 +103,7 @@ function createThreeLight(light) {
             spotLight.castShadow = light.castshadow
             spotLight.shadowFar = light.shadowfar
             spotLight.shadowMap = light.shadowmapsize
+            spotLight.visible = light.enabled
             return spotLight
 
         case 'pointlight':
@@ -117,7 +118,7 @@ function createThreeLight(light) {
             pointLight.castShadow = light.castshadow
             pointLight.shadowFar = light.shadowfar
             pointLight.shadowMap = light.shadowmapsize
-
+            pointLight.visible = light.enabled
             return pointLight
         case 'directionallight':
             const directionalLight = new THREE.DirectionalLight(
@@ -133,7 +134,7 @@ function createThreeLight(light) {
             directionalLight.shadowCameraRight = light.shadowright
             directionalLight.shadowCameraBottom = light.shadowbottom
             directionalLight.shadowCameraTop = light.shadowtop
-
+            directionalLight.visible = light.enabled
             return directionalLight
         default:
             console.error("ERROR: light not found")
