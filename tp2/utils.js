@@ -234,7 +234,7 @@ function createPolygon(stacks, slices, radius) {
                 //indices.push((j - 1) * slices + i, (j - 1) * slices + i + slices * j, (j - 1) * slices + 1 )
                 //indices.push((j - 1) * slices + i, j * slices + i, ((j - 1) * slices + i + 1) % (slices * j))
                 const a1 = (j - 1) * slices + i
-                const a2 = (j - 1) * slices + i + 2*slices
+                const a2 = (j - 1) * slices + i + slices
                 const a3 = ((j - 1) * slices + i + 1) % (slices * j + 1)
 
                 indices.push(a1, a2 - 1, a2)
