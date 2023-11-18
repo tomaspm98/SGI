@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import * as Utils from './utils.js'
 import {Stack} from "./Stack.js"
 
+
 class MySceneGraph {
     constructor(nodes, root_id, materials, textures) {
         this.graph = null;
@@ -10,15 +11,44 @@ class MySceneGraph {
         this.materials = materials;
         this.textures = textures;
         this.lightsMap = new Map();
+        this.getWireframeValues();
     }
 
-    getLightsMap() {
+    getWireframeValues() {
+        this.wireframeValues = [];
+        for (let i in this.materials) {
+            const material = this.materials[i];
+            this.wireframeValues[material.name] = material.wireframe;
+        }
+    }
+
+    getLightMap() {
         return this.lightsMap;
     }
 
     constructSceneGraph() {
         this.graph = this.constructMeshGraph()
         this.updateInheritAttributesGraph()
+    }
+
+    updatePolygonalMode(type) {
+        switch (type) {
+            case 'Default':
+                for (const i in this.materials) {
+                    this.materials[i].wireframe = this.wireframeValues[this.materials[i].name]
+                }
+                break;
+            case 'Force Fill':
+            case 'Force Wireframe':
+                const forceWireFrame = type === 'Force Wireframe'
+                for (const i in this.materials) {
+                    this.materials[i].wireframe = forceWireFrame
+                }
+                break;
+            default:
+                console.warn("Invalid polygonal mode")
+                break;
+        }
     }
 
     constructMeshGraph() {
@@ -85,8 +115,7 @@ class MySceneGraph {
             const element = stack.pop()
             const node = element.node
             const sceneNode = element.sceneNode
-            
-            
+
 
             if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
                 //do nothing
@@ -113,6 +142,8 @@ class MySceneGraph {
                 const receiveShadow = element.receiveShadow || node.receiveShadows
 
                 if (node.materialIds !== undefined && node.materialIds.length > 0) {
+                    //Deep copy of the material so that it can be changed without affecting the original
+                    //sceneNode.material = Object.assign(new THREE.MeshPhongMaterial(), this.materials[node.materialIds[0]])
                     sceneNode.material = this.materials[node.materialIds[0]]
                 } else if (sceneNode.parent !== undefined) {
                     sceneNode.material = sceneNode.parent.material

@@ -74,7 +74,7 @@ class MyContents {
         console.log(this.sceneGraph.graph)
         console.log("--------------------------------------------------------------------------")
 
-        this.lights = this.sceneGraph.getLightsMap();
+        this.lights = this.sceneGraph.getLightMap();
     }
 
     renderSkybox(data) {
