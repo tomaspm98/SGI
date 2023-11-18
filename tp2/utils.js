@@ -217,24 +217,72 @@ function createPolygon(stacks, slices, radius) {
 
     const vertices = [0, 0, 0]
     const indices = []
-
+    
     const inc = 2 * Math.PI / slices
-
-
-    for (let i = 0; i <= 2 * Math.PI; i += inc) {
-        vertices.push(...[Math.cos(i) * radius, Math.sin(i) * radius, 0])
+    for(let j = 0; j < stacks; j++){
+        const rad = radius * (j + 1) / stacks
+        for(let i = 1; i <= 2 * Math.PI; i += inc){
+            vertices.push(...[Math.cos(i) * rad, Math.sin(i) * rad, 0])
+        }
     }
+    
+    for(let j = 0; j < stacks; j++) {
+        for (let i = 1; i <= slices; i++) {
+            if(j === 0)
+                indices.push(0, i, i % slices + 1)
+            else{
+                //indices.push((j - 1) * slices + i, (j - 1) * slices + i + slices * j, (j - 1) * slices + 1 )
+                //indices.push((j - 1) * slices + i, j * slices + i, ((j - 1) * slices + i + 1) % (slices * j))
+                const a1 = (j - 1) * slices + i
+                const a2 = (j - 1) * slices + i + 2*slices
+                const a3 = ((j - 1) * slices + i + 1) % (slices * j + 1)
 
-    for (let i = 0; i < slices; i++) {
-        indices.push(0, i + 1, (i + 1) % slices + 1)
+                indices.push(a1, a2 - 1, a2)
+                indices.push(a1, a2, a3 !== 0 ? a3 : slices * (j - 1) + 1)
+            }
+        }
     }
+    
+    console.log("Vertices: ")
+    
+    console.log("Indices: ")
+    printIndices(indices)
+    /*geometry.setIndex([
+        0, 1, 2,
+        0, 2, 3,
+        0, 3, 4,
+        0, 4, 5,
+        0, 5, 1,
 
-
-    console.log(indices)
-
+        1, 10, 6,
+        1, 6, 2,
+        
+        2, 6, 7,
+        2, 7, 3,
+        
+        3, 7, 8,
+        3, 8, 4,
+        
+        4, 8, 9,     
+        4, 9, 5,
+        
+        5, 9, 10,
+        5, 10, 1,
+        
+        
+    ])*/
     geometry.setIndex(indices)
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3))
     return geometry
+}
+
+function printIndices(indices) {
+    let str = ""
+    for (let i = 0; i < indices.length; i += 3) {
+        str += indices[i] + " " + indices[i + 1] + " " + indices[i + 2] + "\n"
+    }
+    console.log(str)
+
 }
 
 export {createThreeGeometry, applyTransformation, rgbToHex, createThreeLight, convertFilterThree, loadMipmap};
