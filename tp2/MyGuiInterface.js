@@ -44,16 +44,17 @@ class MyGuiInterface {
         lightsFolder.close()
 
         const polygonalModesFolder = this.datgui.addFolder('Polygonal Mode')
-        const defaultMode = {text: 'Default'} 
-        polygonalModesFolder.add(defaultMode, 'text', ['Default', 'Force Fill', 'Force Wireframe']).name('Mode:').onChange(value => {
+        polygonalModesFolder.add({text: 'Default'}, 'text', ['Default', 'Force Fill', 'Force Wireframe']).name('Mode:').onChange(value => {
             this.app.contents.sceneGraph.updatePolygonalMode(value)
         })
         polygonalModesFolder.close()
-        
-        
+
+        const shadowModesFolder = this.datgui.addFolder('Shadow Mode on Meshes')
+        shadowModesFolder.add({text: 'Default'}, 'text', ['Default', 'Force Shadows On', 'Force Shadows Off']).name('Mode:').onChange(value => {
+            this.app.contents.sceneGraph.updateShadowMode(value)
+        })
+        shadowModesFolder.close()
     }
-
-
 }
 
 export {MyGuiInterface};

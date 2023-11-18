@@ -51,6 +51,28 @@ class MySceneGraph {
         }
     }
 
+    updateShadowMode(type) {
+        switch (type) {
+            case 'Default':
+                this.updateInheritAttributesGraph()
+                break;
+            case 'Force Shadows On':
+            case 'Force Shadows Off':
+                const forceShadowsOn = type === 'Force Shadows On'
+                this.graph.traverse(node => {
+                    if (node.isMesh) {
+                        node.castShadow = forceShadowsOn
+                        node.receiveShadow = forceShadowsOn
+                    }
+                })
+                break;
+            default:
+                console.warn("Invalid shadow mode")
+                break;
+        }
+    }
+
+
     constructMeshGraph() {
         const meshGraph = new THREE.Group()
         const stack = new Stack()
