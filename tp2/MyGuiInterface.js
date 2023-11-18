@@ -35,25 +35,37 @@ class MyGuiInterface {
         cameraFolder.close()
 
         const lightsFolder = this.datgui.addFolder('Lights');
-        for (let [key, light] of this.contents.lights.entries()) {
+        for (let light of this.contents.lights.values()) {
+            //const lightSubFolder = lightsFolder.addFolder(light.name)
+
+        }
+
+        /*for (let [key, light] of this.contents.lights.entries()) {
             const lightState = {enabled: light.visible};
             lightsFolder.add(lightState, 'enabled').name(key).onChange(value => {
                 light.visible = value;
             });
-        }
+        }*/
         lightsFolder.close()
 
         const polygonalModesFolder = this.datgui.addFolder('Polygonal Mode')
-        polygonalModesFolder.add({text: 'Default'}, 'text', ['Default', 'Force Fill', 'Force Wireframe']).name('Mode:').onChange(value => {
+        const controllerPolygonal = polygonalModesFolder.add({text: 'Default'}, 'text', ['Default', 'Force Fill', 'Force Wireframe']).name('Mode:').onChange(value => {
             this.app.contents.sceneGraph.updatePolygonalMode(value)
         })
         polygonalModesFolder.close()
 
         const shadowModesFolder = this.datgui.addFolder('Shadow Mode on Meshes')
-        shadowModesFolder.add({text: 'Default'}, 'text', ['Default', 'Force Shadows On', 'Force Shadows Off']).name('Mode:').onChange(value => {
+        const controllerShadow = shadowModesFolder.add({text: 'Default'}, 'text', ['Default', 'Force Shadows On', 'Force Shadows Off']).name('Mode:').onChange(value => {
             this.app.contents.sceneGraph.updateShadowMode(value)
         })
         shadowModesFolder.close()
+        
+        this.datgui.add({
+            'Reset': () => {
+                controllerShadow.setValue('Default')
+                controllerPolygonal.setValue('Default')
+            }
+        }, 'Reset')
     }
 }
 
