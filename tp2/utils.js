@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {MyNurbsBuilder} from './MyNurbsBuilder.js';
+import { MyTriangle } from './MyTriangle.js';
 
 function rgbToHex(color) {
     return new THREE.Color(color.r, color.g, color.b)
@@ -79,6 +80,8 @@ function createThreeGeometry(primitive) {
             return new MyNurbsBuilder().build(controlPoints, primitive.representations[0].degree_u, primitive.representations[0].degree_v, primitive.representations[0].parts_u, primitive.representations[0].parts_v)
         case "polygon":
             return createPolygon(primitive.representations[0].stacks, primitive.representations[0].slices, primitive.representations[0].radius)
+        case "triangle":
+            return new MyTriangle(primitive.representations[0].xyz1, primitive.representations[0].xyz2, primitive.representations[0].xyz3)
         default:
             console.log("ERROR: primitive not found")
     }

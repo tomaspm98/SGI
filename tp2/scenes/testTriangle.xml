@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<yaf>
+
+    <!-- Credits of the original file go to Group 1, class 1 of course LAIG school year 2013/2014, FEUP, University of Porto -->
+
+    <globals background="0 0 0 1" ambient="0 0 0 1"/>
+
+    <fog color="0 0 0 1.0" near="0.0" far="150.0"/>
+
+    <skybox
+            size= "75 100 85"
+            center="0 0 0"
+            emissive="0.1 0.1 0.1 1"
+            intensity="5"
+            front="scenes/tennis_court/textures/skybox_up.jpg"
+            back="scenes/tennis_court/textures/skybox_up.jpg"
+            up="scenes/tennis_court/textures/skybox_up.jpg"
+            down="scenes/tennis_court/textures/skybox_up.jpg"
+            left="scenes/tennis_court/textures/skybox_up.jpg"
+            right="scenes/tennis_court/textures/skybox_up.jpg" 
+               />
+
+    <cameras initial="cam1">
+        <perspective id="cam1"
+                     angle="60"
+                     near="0.1"
+                     far="1000"
+                     location="30 30 30"
+                     target="0 0.0 0"/>
+
+        <orthogonal id="cam2"
+                    near="0.1"
+                    far="1000"
+                    location="0 15 50"
+                    target="0.0 0.0 0.0"
+                    left="-50"
+                    right="50"
+                    bottom="-10"
+                    top="10"/>
+    </cameras>
+
+    <!-- bloco de texturas. Este bloco tem de existir mas pode estar vazio, se nao forem usadas texturas -->
+    <textures>
+        <texture id="ballTex" filepath="scenes/tennis_court/textures/ballTex.jpg" />
+    </textures>
+
+     <materials>
+         <material id="ballApp"
+                  emissive="0.0 0.0 0.0 1"
+                  color="0.678 0.847 0.901 1.0"
+                  specular="0 0 0 0"
+                  shininess="15"
+                  texlength_s="1"
+                  texlength_t="1"
+                  textureref="ballTex"
+                  bumpref="ballBumpTex"
+                  bumpscale="0.03"
+        />
+     </materials>
+
+     <graph rootid="scene">
+
+        <node id="scene">
+            <children>
+                <noderef id="triangle"/>  
+                <pointlight id="light1" enabled="true"
+                            color="1.0 1.0 1.0 1"
+                            intensity="5.0"
+                            distance="100"
+                            decay="1.0"
+                            castshadow="false"
+                            position="0 100 0"
+                />
+
+                <pointlight id="light2" enabled="true"
+                            color="0.5 0.5 0.5 1"
+                            intensity="5.0"
+                            distance="100"
+                            decay="1.0"
+                            castshadow="false"
+                            position="50 50 0"
+                />
+
+                <spotlight id="light3" enabled="true"
+                           color="1.0 1.0 1.0 1"
+                           intensity="10.0"
+                           distance="50"
+                           decay="1.0"
+                           castshadow="false"
+                           position="0 30 0"
+                           target="0 0 0"
+                           penumbra="1.0"
+                           angle="20.0"
+                />
+
+                <directionallight id="light4" enabled="true"
+                                  color="1.0 1.0 1.0 1"
+                                  intensity="5.0"
+                                  castshadow="false"
+                                  position="20 20 40"
+                />
+
+                <pointlight id="light5" enabled="true"
+                            color="1.0 1.0 1.0 1"
+                            intensity="5.0"
+                            distance="100"
+                            decay="1.0"
+                            castshadow="false"
+                            position="0 20 -20"
+                />
+
+                <directionallight id="light6" enabled="true"
+                            color="1.0 1.0 1.0 1"
+                            intensity="2.0"
+                            castshadow="false"
+                            position="-40 20 0"
+                />
+
+                <directionallight id="light7" enabled="true"
+                            color="1.0 1.0 1.0 1"
+                            intensity="2.0"
+                            castshadow="false"
+                            position="0 20 -40"
+                />
+
+                <pointlight id="light8" enabled="true"
+                            color="1.0 1.0 1.0 1"
+                            intensity="5.0"
+                            distance="20"
+                            decay="1.0"
+                            castshadow="false"
+                            position="37.5 99 42.5"
+                />
+            </children>
+         </node>
+
+         <node id="triangle">
+
+            <materialref id ="ballApp"/>
+            <children>
+              <primitive>
+                <triangle xyz1="0 0 0" xyz2="50 0 0" xyz3="0 50 0"/>
+            </primitive>
+            </children>    
+          </node>  
+      </graph>
+</yaf>                
