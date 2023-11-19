@@ -231,14 +231,13 @@ function createPolygon(stacks, slices, radius) {
             if(j === 0)
                 indices.push(0, i, i % slices + 1)
             else{
-                //indices.push((j - 1) * slices + i, (j - 1) * slices + i + slices * j, (j - 1) * slices + 1 )
-                //indices.push((j - 1) * slices + i, j * slices + i, ((j - 1) * slices + i + 1) % (slices * j))
-                const a1 = (j - 1) * slices + i
-                const a2 = (j - 1) * slices + i + slices
-                const a3 = ((j - 1) * slices + i + 1) % (slices * j + 1)
-
-                indices.push(a1, a2 - 1, a2)
-                indices.push(a1, a2, a3 !== 0 ? a3 : slices * (j - 1) + 1)
+                const a1 = j * slices + i
+                const a2 = ((j - 1) * slices) + ((j - 1) * slices + i) % slices + 1
+                
+                const a4 = (j * slices) + (j * slices + i) % slices + 1
+                
+                indices.push(a1, a2, a1 - slices)
+                indices.push(a1, a4, a2 === 0 ? 1 : a2)
             }
         }
     }
@@ -254,20 +253,20 @@ function createPolygon(stacks, slices, radius) {
         0, 4, 5,
         0, 5, 1,
 
-        1, 10, 6,
-        1, 6, 2,
+        6, 2, 1,
+        6, 7, 2,
         
-        2, 6, 7,
-        2, 7, 3,
+        7, 3, 2,
+        7, 8, 3,
         
-        3, 7, 8,
-        3, 8, 4,
+        8, 4, 3,
+        8, 9, 4,
         
-        4, 8, 9,     
-        4, 9, 5,
+        9, 5, 4,
+        9, 10, 5,
         
-        5, 9, 10,
-        5, 10, 1,
+        10, 1, 5,
+        10, 6, 1
         
         
     ])*/
