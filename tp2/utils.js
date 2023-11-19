@@ -102,8 +102,9 @@ function createThreeLight(light) {
             spotLight.position.set(...light.position)
             spotLight.target.position.set(...light.target)
             spotLight.castShadow = light.castshadow
-            spotLight.shadowFar = light.shadowfar
-            spotLight.shadowMap = light.shadowmapsize
+            spotLight.shadow.camera.far = light.shadowfar
+            spotLight.shadow.mapSize.width = light.shadowmapsize
+            spotLight.shadow.mapSize.height = light.shadowmapsize
             spotLight.visible = light.enabled
             return spotLight
 
@@ -117,8 +118,9 @@ function createThreeLight(light) {
 
             pointLight.position.set(...light.position)
             pointLight.castShadow = light.castshadow
-            pointLight.shadowFar = light.shadowfar
-            pointLight.shadowMap = light.shadowmapsize
+            pointLight.shadow.camera.far = light.shadowfar
+            pointLight.shadow.mapSize.width = light.shadowmapsize 
+            pointLight.shadow.mapSize.height = light.shadowmapsize
             pointLight.visible = light.enabled
             return pointLight
         case 'directionallight':
@@ -129,12 +131,13 @@ function createThreeLight(light) {
 
             directionalLight.position.set(...light.position)
             directionalLight.castShadow = light.castshadow
-            directionalLight.shadowFar = light.shadowfar
-            directionalLight.shadowMap = light.shadowmapsize
-            directionalLight.shadowCameraLeft = light.shadowleft
-            directionalLight.shadowCameraRight = light.shadowright
-            directionalLight.shadowCameraBottom = light.shadowbottom
-            directionalLight.shadowCameraTop = light.shadowtop
+            directionalLight.shadow.camera.far = light.shadowfar
+            directionalLight.shadow.mapSize.width = light.shadowmapsize
+            directionalLight.shadow.mapSize.height = light.shadowmapsize
+            directionalLight.shadow.camera.left = light.shadowleft
+            directionalLight.shadow.camera.right = light.shadowright
+            directionalLight.shadow.camera.bottom = light.shadowbottom
+            directionalLight.shadow.camera.top = light.shadowtop
             directionalLight.visible = light.enabled
             return directionalLight
         default:
