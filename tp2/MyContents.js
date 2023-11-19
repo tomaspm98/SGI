@@ -160,8 +160,11 @@ class MyContents {
                 bumpScale: material.bumpscale,
                 specularMap: this.textures[material.specularref] !== undefined ? this.textures[material.specularref] : null,
             })
-            if (material.texlength_s !== undefined && material.texlength_t !== undefined && this.textures[material.textureref] !== undefined)
-                this.textures[material.textureref].repeat.set(1/material.texlength_s, 1/material.texlength_t)
+            if (material.texlength_s !== undefined && material.texlength_t !== undefined && material.texlength_s !== 1 && material.texlength_t !== 1 && this.textures[material.textureref] !== undefined){
+                this.textures[material.textureref].repeat.set(material.texlength_s, material.texlength_t)
+                this.textures[material.textureref].wrapS = THREE.MirroredRepeatWrapping
+                this.textures[material.textureref].wrapT = THREE.MirroredRepeatWrapping
+            }
             newMaterial.name = material.id
             this.materials[key] = newMaterial
         }
