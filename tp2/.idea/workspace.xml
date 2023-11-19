@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="85110545-45ea-4a9a-8b22-bcac45ef9e5e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MyTriangle.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scenes/tennis_court/textures/flagTex106.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scenes/tennis_court/textures/flagTex213.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scenes/tennis_court/textures/flagTex427.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scenes/tennis_court/textures/flagTex854.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scenes/tennis_court/textures/metalTex2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scenes/testTriangle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyContents.js" beforeDir="false" afterPath="$PROJECT_DIR$/MyContents.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scenes/tennis_court/scene.xml" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/tennis_court/scene.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils.js" afterDir="false" />
     </list>
@@ -48,23 +55,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/daniel/Desktop/SGI/tp2/scenes/spacescene&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;settings.editor.splitter.proportion&quot;: &quot;0.24193548&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "true",
+    "git-widget-placeholder": "Merging main",
+    "last_opened_file_path": "/home/daniel/Desktop/SGI/tp2/scenes/spacescene",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.splitter.proportion": "0.24193548",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/scenes/spacescene" />
@@ -88,7 +95,7 @@
       <workItem from="1700305151758" duration="426000" />
       <workItem from="1700305592849" duration="11683000" />
       <workItem from="1700324193395" duration="23123000" />
-      <workItem from="1700426126536" duration="5875000" />
+      <workItem from="1700426126536" duration="6229000" />
     </task>
     <servers />
   </component>

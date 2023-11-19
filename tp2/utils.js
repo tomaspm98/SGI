@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {MyNurbsBuilder} from './MyNurbsBuilder.js';
+import { MyTriangle } from './MyTriangle.js';
 
 function rgbToHex(color) {
     return new THREE.Color(color.r, color.g, color.b)
@@ -79,6 +80,8 @@ function createThreeGeometry(primitive) {
             return new MyNurbsBuilder().build(controlPoints, primitive.representations[0].degree_u, primitive.representations[0].degree_v, primitive.representations[0].parts_u, primitive.representations[0].parts_v)
         case "polygon":
             return createPolygon(primitive.representations[0].stacks, primitive.representations[0].slices, primitive.representations[0].radius)
+        case "triangle":
+            return new MyTriangle(primitive.representations[0].xyz1, primitive.representations[0].xyz2, primitive.representations[0].xyz3)
         default:
             console.log("ERROR: primitive not found")
     }
@@ -99,8 +102,9 @@ function createThreeLight(light) {
             spotLight.position.set(...light.position)
             spotLight.target.position.set(...light.target)
             spotLight.castShadow = light.castshadow
-            spotLight.shadowFar = light.shadowfar
-            spotLight.shadowMap = light.shadowmapsize
+            spotLight.shadow.camera.far = light.shadowfar
+            spotLight.shadow.mapSize.width = light.shadowmapsize
+            spotLight.shadow.mapSize.height = light.shadowmapsize
             spotLight.visible = light.enabled
             return spotLight
 
@@ -114,8 +118,9 @@ function createThreeLight(light) {
 
             pointLight.position.set(...light.position)
             pointLight.castShadow = light.castshadow
-            pointLight.shadowFar = light.shadowfar
-            pointLight.shadowMap = light.shadowmapsize
+            pointLight.shadow.camera.far = light.shadowfar
+            pointLight.shadow.mapSize.width = light.shadowmapsize 
+            pointLight.shadow.mapSize.height = light.shadowmapsize
             pointLight.visible = light.enabled
             return pointLight
         case 'directionallight':
@@ -126,12 +131,13 @@ function createThreeLight(light) {
 
             directionalLight.position.set(...light.position)
             directionalLight.castShadow = light.castshadow
-            directionalLight.shadowFar = light.shadowfar
-            directionalLight.shadowMap = light.shadowmapsize
-            directionalLight.shadowCameraLeft = light.shadowleft
-            directionalLight.shadowCameraRight = light.shadowright
-            directionalLight.shadowCameraBottom = light.shadowbottom
-            directionalLight.shadowCameraTop = light.shadowtop
+            directionalLight.shadow.camera.far = light.shadowfar
+            directionalLight.shadow.mapSize.width = light.shadowmapsize
+            directionalLight.shadow.mapSize.height = light.shadowmapsize
+            directionalLight.shadow.camera.left = light.shadowleft
+            directionalLight.shadow.camera.right = light.shadowright
+            directionalLight.shadow.camera.bottom = light.shadowbottom
+            directionalLight.shadow.camera.top = light.shadowtop
             directionalLight.visible = light.enabled
             return directionalLight
         default:
