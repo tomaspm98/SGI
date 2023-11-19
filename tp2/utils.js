@@ -217,61 +217,50 @@ function createPolygon(stacks, slices, radius) {
 
     const vertices = [0, 0, 0]
     const indices = []
-    
-    const inc = 2 * Math.PI / slices
-    for(let j = 0; j < stacks; j++){
+
+    //Rounding values to prevent potential end condition failures caused by floating-point errors.
+    const inc = Number((2 * Math.PI / slices).toFixed(5))
+    const init = Number((Math.PI / 2).toFixed(5))
+    const end = Number((5 * Math.PI / 2).toFixed(5))
+
+    for (let j = 0; j < stacks; j++) {
         const rad = radius * (j + 1) / stacks
-        for(let i = 1; i <= 2 * Math.PI; i += inc){
+        for (let i = init; i <= end; i += inc) {
             vertices.push(...[Math.cos(i) * rad, Math.sin(i) * rad, 0])
         }
     }
-    
-    for(let j = 0; j < stacks; j++) {
+
+    printIndices(vertices)
+
+    for (let j = 0; j < stacks; j++) {
         for (let i = 1; i <= slices; i++) {
-            if(j === 0)
+            if (j === 0)
                 indices.push(0, i, i % slices + 1)
-            else{
-                const a1 = j * slices + i
-                const a2 = ((j - 1) * slices) + ((j - 1) * slices + i) % slices + 1
-                
-                const a4 = (j * slices) + (j * slices + i) % slices + 1
-                
-                indices.push(a1, a2, a1 - slices)
-                indices.push(a1, a4, a2 === 0 ? 1 : a2)
+            else {
+                const i1 = j * slices + i
+                const i2 = ((j - 1) * slices) + ((j - 1) * slices + i) % slices + 1
+                const i3 = (j * slices) + (j * slices + i) % slices + 1
+
+                // Define triangles formed by points:
+                // 1. Point on the current stack.
+                // 2. Point on the previous stack at the homologous position.
+                // 3. Point on the previous stack at the next position.
+                indices.push(i1, i2, i1 - slices)
+
+                // Define triangles formed by points:
+                // 1. Point on the current stack.
+                // 2. Point in the next position on the current stack.
+                // 3. Homologous point on the previous stack.
+                indices.push(i1, i3, i2)
             }
         }
     }
-    
-    console.log("Vertices: ")
-    
-    console.log("Indices: ")
-    printIndices(indices)
-    /*geometry.setIndex([
-        0, 1, 2,
-        0, 2, 3,
-        0, 3, 4,
-        0, 4, 5,
-        0, 5, 1,
 
-        6, 2, 1,
-        6, 7, 2,
-        
-        7, 3, 2,
-        7, 8, 3,
-        
-        8, 4, 3,
-        8, 9, 4,
-        
-        9, 5, 4,
-        9, 10, 5,
-        
-        10, 1, 5,
-        10, 6, 1
-        
-        
-    ])*/
+    const normals = Array.from({length: stacks * slices + 1}, () => [...[0, 0, 1]]).flat()
+
     geometry.setIndex(indices)
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3))
+    geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(normals), 3))
     return geometry
 }
 
