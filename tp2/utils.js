@@ -161,7 +161,7 @@ function applyTransformation(sceneNode, transformations) {
                 sceneNode.translateZ(transformation.translate[2]);
                 break;
             case 'R':
-                let rotations = transformation.rotation.map(angle => angle * Math.PI / 180)
+                let rotations = transformation.rotation.map(angle => angle)
                 rotations = [rotations[0] + sceneNode.rotation.x, rotations[1] + sceneNode.rotation.y, rotations[2] + sceneNode.rotation.z]
                 sceneNode.rotation.set(...rotations)
                 break;
