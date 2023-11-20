@@ -186,6 +186,7 @@ class MySceneGraph {
             } else if (node.type === 'lod') {
                 // Handling LOD node types
                 for (let i = node.children.length - 1; i >= 0; i--) {
+                    // The material, castShadow and receiveShadow that are passed to the children are the ones of the parent
                     stack.push({
                         node: node.children[i],
                         sceneNode: sceneNode.children[i],
@@ -209,8 +210,10 @@ class MySceneGraph {
                 const receiveShadow = element.receiveShadow || node.receiveShadows;
 
                 if (node.materialIds !== undefined && node.materialIds.length > 0) {
+                    // If the node has a material, it is applied
                     sceneNode.material = this.materials[node.materialIds[0]];
                 } else if (sceneNode.parent !== undefined) {
+                    // If the node has no material, it inherits the material of the parent
                     sceneNode.material = sceneNode.parent.material;
                 }
 

@@ -31,6 +31,7 @@ class MyGuiInterface {
         cameraFolder.close()
 
         //Save the default values of the lights
+        //This is used to reset the values of the lights
         const lightBackup = []
         for (let light of this.contents.lights.values()) {
             lightBackup.push({
@@ -57,14 +58,14 @@ class MyGuiInterface {
             const lightColorController = lightSubFolder.addColor({color: light.color.getHex()}, 'color').name('Color').onChange(value => {
                 light.color.setHex(value);
             })
-            const lightItensityController = lightSubFolder.add({intensity: light.intensity}, 'intensity').name('Intensity').onChange(value => {
+            const lightIntensityController = lightSubFolder.add({intensity: light.intensity}, 'intensity').name('Intensity').onChange(value => {
                 light.intensity = value;
             })
             lightControllers[light.name] = {
                 'visible': lightVisibleController,
                 'shadow': lightShadowController,
                 'color': lightColorController,
-                'itensity': lightItensityController
+                'intensity': lightIntensityController
             }
             lightSubFolder.close()
         }
