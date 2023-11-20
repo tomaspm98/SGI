@@ -12,6 +12,7 @@ class MyApp  {
     /**
      * the constructor
      */
+
     constructor() {
         this.scene = null
         this.stats = null
@@ -35,7 +36,6 @@ class MyApp  {
      * initializes the application
      */
     init() {
-                
         // Create an empty scene
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color( 0x101010 );
@@ -62,6 +62,15 @@ class MyApp  {
 
         // manage window resizes
         window.addEventListener('resize', this.onResize.bind(this), false );
+
+        this.contents = new MyContents(this);
+
+        //this.myContents = new MyContents();
+        //console.log("TESTE")
+        //console.log(myContents.cameras_map)
+
+        
+        
     }
 
     /**
@@ -74,6 +83,8 @@ class MyApp  {
         const perspective1 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
         perspective1.position.set(10,10,3)
         this.cameras['Perspective'] = perspective1
+
+
     }
 
     /**
@@ -92,29 +103,33 @@ class MyApp  {
      * it updates the active camera and the controls
      */
     updateCameraIfRequired() {
-
-        // camera changed?
         if (this.lastCameraName !== this.activeCameraName) {
             this.lastCameraName = this.activeCameraName;
-            this.activeCamera = this.cameras[this.activeCameraName]
-            document.getElementById("camera").innerHTML = this.activeCameraName
-           
-            // call on resize to update the camera aspect ratio
-            // among other things
-            this.onResize()
-
-            // are the controls yet?
-            if (this.controls === null) {
-                // Orbit controls allow the camera to orbit around a target.
-                this.controls = new OrbitControls( this.activeCamera, this.renderer.domElement );
-                this.controls.enableZoom = true;
+            const cameraData = this.contents.cameras_map.get(this.activeCameraName);
+            
+            if (cameraData) {
+                this.activeCamera = cameraData.camera;
+                document.getElementById("camera").innerHTML = this.activeCameraName;
+                
+                // Update OrbitControls
+                if (!this.controls) {
+                    this.controls = new OrbitControls(this.activeCamera, this.renderer.domElement);
+                } else {
+                    this.controls.object = this.activeCamera;
+                }
+                
+                if (cameraData.target) {
+                    this.controls.target.copy(cameraData.target);
+                }
                 this.controls.update();
-            }
-            else {
-                this.controls.object = this.activeCamera
+    
+                // call on resize to update the camera aspect ratio
+                this.onResize();
             }
         }
     }
+    
+    
 
     /**
      * the window resize handler

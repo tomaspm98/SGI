@@ -126,10 +126,13 @@ class MySceneGraph {
             if (node.type === 'primitive') {
                 parent.add(new THREE.Mesh(Utils.createThreeGeometry(node)));
             } else if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
-                const light = Utils.createThreeLight(node);
-                light.name = node.id;
-                parent.add(light);
-                this.lightsMap.set(node.id, light);
+                    const light = Utils.createThreeLight(node)
+                    console.log(node)
+                    light.name = node.id
+                    parent.add(light)
+                    this.lightsMap.set(node.id, light)
+                    console.log("LIGHTS MAP")
+                    console.log(this.lightsMap)
             } else if (visited.hasOwnProperty(node.id + node.type)) {
                 const objCloned = visited[node.id + node.type].clone();
                 objCloned["isCloned"] = true;
