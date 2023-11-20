@@ -49,34 +49,28 @@ class MyContents {
 
     }
 
-    output(obj, indent = 0) {
-        //console.log("" + new Array(indent * 4).join(' ') + " - " + obj.type + " " + (obj.id !== undefined ? "'" + obj.id + "'" : ""))
-    }
-
     onAfterSceneLoadedAndBeforeRender(data) {
         this.renderCameras(data)
-        this.renderTextures(data)//renders the textures
-        this.renderMaterials(data)//renders materials
+        this.renderTextures(data)
+        this.renderMaterials(data)
         this.renderBackground(data)
         this.renderFog(data)
         this.renderSkybox(data)
-        
+
         this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials, this.textures)
 
-        console.log("Raw Data: ")
-        console.log(data.nodes[data.rootId])
-        console.log("--------------------------------------------------------------------------")
-
+        //Add the scene graph to the scene
         this.sceneGraph.constructSceneGraph()
         this.app.scene.add(this.sceneGraph.graph)
 
-        console.log("Scene Graph: ")
-        console.log(this.sceneGraph.graph)
-        console.log("--------------------------------------------------------------------------")
-
+        //Save the references to the lights that will be used in the Guiinterface
         this.lights = this.sceneGraph.getLightMap();
     }
 
+    /**
+     * Renders a skybox using the provided data.
+     * @param {Object} data - Skybox data containing textures and settings.
+     */
     renderSkybox(data) {
         let skybox = data.skyboxes.default
         let skyboxGeometry = new THREE.BoxGeometry(skybox.size[0], skybox.size[1], skybox.size[2])
@@ -96,57 +90,57 @@ class MyContents {
     }
 
 
+    /**
+     * Function to render textures.
+     * @param {Object} data - The data object containing textures.
+     */
     renderTextures(data) {
         for (let key in data.textures) {
             let texture = data.textures[key]
             let newTexture;
+
             if (texture.isVideo) {
                 const videoId = `video${this.videoTextureCount++}`
+
+                // Add a video tag to the HTML document
                 this.addVideoTagToHTML(texture.filepath, videoId);
+
+                // Get the video element and create a new THREE.VideoTexture
                 const video = document.getElementById(videoId)
                 newTexture = new THREE.VideoTexture(video)
                 newTexture.needsUpdate = true
             } else {
                 newTexture = new THREE.TextureLoader().load(texture.filepath)
             }
+
             newTexture.generateMipmaps = texture.mipmaps
+
+            // If mipmaps are not generated, load them manually
             if (texture.mipmaps === false) {
-                if (texture.mipmap0 != undefined) {
-                    Utils.loadMipmap(newTexture, 0, texture.mipmap0)
-                }
-                if (texture.mipmap1 != undefined) {
-                    Utils.loadMipmap(newTexture, 1, texture.mipmap1)
-                }
-                if (texture.mipmap2 != undefined) {
-                    Utils.loadMipmap(newTexture, 2, texture.mipmap2)
-                }
-                if (texture.mipmap3 != undefined) {
-                    Utils.loadMipmap(newTexture, 3, texture.mipmap3)
-                }
-                if (texture.mipmap4 != undefined) {
-                    Utils.loadMipmap(newTexture, 4, texture.mipmap4)
-                }
-                if (texture.mipmap5 != undefined) {
-                    Utils.loadMipmap(newTexture, 5, texture.mipmap5)
-                }
-                if (texture.mipmap6 != undefined) {
-                    Utils.loadMipmap(newTexture, 6, texture.mipmap6)
-                }
-                if (texture.mipmap7 != undefined) {
-                    Utils.loadMipmap(newTexture, 7, texture.mipmap7)
+                for (let i = 0; i <= 7; i++) {
+                    if (texture[`mipmap${i}`] != undefined) {
+                        Utils.loadMipmap(newTexture, i, texture[`mipmap${i}`])
+                    }
                 }
             } else {
+                // If mipmaps are generated, set the magFilter and minFilter properties
                 newTexture.magFilter = Utils.convertFilterThree(texture.magFilter)
                 newTexture.minFilter = Utils.convertFilterThree(texture.minFilter)
             }
+
             newTexture.anisotropy = texture.anisotropy
             this.textures[key] = newTexture
         }
     }
 
+    /**
+     * Function to render materials.
+     * @param {Object} data - The data object containing materials.
+     */
     renderMaterials(data) {
         for (let key in data.materials) {
             const material = data.materials[key]
+
             const newMaterial = new THREE.MeshPhongMaterial({
                 color: material.color,
                 specular: material.specular,
@@ -160,98 +154,76 @@ class MyContents {
                 bumpScale: material.bumpscale,
                 specularMap: this.textures[material.specularref] !== undefined ? this.textures[material.specularref] : null,
             })
-            if (material.texlength_s !== undefined && material.texlength_t !== undefined && material.texlength_s !== 1 && material.texlength_t !== 1 && this.textures[material.textureref] !== undefined){
+
+            if (material.texlength_s !== undefined && material.texlength_t !== undefined && material.texlength_s !== 1 && material.texlength_t !== 1 && this.textures[material.textureref] !== undefined) {
                 this.textures[material.textureref].repeat.set(material.texlength_s, material.texlength_t)
                 this.textures[material.textureref].wrapS = THREE.MirroredRepeatWrapping
                 this.textures[material.textureref].wrapT = THREE.MirroredRepeatWrapping
             }
+
             newMaterial.name = material.id
             this.materials[key] = newMaterial
         }
     }
 
+    /**
+     * Function to render the background.
+     * @param {Object} data - The data object containing background options.
+     */
     renderBackground(data) {
         if (data.options.type === 'globals') {
             const ambientLight = new THREE.AmbientLight(data.options.ambient)
             this.app.scene.add(ambientLight)
             this.app.scene.background = data.options.background
         }
-
     }
 
+    /**
+     * Function to render the fog.
+     * @param {Object} data - The data object containing fog options.
+     */
     renderFog(data) {
         if (data.fog.type === 'fog') {
             this.app.scene.fog = new THREE.Fog(data.fog.color, data.fog.near, data.fog.far)
         }
     }
 
+    /**
+     * Function to render the cameras.
+     * @param {Object} data - The data object containing cameras.
+     */
     renderCameras(data) {
         for (let key in data.cameras) {
             let camera = data.cameras[key]
+
             if (camera.type === 'orthogonal') {
                 this.cameras_map.set(camera.id, new THREE.OrthographicCamera(camera.left, camera.right, camera.top, camera.bottom, camera.near, camera.far))
-                this.cameras_map.get(camera.id).position.set(...camera.location)
-                this.cameras_map.get(camera.id).lookAt(...camera.target)
-
             } else if (camera.type === 'perspective') {
-                this.cameras_map.set(camera.id, new THREE.PerspectiveCamera(camera.angle, 1, camera.near, camera.far))
-                this.cameras_map.get(camera.id).position.set(...camera.location)
-                this.cameras_map.get(camera.id).lookAt(...camera.target)
+                this.cameras_map.set(camera.id, new THREE.PerspectiveCamera(camera.angle, window, camera.near, camera.far))
             }
+
+            this.cameras_map.get(camera.id).position.set(...camera.location)
+            this.cameras_map.get(camera.id).lookAt(...camera.target)
         }
+
+        // Set the active camera
         this.activeCamera = data.activeCameraId
     }
 
-
+    /**
+     * Function to update the scene. Currently empty, but can be filled with logic to update the scene every frame.
+     */
     update() {
 
     }
 
-    printData(data) {
-        this.output(data.options)
-        console.log("textures:")
-        console.log(data.textures)
-        for (let key in data.textures) {
-            let texture = data.textures[key]
-            this.output(texture, 1)
-        }
-
-        console.log("materials:")
-        for (let key in data.materials) {
-            let material = data.materials[key]
-            this.output(material, 1)
-        }
-        console.log(data.materials)
-
-        console.log(data.cameras)
-        console.log(data.options)
-
-        console.log("cameras:")
-        for (let key in data.cameras) {
-            let camera = data.cameras[key]
-            this.output(camera, 1)
-        }
-        console.log("nodes:")
-        console.log(data.nodes)
-        for (let key in data.nodes) {
-            let node = data.nodes[key]
-            this.output(node, 1)
-            for (let i = 0; i < node.children.length; i++) {
-                let child = node.children[i]
-                if (child.type === "primitive") {
-                    console.log("" + new Array(2 * 4).join(' ') + " - " + child.type + " with " + child.representations[0].length + " " + child.subtype + " representation(s)")
-                    if (child.subtype === "nurbs") {
-                        console.log("" + new Array(3 * 4).join(' ') + " - " + child.representations[0][0].controlpoints.length + " control points")
-                    }
-                } else {
-                    this.output(child, 2)
-                }
-            }
-        }
-    }
-
+    /**
+     * Function to add a video tag to the HTML document.
+     * @param {string} videoPath - The path to the video file.
+     * @param {string} videoId - The id to give to the video element.
+     */
     addVideoTagToHTML(videoPath, videoId) {
-        // Create video element
+        // Create a video element
         const video = document.createElement('video');
         video.id = videoId;
         video.playsInline = true;
@@ -264,8 +236,8 @@ class MyContents {
         video.preload = 'auto';
         video.src = videoPath;
 
-        // Append video to the document body or a specific container
-        document.body.appendChild(video); // or use a specific container like document.getElementById('yourContainerId').appendChild(video);
+        // Append video to the document body
+        document.body.appendChild(video);
     }
 
 
