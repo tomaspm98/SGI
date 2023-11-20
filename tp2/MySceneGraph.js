@@ -232,6 +232,8 @@ class MySceneGraph {
                         const newMaterial = sceneNode.material.clone();
                         newMaterial.vertexColors = true;
                         sceneNode.material = newMaterial;
+                        // To be able to change the wireframe mode
+                        this.materials[newMaterial.name + "vertexColors"] = newMaterial;
                     }
                     continue; // Primitives don't have children
                 }
