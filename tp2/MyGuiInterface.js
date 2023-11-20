@@ -21,11 +21,7 @@ class MyGuiInterface {
     setContents(contents) {
         this.contents = contents
     }
-
-    setScenegraph(scenegraph) {
-        this.scenegraph = scenegraph
-    }
-
+    
     /**
      * Initialize the gui interface
      */
@@ -45,9 +41,9 @@ class MyGuiInterface {
                 intensity: light.intensity
             })
         }
-
+        
+        //Create the controllers for the lights
         const lightControllers = []
-
         const lightsFolder = this.datgui.addFolder('Lights');
         for (let light of this.contents.lights.values()) {
             const lightSubFolder = lightsFolder.addFolder(light.name)
@@ -74,18 +70,22 @@ class MyGuiInterface {
         }
         lightsFolder.close()
 
+        //Create the controllers for the polygonal mode
         const polygonalModesFolder = this.datgui.addFolder('Polygonal Mode')
         const controllerPolygonal = polygonalModesFolder.add({text: 'Default'}, 'text', ['Default', 'Force Fill', 'Force Wireframe']).name('Mode:').onChange(value => {
             this.app.contents.sceneGraph.updatePolygonalMode(value)
         })
         polygonalModesFolder.close()
 
+        //Create the controllers for the shadow mode
         const shadowModesFolder = this.datgui.addFolder('Shadow Mode on Meshes')
         const controllerShadow = shadowModesFolder.add({text: 'Default'}, 'text', ['Default', 'Force Shadows On', 'Force Shadows Off']).name('Mode:').onChange(value => {
             this.app.contents.sceneGraph.updateShadowMode(value)
         })
         shadowModesFolder.close()
 
+        //Reset button
+        //Put the default values (the ones that were saved before) on the controllers
         this.datgui.add({
             'Reset': () => {
                 controllerShadow.setValue('Default')
