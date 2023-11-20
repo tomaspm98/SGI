@@ -1,9 +1,18 @@
 import * as THREE from 'three';
-import * as Utils from './utils.js'
-import {Stack} from "./Stack.js"
+import * as Utils from './utils.js';
+import {Stack} from "./Stack.js";
 
-
+/**
+ * Class representing a scene graph.
+ */
 class MySceneGraph {
+    /**
+     * Generates a scene graph based on a scene described in the YSF file.
+     * @param {Object} nodes - Nodes in the YSF scene.
+     * @param {string} root_id - Root ID of the scene.
+     * @param {Object} materials - Materials used in the scene.
+     * @param {Object} textures - Textures used in the scene.
+     */
     constructor(nodes, root_id, materials, textures) {
         this.graph = null;
         this.nodes = nodes;
@@ -14,6 +23,10 @@ class MySceneGraph {
         this.getWireframeValues();
     }
 
+    /**
+     * Gets the wireframe values present in the materials.
+     * Needed to restore the polygonal mode.
+     */
     getWireframeValues() {
         this.wireframeValues = [];
         for (let i in this.materials) {
@@ -22,124 +35,156 @@ class MySceneGraph {
         }
     }
 
+    /**
+     * Gets the light map.
+     * @returns {Map} - Lights map.
+     */
     getLightMap() {
         return this.lightsMap;
     }
 
+    /**
+     * Constructs the scene graph.
+     */
     constructSceneGraph() {
-        this.graph = this.constructMeshGraph()
-        this.updateInheritAttributesGraph()
+        // First construct the mesh graph taking advantage of cloning meshes and groups that are repeated
+        this.graph = this.constructMeshGraph();
+        // Then update the materials and the inherit attributes
+        this.updateInheritAttributesGraph();
     }
 
+    /**
+     * Updates polygonal mode.
+     * @param {string} type - Type of polygonal mode.
+     */
     updatePolygonalMode(type) {
+        // The original values are stored in the wireframeValues array
         switch (type) {
             case 'Default':
                 for (const i in this.materials) {
-                    this.materials[i].wireframe = this.wireframeValues[this.materials[i].name]
+                    this.materials[i].wireframe = this.wireframeValues[this.materials[i].name];
                 }
                 break;
             case 'Force Fill':
             case 'Force Wireframe':
-                const forceWireFrame = type === 'Force Wireframe'
+                const forceWireFrame = type === 'Force Wireframe';
                 for (const i in this.materials) {
-                    this.materials[i].wireframe = forceWireFrame
+                    this.materials[i].wireframe = forceWireFrame;
                 }
                 break;
             default:
-                console.warn("Invalid polygonal mode")
+                console.warn("Invalid polygonal mode");
                 break;
         }
     }
 
+    /**
+     * Updates shadow mode.
+     * @param {string} type - Type of shadow mode.
+     */
     updateShadowMode(type) {
         switch (type) {
             case 'Default':
-                this.updateInheritAttributesGraph()
+                // To restore the original values,
+                // It's necessary to traverse the graph and update the inherited attributes
+                this.updateInheritAttributesGraph();
                 break;
             case 'Force Shadows On':
             case 'Force Shadows Off':
-                const forceShadowsOn = type === 'Force Shadows On'
+                const forceShadowsOn = type === 'Force Shadows On';
+                // To force shadows on or off,
+                // Traverse the graph and put the castShadow and receiveShadow attributes to the desired value
                 this.graph.traverse(node => {
                     if (node.isMesh) {
-                        node.castShadow = forceShadowsOn
-                        node.receiveShadow = forceShadowsOn
+                        node.castShadow = forceShadowsOn;
+                        node.receiveShadow = forceShadowsOn;
                     }
-                })
+                });
                 break;
             default:
-                console.warn("Invalid shadow mode")
+                console.warn("Invalid shadow mode");
                 break;
         }
     }
 
-
+    /**
+     * Constructs the mesh graph.
+     * Uses a stack to implement a depth-first search avoiding recursion.
+     * @returns {THREE.Group} - Mesh graph.
+     */
     constructMeshGraph() {
-        const meshGraph = new THREE.Group()
-        const stack = new Stack()
-        stack.push({node: this.nodes[this.root_id], parent: meshGraph})
-        const visited = []
+        const meshGraph = new THREE.Group();
+        const stack = new Stack();
+        stack.push({node: this.nodes[this.root_id], parent: meshGraph});
+        const visited = [];
 
         while (!stack.isEmpty()) {
-            const nodeStack = stack.pop()
-            const node = nodeStack.node
-            const parent = nodeStack.parent
+            const nodeStack = stack.pop();
+            const node = nodeStack.node;
+            const parent = nodeStack.parent;
 
             if (node.type === 'primitive') {
-                parent.add(new THREE.Mesh(Utils.createThreeGeometry(node)))
+                parent.add(new THREE.Mesh(Utils.createThreeGeometry(node)));
             } else if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
-                    const light = Utils.createThreeLight(node)
-                    light.name = node.id
-                    parent.add(light)
-                    this.lightsMap.set(node.id, light)
+                const light = Utils.createThreeLight(node);
+                light.name = node.id;
+                parent.add(light);
+                this.lightsMap.set(node.id, light);
             } else if (visited.hasOwnProperty(node.id + node.type)) {
-                const objCloned = visited[node.id + node.type].clone()
-                objCloned["isCloned"] = true
-                parent.add(objCloned)
+                const objCloned = visited[node.id + node.type].clone();
+                objCloned["isCloned"] = true;
+                parent.add(objCloned);
             } else {
-                let newSceneNode = node.type === 'lod' ? new THREE.LOD() : new THREE.Group()
-                newSceneNode.name = node.type === 'lodnoderef' ? 'lodnoderef' : node.id
+                let newSceneNode = node.type === 'lod' ? new THREE.LOD() : new THREE.Group();
+                newSceneNode.name = node.type === 'lodnoderef' ? 'lodnoderef' : node.id;
 
                 if (node.type === 'lodnoderef') {
-                    parent.addLevel(newSceneNode, node.mindist)
-                    stack.push({node: node.node, parent: newSceneNode})
-                    continue
+                    parent.addLevel(newSceneNode, node.mindist);
+                    stack.push({node: node.node, parent: newSceneNode});
+                    continue;
                 }
 
-                parent.add(newSceneNode)
+                parent.add(newSceneNode);
 
                 if (node.type !== 'lod')
-                    Utils.applyTransformation(newSceneNode, node.transformations)
+                    Utils.applyTransformation(newSceneNode, node.transformations);
 
+                // Pushing children in reverse order to maintain the order in the scene
+                // (the first child is the one that is drawn first)
                 for (let i = node.children.length - 1; i >= 0; i--) {
                     stack.push({node: node.children[i], parent: newSceneNode});
                 }
 
                 //The key is the id + type to avoid collisions when the id is the same but the type is different
-                visited[node.id + node.type] = newSceneNode
+                visited[node.id + node.type] = newSceneNode;
             }
         }
-        return meshGraph.children.length === 1 ? meshGraph.children[0] : meshGraph
+        return meshGraph.children.length === 1 ? meshGraph.children[0] : meshGraph;
     }
 
+    /**
+     * Updates inherited attributes (materials, cast and receive shadow) in the scene graph.
+     * Uses a stack to implement a depth-first search avoiding recursion.
+     */
     updateInheritAttributesGraph() {
-        const stack = new Stack()
-        const rootNode = this.nodes[this.root_id]
+        const stack = new Stack();
+        const rootNode = this.nodes[this.root_id];
         stack.push({
             node: rootNode,
             sceneNode: this.graph,
             castShadow: rootNode.castShadows,
             receiveShadow: rootNode.receiveShadows,
-        })
+        });
 
         while (!stack.isEmpty()) {
-            const element = stack.pop()
-            const node = element.node
-            const sceneNode = element.sceneNode
-
+            const element = stack.pop();
+            const node = element.node;
+            const sceneNode = element.sceneNode;
 
             if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
-                //do nothing
-            }else if (node.type === 'lod') {
+                // Do nothing for lights
+            } else if (node.type === 'lod') {
+                // Handling LOD node types
                 for (let i = node.children.length - 1; i >= 0; i--) {
                     stack.push({
                         node: node.children[i],
@@ -150,40 +195,42 @@ class MySceneGraph {
                     });
                 }
             } else if (node.type === 'lodnoderef') {
-                sceneNode.material = element.material
+                // Handling LOD node reference types
+                sceneNode.material = element.material;
                 stack.push({
                     node: node.node,
                     sceneNode: sceneNode.children[0],
                     castShadow: element.castShadow,
                     receiveShadow: element.receiveShadow
-                })
+                });
             } else {
-                const castShadow = element.castShadow || node.castShadows
-                const receiveShadow = element.receiveShadow || node.receiveShadows
+                // Other node types
+                const castShadow = element.castShadow || node.castShadows;
+                const receiveShadow = element.receiveShadow || node.receiveShadows;
 
                 if (node.materialIds !== undefined && node.materialIds.length > 0) {
-                    sceneNode.material = this.materials[node.materialIds[0]]
+                    sceneNode.material = this.materials[node.materialIds[0]];
                 } else if (sceneNode.parent !== undefined) {
-                    sceneNode.material = sceneNode.parent.material
+                    sceneNode.material = sceneNode.parent.material;
                 }
-                
-                sceneNode.castShadow = castShadow
-                sceneNode.receiveShadow = receiveShadow
+
+                sceneNode.castShadow = castShadow;
+                sceneNode.receiveShadow = receiveShadow;
 
                 if (node.type === 'primitive') {
                     // This should never happen! But to add some robustness, a default material will be applied
                     if (sceneNode.material === undefined) {
-                        console.warn("WARNING! Primitive ( " + node.subtype + " ) with no material. A default material will be applied.")
-                        sceneNode.material = new THREE.MeshBasicMaterial({color: 0x555555})
+                        console.warn("WARNING! Primitive (" + node.subtype + ") with no material. Applying a default material.");
+                        sceneNode.material = new THREE.MeshBasicMaterial({color: 0x555555});
                     }
-                    if(node.subtype === 'polygon'){
+                    if (node.subtype === 'polygon') {
                         // Needed to clone the material to be able to enable vertex colors
                         // and not affect the other primitives that use the same material
-                        const newMaterial = sceneNode.material.clone()
-                        newMaterial.vertexColors = true
-                        sceneNode.material = newMaterial
+                        const newMaterial = sceneNode.material.clone();
+                        newMaterial.vertexColors = true;
+                        sceneNode.material = newMaterial;
                     }
-                    continue // Primitives don't have children
+                    continue; // Primitives don't have children
                 }
 
                 for (let i = node.children.length - 1; i >= 0; i--) {
@@ -199,4 +246,4 @@ class MySceneGraph {
     }
 }
 
-export {MySceneGraph}
+export {MySceneGraph};
