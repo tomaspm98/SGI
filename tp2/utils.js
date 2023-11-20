@@ -1,11 +1,12 @@
 import * as THREE from 'three';
 import {MyNurbsBuilder} from './MyNurbsBuilder.js';
-import { MyTriangle } from './MyTriangle.js';
+import {MyTriangle} from './MyTriangle.js';
 
-function rgbToHex(color) {
-    return new THREE.Color(color.r, color.g, color.b)
-}
-
+/**
+ * Function to create a THREE.js geometry based on the provided primitive.
+ * @param {Object} primitive - The primitive object containing the subtype and representations.
+ * @returns {THREE.Geometry} - The created THREE.js geometry.
+ */
 function createThreeGeometry(primitive) {
     switch (primitive.subtype) {
         case "rectangle":
@@ -51,7 +52,6 @@ function createThreeGeometry(primitive) {
                 primitive.representations["parts_z"]
             )
 
-
             box.translate(
                 (point4[0] + point3[0]) / 2,
                 (point4[1] + point3[1]) / 2,
@@ -83,15 +83,20 @@ function createThreeGeometry(primitive) {
         case "triangle":
             return new MyTriangle(primitive.representations[0].xyz1, primitive.representations[0].xyz2, primitive.representations[0].xyz3)
         default:
-            console.log("ERROR: primitive not found")
+            console.error("Primitive not defined")
     }
 }
 
+/**
+ * Function to create a THREE.js light based on the provided light object.
+ * @param {Object} light - The light object containing the type and other properties.
+ * @returns {THREE.Light} - The created THREE.js light.
+ */
 function createThreeLight(light) {
     switch (light.type) {
         case 'spotlight':
             const spotLight = new THREE.SpotLight(
-                rgbToHex(light.color),
+                light.color,
                 light.intensity,
                 light.distance,
                 light.angle * Math.PI / 180,
@@ -110,7 +115,7 @@ function createThreeLight(light) {
 
         case 'pointlight':
             const pointLight = new THREE.PointLight(
-                rgbToHex(light.color),
+                light.color,
                 light.intensity,
                 light.distance,
                 light.decay
@@ -119,13 +124,13 @@ function createThreeLight(light) {
             pointLight.position.set(...light.position)
             pointLight.castShadow = light.castshadow
             pointLight.shadow.camera.far = light.shadowfar
-            pointLight.shadow.mapSize.width = light.shadowmapsize 
+            pointLight.shadow.mapSize.width = light.shadowmapsize
             pointLight.shadow.mapSize.height = light.shadowmapsize
             pointLight.visible = light.enabled
             return pointLight
         case 'directionallight':
             const directionalLight = new THREE.DirectionalLight(
-                rgbToHex(light.color),
+                light.color,
                 light.intensity
             )
 
@@ -141,11 +146,17 @@ function createThreeLight(light) {
             directionalLight.visible = light.enabled
             return directionalLight
         default:
-            console.error("ERROR: light not found")
+            console.error("Type of light not defined")
             return
     }
 }
 
+
+/**
+ * Function to apply transformations to a scene node.
+ * @param {THREE.Group} sceneNode - The scene node to which transformations are to be applied.
+ * @param {Array} transformations - The array of transformations to be applied.
+ */
 function applyTransformation(sceneNode, transformations) {
     if (transformations === undefined)
         return;
@@ -161,8 +172,7 @@ function applyTransformation(sceneNode, transformations) {
                 sceneNode.translateZ(transformation.translate[2]);
                 break;
             case 'R':
-                let rotations = transformation.rotation.map(angle => angle)
-                rotations = [rotations[0] + sceneNode.rotation.x, rotations[1] + sceneNode.rotation.y, rotations[2] + sceneNode.rotation.z]
+                const rotations = [transformation.rotation[0] + sceneNode.rotation.x, transformation.rotation[1] + sceneNode.rotation.y, transformation.rotation[2] + sceneNode.rotation.z]
                 sceneNode.rotation.set(...rotations)
                 break;
             default:
@@ -171,6 +181,12 @@ function applyTransformation(sceneNode, transformations) {
     }
 }
 
+
+/**
+ * Function to convert a filter to a THREE.js filter.
+ * @param {string} filter - The filter to be converted.
+ * @returns {Object} - The converted THREE.js filter.
+ */
 function convertFilterThree(filter) {
     switch (filter) {
         case "LinearFilter":
@@ -191,8 +207,14 @@ function convertFilterThree(filter) {
     }
 }
 
+/**
+ * Function to load a mipmap.
+ * @param {THREE.Texture} parentTexture - The parent texture to which the mipmap is to be added.
+ * @param {number} level - The level of the mipmap.
+ * @param {string} path - The path to the mipmap image.
+ */
 function loadMipmap(parentTexture, level, path) {
-    // load texture. On loaded call the function to create the mipmap for the specified level 
+    // Load texture. On loaded call the function to create the mipmap for the specified level 
     new THREE.TextureLoader().load(path,
         function (mipmapTexture)  // onLoad callback
         {
@@ -211,13 +233,22 @@ function loadMipmap(parentTexture, level, path) {
             // set the mipmap image in the parent texture in the appropriate level
             parentTexture.mipmaps[level] = canvas
         },
-        undefined, // onProgress callback currently not supported
+        undefined, // onProgress callback currently isn't supported
         function (err) {
             console.error('Unable to load the image ' + path + ' as mipmap level ' + level + ".", err)
         }
     )
 }
 
+/**
+ * Function to create a polygon.
+ * @param {number} stacks - The number of stacks in the polygon.
+ * @param {number} slices - The number of slices in the polygon.
+ * @param {number} radius - The radius of the polygon.
+ * @param {THREE.Color} centerColor - The color of the center of the polygon.
+ * @param {THREE.Color} edgeColor - The color of the edge of the polygon.
+ * @returns {THREE.BufferGeometry} - The created polygon geometry.
+ */
 function createPolygon(stacks, slices, radius, centerColor, edgeColor) {
     const geometry = new THREE.BufferGeometry();
 
@@ -230,21 +261,24 @@ function createPolygon(stacks, slices, radius, centerColor, edgeColor) {
     const init = Number((Math.PI / 2).toFixed(5))
     const end = Number((5 * Math.PI / 2).toFixed(5))
 
+    // For each stack, create a ring of vertices and the colors.
     for (let j = 0; j < stacks; j++) {
         const rad = radius * (j + 1) / stacks
         for (let i = init; i <= end; i += inc) {
             vertices.push(...[Math.cos(i) * rad, Math.sin(i) * rad, 0])
-            const colorR = centerColor.r + ( rad/radius *(edgeColor.r - centerColor.r))
-            const colorG = centerColor.g + ( rad/radius *(edgeColor.g - centerColor.g))
-            const colorB = centerColor.b + ( rad/radius *(edgeColor.b - centerColor.b))
-            const colorA = centerColor.a + ( rad/radius *(edgeColor.a - centerColor.a))
-            colors.push(... [colorR, colorG, colorB, colorA])
+            const colorR = centerColor.r + (rad / radius * (edgeColor.r - centerColor.r))
+            const colorG = centerColor.g + (rad / radius * (edgeColor.g - centerColor.g))
+            const colorB = centerColor.b + (rad / radius * (edgeColor.b - centerColor.b))
+            const colorA = centerColor.a + (rad / radius * (edgeColor.a - centerColor.a))
+            colors.push(...[colorR, colorG, colorB, colorA])
         }
     }
-    
+
+    // For each stack, create the triangles.
     for (let j = 0; j < stacks; j++) {
         for (let i = 1; i <= slices; i++) {
             if (j === 0)
+                // Define the triangles formed by the center and the first stack.
                 indices.push(0, i, i % slices + 1)
             else {
                 const i1 = j * slices + i
@@ -266,6 +300,8 @@ function createPolygon(stacks, slices, radius, centerColor, edgeColor) {
         }
     }
 
+    // Assign normals to each vertex.
+    // The normals are parallel to the z axis due to the polygon being defined within the XY plane.
     const normals = Array.from({length: stacks * slices + 1}, () => [...[0, 0, 1]]).flat()
 
     geometry.setIndex(indices)
@@ -275,13 +311,4 @@ function createPolygon(stacks, slices, radius, centerColor, edgeColor) {
     return geometry
 }
 
-function printIndices(indices) {
-    let str = ""
-    for (let i = 0; i < indices.length; i += 4) {
-        str += indices[i] + " " + indices[i + 1] + " " + indices[i + 2] + " " + indices[i + 3] + "\n"
-    }
-    console.log(str)
-
-}
-
-export {createThreeGeometry, applyTransformation, rgbToHex, createThreeLight, convertFilterThree, loadMipmap};
+export {createThreeGeometry, applyTransformation, createThreeLight, convertFilterThree, loadMipmap};

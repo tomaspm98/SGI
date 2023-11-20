@@ -148,9 +148,9 @@ class MyContents {
         for (let key in data.materials) {
             const material = data.materials[key]
             const newMaterial = new THREE.MeshPhongMaterial({
-                color: Utils.rgbToHex(material.color),
-                specular: Utils.rgbToHex(material.specular),
-                emissive: Utils.rgbToHex(material.emissive),
+                color: material.color,
+                specular: material.specular,
+                emissive: material.emissive,
                 shininess: material.shininess,
                 wireframe: material.wireframe,
                 flatShading: material.shading === "flat",
@@ -172,16 +172,16 @@ class MyContents {
 
     renderBackground(data) {
         if (data.options.type === 'globals') {
-            const ambientLight = new THREE.AmbientLight(Utils.rgbToHex(data.options.ambient))
+            const ambientLight = new THREE.AmbientLight(data.options.ambient)
             this.app.scene.add(ambientLight)
-            this.app.scene.background = new THREE.Color(Utils.rgbToHex(data.options.background))
+            this.app.scene.background = data.options.background
         }
 
     }
 
     renderFog(data) {
         if (data.fog.type === 'fog') {
-            this.app.scene.fog = new THREE.Fog(Utils.rgbToHex(data.fog.color), data.fog.near, data.fog.far)
+            this.app.scene.fog = new THREE.Fog(data.fog.color, data.fog.near, data.fog.far)
         }
     }
 
