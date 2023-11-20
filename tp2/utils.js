@@ -71,7 +71,7 @@ function createThreeGeometry(primitive) {
                 primitive.representations[0].thetalength
             )
         case "nurbs":
-            const length = (primitive.representations[0].degree_u + 1) * (primitive.representations[0].degree_v + 1) / Math.min(primitive.representations[0].degree_u + 1, primitive.representations[0].degree_v + 1)
+            const length = (primitive.representations[0].degree_u + 1) * (primitive.representations[0].degree_v + 1) / Math.max(primitive.representations[0].degree_u + 1, primitive.representations[0].degree_v + 1)
             const controlPoints = []
             for (let i = 0; i < primitive.representations[0].controlpoints.length; i += length) {
                 let row = primitive.representations[0].controlpoints.slice(i, i + length)
