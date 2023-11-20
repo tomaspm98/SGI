@@ -224,7 +224,6 @@ function createPolygon(stacks, slices, radius, centerColor, edgeColor) {
     const vertices = [0, 0, 0]
     const indices = []
     const colors = [centerColor.r, centerColor.g, centerColor.b, centerColor.a]
-    printIndices(colors)
 
     //Rounding values to prevent potential end condition failures caused by floating-point errors.
     const inc = Number((2 * Math.PI / slices).toFixed(5))

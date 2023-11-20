@@ -139,8 +139,6 @@ class MySceneGraph {
 
             if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
                 //do nothing
-            }else if (node.subtype !== undefined && node.subtype === 'polygon'){
-                sceneNode.material = new THREE.MeshBasicMaterial({vertexColors: true, wireframe: false})
             }else if (node.type === 'lod') {
                 for (let i = node.children.length - 1; i >= 0; i--) {
                     stack.push({
@@ -168,7 +166,7 @@ class MySceneGraph {
                 } else if (sceneNode.parent !== undefined) {
                     sceneNode.material = sceneNode.parent.material
                 }
-
+                
                 sceneNode.castShadow = castShadow
                 sceneNode.receiveShadow = receiveShadow
 
@@ -177,6 +175,13 @@ class MySceneGraph {
                     if (sceneNode.material === undefined) {
                         console.warn("WARNING! Primitive ( " + node.subtype + " ) with no material. A default material will be applied.")
                         sceneNode.material = new THREE.MeshBasicMaterial({color: 0x555555})
+                    }
+                    if(node.subtype === 'polygon'){
+                        // Needed to clone the material to be able to enable vertex colors
+                        // and not affect the other primitives that use the same material
+                        const newMaterial = sceneNode.material.clone()
+                        newMaterial.vertexColors = true
+                        sceneNode.material = newMaterial
                     }
                     continue // Primitives don't have children
                 }

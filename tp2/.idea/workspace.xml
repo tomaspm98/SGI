@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="85110545-45ea-4a9a-8b22-bcac45ef9e5e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MySceneGraph.js" beforeDir="false" afterPath="$PROJECT_DIR$/MySceneGraph.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scenes/tennis_court/scene.xml" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/tennis_court/scene.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils.js" afterDir="false" />
     </list>
@@ -53,7 +54,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "true",
-    "git-widget-placeholder": "Merging main",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "/home/daniel/Desktop/SGI/tp2/scenes/spacescene",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -90,7 +91,7 @@
       <workItem from="1700324193395" duration="23123000" />
       <workItem from="1700426126536" duration="7194000" />
       <workItem from="1700469967854" duration="4562000" />
-      <workItem from="1700497425073" duration="1172000" />
+      <workItem from="1700497425073" duration="2609000" />
     </task>
     <servers />
   </component>
