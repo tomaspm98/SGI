@@ -139,7 +139,9 @@ class MySceneGraph {
 
             if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
                 //do nothing
-            } else if (node.type === 'lod') {
+            }else if (node.subtype !== undefined && node.subtype === 'polygon'){
+                sceneNode.material = new THREE.MeshBasicMaterial({vertexColors: true, wireframe: false})
+            }else if (node.type === 'lod') {
                 for (let i = node.children.length - 1; i >= 0; i--) {
                     stack.push({
                         node: node.children[i],
@@ -162,8 +164,6 @@ class MySceneGraph {
                 const receiveShadow = element.receiveShadow || node.receiveShadows
 
                 if (node.materialIds !== undefined && node.materialIds.length > 0) {
-                    //Deep copy of the material so that it can be changed without affecting the original
-                    //sceneNode.material = Object.assign(new THREE.MeshPhongMaterial(), this.materials[node.materialIds[0]])
                     sceneNode.material = this.materials[node.materialIds[0]]
                 } else if (sceneNode.parent !== undefined) {
                     sceneNode.material = sceneNode.parent.material

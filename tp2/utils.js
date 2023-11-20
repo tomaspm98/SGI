@@ -79,7 +79,7 @@ function createThreeGeometry(primitive) {
             }
             return new MyNurbsBuilder().build(controlPoints, primitive.representations[0].degree_u, primitive.representations[0].degree_v, primitive.representations[0].parts_u, primitive.representations[0].parts_v)
         case "polygon":
-            return createPolygon(primitive.representations[0].stacks, primitive.representations[0].slices, primitive.representations[0].radius)
+            return createPolygon(primitive.representations[0].stacks, primitive.representations[0].slices, primitive.representations[0].radius, primitive.representations[0].color_c, primitive.representations[0].color_p)
         case "triangle":
             return new MyTriangle(primitive.representations[0].xyz1, primitive.representations[0].xyz2, primitive.representations[0].xyz3)
         default:
@@ -218,11 +218,13 @@ function loadMipmap(parentTexture, level, path) {
     )
 }
 
-function createPolygon(stacks, slices, radius) {
+function createPolygon(stacks, slices, radius, centerColor, edgeColor) {
     const geometry = new THREE.BufferGeometry();
 
     const vertices = [0, 0, 0]
     const indices = []
+    const colors = [centerColor.r, centerColor.g, centerColor.b, centerColor.a]
+    printIndices(colors)
 
     //Rounding values to prevent potential end condition failures caused by floating-point errors.
     const inc = Number((2 * Math.PI / slices).toFixed(5))
@@ -233,11 +235,14 @@ function createPolygon(stacks, slices, radius) {
         const rad = radius * (j + 1) / stacks
         for (let i = init; i <= end; i += inc) {
             vertices.push(...[Math.cos(i) * rad, Math.sin(i) * rad, 0])
+            const colorR = centerColor.r + ( rad/radius *(edgeColor.r - centerColor.r))
+            const colorG = centerColor.g + ( rad/radius *(edgeColor.g - centerColor.g))
+            const colorB = centerColor.b + ( rad/radius *(edgeColor.b - centerColor.b))
+            const colorA = centerColor.a + ( rad/radius *(edgeColor.a - centerColor.a))
+            colors.push(... [colorR, colorG, colorB, colorA])
         }
     }
-
-    printIndices(vertices)
-
+    
     for (let j = 0; j < stacks; j++) {
         for (let i = 1; i <= slices; i++) {
             if (j === 0)
@@ -267,13 +272,14 @@ function createPolygon(stacks, slices, radius) {
     geometry.setIndex(indices)
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3))
     geometry.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(normals), 3))
+    geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 4))
     return geometry
 }
 
 function printIndices(indices) {
     let str = ""
-    for (let i = 0; i < indices.length; i += 3) {
-        str += indices[i] + " " + indices[i + 1] + " " + indices[i + 2] + "\n"
+    for (let i = 0; i < indices.length; i += 4) {
+        str += indices[i] + " " + indices[i + 1] + " " + indices[i + 2] + " " + indices[i + 3] + "\n"
     }
     console.log(str)
 
