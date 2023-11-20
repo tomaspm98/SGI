@@ -95,7 +95,11 @@ class MyContents {
      * @param {Object} data - The data object containing textures.
      */
     renderTextures(data) {
+        let textureCount = 0
         for (let key in data.textures) {
+            console.log(textureCount)
+            textureCount++
+            
             let texture = data.textures[key]
             let newTexture;
 
