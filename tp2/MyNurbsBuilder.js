@@ -42,7 +42,13 @@ class MyNurbsBuilder {
             }
             stackedPoints.push(newRow);
         }
+        console.log("Stacked:", stackedPoints);
+        console.log("KNOTS1", knots1);
+        console.log("KNOTS2", knots2);
+        console.log("DEGREE 1", degree1);
+        console.log("DEGREE 2", degree2);
         const nurbsSurface = new NURBSSurface(degree1, degree2, knots1, knots2, stackedPoints);
+        console.log("NURBS:", nurbsSurface);
         const geometry = new ParametricGeometry(getSurfacePoint, samples1, samples2);
         return geometry;
 

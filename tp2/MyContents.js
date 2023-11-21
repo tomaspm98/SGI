@@ -24,7 +24,7 @@ class MyContents {
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
         //this.reader.open("scenes/spacescene/scene.xml");
-        this.reader.open("scenes/t04g09/scene.xml")
+        this.reader.open("scenes/SGI_TP2_XML_T02_G07_v02/scene.xml")
     }
 
     /**
