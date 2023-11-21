@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import {MyAxis} from './MyAxis.js';
-import {MyFileReader} from './parser/MyFileReader.js';
-import {MySceneGraph} from "./MySceneGraph.js";
+import { MyAxis } from './MyAxis.js';
+import { MyFileReader } from './parser/MyFileReader.js';
+import { MySceneGraph } from "./MySceneGraph.js";
 import * as Utils from "./utils.js";
 
 /**
@@ -166,7 +166,7 @@ class MyContents {
         }
     }
 
-    renderBackground(data) {               
+    renderBackground(data) {
         if (data.options.type === 'globals') {
             const ambientLight = new THREE.AmbientLight(data.options.ambient)
             this.app.scene.add(ambientLight)
@@ -191,22 +191,17 @@ class MyContents {
     renderCameras(data) {
         for (let key in data.cameras) {
             let camera = data.cameras[key];
-            let threeCamera, target;
             if (camera.type === 'orthogonal') {
-                threeCamera = new THREE.OrthographicCamera(camera.left, camera.right, camera.top, camera.bottom, camera.near, camera.far);
+                this.cameras_map.set(camera.id, new THREE.OrthographicCamera(camera.left, camera.right, camera.top, camera.bottom, camera.near, camera.far))
             } else if (camera.type === 'perspective') {
-                threeCamera = new THREE.PerspectiveCamera(camera.angle, 1, camera.near, camera.far);
+                this.cameras_map.set(camera.id, new THREE.PerspectiveCamera(camera.angle, window, camera.near, camera.far))
             }
-            if (threeCamera) {
-                threeCamera.position.set(...camera.location);
-                target = new THREE.Vector3(...camera.target);
-                threeCamera.lookAt(target);
-                this.cameras_map.set(camera.id, { camera: threeCamera, target: target });
-            }
+            this.cameras_map.get(camera.id).position.set(...camera.location)
+            this.cameras_map.get(camera.id).lookAt(...camera.target)
         }
         this.activeCamera = data.activeCameraId;
     }
-    
+
 
     /**
      * Function to update the scene. Currently empty, but can be filled with logic to update the scene every frame.
@@ -241,4 +236,4 @@ class MyContents {
 
 }
 
-export {MyContents};
+export { MyContents };

@@ -8,7 +8,7 @@ import Stats from 'three/addons/libs/stats.module.js'
 /**
  * This class contains the application object
  */
-class MyApp  {
+class MyApp {
     /**
      * the constructor
      */
@@ -38,7 +38,7 @@ class MyApp  {
     init() {
         // Create an empty scene
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color( 0x101010 );
+        this.scene.background = new THREE.Color(0x101010);
 
         this.stats = new Stats()
         this.stats.showPanel(1) // 0: fps, 1: ms, 2: mb, 3+: custom
@@ -48,29 +48,21 @@ class MyApp  {
         this.setActiveCamera('Perspective')
 
         // Create a renderer with Antialiasing
-        this.renderer = new THREE.WebGLRenderer({antialias:true});
-        this.renderer.setPixelRatio( window.devicePixelRatio );
+        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setClearColor("#000000");
         this.renderer.shadowMap.enabled = true
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
         // Configure renderer size
-        this.renderer.setSize( window.innerWidth, window.innerHeight );
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
 
         // Append Renderer to DOM
-        document.getElementById("canvas").appendChild( this.renderer.domElement );
+        document.getElementById("canvas").appendChild(this.renderer.domElement);
 
         // manage window resizes
-        window.addEventListener('resize', this.onResize.bind(this), false );
+        window.addEventListener('resize', this.onResize.bind(this), false);
 
-        this.contents = new MyContents(this);
-
-        //this.myContents = new MyContents();
-        //console.log("TESTE")
-        //console.log(myContents.cameras_map)
-
-        
-        
     }
 
     /**
@@ -80,8 +72,8 @@ class MyApp  {
         const aspect = window.innerWidth / window.innerHeight;
 
         // Create a basic perspective camera
-        const perspective1 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        perspective1.position.set(10,10,3)
+        const perspective1 = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)
+        perspective1.position.set(10, 10, 3)
         this.cameras['Perspective'] = perspective1
 
 
@@ -91,7 +83,7 @@ class MyApp  {
      * sets the active camera by name
      * @param {String} cameraName 
      */
-    setActiveCamera(cameraName) {   
+    setActiveCamera(cameraName) {
         this.activeCameraName = cameraName
         this.activeCamera = this.cameras[this.activeCameraName]
     }
@@ -105,31 +97,27 @@ class MyApp  {
     updateCameraIfRequired() {
         if (this.lastCameraName !== this.activeCameraName) {
             this.lastCameraName = this.activeCameraName;
-            const cameraData = this.contents.cameras_map.get(this.activeCameraName);
-            
-            if (cameraData) {
-                this.activeCamera = cameraData.camera;
-                document.getElementById("camera").innerHTML = this.activeCameraName;
-                
-                // Update OrbitControls
-                if (!this.controls) {
-                    this.controls = new OrbitControls(this.activeCamera, this.renderer.domElement);
-                } else {
-                    this.controls.object = this.activeCamera;
-                }
-                
-                if (cameraData.target) {
-                    this.controls.target.copy(cameraData.target);
-                }
+            this.activeCamera = this.cameras[this.activeCameraName]
+            document.getElementById("camera").innerHTML = this.activeCameraName
+
+            // call on resize to update the camera aspect ratio
+            // among other things
+            this.onResize()
+
+            // are the controls yet?
+            if (this.controls === null) {
+                // Orbit controls allow the camera to orbit around a target.
+                this.controls = new OrbitControls(this.activeCamera, this.renderer.domElement);
+                this.controls.enableZoom = true;
                 this.controls.update();
-    
-                // call on resize to update the camera aspect ratio
-                this.onResize();
+            }
+            else {
+                this.controls.object = this.activeCamera
             }
         }
     }
-    
-    
+
+
 
     /**
      * the window resize handler
@@ -138,7 +126,7 @@ class MyApp  {
         if (this.activeCamera !== undefined && this.activeCamera !== null) {
             this.activeCamera.aspect = window.innerWidth / window.innerHeight;
             this.activeCamera.updateProjectionMatrix();
-            this.renderer.setSize( window.innerWidth, window.innerHeight );
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
         }
     }
     /**
@@ -152,14 +140,14 @@ class MyApp  {
     /**
      * @param {MyGuiInterface} contents the gui interface object
      */
-    setGui(gui) {   
+    setGui(gui) {
         this.gui = gui
     }
 
     /**
     * the main render function. Called in a requestAnimationFrame loop
     */
-    render () {
+    render() {
         this.stats.begin()
         this.updateCameraIfRequired()
 
@@ -175,14 +163,14 @@ class MyApp  {
         this.renderer.render(this.scene, this.activeCamera);
 
         // subsequent async calls to the render loop
-        requestAnimationFrame( this.render.bind(this) );
+        requestAnimationFrame(this.render.bind(this));
 
         this.lastCameraName = this.activeCameraName
         this.stats.end()
     }
-    
-    updateGui(){
-        for(const [key, value] of this.contents.cameras_map)
+
+    updateGui() {
+        for (const [key, value] of this.contents.cameras_map)
             this.cameras[key] = value
         this.setActiveCamera(this.contents.activeCamera)
         this.gui.init()
