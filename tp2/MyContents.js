@@ -23,7 +23,6 @@ class MyContents {
         this.videoTextureCount = 0
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-        //this.reader.open("scenes/spacescene/scene.xml");
         this.reader.open("scenes/SGI_TP2_XML_T02_G07_v02/scene.xml")
     }
 
@@ -155,12 +154,18 @@ class MyContents {
                 specularMap: this.textures[material.specularref] !== undefined ? this.textures[material.specularref] : null,
             })
 
-            if (material.texlength_s !== undefined && material.texlength_t !== undefined && material.texlength_s !== 1 && material.texlength_t !== 1 && this.textures[material.textureref] !== undefined) {
+            if (newMaterial.map) {
                 newMaterial.map.repeat.set(material.texlength_s, material.texlength_t)
                 newMaterial.map.wrapS = THREE.RepeatWrapping
                 newMaterial.map.wrapT = THREE.RepeatWrapping
-                
             }
+
+            if (newMaterial.bumpMap) {
+                newMaterial.bumpMap.repeat.set(material.texlength_s, material.texlength_t)
+                newMaterial.bumpMap.wrapS = THREE.RepeatWrapping
+                newMaterial.bumpMap.wrapT = THREE.RepeatWrapping
+            }
+
 
             newMaterial.name = material.id
             this.materials[key] = newMaterial

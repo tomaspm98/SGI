@@ -1,8 +1,8 @@
 # [TP2 - Graph Scene](tp2)
 
-![Alt text](docs/images/tp2_1.png)
-![Alt text](docs/images/tp2_2.png)
-![Alt text](docs/images/tp2_3.png)
+![Alt text](../docs/images/tp2_1.png)
+![Alt text](../docs/images/tp2_2.png)
+![Alt text](../docs/images/tp2_3.png)
 
 ## Description
 
