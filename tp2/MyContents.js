@@ -23,8 +23,8 @@ class MyContents {
         this.videoTextureCount = 0
 
         this.reader = new MyFileReader(app, this, this.onSceneLoaded);
-        this.reader.open("scenes/t04g09/scene.xml");
-
+        //this.reader.open("scenes/spacescene/scene.xml");
+        this.reader.open("scenes/t04g09/scene.xml")
     }
 
     /**
@@ -156,9 +156,10 @@ class MyContents {
             })
 
             if (material.texlength_s !== undefined && material.texlength_t !== undefined && material.texlength_s !== 1 && material.texlength_t !== 1 && this.textures[material.textureref] !== undefined) {
-                this.textures[material.textureref].repeat.set(material.texlength_s, material.texlength_t)
-                this.textures[material.textureref].wrapS = THREE.MirroredRepeatWrapping
-                this.textures[material.textureref].wrapT = THREE.MirroredRepeatWrapping
+                newMaterial.map.repeat.set(material.texlength_s, material.texlength_t)
+                newMaterial.map.wrapS = THREE.RepeatWrapping
+                newMaterial.map.wrapT = THREE.RepeatWrapping
+                
             }
 
             newMaterial.name = material.id
