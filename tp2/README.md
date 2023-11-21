@@ -1,60 +1,30 @@
-# sgi-tp2-base
-The starting point of the second assignment of SGI.
+# [TP2 - Graph Scene](tp2)
 
+![Alt text](docs/images/tp2_1.png)
+![Alt text](docs/images/tp2_2.png)
+![Alt text](docs/images/tp2_3.png)
 
-# Getting started
+## Description
 
-Considering a code block (for instance class A.js), to load an xml file (in the defined structure) call:
+The scene developed in YASF mimics a tennis court. It includes two chairs for the players and one larger chair for the referee, four seating stands, a tennis net, a tennis ball, etc.
+The work meets all the requirements of the project:
+- LODs: the chairs for the players have two levels of detail and the seating stands have three levels of detail.
+- Skybox: the scene has a skybox with the texture of a sky.
+- Mipmapping: the textures of the ATP logo have mipmaps.
+- Bump mapping: the texture of the tennis ball and the court field have bump mapping.
+- Video texture: there is a giant screen that shows a video ad of the ATP.
+- Wireframe: the user can change the polygonal mode (default, fill, wireframe) in the interface 2D.
+- Buffer Geometry: at one level of detail, the seating stands are made with Buffer Geometry.
+- Interface 2D: Besides the polygonal mode, the user can also change the camera, the light, and the shadow mode and reset the scene.
 
-    let reader = new MyFileReader(app, this, *this.onSceneLoaded*);
-    reader.open("<path to xml file>");	
+## Important aspects of the developed code
+An iterative depth-first search (DFS) was implemented to traverse the scene graph, providing more efficiency compared to the recursive DFS approach. The creation process of the scene graph was divided into two phases:
 
-The last argument in the MyFileReader object call is the name of the method that is to be called when the xml file is loaded and parsed.
+Firstly, establishing the scene graph with solely meshes and transformations.
+Subsequently, incorporating material and other attributes inherited.
 
-Hence, In the same code block (for instance class A.js) add a function method with the following signature: 
+This approach allows for the utilization of cloning in nodes that share the same meshes but differ in their assigned materials.
 
-    onSceneLoaded(data) {
-        // do something with the data object
-    }
+## Issues
 
-This method is called once the xml file is loaded and parsed successfully. This method single input argument, *data*, is an object containing the entire scene data object. This document can be traversed according to the rules defined in the section on MySceneData class
-
-
-
-# MyFileServer
-File MyFileServer.js contains the class responsible for the XML parser general functionality. Most of the parsing process is derived from descriptors defined in MySceneData.js. A small part is hardcoded.
-
-> <span style="color: red;">**DO NOT CHANGE MyFileServer.js FILE. IT WILL BE MODIFIED OR REPLACED DURING EVALUATION**</span>
-
-# MySceneData
-File MySceneData.js contains a class with metadata description and, in the end of parsing, contains the full set of objects loaded from the xml scene file. This class has several important object attributes:
-- options: contains the scene options, from the globals section
-- fog: contains the scene fog options, from the fog section
-- materials: associative array/list with the scene described materials
-- textures: associative array/list with the scene described textures
-- cameras: associative array/list with all the cameras in the scene
-- activeCameraId: the id of the active camera
-- nodes: associative array/list with all the scene nodes.
-- rootId: the id of the root node
-
-NOTES: 
-1. for each entity type, there are no repeated ids. For instance, if there are two nodes with the same id, the parser will complain and the scene will not be loaded.
-2. For each loaded entity, the parser will check if all the required attributes are present. If not, the parser will complain and the scene will not be loaded.
-3. For each entity, a descriptor defined in the constructor defines the attribute's name, type, requiredness, default value.
-4. **DO NOT CHANGE MySceneData.js IT WILL BE MODIFIED OR REPLACED DURING EVALUATION**
-
-## Custom attributes
-Use  the custom attribute in the data objects to add further attributes:
-
-
-    let obj = {
-        id: "some id",
-        type: "some type",
-        custom: {
-            attr1: "value1",
-            attr2: "value2"
-        } 
-    }
-
-in the previous object, attr1 and attr2 are custom attributes that were added to the object by the programmer (student), in light its program specific needs.
-
+Converting a recursive DFS to an iterative DFS.
