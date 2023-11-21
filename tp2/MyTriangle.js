@@ -22,8 +22,6 @@ class MyTriangle extends THREE.BufferGeometry {
 
 	initBuffers() {
 
-		console.log(this.xyz1[0])
-
         //CALCULATING NORMALS 
         var vectorAx = this.xyz2.x - this.xyz1.x
 		var vectorAy = this.xyz2.y - this.xyz1.y

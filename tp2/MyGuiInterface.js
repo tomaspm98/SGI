@@ -96,7 +96,7 @@ class MyGuiInterface {
                     lightControllers[light.name].visible.setValue(light.enabled)
                     lightControllers[light.name].shadow.setValue(light.castShadow)
                     lightControllers[light.name].color.setValue(light.color)
-                    lightControllers[light.name].itensity.setValue(light.intensity)
+                    lightControllers[light.name].intensity.setValue(light.intensity)
                 }
             }
         }, 'Reset')

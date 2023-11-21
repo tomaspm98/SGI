@@ -75,8 +75,6 @@ class MyApp {
         const perspective1 = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)
         perspective1.position.set(10, 10, 3)
         this.cameras['Perspective'] = perspective1
-
-
     }
 
     /**
@@ -107,6 +105,7 @@ class MyApp {
             // are the controls yet?
             if (this.controls === null) {
                 // Orbit controls allow the camera to orbit around a target.
+                console.log(this.renderer.domElement)
                 this.controls = new OrbitControls(this.activeCamera, this.renderer.domElement);
                 this.controls.enableZoom = true;
                 this.controls.update();
