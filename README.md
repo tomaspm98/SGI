@@ -62,7 +62,7 @@ The [scene](tp1/MyContents.js) aims to mimic a living room where objects are cen
 
 The scene developed in YASF mimics a tennis court. It includes two chairs for the players and one larger chair for the referee, four seating stands, a tennis net, a tennis ball, etc.
 The work meets all the requirements of the project:
-- LODs: the chairs for the players have two levels of detail and the seating stands have three levels of detail.
+- LODs: the chairs for the players have three levels of detail and so the seating stands.
 - Skybox: the scene has a skybox with the texture of a sky.
 - Mipmapping: the textures of the ATP logo have mipmaps.
 - Bump mapping: the texture of the tennis ball and the court field have bump mapping.
