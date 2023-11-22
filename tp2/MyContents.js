@@ -100,14 +100,10 @@ class MyContents {
 
             if (texture.isVideo) {
                 const videoId = `video${this.videoTextureCount++}`
-
                 // Add a video tag to the HTML document
-                this.addVideoTagToHTML(texture.filepath, videoId);
-
-                // Get the video element and create a new THREE.VideoTexture
-                const video = document.getElementById(videoId)
+                const video = this.createVideoElement(texture.filepath, videoId);
+                
                 newTexture = new THREE.VideoTexture(video)
-                newTexture.needsUpdate = true
             } else {
                 newTexture = new THREE.TextureLoader().load(texture.filepath)
             }
@@ -223,7 +219,7 @@ class MyContents {
      * @param {string} videoPath - The path to the video file.
      * @param {string} videoId - The id to give to the video element.
      */
-    addVideoTagToHTML(videoPath, videoId) {
+    createVideoElement(videoPath, videoId) {
         // Create a video element
         const video = document.createElement('video');
         video.id = videoId;
@@ -236,9 +232,8 @@ class MyContents {
         video.height = 360;
         video.preload = 'auto';
         video.src = videoPath;
-
-        // Append video to the document body
-        document.body.appendChild(video);
+        
+        return video;
     }
 
 
