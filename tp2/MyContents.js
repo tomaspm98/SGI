@@ -56,7 +56,7 @@ class MyContents {
         this.renderFog(data)
         this.renderSkybox(data)
 
-        this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials, this.textures)
+        this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials, data['materials'])
 
         //Add the scene graph to the scene
         this.sceneGraph.constructSceneGraph()
@@ -64,6 +64,7 @@ class MyContents {
 
         //Save the references to the lights that will be used in the Guiinterface
         this.lights = this.sceneGraph.getLightMap();
+        console.log(this.materials)
     }
 
     /**
@@ -149,22 +150,6 @@ class MyContents {
                 bumpScale: material.bumpscale,
                 specularMap: this.textures[material.specularref] !== undefined ? this.textures[material.specularref] : null,
             })
-
-            if (newMaterial.map && material.texlength_s !== 1 && material.texlength_t !== 1) {
-                newMaterial.map = newMaterial.map.clone()
-                newMaterial.map.repeat.set(material.texlength_s, material.texlength_t)
-                newMaterial.map.wrapS = THREE.RepeatWrapping
-                newMaterial.map.wrapT = THREE.RepeatWrapping
-            }
-
-            if (newMaterial.bumpMap && material.texlength_s !== 1 && material.texlength_t !== 1) {
-                newMaterial.bumpMap = newMaterial.bumpMap.clone()
-                newMaterial.bumpMap.repeat.set(material.texlength_s, material.texlength_t)
-                newMaterial.bumpMap.wrapS = THREE.RepeatWrapping
-                newMaterial.bumpMap.wrapT = THREE.RepeatWrapping
-            }
-
-
             newMaterial.name = material.id
             this.materials[key] = newMaterial
         }

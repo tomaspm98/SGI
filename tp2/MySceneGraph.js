@@ -11,14 +11,14 @@ class MySceneGraph {
      * @param {Object} nodes - Nodes in the YSF scene.
      * @param {string} root_id - Root ID of the scene.
      * @param {Object} materials - Materials used in the scene.
-     * @param {Object} textures - Textures used in the scene.
+     * @param {Object} materialsDecl - Materials declaration in the XML file.
      */
-    constructor(nodes, root_id, materials, textures) {
+    constructor(nodes, root_id, materials, materialsDecl) {
         this.graph = null;
         this.nodes = nodes;
         this.root_id = root_id;
         this.materials = materials;
-        this.textures = textures;
+        this.materialsDecl = materialsDecl;
         this.lightsMap = new Map();
         this.getWireframeValues();
     }
@@ -126,10 +126,10 @@ class MySceneGraph {
             if (node.type === 'primitive') {
                 parent.add(new THREE.Mesh(Utils.createThreeGeometry(node)));
             } else if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
-                    const light = Utils.createThreeLight(node)
-                    light.name = node.id
-                    parent.add(light)
-                    this.lightsMap.set(node.id, light)
+                const light = Utils.createThreeLight(node)
+                light.name = node.id
+                parent.add(light)
+                this.lightsMap.set(node.id, light)
             } else if (visited.hasOwnProperty(node.id + node.type)) {
                 const objCloned = visited[node.id + node.type].clone();
                 objCloned["isCloned"] = true;
@@ -234,6 +234,10 @@ class MySceneGraph {
                         sceneNode.material = newMaterial;
                         // To be able to change the wireframe mode
                         this.materials[newMaterial.name + "vertexColors"] = newMaterial;
+                    } else if (node.subtype === 'rectangle' && sceneNode.material.map &&
+                        (this.materialsDecl[sceneNode.material.name].texlength_s !== 1 &&
+                            this.materialsDecl[sceneNode.material.name].texlength_t !== 1)) {
+                        this.applyTextLength(node, sceneNode)
                     }
                     continue; // Primitives don't have children
                 }
@@ -249,6 +253,48 @@ class MySceneGraph {
             }
         }
     }
+
+    applyTextLength(node, sceneNode) {
+        
+        const point1 = node.representations[0]["xy1"];
+        const point2 = node.representations[0]["xy2"];
+        const width = point2[0] - point1[0]
+        const height = point2[1] - point1[1]
+
+        const textlength_s = this.materialsDecl[sceneNode.material.name].texlength_s
+        const textlength_t = this.materialsDecl[sceneNode.material.name].texlength_t
+        const nameMaterial = sceneNode.material.name + textlength_t + textlength_s
+        
+        if(this.materials.hasOwnProperty(nameMaterial)){
+            sceneNode.material = this.materials[nameMaterial]
+            return
+        }
+        
+        const newMaterial = sceneNode.material.clone();
+        newMaterial.map = sceneNode.material.map.clone()
+        newMaterial.map.repeat.set(width / textlength_s, height / textlength_t)
+        newMaterial.map.wrapS = THREE.RepeatWrapping
+        newMaterial.map.wrapT = THREE.RepeatWrapping
+
+        if (newMaterial.bumpMap) {
+            newMaterial.bumpMap = sceneNode.material.bumpMap.clone()
+            newMaterial.bumpMap.repeat.set(width / textlength_s, height / textlength_t)
+            newMaterial.bumpMap.wrapS = THREE.RepeatWrapping
+            newMaterial.bumpMap.wrapT = THREE.RepeatWrapping
+        }
+
+        if (newMaterial.specularMap) {
+            newMaterial.specularMap = sceneNode.material.specularMap.clone()
+            newMaterial.specularMap.repeat.set(width / textlength_s, height / textlength_t)
+            newMaterial.specularMap.wrapS = THREE.RepeatWrapping
+            newMaterial.specularMap.wrapT = THREE.RepeatWrapping
+        }
+
+        newMaterial.name = nameMaterial
+        sceneNode.material = newMaterial
+        this.materials[nameMaterial] = newMaterial
+    }
+
 }
 
 export {MySceneGraph};
