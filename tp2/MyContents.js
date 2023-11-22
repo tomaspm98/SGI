@@ -154,13 +154,15 @@ class MyContents {
                 specularMap: this.textures[material.specularref] !== undefined ? this.textures[material.specularref] : null,
             })
 
-            if (newMaterial.map) {
+            if (newMaterial.map && material.texlength_s !== 1 && material.texlength_t !== 1) {
+                newMaterial.map = newMaterial.map.clone()
                 newMaterial.map.repeat.set(material.texlength_s, material.texlength_t)
                 newMaterial.map.wrapS = THREE.RepeatWrapping
                 newMaterial.map.wrapT = THREE.RepeatWrapping
             }
 
-            if (newMaterial.bumpMap) {
+            if (newMaterial.bumpMap && material.texlength_s !== 1 && material.texlength_t !== 1) {
+                newMaterial.bumpMap = newMaterial.bumpMap.clone()
                 newMaterial.bumpMap.repeat.set(material.texlength_s, material.texlength_t)
                 newMaterial.bumpMap.wrapS = THREE.RepeatWrapping
                 newMaterial.bumpMap.wrapT = THREE.RepeatWrapping
