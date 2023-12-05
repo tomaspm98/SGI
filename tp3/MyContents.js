@@ -62,6 +62,8 @@ class MyContents {
     this.app.scene.add(ambientLight);
 
     //this.buildCurve();
+    this.car = new MyVehicle();
+    console.log(this.car)
     this.app.scene.add(this.buildVehicle());
 
   }
@@ -75,10 +77,12 @@ class MyContents {
   }
 
   buildVehicle(){
-    let car = new MyVehicle().build(this.carMaterial,3,2);
+    this.carMesh = this.car.build(this.carMaterial,3,2);
     //car.update();
-    console.log(car)
-    return car;
+    console.log(this.carMesh)
+    console.log("POS",this.car.x,this.car.y,this.car.z)
+    console.log("ROT",this.car.rotationX,this.car.rotationY,this.car.rotationZ)
+    return this.carMesh;
   }
 
   /**
@@ -191,7 +195,9 @@ class MyContents {
    * updates the contents
    * this method is called from the render method of the app
    */
-  update() {}
+  update() {
+      this.car.update();
+  }
 }
 
 export { MyContents };

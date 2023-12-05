@@ -1,8 +1,8 @@
-
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { MyContents } from './MyContents.js';
 import { MyGuiInterface } from './MyGuiInterface.js';
+import { MyVehicle } from "./vehicle/MyVehicle.js";
 import Stats from 'three/addons/libs/stats.module.js'
 
 /**
@@ -29,6 +29,7 @@ class MyApp  {
         this.gui = null
         this.axis = null
         this.contents == null
+        this.vehicle = null
     }
     /**
      * initializes the application
@@ -59,6 +60,8 @@ class MyApp  {
 
         // manage window resizes
         window.addEventListener('resize', this.onResize.bind(this), false );
+
+        //this.vehicle.controlCar();
     }
 
     /**
@@ -138,6 +141,10 @@ class MyApp  {
         this.gui = gui
     }
 
+    /*setVehicle(vehicle) {
+        this.vehicle = vehicle;
+    }*/
+
     /**
     * the main render function. Called in a requestAnimationFrame loop
     */
@@ -149,6 +156,10 @@ class MyApp  {
         if (this.activeCamera !== undefined && this.activeCamera !== null) {
             this.contents.update()
         }
+
+        /*if (this.vehicle) {
+            this.vehicle.update();
+        }*/
 
         // required if controls.enableDamping or controls.autoRotate are set to true
         this.controls.update();
