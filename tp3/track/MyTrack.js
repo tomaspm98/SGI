@@ -21,12 +21,15 @@ class MyTrack {
     draw() {
         const trackGroup = new THREE.Group()
 
-        const points = []
+        let points = []
         for (const [x, _, z] of this.pointsTrack) {
-            vectors.push(new THREE.Vector3(x, _, z))
+            points.push(new THREE.Vector3(x, _, z))
         }
-        const path = new THREE.CatmullRomCurve3()
-
+        const path = new THREE.CatmullRomCurve3(points)
+        points = path.getPoints(500)
+        const bGeometry = new THREE.BufferGeometry().setFromPoints(points)
+        const line = new THREE.Line(bGeometry)
+        trackGroup.add(line)
 
         this.scene.add(trackGroup)
     }
