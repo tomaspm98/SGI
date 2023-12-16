@@ -79,6 +79,10 @@ class MyContents {
 
     }
 
+    get vehicle(){
+        return this.car;
+    }
+
     async test() {
         const trackData = await readTrackJSON('scene/f1-circuits/ae-2009.geojson');
         const myTrack = new MyTrack(null, trackData, 10000);
