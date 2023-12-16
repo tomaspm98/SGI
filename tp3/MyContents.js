@@ -1,8 +1,8 @@
 import * as THREE from "three";
-import {MyAxis} from "./MyAxis.js";
-import {MyVehicle} from "./vehicle/MyVehicle.js";
-import {MyTrack} from './track/MyTrack.js';
-import {readTrackJSON} from './track/MyTrackReader.js';
+import { MyAxis } from "./MyAxis.js";
+import { MyVehicle } from "./vehicle/MyVehicle.js";
+import { MyTrack } from './track/MyTrack.js';
+import { readTrackJSON } from './track/MyTrackReader.js';
 
 
 /**
@@ -66,122 +66,13 @@ class MyContents {
         this.app.scene.add(ambientLight);
 
         this.test()
-
-      //this.buildCurve();
-      this.car = new MyVehicle();
-      console.log(this.car)
-      this.car.build(this.app.scene).then(carMesh => {
-        // Now the car is loaded, you can work with carMesh here
-        console.log(carMesh);
-    }).catch(error => {
-        console.error("Failed to load car:", error);
-    });
-
     }
 
     async test() {
         const trackData = await readTrackJSON('scene/f1-circuits/ae-2009.geojson');
-        const myTrack = new MyTrack(null, trackData, 10000);
-        this.app.scene.add(myTrack.draw())
-    // add a point light on top of the model
-    const pointLight = new THREE.PointLight(0xffffff, 500, 0);
-    pointLight.position.set(0, 20, 0);
-    this.app.scene.add(pointLight);
-
-    // add a point light helper for the previous point light
-    const sphereSize = 0.5;
-    const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
-    this.app.scene.add(pointLightHelper);
-
-    // add an ambient light
-    const ambientLight = new THREE.AmbientLight(0x555555);
-    this.app.scene.add(ambientLight);
-
-
-  }
-
-  /**
-   * Creates the necessary elements for the curve
-   */
-  buildCurve() {
-    this.createCurveMaterialsTextures();
-    this.createCurveObjects();
-  }
-
-    buildVehicle() {
-        this.carMesh = this.car.build(this.carMaterial, 3, 2);
-        //car.update();
-        console.log(this.carMesh)
-        console.log("POS", this.car.x, this.car.y, this.car.z)
-        console.log("ROT", this.car.rotationX, this.car.rotationY, this.car.rotationZ)
-        return this.carMesh;
+        const myTrack = new MyTrack(this.app.scene, trackData, 10000);
+        myTrack.draw();
     }
-
-  /**
-   * Create materials for the curve elements: the mesh, the line and the wireframe
-   */
-  createCurveMaterialsTextures() {
-    const texture = new THREE.TextureLoader().load("./images/uvmapping.jpg");
-    texture.wrapS = THREE.RepeatWrapping;
-
-    this.material = new THREE.MeshBasicMaterial({ map: texture });
-    this.material.map.repeat.set(3, 3);
-    this.material.map.wrapS = THREE.RepeatWrapping;
-    this.material.map.wrapT = THREE.RepeatWrapping;
-
-    this.wireframeMaterial = new THREE.MeshBasicMaterial({
-      color: 0x0000ff,
-      opacity: 0.3,
-      wireframe: true,
-      transparent: true,
-    });
-
-    this.lineMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
-  }
-
-  /**
-   * Creates the mesh, the line and the wireframe used to visualize the curve
-   */
-  createCurveObjects() {
-    let geometry = new THREE.TubeGeometry(
-      this.path,
-      this.segments,
-      this.width,
-      3,
-      this.closedCurve
-    );
-    this.mesh = new THREE.Mesh(geometry, this.material);
-    this.wireframe = new THREE.Mesh(geometry, this.wireframeMaterial);
-
-    let points = this.path.getPoints(this.segments);
-    let bGeometry = new THREE.BufferGeometry().setFromPoints(points);
-
-    // Create the final object to add to the scene
-    this.line = new THREE.Line(bGeometry, this.lineMaterial);
-
-    this.curve = new THREE.Group();
-
-    this.mesh.visible = this.showMesh;
-    this.wireframe.visible = this.showWireframe;
-    this.line.visible = this.showLine;
-
-    this.curve.add(this.mesh);
-    this.curve.add(this.wireframe);
-    this.curve.add(this.line);
-
-    this.curve.rotateZ(Math.PI);
-    this.curve.scale.set(1,0.2,1);
-    this.app.scene.add(this.curve);
-  }
-
-  /**
-   * Called when user changes number of segments in UI. Recreates the curve's objects accordingly.
-   */
-  updateCurve() {
-    if (this.curve !== undefined && this.curve !== null) {
-      this.app.scene.remove(this.curve);
-    }
-  }
 
     /**
      * Creates the necessary elements for the curve
@@ -207,7 +98,7 @@ class MyContents {
         const texture = new THREE.TextureLoader().load("./images/uvmapping.jpg");
         texture.wrapS = THREE.RepeatWrapping;
 
-        this.material = new THREE.MeshBasicMaterial({map: texture});
+        this.material = new THREE.MeshBasicMaterial({ map: texture });
         this.material.map.repeat.set(3, 3);
         this.material.map.wrapS = THREE.RepeatWrapping;
         this.material.map.wrapT = THREE.RepeatWrapping;
@@ -219,7 +110,90 @@ class MyContents {
             transparent: true,
         });
 
-        this.lineMaterial = new THREE.LineBasicMaterial({color: 0xff0000});
+        this.lineMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
+    }
+
+    /**
+     * Creates the mesh, the line and the wireframe used to visualize the curve
+     */
+    createCurveObjects() {
+        let geometry = new THREE.TubeGeometry(
+            this.path,
+            this.segments,
+            this.width,
+            3,
+            this.closedCurve
+        );
+        this.mesh = new THREE.Mesh(geometry, this.material);
+        this.wireframe = new THREE.Mesh(geometry, this.wireframeMaterial);
+
+        let points = this.path.getPoints(this.segments);
+        let bGeometry = new THREE.BufferGeometry().setFromPoints(points);
+
+        // Create the final object to add to the scene
+        this.line = new THREE.Line(bGeometry, this.lineMaterial);
+
+        this.curve = new THREE.Group();
+
+        this.mesh.visible = this.showMesh;
+        this.wireframe.visible = this.showWireframe;
+        this.line.visible = this.showLine;
+
+        this.curve.add(this.mesh);
+        this.curve.add(this.wireframe);
+        this.curve.add(this.line);
+
+        this.curve.rotateZ(Math.PI);
+        this.curve.scale.set(1, 0.2, 1);
+        this.app.scene.add(this.curve);
+    }
+
+    /**
+     * Called when user changes number of segments in UI. Recreates the curve's objects accordingly.
+     */
+    updateCurve() {
+        if (this.curve !== undefined && this.curve !== null) {
+            this.app.scene.remove(this.curve);
+        }
+    }
+
+    /**
+     * Creates the necessary elements for the curve
+     */
+    buildCurve() {
+        this.createCurveMaterialsTextures();
+        this.createCurveObjects();
+    }
+
+    buildVehicle() {
+        this.carMesh = this.car.build(this.carMaterial, 3, 2);
+        //car.update();
+        console.log(this.carMesh)
+        console.log("POS", this.car.x, this.car.y, this.car.z)
+        console.log("ROT", this.car.rotationX, this.car.rotationY, this.car.rotationZ)
+        return this.carMesh;
+    }
+
+    /**
+     * Create materials for the curve elements: the mesh, the line and the wireframe
+     */
+    createCurveMaterialsTextures() {
+        const texture = new THREE.TextureLoader().load("./images/uvmapping.jpg");
+        texture.wrapS = THREE.RepeatWrapping;
+
+        this.material = new THREE.MeshBasicMaterial({ map: texture });
+        this.material.map.repeat.set(3, 3);
+        this.material.map.wrapS = THREE.RepeatWrapping;
+        this.material.map.wrapT = THREE.RepeatWrapping;
+
+        this.wireframeMaterial = new THREE.MeshBasicMaterial({
+            color: 0x0000ff,
+            opacity: 0.3,
+            wireframe: true,
+            transparent: true,
+        });
+
+        this.lineMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
     }
 
     /**
@@ -311,8 +285,7 @@ class MyContents {
      * this method is called from the render method of the app
      */
     update() {
-        this.car.update();
     }
 }
 
-export {MyContents};
+export { MyContents };

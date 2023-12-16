@@ -11,22 +11,22 @@ class MyTrack {
         const pointsNormalized = [];
         const origin = points[0];
         for (let i = 0; i < points.length; i++) {
-            const x = (points[i][0] - origin[0]) * size;
-            const y = (points[i][1] - origin[1]) * size;
-            pointsNormalized.push([x, y, 0]);
+            const x = (points[i][1] - origin[1]) * size;
+            const z = (points[i][0] - origin[0]) * size;
+            pointsNormalized.push([x, 0, z]);
         }
         return pointsNormalized;
     }
 
     draw() {
         const trackGroup = new THREE.Group()
-        for (const [x, y] of this.pointsTrack) {
+        for (const [x, _, z] of this.pointsTrack) {
             const mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 1))
-            
-            trackGroup.add()
+            mesh.position.set(x, 0, z)
+            trackGroup.add(mesh)
         }
-        return trackGroup
+        this.scene.add(trackGroup)
     }
 }
 
-export {MyTrack};
+export { MyTrack };
