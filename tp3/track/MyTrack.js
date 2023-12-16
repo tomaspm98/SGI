@@ -20,11 +20,14 @@ class MyTrack {
 
     draw() {
         const trackGroup = new THREE.Group()
+
+        const points = []
         for (const [x, _, z] of this.pointsTrack) {
-            const mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 1))
-            mesh.position.set(x, 0, z)
-            trackGroup.add(mesh)
+            vectors.push(new THREE.Vector3(x, _, z))
         }
+        const path = new THREE.CatmullRomCurve3()
+
+
         this.scene.add(trackGroup)
     }
 }
