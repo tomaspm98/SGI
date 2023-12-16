@@ -5,6 +5,7 @@ class MyTrack {
         this.scene = scene;
         this.infoTrack = infoTrack;
         this.pointsTrack = this.normalizePoints(infoTrack["points"], size);
+        this.width = this._calcWidthTrack()
     }
 
     normalizePoints(points, size) {
@@ -20,7 +21,14 @@ class MyTrack {
 
     draw() {
         const trackGroup = new THREE.Group()
+        const line = this._drawLine()
+        trackGroup.add(line)
+        
+ 
+        this.scene.add(trackGroup)
+    }
 
+    _drawLine() {
         let points = []
         for (const [x, _, z] of this.pointsTrack) {
             points.push(new THREE.Vector3(x, _, z))
@@ -29,9 +37,17 @@ class MyTrack {
         points = path.getPoints(500)
         const bGeometry = new THREE.BufferGeometry().setFromPoints(points)
         const line = new THREE.Line(bGeometry)
-        trackGroup.add(line)
+        return line
+    }
 
-        this.scene.add(trackGroup)
+    _drawTrack(line){
+        // for(const cPoint of line.getPoints()){
+        //     pPoint = cPoint +  
+        // }
+    }
+
+    _calcWidthTrack(){
+        const minX = 
     }
 }
 
