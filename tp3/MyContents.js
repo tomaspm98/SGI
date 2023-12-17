@@ -70,7 +70,7 @@ class MyContents {
 
   async test() {
     const trackData = await readTrackJSON('scene/f1-circuits/ae-2009.geojson');
-    const myTrack = new MyTrack(this.app.scene, trackData, 15000, 1000);
+    const myTrack = new MyTrack(this.app.scene, trackData, 10, 1000, 2);
     myTrack.draw();
   }
 

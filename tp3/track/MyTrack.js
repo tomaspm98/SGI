@@ -1,11 +1,12 @@
 import * as THREE from 'three';
+import { MyTriangle } from '../utils/MyTriangle.js';
 
 class MyTrack {
-    constructor(scene, infoTrack, size, numSegments) {
+    constructor(scene, infoTrack, size, numSegments, width) {
         this.scene = scene;
         this.infoTrack = infoTrack;
         this.pointsGeoJSON = this._normalizePoints(infoTrack["points"], size);
-        this.width = this._calcWidthTrack()
+        this.width = width
         this.numSegments = numSegments
     }
 
@@ -22,7 +23,8 @@ class MyTrack {
         this.scene.add(trackGroup)
     }
 
-    _normalizePoints(points, size) {
+    _normalizePoints(points, size = 1) {
+        size = size * 1000 // the original points have a scale of 1/1000
         const pointsNormalized = [];
         const origin = points[0];
         for (let i = 0; i < points.length; i++) {
@@ -51,29 +53,48 @@ class MyTrack {
 
     _drawTrack(curve) {
         const track = new THREE.Group()
+
+        const pkPoints1 = []
+        const pkPoints2 = []
+        const cPoints = []
         const upVector = new THREE.Vector3(0, 1, 0)
         for (let t = 0; t <= 1; t += 1 / this.numSegments) {
             const cPoint = curve.getPoint(t)
             const nkVector = new THREE.Vector3()
             nkVector.crossVectors(upVector, curve.getTangent(t))
-            nkVector.multiplyScalar(this.width / 2)
-            console.log(this.width)
-            const pkPoint = [nkVector.x + cPoint.x, nkVector.y + cPoint.y, nkVector.z + cPoint.z]
-
-            const geometry = new THREE.CylinderGeometry(0.1, 0.1, 0.1, 32)
-            const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-            const cylinder = new THREE.Mesh(geometry, material)
-            cylinder.position.set(pkPoint[0], pkPoint[1], pkPoint[2])
-            track.add(cylinder)
+            nkVector.multiplyScalar(this.width)
+            const pkPoint1 = [cPoint.x + nkVector.x, cPoint.y + nkVector.y, cPoint.z + nkVector.z]
+            const pkPoint2 = [cPoint.x - nkVector.x, cPoint.y - nkVector.y, cPoint.z - nkVector.z]
+            pkPoints1.push(pkPoint1)
+            pkPoints2.push(pkPoint2)
+            cPoints.push(cPoint)
         }
-        return track
-    }
 
-    _calcWidthTrack() {
-        const min = this.pointsGeoJSON.reduce((prev, curr) => prev[2] < curr[2] ? prev : curr)
-        const max = this.pointsGeoJSON.reduce((prev, curr) => prev[2] < curr[2] ? curr : prev)
-    
-        return Math.abs(max[2] - min[2])
+
+        for (let i = 0; i < cPoints.length; i++) {
+            const nextI = (i + 1) % cPoints.length
+
+            let triangle1
+            if (pkPoints1[i] < pkPoints1[nextI]) {
+                triangle1 = new MyTriangle(cPoints[i], pkPoints2[i], pkPoints2[nextI])
+            } else {
+                triangle1 = new MyTriangle(cPoints[i], pkPoints2[nextI], pkPoints2[i])
+            }
+
+            //const triangle1 = new MyTriangle(cPoints[i], pkPoints1[nextI], pkPoints1[i])
+            const triangle2 = new MyTriangle(cPoints[i], pkPoints2[i], pkPoints2[nextI])
+            const triangle3 = new MyTriangle(cPoints[i], pkPoints2[nextI], pkPoints1[nextI])
+
+            const triangle1Mesh = new THREE.Mesh(triangle1)
+            const triangle2Mesh = new THREE.Mesh(triangle2)
+            const triangle3Mesh = new THREE.Mesh(triangle3)
+
+            track.add(triangle1Mesh)
+            //track.add(triangle2Mesh)
+            track.add(triangle3Mesh)
+        }
+
+        return track
     }
 }
 
