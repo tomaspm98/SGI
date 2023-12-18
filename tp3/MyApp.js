@@ -85,9 +85,6 @@ class MyApp  {
         // Set the camera to look at the object
         this.activeCamera.position.lerp(this.activeCamera.position, 0.05); // Smooth transition
         //this.activeCamera.lookAt(targetPosition);
-
-        console.log("camera", this.activeCamera.position);
-        console.log("target", this.targetPosition);
     }
 
     /**
