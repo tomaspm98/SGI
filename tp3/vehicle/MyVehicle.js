@@ -10,6 +10,7 @@ class MyVehicle {
         this.rotationchange=0;
         this.maxSpeed=0.5;
         this.minSpeed=-0.5;
+        this.autoDecrease = 0.001;
         this.isLoaded=false;
     }
 
@@ -104,8 +105,22 @@ class MyVehicle {
         });
 
         document.addEventListener('keyup', (event) => {
-            this.speedchange = 0;
+            if (event.keyCode == 87 && this.speed>0){
+                this.speedchange = -this.autoDecrease;
+                this.reducing = true;
+                /*if (this.speed < 0){
+                    this.speedchange = 0;
+                    this.speed=0
+                }*/
+            } else if (event.keyCode == 83 && this.speed<0){
+                this.speedchange = this.autoDecrease;
+                this.increasing = true;
+                /*if (this.speed == 0){
+                    this.speedchange = 0;
+                }*/
+            }
             this.rotationchange = 0;
+            
             if (event.keyCode == 68){
                 this.carMesh.children[4].rotation.y=0;
                 this.carMesh.children[5].rotation.y=0;
@@ -124,6 +139,18 @@ class MyVehicle {
             this.controlCar();
             if (this.speed < this.maxSpeed && this.speed> this.minSpeed) {
                 this.speed += this.speedchange;
+                if (this.reducing && this.speed<0){
+                    this.speed=0
+                    this.speedchange=0
+                    this.reducing=false
+                }
+
+                if (this.increasing && this.speed>0){
+                    this.speed=0
+                    this.speedchange=0
+                    this.increasing=false
+                }
+                console.log(this.speed)
             }
             else if (this.speed>=this.maxSpeed && this.speedchange<0){
                 this.speed += this.speedchange;
