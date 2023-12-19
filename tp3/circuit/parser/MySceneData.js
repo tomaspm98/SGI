@@ -238,7 +238,7 @@ class MySceneData {
             { name: "shadowmapsize", type: "integer", required: false, default: 512 },
         ]
 
-        this.descriptors["circuit"] = [
+        this.descriptors["track"] = [
             { name: "filepath", type: "string" },
             { name: "size", type: "float", required: false, default: 10.0 },
             { name: "segments", type: "integer", required: false, default: 500 },
@@ -246,7 +246,7 @@ class MySceneData {
             { name: "texture", type: "string" },
         ]
 
-        this.primaryNodeIds = ["globals", "fog", "skybox", "textures", "materials", "cameras", "graph", "circuit"]
+        this.primaryNodeIds = ["globals", "fog", "skybox", "textures", "materials", "cameras", "graph", "track"]
 
         this.primitiveIds = ["cylinder", "rectangle", "triangle", "sphere", "nurbs", "box", "model3d", "skybox", "lod", "polygon"]
     }
@@ -276,6 +276,15 @@ class MySceneData {
 
     getSkybox() {
         return this.skyboxes["default"]
+    }
+
+    setTrack(track) {
+        this.track = track;
+        this.createCustomAttributeIfNotExists(track)
+    }
+
+    getTrack() {
+        return this.track;
     }
 
     setFog(fog) {

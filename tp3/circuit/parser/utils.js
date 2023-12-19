@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { MyNurbsBuilder } from './../../utils/MyNurbsBuilder.js';
-import { MyTriangle } from './MyTriangle.js';
+import { MyTriangle } from '../../utils/MyTriangle.js';
 
 /**
  * Function to create a THREE.js geometry based on the provided primitive.

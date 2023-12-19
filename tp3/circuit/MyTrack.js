@@ -85,7 +85,7 @@ class MyTrack {
             triangleBottom = new MyTriangle(...orderedPoints)
             triangleBottomMesh = new THREE.Mesh(triangleBottom, this.roadMaterial)
 
-            // Add the triangles to the track group
+            // Add the triangles to the circuit group
             track.add(triangleTopMesh)
             track.add(triangleBottomMesh)
         }
@@ -94,6 +94,7 @@ class MyTrack {
     }
 
     _loadTexture(textureFile) {
+        console.log(textureFile)
         const texture = new THREE.TextureLoader().load(textureFile);
         texture.wrapS = THREE.MirroredRepeatWrapping;
         texture.wrapT = THREE.MirroredRepeatWrapping;
@@ -102,7 +103,7 @@ class MyTrack {
                 map: texture,
                 specular: 0x000000,
                 shininess: 0,
-                color: 0x777777,
+                color: 0xaaaaaa,
             });
     }
 }

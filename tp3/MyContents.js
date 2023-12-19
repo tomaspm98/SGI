@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import { MyAxis } from "./MyAxis.js";
-import { MyTrack } from './track/MyTrack.js';
-import { readTrackJSON } from './track/MyTrackReader.js';
+import { MyCircuitReader } from "./circuit/MyCircuitReader.js";
 
 
 /**
@@ -28,23 +27,11 @@ class MyContents {
       this.app.scene.add(this.axis);
     }
 
-    // add a point light on top of the model
-    const pointLight = new THREE.PointLight(0xffffff, 600, 0, 1);
-    pointLight.position.set(0, 100, 0);
-    this.app.scene.add(pointLight);
-
-    // add an ambient light
-    const ambientLight = new THREE.AmbientLight(0xaaaaaa);
-    this.app.scene.add(ambientLight);
-
-    this.test()
+    const circuitReader = new MyCircuitReader()
+    const circuitScene = circuitReader.buildCircuitGraph('scene/circuits/circuit1.xml')
+    this.app.scene = circuitScene
   }
 
-  async test() {
-    const trackData = await readTrackJSON('scene/f1-circuits/ae-2009.geojson');
-    const myTrack = new MyTrack(trackData["points"], 10, 500, 2.5, "scene/textures/asphalt-texture1.jpg");
-    this.app.scene.add(myTrack.draw())
-  }
 
   /**
    * updates the contents
