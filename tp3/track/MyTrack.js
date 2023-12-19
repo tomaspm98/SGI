@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { MyTriangle } from '../utils/MyTriangle.js';
-import { hasIntersection } from './utils.js'
+import { orderPoints } from './utils.js'
 
 class MyTrack {
     constructor(scene, infoTrack, size, numSegments, width) {
@@ -55,6 +55,7 @@ class MyTrack {
     _drawTrack(curve) {
         const track = new THREE.Group()
 
+        // The pk points are defined using the algorithm described in the class
         const pkPoints1 = []
         const pkPoints2 = []
         const upVector = new THREE.Vector3(0, 1, 0)
@@ -69,45 +70,25 @@ class MyTrack {
             pkPoints2.push(pkPoint2)
         }
 
-        for (let i = 0; i < pkPoints1.length; i++) {
-            //random color
-            const geo = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.1), new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff }))
-            const geo1 = geo.clone()
-            const geo2 = geo.clone()
-            geo1.position.set(...pkPoints1[i])
-            geo2.position.set(...pkPoints2[i])
-            track.add(geo1)
-            track.add(geo2)
-        }
+        let nextI, orderedPoints, triangleTop, triangleBottom, triangleTopMesh, triangleBottomMesh
 
-        let nextI, triangleBot, triangleTop
-
-        let counter1 = 0
-        let counter2 = 0
         for (let i = 0; i < pkPoints1.length; i++) {
             nextI = (i + 1) % pkPoints1.length
 
-            triangleBot = new MyTriangle(pkPoints2[nextI], pkPoints1[nextI], pkPoints1[i])
+            // Draw the top triangle
+            orderedPoints = orderPoints(pkPoints1[i], pkPoints1[nextI], pkPoints2[i])
+            triangleTop = new MyTriangle(... orderedPoints)
+            triangleTopMesh = new THREE.Mesh(triangleTop)
 
-            if (!hasIntersection(pkPoints1[i], pkPoints2[i], pkPoints1[nextI], pkPoints2[nextI])) {
-                triangleTop = new MyTriangle(pkPoints1[i], pkPoints2[i], pkPoints2[nextI])
-                counter1++
-            } else {
-                triangleTop = new MyTriangle(pkPoints1[i], pkPoints2[nextI], pkPoints2[i])
-                const testGeo = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.05), new THREE.MeshBasicMaterial({ color: 0x0000ff }))
-                testGeo.position.set(...pkPoints1[i])
-                track.add(testGeo)
-                counter2++
-            }
+            // Draw the bottom triangle
+            orderedPoints = orderPoints(pkPoints2[i], pkPoints2[nextI], pkPoints1[nextI])
+            triangleBottom = new MyTriangle(... orderedPoints)
+            triangleBottomMesh = new THREE.Mesh(triangleBottom)
 
-            const triangleTopMesh = new THREE.Mesh(triangleTop)
-            const triangleBotMesh = new THREE.Mesh(triangleBot)
-
+            // Add the triangles to the track group
             track.add(triangleTopMesh)
-            //track.add(triangleBotMesh)
+            track.add(triangleBottomMesh)
         }
-        console.log("TESTE1: " + counter1)
-        console.log("TESTE2: " + counter2)
 
         return track
     }
