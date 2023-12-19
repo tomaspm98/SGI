@@ -22,6 +22,9 @@ class MySceneData {
         this.lights = [];
         this.textures = [];
 
+        this.powerups = [];
+        this.obstacles = [];
+
         this.cameras = [];
         this.activeCameraId = null;
 
@@ -79,6 +82,18 @@ class MySceneData {
             { name: "bumpref", type: "string", required: false, default: null }, // bump map is to be used in later classes
             { name: "bumpscale", type: "float", required: false, default: 1.0 },
             { name: "specularref", type: "string", required: false, default: null }, // specular map is to be used in later classes
+        ]
+
+        this.descriptors["powerup"] = [
+            { name: "id", type: "string" },
+            { name: "class", type: "string" },
+            { name: "position", type: "vector3" },
+        ]
+
+        this.descriptors["obstacle"] = [
+            { name: "id", type: "string" },
+            { name: "class", type: "string" },
+            { name: "position", type: "vector3" },
         ]
 
         this.descriptors["orthogonal"] = [
@@ -246,7 +261,7 @@ class MySceneData {
             { name: "texture", type: "string" },
         ]
 
-        this.primaryNodeIds = ["globals", "fog", "skybox", "textures", "materials", "cameras", "graph", "track"]
+        this.primaryNodeIds = ["globals", "fog", "skybox", "textures", "materials", "cameras", "graph", "track", "powerups", "obstacles"]
 
         this.primitiveIds = ["cylinder", "rectangle", "triangle", "sphere", "nurbs", "box", "model3d", "skybox", "lod", "polygon"]
     }
@@ -315,6 +330,14 @@ class MySceneData {
         this.createCustomAttributeIfNotExists(material)
         //console.debug("added material " + JSON.stringify(material));
     };
+
+    addObstacle(obstacle) {
+        this.obstacles[obstacle.id] = obstacle;
+    }
+
+    addPowerUp(powerup) {
+        this.powerups[powerup.id] = powerup;
+    }
 
     addTexture(texture) {
         let obj = this.getTexture(texture.id);

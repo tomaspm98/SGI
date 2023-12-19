@@ -126,6 +126,8 @@ class MyFileReader {
 			this.loadCameras(rootElement);
 			this.loadTrack(rootElement);
 			this.loadNodes(rootElement);
+			this.loadObstacles(rootElement);
+			this.loadPowerUps(rootElement);
 		}
 		catch (error) {
 			this.errorMessage = error;
@@ -649,7 +651,7 @@ class MyFileReader {
 	loadTrack(rootElement) {
 		let elem = this.getAndCheck(rootElement, 'track')
 		this.data.setTrack(this.loadXmlItem({ elem: elem, descriptor: this.data.descriptors["track"], extras: [["type", "track"]] }))
-	
+
 	}
 
 	/*
@@ -680,6 +682,16 @@ class MyFileReader {
 
 		let elem = this.getAndCheck(rootElement, 'materials')
 		this.loadXmlItems(elem, 'material', this.data.descriptors["material"], [["type", "material"]], this.data.addMaterial)
+	}
+
+	loadObstacles(rootElement) {
+		let elem = this.getAndCheck(rootElement, 'obstacles')
+		this.loadXmlItems(elem, 'obstacle', this.data.descriptors["obstacle"], [["type", "obstacle"]], this.data.addObstacle)
+	}
+
+	loadPowerUps(rootElement) {
+		let elem = this.getAndCheck(rootElement, 'powerups')
+		this.loadXmlItems(elem, 'powerup', this.data.descriptors["powerup"], [["type", "powerup"]], this.data.addPowerUp)
 	}
 
 	/**
