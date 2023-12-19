@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<yaf>
+
+    <globals background="0 0 0 1" ambient="0.1 0.1 0.1 1" />
+
+    <fog color="0 0 0 0" near="-1" far="-1" />
+
+    <skybox
+        size="200 200 200"
+        center="0 0 0"
+        emissive="0.2 0.2 0.2 1"
+        intensity="3"
+        front="scene/textures/skybox_up.jpg"
+        back="scene/textures/skybox_up.jpg"
+        up="scene/textures/skybox_up.jpg"
+        down="scene/textures/skybox_up.jpg"
+        left="scene/textures/skybox_up.jpg"
+        right="scene/textures/skybox_up.jpg"
+    />
+
+    <cameras initial="cam1">
+        <perspective id="cam1"
+            angle="60"
+            near="0.1"
+            far="1000"
+            location="30 30 30"
+            target="0 0 0" />
+    </cameras>
+
+    <textures>
+    </textures>
+
+    <materials>
+    </materials>
+
+    <track filepath="scene/f1-circuits/ae-2009.geojson"
+        size="10"
+        segments="500"
+        width="2"
+        texture="scene/textures/asphalt-texture.jpg"
+    />
+
+    <powerups>
+        <powerup id="id1" class="1" position="0 0 0" />
+        <powerup id="id2" class="1" position="0 0 0" />
+    </powerups>
+
+    <obstacles>
+        <obstacle id="id1" class="1" position="0 0 0" />
+        <obstacle id="id2" class="1" position="0 0 0" />
+    </obstacles>
+
+    <graph rootid="light">
+        <node id="light">
+            <children>
+                <pointlight id="light1"
+                    color="60 60 60 0"
+                    position="0 100 0"
+                    intensity="1"
+                    decay="1"
+                />
+            </children>
+        </node>
+    </graph>
+</yaf>
