@@ -9,7 +9,7 @@ class MyCircuitReader {
     constructor() {
     }
 
-    buildCircuitGraph(yasfPath) {
+    buildCircuitScene(yasfPath) {
         // Reset the variables
         this.textures = []
         this.materials = []
@@ -21,7 +21,7 @@ class MyCircuitReader {
         const reader = new MyFileReader(this, this.renderCircuit)
         reader.open(yasfPath)
 
-        // Return the circuit graph
+        // Return the circuit scene
         return this.circuitScene
     }
 

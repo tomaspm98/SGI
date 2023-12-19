@@ -28,7 +28,7 @@ class MyContents {
     }
 
     const circuitReader = new MyCircuitReader()
-    const circuitScene = circuitReader.buildCircuitGraph('scene/circuits/circuit1.xml')
+    const circuitScene = circuitReader.buildCircuitScene('scene/circuits/circuit1.xml')
     this.app.scene = circuitScene
   }
 
