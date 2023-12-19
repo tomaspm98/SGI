@@ -64,7 +64,18 @@ function hasIntersection(p1, p2, p3, p4) {
     if (intersection[2] <= slope * intersection[0] + b) {
         return false
     }
-    console.log(intersection)
+
+    if (p2[0] === bottomLeft[0] && p2[2] === bottomLeft[2]) {
+        console.log("TESTE22")
+        return false
+    }
+
+    if (p4[0] === bottomRight[0] && p4[2] === bottomRight[2]) {
+        console.log("TESTE33")
+        return false
+    }
+
+    console.log("TESTE44")
     return true
 }
 
