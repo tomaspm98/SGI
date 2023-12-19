@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<yaf>
+
+    <globals background="0 0 0 1" ambient="0.1 0.1 0.1 1" />
+
+    <fog color="0 0 0 1.0" near="0.0" far="400.0" />
+
+    <skybox
+        size="200 100 100"
+        center="0 0 0"
+        emissive="0.2 0.2 0.2 1"
+        intensity="3"
+        front="scenes/SGI_TP2_XML_T02_G07_v02/textures/skybox_up.jpg"
+        back="scenes/SGI_TP2_XML_T02_G07_v02/textures/skybox_up.jpg"
+        up="scenes/SGI_TP2_XML_T02_G07_v02/textures/skybox_up.jpg"
+        down="scenes/SGI_TP2_XML_T02_G07_v02/textures/skybox_up.jpg"
+        left="scenes/SGI_TP2_XML_T02_G07_v02/textures/skybox_up.jpg"
+        right="scenes/SGI_TP2_XML_T02_G07_v02/textures/skybox_up.jpg"
+    />
+
+    <cameras initial="cam1">
+    </cameras>
+
+    <textures>
+    </textures>
+
+    <materials>
+    </materials>
+
+    <track filepath="scene/f1-circuits/ae-2009.geojson"
+        size="10"
+        segments="500"
+        width="2"
+        texture=""
+    />
+
+    <graph rootid="circuit">
+
+    </graph>
+</yaf>

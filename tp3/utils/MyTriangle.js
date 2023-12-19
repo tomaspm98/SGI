@@ -69,17 +69,17 @@ class MyTriangle extends THREE.BufferGeometry {
 			...normal.toArray(),
 		];
 
-		/* 		const uvs = [
-					0, 0,
-					a , 0,
-					c * cos_ac, c * sin_ac
-				] */
-
 		const uvs = [
+			0, 0,
+			a, 0,
+			c * cos_ac, c * sin_ac
+		]
+
+		/*const uvs = [
 			0, 0,
 			1, 0,
 			1 * cos_ac, 1 * sin_ac
-		]
+		]*/
 
 		this.setIndex(indices);
 		this.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));

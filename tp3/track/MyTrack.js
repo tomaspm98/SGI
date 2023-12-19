@@ -3,12 +3,11 @@ import { MyTriangle } from '../utils/MyTriangle.js';
 import { orderPoints } from './utils.js'
 
 class MyTrack {
-    constructor(scene, infoTrack, size, numSegments, width) {
-        this.scene = scene;
-        this.infoTrack = infoTrack;
-        this.pointsGeoJSON = this._normalizePoints(infoTrack["points"], size);
+    constructor(points, size, numSegments, width, texture) {
+        this.pointsGeoJSON = this._normalizePoints(points, size);
         this.width = width
         this.numSegments = numSegments
+        this._loadTexture(texture)
     }
 
     draw() {
@@ -21,7 +20,8 @@ class MyTrack {
 
         trackGroup.add(line)
         trackGroup.add(track)
-        this.scene.add(trackGroup)
+
+        return trackGroup
     }
 
     _normalizePoints(points, size = 1) {
@@ -77,13 +77,13 @@ class MyTrack {
 
             // Draw the top triangle
             orderedPoints = orderPoints(pkPoints1[i], pkPoints1[nextI], pkPoints2[i])
-            triangleTop = new MyTriangle(... orderedPoints)
-            triangleTopMesh = new THREE.Mesh(triangleTop)
+            triangleTop = new MyTriangle(...orderedPoints)
+            triangleTopMesh = new THREE.Mesh(triangleTop, this.roadMaterial)
 
             // Draw the bottom triangle
             orderedPoints = orderPoints(pkPoints2[i], pkPoints2[nextI], pkPoints1[nextI])
-            triangleBottom = new MyTriangle(... orderedPoints)
-            triangleBottomMesh = new THREE.Mesh(triangleBottom)
+            triangleBottom = new MyTriangle(...orderedPoints)
+            triangleBottomMesh = new THREE.Mesh(triangleBottom, this.roadMaterial)
 
             // Add the triangles to the track group
             track.add(triangleTopMesh)
@@ -91,6 +91,19 @@ class MyTrack {
         }
 
         return track
+    }
+
+    _loadTexture(textureFile) {
+        const texture = new THREE.TextureLoader().load(textureFile);
+        texture.wrapS = THREE.MirroredRepeatWrapping;
+        texture.wrapT = THREE.MirroredRepeatWrapping;
+        this.roadMaterial = new THREE.MeshPhongMaterial(
+            {
+                map: texture,
+                specular: 0x000000,
+                shininess: 0,
+                color: 0x777777,
+            });
     }
 }
 
