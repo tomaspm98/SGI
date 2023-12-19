@@ -1,8 +1,16 @@
 import * as THREE from 'three';
 import { GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
+import { MyFileReader } from '../parser/MyFileReader.js';
+import { MySceneGraph } from "../MySceneGraph.js";
+import * as Utils from '../utils.js';
 
 class MyVehicle {
-    constructor() {
+    constructor(app) {
+        this.textures = []
+        this.materials = []
+        this.app=app
+        this.reader = new MyFileReader(app, this, this.onSceneLoaded);
+        this.reader.open("scenes/SGI_TP2_XML_T02_G07_v02/scene.xml")
         this.carMesh = null;
         this.speed = 0;
         this.rotationspeed = 0;
@@ -14,70 +22,86 @@ class MyVehicle {
         this.isLoaded=false;
     }
 
-    build(scene) {
-        /*const rectangle = new THREE.PlaneGeometry(rectWidth, rectHeight);
-        this.carMesh = new THREE.Mesh(rectangle, carMaterial);
-        this.carMesh.rotation.x = Math.PI / 2;
+    renderMaterials(data) {
+        for (let key in data.materials) {
+            const material = data.materials[key]
 
-        return this.carMesh;*/
+            console.log(material)
 
-        return new Promise((resolve, reject) => {
-        const loader = new GLTFLoader();
-
-        loader.load('vehicle/f1_car_low_poly/scene.gltf',  (gltf) => {
-            this.carMesh = gltf.scene;
-            console.log("car",this.carMesh);
-
-            const geometry = new THREE.CylinderGeometry(1, 1, 0.75, 32)
-            const texture = new THREE.TextureLoader().load('vehicle/tires_tex.png' ); 
-            const material = new THREE.MeshPhongMaterial({ color:0x888888,  map: texture })
-            const cylinderMesh1 = new THREE.Mesh(geometry, material)
-            const cylinderMesh2 = new THREE.Mesh(geometry, material)
-            const cylinderMesh3 = new THREE.Mesh(geometry, material)
-            const cylinderMesh4 = new THREE.Mesh(geometry, material)
-
-            //const axesHelper = new THREE.AxesHelper(30); // 5 is the size of the helper
-            //this.carMesh.add(axesHelper);
-
-            cylinderMesh1.rotation.z = Math.PI / 2
-            cylinderMesh2.rotation.z = Math.PI / 2
-            cylinderMesh3.rotation.z = Math.PI / 2
-            cylinderMesh4.rotation.z = Math.PI / 2
-
-            cylinderMesh1.position.x=-3.0
-            cylinderMesh1.position.z=-2.75
-            cylinderMesh1.rotation.order = 'YXZ';
-            this.carMesh.add(cylinderMesh1)
-
-            cylinderMesh2.position.x=3.0
-            cylinderMesh2.position.z=-2.75
-            cylinderMesh2.rotation.order = 'YXZ';
-            this.carMesh.add(cylinderMesh2)
-
-            cylinderMesh3.position.x=2.5
-            cylinderMesh3.position.z=8.75
-            cylinderMesh3.rotation.order = 'YXZ';
-            this.carMesh.add(cylinderMesh3)
-
-            cylinderMesh4.position.x=-2.5
-            cylinderMesh4.position.z=8.75
-            cylinderMesh4.rotation.order = 'YXZ';
-            this.carMesh.add(cylinderMesh4)
-
-            this.carMesh.scale.set(0.2,0.2,0.2);
-            this.carMesh.rotation.y=Math.PI/2;
-
-            scene.add(this.carMesh);
-            resolve(this.carMesh);
-            this.isLoaded=true;
-        }, undefined, function (error) {
-            console.log("error");
-            console.error("error",error);
-            reject(error);
+            const newMaterial = new THREE.MeshPhongMaterial({
+                color: material.color,
+                specular: material.specular,
+                emissive: material.emissive,
+                shininess: material.shininess,
+                wireframe: material.wireframe,
+                flatShading: material.shading === "flat",
+                side: material.twosided ? THREE.DoubleSide : THREE.FrontSide,
+                map: this.textures[material.textureref] !== undefined ? this.textures[material.textureref] : null,
+                bumpMap: this.textures[material.bumpref] !== undefined ? this.textures[material.bumpref] : null,
+                bumpScale: material.bumpscale,
+                specularMap: this.textures[material.specularref] !== undefined ? this.textures[material.specularref] : null,
+            })
+            newMaterial.name = material.id
+            this.materials[key] = newMaterial
         }
-     );
-    });
-}
+    }
+
+    renderTextures(data) {
+        for (let key in data.textures) {
+            let texture = data.textures[key]
+            let newTexture;
+
+            if (texture.isVideo) {
+                const videoId = `video${this.videoTextureCount++}`
+                // Add a video tag to the HTML document
+                const video = this.createVideoElement(texture.filepath, videoId);
+                
+                newTexture = new THREE.VideoTexture(video)
+            } else {
+                newTexture = new THREE.TextureLoader().load(texture.filepath)
+            }
+
+            newTexture.generateMipmaps = texture.mipmaps
+
+            // If mipmaps are not generated, load them manually
+            if (texture.mipmaps === false) {
+                for (let i = 0; i <= 7; i++) {
+                    if (texture[`mipmap${i}`] != undefined) {
+                        Utils.loadMipmap(newTexture, i, texture[`mipmap${i}`])
+                    }
+                }
+            } else {
+                // If mipmaps are generated, set the magFilter and minFilter properties
+                newTexture.magFilter = Utils.convertFilterThree(texture.magFilter)
+                newTexture.minFilter = Utils.convertFilterThree(texture.minFilter)
+            }
+
+            newTexture.anisotropy = texture.anisotropy
+            this.textures[key] = newTexture
+        }
+    }
+
+    onSceneLoaded(data) {
+        //console.info("scene data loaded " + data + ". visit MySceneData javascript class to check contents for each data item.")
+        this.onAfterSceneLoadedAndBeforeRender(data);
+
+    }
+
+    async onAfterSceneLoadedAndBeforeRender(data) {
+        this.renderTextures(data)
+        this.renderMaterials(data)
+
+        console.log(data['materials'])
+
+
+        this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials, data['materials'])
+
+        //Add the scene graph to the scene
+        await this.sceneGraph.constructSceneGraph()
+        this.app.scene.add(this.sceneGraph.graph)
+
+    }
+
 
     controlCar() {
         document.addEventListener('keydown', (event) => {

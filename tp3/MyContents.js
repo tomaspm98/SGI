@@ -26,12 +26,6 @@ class MyContents {
         this.showLine = true;
         this.closedCurve = false;
 
-        this.path = new THREE.CatmullRomCurve3([
-            new THREE.Vector3(-5, 0, 5),
-            new THREE.Vector3(0, 0, 0),
-            new THREE.Vector3(5, 0, 5)
-        ]);
-
         this.carMaterial = new THREE.MeshPhongMaterial({
             color: "#ff0000",
             specular: "#ff0000",
@@ -68,14 +62,8 @@ class MyContents {
         this.test()
 
       //this.buildCurve();
-      this.car = new MyVehicle();
+      this.car = new MyVehicle(this.app);
       console.log(this.car)
-      this.car.build(this.app.scene).then(carMesh => {
-        // Now the car is loaded, you can work with carMesh here
-        console.log(carMesh);
-    }).catch(error => {
-        console.error("Failed to load car:", error);
-    });
 
     }
 
