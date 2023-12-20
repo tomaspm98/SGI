@@ -116,6 +116,8 @@ class MyVehicleGraph {
 
             if (node.type === 'primitive') {
                 if (node.subtype === 'model3d') {
+                    //  Special case for the 3d model
+                    // To avoid using await and asyncs, the model is added to the scene when loaded
                     Utils.loadModel(node.representations[0]["filepath"], parent);
                 } else {
                     // Handle other primitives here
@@ -171,7 +173,6 @@ class MyVehicleGraph {
             const element = stack.pop();
             const node = element.node;
             const sceneNode = element.sceneNode;
-            console.log(element)
             if (node.type === 'lod') {
                 // Handling LOD node types
                 for (let i = node.children.length - 1; i >= 0; i--) {
@@ -197,6 +198,23 @@ class MyVehicleGraph {
                 // Other node types
                 const castShadow = element.castShadow || node.castShadows;
                 const receiveShadow = element.receiveShadow || node.receiveShadows;
+
+                // Case if the node is a 3D model
+                // and yet has not been loaded
+                if (!sceneNode) {
+                    continue;
+                }
+
+                //Special case for the 3d model
+                if (node.type === 'primitive' && node.subtype === 'model3d') {
+                    sceneNode.traverse(child => {
+                        if (child.isMesh) {
+                            child.castShadow = castShadow;
+                            child.receiveShadow = receiveShadow;
+                        }
+                    });
+                    continue;
+                }
 
                 if (node.materialIds !== undefined && node.materialIds.length > 0) {
                     // If the node has a material, it is applied

@@ -7,9 +7,17 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 function loadModel(filepath, parent) {
     const loader = new GLTFLoader();
     loader.load(filepath, function (gltf) {
-        parent.add(gltf.scene);
+        parent.add(gltf.scene)
+        // If the model is loaded after the method updateInheritAttributesGraph
+        // It is necessary to update the inherit attributes of the model
+        gltf.scene.traverse((child) => {
+            if (child.isMesh) {
+                child.castShadow = parent.castShadow
+                child.receiveShadow = parent.receiveShadow
+            }
+        })
     }, undefined, function (error) {
-        throw new Error("Error loading model:", error);
+
     });
 }
 
