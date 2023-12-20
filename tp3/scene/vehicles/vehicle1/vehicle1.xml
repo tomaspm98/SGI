@@ -13,15 +13,7 @@
         />
     </materials>
 
-    <graph rootid="vehicle1">
-
-        <node id="vehicle1">
-            <children>
-                <noderef id="car" />
-            </children>
-        </node>
-
-
+    <graph rootid="car">
         <node id="car">
             <transforms>
                 <translate value3="0 0 0" />
