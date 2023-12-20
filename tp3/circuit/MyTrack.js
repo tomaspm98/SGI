@@ -94,7 +94,6 @@ class MyTrack {
     }
 
     _loadTexture(textureFile) {
-        console.log(textureFile)
         const texture = new THREE.TextureLoader().load(textureFile);
         texture.wrapS = THREE.MirroredRepeatWrapping;
         texture.wrapT = THREE.MirroredRepeatWrapping;

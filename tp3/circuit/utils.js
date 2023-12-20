@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import { MyObstacle1 } from './MyObstacles.js';
+import { MyPowerUp1 } from './MyPowerUps.js';
 
 function orderPoints(pA, pB, pC) {
     const vAB = new THREE.Vector3(pB[0] - pA[0], pB[1] - pA[1], pB[2] - pA[2])
@@ -16,4 +18,23 @@ function orderPoints(pA, pB, pC) {
     }
 }
 
-export { orderPoints }
+function createActivatable(type, subtype, position, rotation = [0, 0, 0], scale = [1, 1, 1]) {
+    if (type === 'obstacle') {
+        if (subtype === '1') {
+            return new MyObstacle1(position, rotation, scale)
+        } else {
+            throw new Error('Invalid subtype of obstacle')
+        }
+
+    } else if (type === 'powerup') {
+        if (subtype === '1') {
+            return new MyPowerUp1(position, rotation, scale)
+        } else {
+            throw new Error('Invalid subtype of powerUp')
+        }
+    } else {
+        throw new Error('Invalid type of activatable')
+    }
+}
+
+export { orderPoints, createActivatable }
