@@ -202,7 +202,6 @@ class MyCircuitReader {
     }
 
     async renderTrack(data) {
-        console.log(data)
         const geoJSON = await this._openJSON(data.track['filepath'])
         const points = geoJSON["features"][0]["geometry"]["coordinates"]
         const track = new MyTrack(points, data.track['size'], data.track['segments'], data.track['width'], data.track['texture'])
