@@ -124,13 +124,14 @@ class MyCircuitGraph {
             const parent = nodeStack.parent;
 
             if (node.type === 'primitive') {
-                let mesh;
                 if (node.subtype === 'model3d') {
-                    mesh = Utils.loadModel(node.representations[0]["filepath"]);
+                    //  Special case for the 3d model
+                    // To avoid using await and async, the model is added to the scene when loaded
+                    Utils.loadModel(node.representations[0]["filepath"], parent);
                 } else {
-                    mesh = new THREE.Mesh(Utils.createThreeGeometry(node));
+                    // Handle other primitives here
+                    parent.add(new THREE.Mesh(Utils.createThreeGeometry(node)))
                 }
-                parent.add(mesh);
             } else if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
                 const light = Utils.createThreeLight(node)
                 light.name = node.id
@@ -214,6 +215,23 @@ class MyCircuitGraph {
                 // Other node types
                 const castShadow = element.castShadow || node.castShadows;
                 const receiveShadow = element.receiveShadow || node.receiveShadows;
+
+                // Case if the node is a 3D model
+                // and yet has not been loaded
+                if (!sceneNode) {
+                    continue;
+                }
+
+                //Special case for the 3d model
+                if (node.type === 'primitive' && node.subtype === 'model3d') {
+                    sceneNode.traverse(child => {
+                        if (child.isMesh) {
+                            child.castShadow = castShadow;
+                            child.receiveShadow = receiveShadow;
+                        }
+                    });
+                    continue;
+                }
 
                 if (node.materialIds !== undefined && node.materialIds.length > 0) {
                     // If the node has a material, it is applied
