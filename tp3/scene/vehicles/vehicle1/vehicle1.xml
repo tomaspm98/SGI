@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-16" standalone="yes"?>
 <yaf>
 
+    <specs 
+        topSpeed="100"
+        minSpeed="0"
+        acceleration="10"
+        deceleration="10"
+        turnRate="0.5"
+        brakingRate="0.5"
+    />
+
     <textures>
     </textures>
 

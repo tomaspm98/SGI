@@ -1,29 +1,20 @@
 import { MyVehicleRenderer } from './parser/MyVehicleRenderer.js'
 
 class MyVehicle {
-    static selectedVehicle = false
-    constructor(file) {
-        this.mesh = this._loadVehicle(file)
-        this.selected = false
-    }
 
-    _loadVehicle(file) {
+    static createVehicle(file) {
         const vehicleRenderer = new MyVehicleRenderer()
-        const vehicleMesh = vehicleRenderer.render(file)
-        console.log(vehicleMesh)
-        return vehicleMesh
+        const [mesh, specs] = vehicleRenderer.render(file)
+        return new MyVehicle(mesh, specs.topSpeed, specs.accelerationRate, specs.decelerationRate, specs.turnRate, specs.brakingRate)
     }
 
-    select() {
-        if (!MyVehicle.selectedVehicle) {
-            this.selected = true
-            MyVehicle.selectedVehicle = true
-        }
-    }
-
-    unselect() {
-        this.selected = false
-        MyVehicle.selectedVehicle = false
+    constructor(mesh, topSpeed, accelerationRate, decelerationRate, turnRate, brakingRate) {
+        this.mesh = mesh
+        this.topSpeed = topSpeed
+        this.accelerationRate = accelerationRate
+        this.decelerationRate = decelerationRate
+        this.turnRate = turnRate
+        this.brakingRate = brakingRate
     }
 
     controlCar() {

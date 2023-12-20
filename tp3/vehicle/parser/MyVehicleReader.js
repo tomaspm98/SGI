@@ -121,6 +121,7 @@ class MyVehicleReader {
 			this.loadTextures(rootElement);
 			this.loadMaterials(rootElement);
 			this.loadNodes(rootElement);
+			this.loadSpecs(rootElement);
 
 		}
 		catch (error) {
@@ -643,6 +644,12 @@ class MyVehicleReader {
 
 		let elem = this.getAndCheck(rootElement, 'materials')
 		this.loadXmlItems(elem, 'material', this.data.descriptors["material"], [["type", "material"]], this.data.addMaterial)
+	}
+
+	loadSpecs(rootElement) {
+		let elem = this.getAndCheck(rootElement, 'specs', 1, 1)
+		if (elem !== null && elem !== undefined)
+			this.data.setSpecs(this.loadXmlItem({ elem: elem, descriptor: this.data.descriptors["specs"], extras: [["type", "specs"]] }))
 	}
 
 	/**

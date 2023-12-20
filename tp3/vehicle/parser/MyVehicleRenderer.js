@@ -20,14 +20,14 @@ class MyVehicleRenderer {
 
 
         // Return the vehicle mesh
-        return this.vehicleGraph.graph
+        return [this.vehicleGraph.graph, this.specs]
     }
 
 
     _renderVehicle(data) {
         this.renderTextures(data)
         this.renderMaterials(data)
-
+        this.specs = data.specs
         this.vehicleGraph = new MyVehicleGraph(data.nodes, data.rootId, this.materials, data['materials'])
         this.vehicleGraph.constructVehicleGraph()
     }

@@ -32,7 +32,7 @@ class MyContents {
     circuit.build()
     this.app.scene = circuit.scene
 
-    const vehicle = new MyVehicle("scene/vehicles/vehicle1/vehicle1.xml")
+    const vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml")
     this.app.scene.add(vehicle.mesh)
   }
 

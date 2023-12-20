@@ -20,6 +20,7 @@ class MyVehicleData {
         this.nodes = [];
         this.rootId = null;
         this.lods = [];
+        this.specs = null;
 
         this.descriptors = [];
 
@@ -141,7 +142,17 @@ class MyVehicleData {
             { name: "color_p", type: "rgba" }
         ]
 
-        this.primaryNodeIds = ["textures", "materials", "graph"]
+        this.descriptors["specs"] = [
+            { name: "topSpeed", type: "float" },
+            { name: "minSpeed", type: "float" },
+            { name: "acceleration", type: "float" },
+            { name: "deceleration", type: "float" },
+            { name: "turnRate", type: "float" },
+            { name: "brakingRate", type: "float" },
+        ]
+
+
+        this.primaryNodeIds = ["textures", "materials", "graph", "specs"]
 
         this.primitiveIds = ["cylinder", "rectangle", "triangle", "sphere", "nurbs", "box", "model3d", "lod", "polygon"]
     }
@@ -180,6 +191,12 @@ class MyVehicleData {
         this.createCustomAttributeIfNotExists(texture)
         //console.debug("added texture" + JSON.stringify(texture))
     };
+
+    setSpecs(specs) {
+        this.specs = specs;
+        this.createCustomAttributeIfNotExists(specs)
+    }
+
 
     getTexture(id) {
         let value = this.textures[id]
