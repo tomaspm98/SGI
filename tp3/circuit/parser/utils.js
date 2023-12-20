@@ -1,6 +1,20 @@
 import * as THREE from 'three';
-import { MyNurbsBuilder } from './../../utils/MyNurbsBuilder.js';
+import { MyNurbsBuilder } from '../../utils/MyNurbsBuilder.js';
 import { MyTriangle } from '../../utils/MyTriangle.js';
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+
+async function loadModel(filepath) {
+    const loader = new GLTFLoader();
+    return new Promise((resolve, reject) => {
+        loader.load(filepath, (gltf) => {
+            resolve(gltf.scene);
+        }, undefined, (error) => {
+            console.error("Error loading model:", error);
+            reject(error);
+        });
+    });
+}
 
 /**
  * Function to create a THREE.js geometry based on the provided primitive.

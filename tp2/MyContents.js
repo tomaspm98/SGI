@@ -40,10 +40,10 @@ class MyContents {
 
     /**
      * Called when the scene xml file load is complete
-     * @param {MySceneData} data the entire scene data object
+     * @param {MyCircuitData} data the entire scene data object
      */
     onSceneLoaded(data) {
-        //console.info("scene data loaded " + data + ". visit MySceneData javascript class to check contents for each data item.")
+        //console.info("scene data loaded " + data + ". visit MyVehicleData javascript class to check contents for each data item.")
         this.onAfterSceneLoadedAndBeforeRender(data);
 
     }

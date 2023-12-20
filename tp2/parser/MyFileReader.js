@@ -9,7 +9,7 @@ import { MySceneData } from './MySceneData.js';
  * 
  *  1. in a given class file MyWhateverNameClass.js in the constructor call:
  * 
- *  this.reader = new MyFileReader(app, this, this.onSceneLoaded);
+ *  this.reader = new MyVehicleReader(app, this, this.onSceneLoaded);
  *  this.reader.open("scenes/<path to xml file>.xml");	
  * 
  *  The last argumet in the constructor is a method that is called when the xml file is loaded and parsed (see step 2).

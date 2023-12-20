@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<yaf>
+
+    <textures>
+        <texture id="woodTex" filepath="scenes/SGI_TP2_XML_T02_G07_v02/textures/woodTex.jpg" />
+    </textures>
+
+    <materials>
+        <material id="woodApp"
+            emissive="0.0 0.0 0.0 1"
+            color="1.0 1.0 1.0 1.0"
+            specular="0 0 0 0"
+            shininess="0"
+            textureref="woodTex"
+            texlength_s="1"
+            texlength_t="1"
+        />
+    </materials>
+
+    <graph rootid="vehicle1">
+
+        <node id="vehicle1">
+            <children>
+                <noderef id="car" />
+            </children>
+        </node>
+
+
+        <node id="car">
+            <transforms>
+                <translate value3="0 0 0" />
+                <rotate value3="0 1.5708 0" />
+                <scale value3="0.2 0.2 0.2" />
+            </transforms>
+            <children>
+                <noderef id="carModel" />
+                <noderef id="wheelBR" />
+                <noderef id="wheelBL" />
+                <noderef id="wheelFR" />
+                <noderef id="wheelFL" />
+            </children>
+        </node>
+
+        <node id="carModel">
+            <transforms>
+                <translate value3="0 0 0" />
+                <rotate value3="0 0 0" />
+                <scale value3="1 1 1" />
+            </transforms>
+
+
+            <children>
+                <primitive>
+                    <model3d
+                        filepath="scenes/SGI_TP2_XML_T02_G07_v02/vehicle/f1_car_low_poly/scene.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="wheel">
+            <transforms>
+                <translate value3="0 0 0" />
+                <rotate value3="0 0 1.5708" />
+                <scale value3="1 1 1" />
+            </transforms>
+
+            <materialref id="woodApp" />
+
+            <children>
+                <primitive>
+                    <cylinder base="1" top="1" height="0.75" slices="32" stacks="32"
+                        capsclose="true" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="wheelBR">
+            <transforms>
+                <translate value3="-3.0 0 -2.75" />
+                <rotate value3="0 0 0" />
+            </transforms>
+            <children>
+                <noderef id="wheel" />
+            </children>
+        </node>
+
+        <node id="wheelBL">
+            <transforms>
+                <translate value3="3.0 0 -2.75" />
+                <rotate value3="0 0 0" />
+            </transforms>
+            <children>
+                <noderef id="wheel" />
+            </children>
+        </node>
+
+        <node id="wheelFL">
+            <transforms>
+                <translate value3="2.5 0 8.75" />
+                <rotate value3="0 0 0" />
+            </transforms>
+            <children>
+                <noderef id="wheel" />
+            </children>
+        </node>
+
+        <node id="wheelFR">
+            <transforms>
+                <translate value3="-2.5 0 8.75" />
+                <rotate value3="0 0 0" />
+            </transforms>
+            <children>
+                <noderef id="wheel" />
+            </children>
+        </node>
+    </graph>
+</yaf>

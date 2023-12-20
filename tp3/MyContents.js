@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { MyAxis } from "./MyAxis.js";
-import { MyCircuitReader } from "./circuit/MyCircuitReader.js";
+import {MyCircuit} from "./circuit/MyCircuit.js";
 
 
 /**
@@ -27,9 +27,9 @@ class MyContents {
       this.app.scene.add(this.axis);
     }
 
-    const circuitReader = new MyCircuitReader()
-    const circuitScene = circuitReader.buildCircuitScene('scene/circuits/circuit1.xml')
-    this.app.scene = circuitScene
+    const circuit = new MyCircuit("scene/circuits/circuit1.xml")
+    circuit.build()
+    this.app.scene = circuit.circuitScene
   }
 
 
