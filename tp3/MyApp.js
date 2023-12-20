@@ -30,6 +30,7 @@ class MyApp  {
         this.axis = null
         this.contents == null
         this.vehicle = null
+        this.contents = null
     }
     /**
      * initializes the application
@@ -61,7 +62,29 @@ class MyApp  {
         // manage window resizes
         window.addEventListener('resize', this.onResize.bind(this), false );
 
-        //this.vehicle.controlCar();
+    }
+
+    updateCameraToFollowTarget(targetObject) {
+        if (!targetObject || !this.activeCamera) {
+            return;
+        }
+
+        const offsetDistance = 5; // Distance behind the vehicle
+        const offsetHeight = 3; // Height above the ground
+
+        // Calculate the offset based on the vehicle's rotation
+        const offset = new THREE.Vector3(0, 0, - offsetDistance);
+        offset.applyQuaternion(targetObject.quaternion);
+        offset.y += offsetHeight; 
+
+        // Calculate the desired position of the camera
+        this.targetPosition = new THREE.Vector3();
+        targetObject.getWorldPosition(this.targetPosition);
+
+        this.activeCamera.position.copy(this.targetPosition).add(offset);
+        // Set the camera to look at the object
+        this.activeCamera.position.lerp(this.activeCamera.position, 0.05); // Smooth transition
+        //this.activeCamera.lookAt(targetPosition);
     }
 
     /**
@@ -112,6 +135,7 @@ class MyApp  {
             }
             else {
                 this.controls.object = this.activeCamera
+
             }
         }
     }
@@ -132,6 +156,7 @@ class MyApp  {
      */
     setContents(contents) {
         this.contents = contents;
+        this.vehicle = this.contents.vehicle;
     }
 
     /**
@@ -151,6 +176,13 @@ class MyApp  {
     render () {
         this.stats.begin()
         this.updateCameraIfRequired()
+
+        if (this.vehicle && this.vehicle.carMesh) {
+            this.updateCameraToFollowTarget(this.vehicle.carMesh);
+            const targetPosition = new THREE.Vector3();
+            this.vehicle.carMesh.getWorldPosition(targetPosition);
+            this.controls.target.copy(targetPosition);
+        }
 
         // update the animation if contents were provided
         if (this.activeCamera !== undefined && this.activeCamera !== null) {

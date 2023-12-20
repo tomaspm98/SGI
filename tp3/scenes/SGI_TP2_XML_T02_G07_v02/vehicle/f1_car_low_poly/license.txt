@@ -1,0 +1,11 @@
+Model Information:
+* title:	F1 Car Low Poly
+* source:	https://sketchfab.com/3d-models/f1-car-low-poly-cf7a207a9d9641c48938d543ea852f27
+* author:	Tom Coldenhoff (https://sketchfab.com/Tom_Coldenhoff)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "F1 Car Low Poly" (https://sketchfab.com/3d-models/f1-car-low-poly-cf7a207a9d9641c48938d543ea852f27) by Tom Coldenhoff (https://sketchfab.com/Tom_Coldenhoff) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
