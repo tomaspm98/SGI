@@ -19,7 +19,6 @@ class MyVehicleGraph {
         this.root_id = root_id;
         this.materials = materials;
         this.materialsDecl = materialsDecl;
-        this.lightsMap = new Map();
         this.getWireframeValues();
     }
 
@@ -36,17 +35,9 @@ class MyVehicleGraph {
     }
 
     /**
-     * Gets the light map.
-     * @returns {Map} - Lights map.
-     */
-    getLightMap() {
-        return this.lightsMap;
-    }
-
-    /**
      * Constructs the scene graph.
      */
-    constructSceneGraph() {
+    constructVehicleGraph() {
         // First construct the mesh graph taking advantage of cloning meshes and groups that are repeated
         this.graph = this.constructMeshGraph();
         // Then update the materials and the inherit attributes
@@ -112,7 +103,7 @@ class MyVehicleGraph {
      * Uses a stack to implement a depth-first search avoiding recursion.
      * @returns {THREE.Group} - Mesh graph.
      */
-    async constructMeshGraph() {
+    constructMeshGraph() {
         const meshGraph = new THREE.Group();
         const stack = new Stack();
         stack.push({ node: this.nodes[this.root_id], parent: meshGraph });
@@ -124,25 +115,12 @@ class MyVehicleGraph {
             const parent = nodeStack.parent;
 
             if (node.type === 'primitive') {
-                let mesh;
                 if (node.subtype === 'model3d') {
-                    try {
-                        mesh = await Utils.loadModel(node.representations[0]["filepath"]);
-                    } catch (error) {
-                        console.error("Error processing model3d node:", error);
-                        // Handle error (e.g., skip this node, show a placeholder, etc.)
-                        return;
-                    }
+                    Utils.loadModel(node.representations[0]["filepath"], parent);
                 } else {
                     // Handle other primitives here
-                    mesh = new THREE.Mesh(Utils.createThreeGeometry(node));
+                    parent.add(new THREE.Mesh(Utils.createThreeGeometry(node)))
                 }
-                parent.add(mesh);
-            } else if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
-                const light = Utils.createThreeLight(node)
-                light.name = node.id
-                parent.add(light)
-                this.lightsMap.set(node.id, light)
             } else if (visited.hasOwnProperty(node.id + node.type)) {
                 const objCloned = visited[node.id + node.type].clone();
                 objCloned["isCloned"] = true;
@@ -193,10 +171,8 @@ class MyVehicleGraph {
             const element = stack.pop();
             const node = element.node;
             const sceneNode = element.sceneNode;
-
-            if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
-                // Do nothing for lights
-            } else if (node.type === 'lod') {
+            console.log(element)
+            if (node.type === 'lod') {
                 // Handling LOD node types
                 for (let i = node.children.length - 1; i >= 0; i--) {
                     // The material, castShadow and receiveShadow that are passed to the children are the ones of the parent

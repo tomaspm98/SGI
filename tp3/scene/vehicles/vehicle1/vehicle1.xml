@@ -2,7 +2,6 @@
 <yaf>
 
     <textures>
-        <texture id="woodTex" filepath="scenes/SGI_TP2_XML_T02_G07_v02/textures/woodTex.jpg" />
     </textures>
 
     <materials>
@@ -11,9 +10,6 @@
             color="1.0 1.0 1.0 1.0"
             specular="0 0 0 0"
             shininess="0"
-            textureref="woodTex"
-            texlength_s="1"
-            texlength_t="1"
         />
     </materials>
 
@@ -52,7 +48,7 @@
             <children>
                 <primitive>
                     <model3d
-                        filepath="scenes/SGI_TP2_XML_T02_G07_v02/vehicle/f1_car_low_poly/scene.gltf" />
+                        filepath="scene/vehicles/vehicle1/scene.gltf" />
                 </primitive>
             </children>
         </node>

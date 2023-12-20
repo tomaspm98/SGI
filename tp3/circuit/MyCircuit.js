@@ -7,7 +7,7 @@ class MyCircuit {
 
     build() {
         const renderer = new MyCircuitRenderer();
-        this.circuitScene = renderer.render(this.filePath);
+        this.scene = renderer.render(this.filePath);
     }
 }
 

@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { MyAxis } from "./MyAxis.js";
-import {MyCircuit} from "./circuit/MyCircuit.js";
+import { MyCircuit } from "./circuit/MyCircuit.js";
+import { MyVehicle } from "./vehicle/MyVehicle.js";
 
 
 /**
@@ -29,7 +30,10 @@ class MyContents {
 
     const circuit = new MyCircuit("scene/circuits/circuit1.xml")
     circuit.build()
-    this.app.scene = circuit.circuitScene
+    this.app.scene = circuit.scene
+
+    const vehicle = new MyVehicle("scene/vehicles/vehicle1/vehicle1.xml")
+    this.app.scene.add(vehicle.mesh)
   }
 
 

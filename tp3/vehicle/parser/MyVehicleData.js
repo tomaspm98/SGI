@@ -143,54 +143,14 @@ class MyVehicleData {
 
         this.primaryNodeIds = ["textures", "materials", "graph"]
 
-        this.primitiveIds = ["cylinder", "rectangle", "triangle", "sphere", "nurbs", "box", "model3d", "skybox", "lod", "polygon"]
+        this.primitiveIds = ["cylinder", "rectangle", "triangle", "sphere", "nurbs", "box", "model3d", "lod", "polygon"]
     }
 
     createCustomAttributeIfNotExists(obj) {
         if (obj[this.customAttributeName] === undefined || obj[this.customAttributeName] === null) obj[this.customAttributeName] = {}
     }
 
-    setOptions(options) {
-        this.options = options;
-        this.createCustomAttributeIfNotExists(options)
-        //console.debug("added options " + JSON.stringify(options));
-    }
 
-    getOptions() {
-        return this.options;
-    }
-
-    setSkybox(skybox) {
-        if (skybox.id === undefined) {
-            skybox.id = "default"
-        }
-        this.skyboxes[skybox.id] = skybox;
-        this.createCustomAttributeIfNotExists(skybox)
-        //console.debug("added skybox " + JSON.stringify(skybox));
-    }
-
-    getSkybox() {
-        return this.skyboxes["default"]
-    }
-
-    setTrack(track) {
-        this.track = track;
-        this.createCustomAttributeIfNotExists(track)
-    }
-
-    getTrack() {
-        return this.track;
-    }
-
-    setFog(fog) {
-        this.fog = fog;
-        this.createCustomAttributeIfNotExists(fog)
-        //console.debug("added fog " + JSON.stringify(fog));
-    }
-
-    getFog() {
-        return this.fog;
-    }
     setRootId(rootId) {
         this.rootId = rootId;
     }
@@ -211,10 +171,6 @@ class MyVehicleData {
         //console.debug("added material " + JSON.stringify(material));
     };
 
-    addActivatable(activatable) {
-        this.activatables.push(activatable)
-    }
-
     addTexture(texture) {
         let obj = this.getTexture(texture.id);
         if (obj !== null && obj !== undefined) {
@@ -230,50 +186,6 @@ class MyVehicleData {
         if (value === undefined) return null
         return value
     };
-
-    setActiveCameraId(id) {
-        return this.activeCameraId = id;
-    }
-
-    getCamera(id) {
-        let value = this.cameras[id]
-        if (value === undefined) return null
-        return value
-    };
-
-    setActiveCamera(id) {
-        this.activeCameraId = id;
-    }
-
-    addCamera(camera) {
-        if (camera.type !== "orthogonal" && camera.type !== "perspective") {
-            throw new Error("inconsistency: unsupported camera type " + camera.type + "!");
-        }
-
-        let obj = this.getCamera(camera.id);
-        if (obj !== null && obj !== undefined) {
-            throw new Error("inconsistency: a camera with id " + camera.id + " already exists!");
-        }
-        this.cameras[camera.id] = camera
-        this.createCustomAttributeIfNotExists(camera)
-        //console.debug("added camera " + JSON.stringify(camera))
-    }
-
-    getLight(id) {
-        let value = this.lights[id]
-        if (value === undefined) return null
-        return value
-    }
-
-    addLight(light) {
-        var obj = this.getLight(light.id);
-        if (obj !== null && obj !== undefined) {
-            throw new Error("inconsistency: a light with id " + light.id + " already exists!");
-        }
-        this.lights[light.id] = light;
-        this.createCustomAttributeIfNotExists(light)
-        //console.debug("added light " + JSON.stringify(light));
-    }
 
     getNode(id) {
         let value = this.nodes[id];

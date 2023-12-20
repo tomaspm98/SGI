@@ -330,4 +330,4 @@ function createPolygon(stacks, slices, radius, centerColor, edgeColor) {
     return geometry
 }
 
-export { createThreeGeometry, applyTransformation, createThreeLight, convertFilterThree, loadMipmap };
+export { createThreeGeometry, applyTransformation, createThreeLight, convertFilterThree, loadMipmap, loadModel };

@@ -4,15 +4,12 @@ import { MyTriangle } from '../../utils/MyTriangle.js';
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 
-async function loadModel(filepath) {
+function loadModel(filepath, parent) {
     const loader = new GLTFLoader();
-    return new Promise((resolve, reject) => {
-        loader.load(filepath, (gltf) => {
-            resolve(gltf.scene);
-        }, undefined, (error) => {
-            console.error("Error loading model:", error);
-            reject(error);
-        });
+    loader.load(filepath, function (gltf) {
+        parent.add(gltf.scene);
+    }, undefined, function (error) {
+        throw new Error("Error loading model:", error);
     });
 }
 
@@ -330,4 +327,4 @@ function createPolygon(stacks, slices, radius, centerColor, edgeColor) {
     return geometry
 }
 
-export { createThreeGeometry, applyTransformation, createThreeLight, convertFilterThree, loadMipmap };
+export { createThreeGeometry, applyTransformation, createThreeLight, convertFilterThree, loadMipmap, loadModel };
