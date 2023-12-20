@@ -40,15 +40,11 @@
         texture="scene/textures/asphalt-texture.jpg"
     />
 
-    <powerups>
-        <powerup id="id1" class="1" position="0 0 0" />
-        <powerup id="id2" class="1" position="0 0 0" />
-    </powerups>
 
-    <obstacles>
-        <obstacle id="id1" class="1" position="0 0 0" />
-        <obstacle id="id2" class="1" position="0 0 0" />
-    </obstacles>
+    <activatables>
+        <powerup id="id1" subtype="1" position="0 0 0" scale="1 1 1" rotation="0 0 0" />
+        <obstacle id="id1" subtype="1" position="0 0 0" scale="1 1 1" rotation="0 0 0" />
+    </activatables>
 
     <graph rootid="light">
         <node id="light">

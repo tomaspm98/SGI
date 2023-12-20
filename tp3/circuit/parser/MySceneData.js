@@ -22,8 +22,7 @@ class MySceneData {
         this.lights = [];
         this.textures = [];
 
-        this.powerups = [];
-        this.obstacles = [];
+        this.activatables = []
 
         this.cameras = [];
         this.activeCameraId = null;
@@ -86,14 +85,18 @@ class MySceneData {
 
         this.descriptors["powerup"] = [
             { name: "id", type: "string" },
-            { name: "class", type: "string" },
+            { name: "subtype", type: "string" },
             { name: "position", type: "vector3" },
+            { name: "rotation", type: "vector3", required: false, default: [0, 0, 0] },
+            { name: "scale", type: "vector3", required: false, default: [1, 1, 1] },
         ]
 
         this.descriptors["obstacle"] = [
             { name: "id", type: "string" },
-            { name: "class", type: "string" },
+            { name: "subtype", type: "string" },
             { name: "position", type: "vector3" },
+            { name: "rotation", type: "vector3", required: false, default: [0, 0, 0] },
+            { name: "scale", type: "vector3", required: false, default: [1, 1, 1] },
         ]
 
         this.descriptors["orthogonal"] = [
@@ -261,7 +264,7 @@ class MySceneData {
             { name: "texture", type: "string" },
         ]
 
-        this.primaryNodeIds = ["globals", "fog", "skybox", "textures", "materials", "cameras", "graph", "track", "powerups", "obstacles"]
+        this.primaryNodeIds = ["globals", "fog", "skybox", "textures", "materials", "cameras", "graph", "track", "activatables"]
 
         this.primitiveIds = ["cylinder", "rectangle", "triangle", "sphere", "nurbs", "box", "model3d", "skybox", "lod", "polygon"]
     }
@@ -331,12 +334,8 @@ class MySceneData {
         //console.debug("added material " + JSON.stringify(material));
     };
 
-    addObstacle(obstacle) {
-        this.obstacles[obstacle.id] = obstacle;
-    }
-
-    addPowerUp(powerup) {
-        this.powerups[powerup.id] = powerup;
+    addActivatable(activatable) {
+        this.activatables.push(activatable)
     }
 
     addTexture(texture) {

@@ -2,6 +2,8 @@ import { MyFileReader } from './parser/MyFileReader.js';
 import * as THREE from 'three';
 import { MySceneGraph } from './parser/MySceneGraph.js';
 import { MyTrack } from './MyTrack.js';
+import { MyActivatable } from './MyActivatable.js';
+import { createActivatable } from './utils.js';
 
 
 class MyCircuitReader {
@@ -15,6 +17,7 @@ class MyCircuitReader {
         this.materials = []
         this.cameras_map = new Map()
         this.videoTextureCount = 0
+        this.activatables = []
         this.circuitScene = new THREE.Scene()
 
         // Read the file
@@ -34,6 +37,7 @@ class MyCircuitReader {
         this.renderFog(data)
         this.renderSkyBox(data)
         this.renderTrack(data)
+        this.renderActivatables(data)
 
         this.sceneGraph = new MySceneGraph(data.nodes, data.rootId, this.materials, data['materials'])
         this.sceneGraph.constructSceneGraph()
@@ -164,7 +168,8 @@ class MyCircuitReader {
         this.activeCamera = data.activeCameraId;
     }
 
-    /**
+    /**        console.log("HELLO")
+
      * Function to add a video tag to the HTML document.
      * @param {string} videoPath - The path to the video file.
      * @param {string} videoId - The id to give to the video element.
@@ -201,7 +206,26 @@ class MyCircuitReader {
         const geoJSON = await this._openJSON(data.track['filepath'])
         const points = geoJSON["features"][0]["geometry"]["coordinates"]
         const track = new MyTrack(points, data.track['size'], data.track['segments'], data.track['width'], data.track['texture'])
+        this.trackGroup = track.draw()
         this.circuitScene.add(track.draw())
+    }
+
+    renderObstacles(data) {
+        for (const key in data.obstacles) {
+            const obstacle = data.obstacles[key]
+            console.log(obstacle.class)
+            const newObstacle = MyObstacle.create(obstacle.position, obstacle.class, obstacle.rotation, obstacle.scale)
+            this.obstacles.push(newObstacle)
+            this.circuitScene.add(newObstacle.draw())
+        }
+    }
+
+    renderActivatables(data) {
+        for (const activatable of data.activatables) {
+            const newActivatable = createActivatable(activatable.type, activatable.subtype, activatable.position, activatable.rotation, activatable.scale)
+            this.activatables.push(newActivatable)
+            this.circuitScene.add(newActivatable.mesh)
+        }
     }
 
 }
