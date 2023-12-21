@@ -22,7 +22,7 @@ class MyVehicle {
         this.initialRotation = initialRotation
 
         this.actualPosition = initialPosition
-        this.actualRotation = initialRotation
+        this.actualRotationVehicle = initialRotation
         this.actualRotationWheel = 0
 
         this.actualSpeed = 0
@@ -35,7 +35,6 @@ class MyVehicle {
     }
 
     controlCar(event) {
-        console.log(event.type)
         switch (event.keyCode) {
             case 87: // W
                 switch (event.type) {
@@ -124,28 +123,33 @@ class MyVehicle {
     }
 
     update() {
+        // To avoid calling update when the car is not moving
+        if (!this.accelerating && !this.braking && !this.reversing && !this.turningLeft && !this.turningRight && !this.coasting && this.actualSpeed === 0 && this.actualRotationVehicle === 0 && this.actualRotationWheel === 0) {
+            return
+        }
+
         if (this.accelerating) {
-            this.actualSpeed = Math.max(this.actualSpeed + this.accelerationRate, this.topSpeed)
+            this.actualSpeed = Math.min(this.actualSpeed + this.accelerationRate, this.topSpeed)
         }
 
         if (this.braking) {
-            this.actualSpeed = Math.min(this.actualSpeed - this.brakingRate, 0)
+            this.actualSpeed = Math.max(this.actualSpeed - this.brakingRate, 0)
         }
 
         if (this.reversing) {
-            this.actualSpeed = Math.min(this.actualSpeed - this.accelerationRate, this.minSpeed)
+            this.actualSpeed = Math.max(this.actualSpeed - this.accelerationRate, this.minSpeed)
         }
 
         if (this.turningLeft) {
             if (this.actualSpeed !== 0)
-                this.actualRotation -= this.turnRate
-            this.actualRotationWheel = Math.max(- this.turnRate * 2 + this.actualRotationWheel, -0.7)
+                this.actualRotationVehicle -= this.turnRate
+            this.actualRotationWheel = Math.max(- this.turnRate + this.actualRotationWheel, -0.7)
         }
 
         if (this.turningRight) {
             if (this.actualSpeed !== 0)
-                this.actualRotation += this.turnRate
-            this.actualRotationWheel = Math.min(this.turnRate * 2 + this.actualRotationWheel, 0.7)
+                this.actualRotationVehicle += this.turnRate
+            this.actualRotationWheel = Math.min(this.turnRate + this.actualRotationWheel, 0.7)
         }
 
         if (this.coasting) {
@@ -156,17 +160,16 @@ class MyVehicle {
             }
         }
 
-        console.log(this.actualRotation)
-        this.actualPosition.x += this.actualSpeed * Math.sin(this.actualRotation)
-        this.actualPosition.z += this.actualSpeed * Math.cos(this.actualRotation)
+        this.actualPosition.x += this.actualSpeed * Math.sin(this.actualRotationVehicle)
+        this.actualPosition.z += this.actualSpeed * Math.cos(this.actualRotationVehicle)
 
         this.mesh.position.set(this.actualPosition.x, this.actualPosition.y, this.actualPosition.z)
-        this.mesh.rotation.y = this.actualRotation
+        this.mesh.rotation.y = this.actualRotationVehicle
 
         if (!this.turningRight && this.actualRotationWheel > 0) {
-            this.actualRotationWheel = Math.max(this.actualRotationWheel - this.turnRate * 2, 0)
+            this.actualRotationWheel = Math.max(this.actualRotationWheel - this.turnRate, 0)
         } else if (!this.turningLeft && this.actualRotationWheel < 0) {
-            this.actualRotationWheel = Math.min(this.actualRotationWheel + this.turnRate * 2, 0)
+            this.actualRotationWheel = Math.min(this.actualRotationWheel + this.turnRate, 0)
         }
 
         // TODO: make the front wheels spin
