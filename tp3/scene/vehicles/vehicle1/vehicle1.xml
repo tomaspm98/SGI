@@ -34,6 +34,7 @@
                 <noderef id="wheelBL" />
                 <noderef id="wheelFR" />
                 <noderef id="wheelFL" />
+                <noderef id="brake" />
             </children>
         </node>
 
@@ -91,6 +92,17 @@
             </transforms>
             <children>
                 <noderef id="wheel" />
+            </children>
+        </node>
+
+        <node id="brake">
+            <children>
+                <pointlight id="brakelight"
+                    color="60 60 60 0"
+                    position="0 100 0"
+                    intensity="1"
+                    decay="1"
+                />
             </children>
         </node>
     </graph>

@@ -14,13 +14,14 @@ class MyVehicleRenderer {
         this.materials = []
         this.videoTextureCount = 0
 
+
         // Read the file
         const reader = new MyVehicleReader(this, this._renderVehicle)
         reader.open(yasfPath)
 
 
         // Return the vehicle mesh
-        return [this.vehicleGraph.graph, this.specs]
+        return [this.vehicleGraph.graph, this.specs, this.vehicleGraph.importantNodes]
     }
 
 
