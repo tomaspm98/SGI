@@ -2,12 +2,12 @@
 <yaf>
 
     <specs
-        topSpeed="0.2"
-        minSpeed="-0.1"
-        acceleration="0.1"
-        deceleration="0.001"
-        turnRate="0.05"
-        brakingRate="0.2"
+        topSpeed="0.01"
+        minSpeed="-0.01"
+        acceleration="0.01"
+        deceleration="0.01"
+        turnRate="0.1"
+        brakingRate="0.01"
     />
 
     <textures>

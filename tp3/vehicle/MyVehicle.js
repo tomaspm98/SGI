@@ -27,19 +27,24 @@ class MyVehicle {
 
         this.actualSpeed = 0
         this.coasting = false
-        this.rotating = false
-
+        this.accelerating = false
+        this.braking = false
+        this.turningLeft = false
+        this.turningRight = false
+        this.reversing = false
     }
 
     controlCar(event) {
+        console.log(event.type)
         switch (event.keyCode) {
             case 87: // W
                 switch (event.type) {
                     case 'keydown':
-                        this.actualSpeed = Math.max(this.actualSpeed + this.accelerationRate, this.topSpeed)
+                        this.accelerating = true
                         this.coasting = false
                         break
                     case 'keyup':
+                        this.accelerating = false
                         this.coasting = true
                         break
                 }
@@ -47,63 +52,62 @@ class MyVehicle {
             case 83: // S
                 switch (event.type) {
                     case 'keydown':
-                        if (this.actualSpeed > 0) {
-                            this.actualSpeed = Math.max(this.actualSpeed - this.brakingRate, 0)
-                        } else {
-                            this.actualSpeed = Math.min(this.actualSpeed + this.brakingRate, 0)
+                        // To avoid putting the lights on when they are already on
+                        if (!this.braking) {
+                            for (const light of this.importantNodes.brakelights) {
+                                light.visible = true
+                            }
                         }
-                        for (const light of this.importantNodes.brakelights) {
-                            light.visible = true
-                        }
+                        this.braking = true
                         this.coasting = false
                         break
                     case 'keyup':
                         for (const light of this.importantNodes.brakelights) {
                             light.visible = false
                         }
+                        if (this.actualSpeed !== 0)
+                            this.coasting = true
+                        this.braking = false
                         break
                 }
                 break
             case 65: // A
                 switch (event.type) {
                     case 'keydown':
-                        if (this.actualSpeed !== 0)
-                            this.actualRotation += this.turnRate
-                        this.actualRotationWheel = Math.min(this.turnRate * 2 + this.actualRotationWheel, 0.7)
-                        this.rotating = true
+                        this.turningRight = true
                         break
                     case 'keyup':
-                        this.rotating = false
+                        this.turningRight = false
                         break
                 }
                 break
             case 68: // D
                 switch (event.type) {
                     case 'keydown':
-                        if (this.actualSpeed !== 0)
-                            this.actualRotation -= this.turnRate
-                        this.actualRotationWheel = Math.max(- this.turnRate * 2 + this.actualRotationWheel, -0.7)
-                        this.rotating = true
+                        this.turningLeft = true
                         break
                     case 'keyup':
-                        this.rotating = false
+                        this.turningLeft = false
                         break
                 }
                 break
             case 82: // R
                 switch (event.type) {
                     case 'keydown':
-                        this.actualSpeed = Math.min(this.actualSpeed - this.accelerationRate, this.minSpeed)
-                        this.coasting = false
-                        for (const light of this.importantNodes.reverselights) {
-                            light.visible = true
+                        if (!this.reversing) {
+                            for (const light of this.importantNodes.reverselights) {
+                                light.visible = true
+                            }
                         }
+                        this.reversing = true
+                        this.coasting = false
                         break
                     case 'keyup':
-                        this.coasting = true
                         for (const light of this.importantNodes.reverselights) {
                             light.visible = false
                         }
+                        this.reversing = false
+                        this.coasting = true
                         break
                 }
                 break
@@ -120,6 +124,30 @@ class MyVehicle {
     }
 
     update() {
+        if (this.accelerating) {
+            this.actualSpeed = Math.max(this.actualSpeed + this.accelerationRate, this.topSpeed)
+        }
+
+        if (this.braking) {
+            this.actualSpeed = Math.min(this.actualSpeed - this.brakingRate, 0)
+        }
+
+        if (this.reversing) {
+            this.actualSpeed = Math.min(this.actualSpeed - this.accelerationRate, this.minSpeed)
+        }
+
+        if (this.turningLeft) {
+            if (this.actualSpeed !== 0)
+                this.actualRotation -= this.turnRate
+            this.actualRotationWheel = Math.max(- this.turnRate * 2 + this.actualRotationWheel, -0.7)
+        }
+
+        if (this.turningRight) {
+            if (this.actualSpeed !== 0)
+                this.actualRotation += this.turnRate
+            this.actualRotationWheel = Math.min(this.turnRate * 2 + this.actualRotationWheel, 0.7)
+        }
+
         if (this.coasting) {
             this.actualSpeed += this.coastingRate * - Math.sign(this.actualSpeed)
             if (this.actualSpeed < 0.01 && this.actualSpeed > -0.01) {
@@ -135,9 +163,9 @@ class MyVehicle {
         this.mesh.position.set(this.actualPosition.x, this.actualPosition.y, this.actualPosition.z)
         this.mesh.rotation.y = this.actualRotation
 
-        if (!this.rotating && this.actualRotationWheel > 0) {
+        if (!this.turningRight && this.actualRotationWheel > 0) {
             this.actualRotationWheel = Math.max(this.actualRotationWheel - this.turnRate * 2, 0)
-        } else if (!this.rotating && this.actualRotationWheel < 0) {
+        } else if (!this.turningLeft && this.actualRotationWheel < 0) {
             this.actualRotationWheel = Math.min(this.actualRotationWheel + this.turnRate * 2, 0)
         }
 
