@@ -5,7 +5,7 @@
         topSpeed="0.2"
         minSpeed="-0.1"
         acceleration="0.1"
-        deceleration="0.01"
+        deceleration="0.1"
         turnRate="0.25"
         brakingRate="0.01"
     />

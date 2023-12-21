@@ -87,7 +87,8 @@ class MyVehicle {
     _handleA(event) {
         switch (event.type) {
             case 'keydown':
-                this.actualRotation += this.turnRate
+                if (this.actualSpeed !== 0)
+                    this.actualRotation += this.turnRate
                 break
         }
     }
@@ -95,7 +96,8 @@ class MyVehicle {
     _handleD(event) {
         switch (event.type) {
             case 'keydown':
-                this.actualRotation -= this.turnRate
+                if (this.actualSpeed !== 0)
+                    this.actualRotation -= this.turnRate
                 break
         }
     }
