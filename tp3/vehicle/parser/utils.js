@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { MyNurbsBuilder } from './../../utils/MyNurbsBuilder.js';
+import { MyNurbsBuilder } from '../../utils/MyNurbsBuilder.js';
 import { MyTriangle } from '../../utils/MyTriangle.js';
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 

@@ -32,8 +32,12 @@ class MyContents {
     circuit.build()
     this.app.scene = circuit.scene
 
-    const vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml")
-    this.app.scene.add(vehicle.mesh)
+    this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml")
+    this.app.scene.add(this.vehicle.mesh)
+
+    document.addEventListener('keydown', (event) => this.vehicle.controlCar(event))
+    document.addEventListener('keyup', (event) => this.vehicle.controlCar(event))
+
   }
 
 
@@ -42,6 +46,8 @@ class MyContents {
    * this method is called from the render method of the app
    */
   update() {
+    this.vehicle.update()
+
   }
 }
 
