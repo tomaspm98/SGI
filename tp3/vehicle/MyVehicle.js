@@ -21,9 +21,11 @@ class MyVehicle {
 
         this.actualPosition = initialPosition
         this.actualRotation = initialRotation
+        this.actualRotationWheel = 0
 
         this.actualSpeed = 0
         this.coasting = false
+        this.rotating = false
 
     }
 
@@ -65,6 +67,11 @@ class MyVehicle {
                     case 'keydown':
                         if (this.actualSpeed !== 0)
                             this.actualRotation += this.turnRate
+                        this.actualRotationWheel = Math.min(this.turnRate * 2 + this.actualRotationWheel, 0.7)
+                        this.rotating = true
+                        break
+                    case 'keyup':
+                        this.rotating = false
                         break
                 }
                 break
@@ -73,6 +80,11 @@ class MyVehicle {
                     case 'keydown':
                         if (this.actualSpeed !== 0)
                             this.actualRotation -= this.turnRate
+                        this.actualRotationWheel = Math.max(- this.turnRate * 2 + this.actualRotationWheel, -0.7)
+                        this.rotating = true
+                        break
+                    case 'keyup':
+                        this.rotating = false
                         break
                 }
                 break
@@ -106,19 +118,35 @@ class MyVehicle {
     }
 
     update() {
-        if (this.coasting) {
+        /*if (this.coasting) {
             this.actualSpeed += this.coastingRate * - Math.sign(this.actualSpeed)
             if (this.actualSpeed < 0.01 && this.actualSpeed > -0.01) {
                 this.actualSpeed = 0
                 this.coasting = false
             }
-        }
+        }*/
 
         this.actualPosition.x += this.actualSpeed * Math.sin(this.actualRotation)
         this.actualPosition.z += this.actualSpeed * Math.cos(this.actualRotation)
 
-        this.mesh.position.set(this.actualPosition.x, this.actualPosition.y, this.actualPosition.z)
+        //this.mesh.position.set(this.actualPosition.x, this.actualPosition.y, this.actualPosition.z)
         this.mesh.rotation.y = this.actualRotation
+
+        if (!this.rotating && this.actualRotationWheel > 0) {
+            this.actualRotationWheel = Math.max(this.actualRotationWheel - this.turnRate * 2, 0)
+        } else if (!this.rotating && this.actualRotationWheel < 0) {
+            this.actualRotationWheel = Math.min(this.actualRotationWheel + this.turnRate * 2, 0)
+        }
+
+
+        //this.importantNodes.wheelBR.rotation.x += this.actualSpeed
+        //this.importantNodes.wheelBL.rotation.x += this.actualSpeed
+        //this.importantNodes.wheelFR.rotation.x += this.actualSpeed
+        //this.importantNodes.wheelFL.rotation.x += this.actualSpeed
+
+        this.importantNodes.wheelBR.rotation.y = this.actualRotationWheel
+        this.importantNodes.wheelBL.rotation.y = this.actualRotationWheel
+
     }
 }
 
