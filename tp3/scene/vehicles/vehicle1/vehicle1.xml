@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-16" standalone="yes"?>
 <yaf>
 
-    <specs 
+    <specs
         topSpeed="100"
         minSpeed="0"
         acceleration="10"
@@ -30,27 +30,10 @@
                 <scale value3="0.2 0.2 0.2" />
             </transforms>
             <children>
-                <noderef id="carModel" />
                 <noderef id="wheelBR" />
                 <noderef id="wheelBL" />
                 <noderef id="wheelFR" />
                 <noderef id="wheelFL" />
-            </children>
-        </node>
-
-        <node id="carModel">
-            <transforms>
-                <translate value3="0 0 0" />
-                <rotate value3="0 0 0" />
-                <scale value3="1 1 1" />
-            </transforms>
-
-
-            <children>
-                <primitive>
-                    <model3d
-                        filepath="scene/vehicles/vehicle1/scene.gltf" />
-                </primitive>
             </children>
         </node>
 

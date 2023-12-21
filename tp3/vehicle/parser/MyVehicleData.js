@@ -151,10 +151,39 @@ class MyVehicleData {
             { name: "brakingRate", type: "float" },
         ]
 
+        this.descriptors["spotlight"] = [
+            { name: "id", type: "string" },
+            { name: "color", type: "rgba" },
+            { name: "position", type: "vector3" },
+            { name: "target", type: "vector3" },
+            { name: "angle", type: "float" },
+            { name: "enabled", type: "boolean", required: false, default: true },
+            { name: "intensity", type: "float", required: false, default: 1.0 },
+            { name: "distance", type: "float", required: false, default: 1000 },
+            { name: "decay", type: "float", required: false, default: 2.0 },
+            { name: "penumbra", type: "float", required: false, default: 1.0 },
+            { name: "castshadow", type: "boolean", required: false, default: false },
+            { name: "shadowfar", type: "float", required: false, default: 500.0 },
+            { name: "shadowmapsize", type: "integer", required: false, default: 512 },
+        ]
+
+        this.descriptors["pointlight"] = [
+            { name: "id", type: "string" },
+            { name: "color", type: "rgba" },
+            { name: "position", type: "vector3" },
+            { name: "enabled", type: "boolean", required: false, default: true },
+            { name: "intensity", type: "float", required: false, default: 1.0 },
+            { name: "distance", type: "float", required: false, default: 1000 },
+            { name: "decay", type: "float", required: false, default: 2.0 },
+            { name: "castshadow", type: "boolean", required: false, default: false },
+            { name: "shadowfar", type: "float", required: false, default: 500.0 },
+            { name: "shadowmapsize", type: "integer", required: false, default: 512 },
+        ]
+
 
         this.primaryNodeIds = ["textures", "materials", "graph", "specs"]
 
-        this.primitiveIds = ["cylinder", "rectangle", "triangle", "sphere", "nurbs", "box", "model3d", "lod", "polygon"]
+        this.primitiveIds = ["cylinder", "rectangle", "triangle", "sphere", "nurbs", "box", "model3d", "lod", "polygon", "spotlight", "pointlight"]
     }
 
     createCustomAttributeIfNotExists(obj) {
@@ -170,6 +199,22 @@ class MyVehicleData {
         let value = this.materials[id]
         if (value === undefined) return null
         return value
+    }
+
+    getLight(id) {
+        let value = this.lights[id]
+        if (value === undefined) return null
+        return value
+    }
+
+    addLight(light) {
+        var obj = this.getLight(light.id);
+        if (obj !== null && obj !== undefined) {
+            throw new Error("inconsistency: a light with id " + light.id + " already exists!");
+        }
+        this.lights[light.id] = light;
+        this.createCustomAttributeIfNotExists(light)
+        //console.debug("added light " + JSON.stringify(light));
     }
 
     addMaterial(material) {

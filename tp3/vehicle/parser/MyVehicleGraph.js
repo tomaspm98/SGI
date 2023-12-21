@@ -123,6 +123,11 @@ class MyVehicleGraph {
                     // Handle other primitives here
                     parent.add(new THREE.Mesh(Utils.createThreeGeometry(node)))
                 }
+            } else if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
+                const light = Utils.createThreeLight(node)
+                light.name = node.id
+                parent.add(light)
+                this.lightsMap.set(node.id, light)
             } else if (visited.hasOwnProperty(node.id + node.type)) {
                 const objCloned = visited[node.id + node.type].clone();
                 objCloned["isCloned"] = true;
@@ -173,7 +178,11 @@ class MyVehicleGraph {
             const element = stack.pop();
             const node = element.node;
             const sceneNode = element.sceneNode;
-            if (node.type === 'lod') {
+
+            if (node.type === "spotlight" || node.type === "pointlight" || node.type === "directionallight") {
+                // Do nothing for lights
+            }
+            else if (node.type === 'lod') {
                 // Handling LOD node types
                 for (let i = node.children.length - 1; i >= 0; i--) {
                     // The material, castShadow and receiveShadow that are passed to the children are the ones of the parent
