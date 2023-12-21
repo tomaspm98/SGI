@@ -26,6 +26,7 @@ class MyVehicleGraph {
             "wheelBR": null,
             "headlights": [],
             "brakelights": [],
+            "reverselights": [],
         };
         this.getWireframeValues();
     }
@@ -136,8 +137,13 @@ class MyVehicleGraph {
                 parent.add(light)
                 if (node.id.startsWith("headlight")) {
                     this.importantNodes.headlights.push(light)
+                    light.visible = false
                 } else if (node.id.startsWith("brakelight")) {
                     this.importantNodes.brakelights.push(light)
+                    light.visible = false
+                } else if (node.id.startsWith("reverselight")) {
+                    this.importantNodes.reverselights.push(light)
+                    light.visible = false
                 }
             } else if (visited.hasOwnProperty(node.id + node.type)) {
                 const objCloned = visited[node.id + node.type].clone();

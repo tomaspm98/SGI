@@ -5,7 +5,7 @@
         topSpeed="0.2"
         minSpeed="-0.1"
         acceleration="0.1"
-        deceleration="0.1"
+        deceleration="0.001"
         turnRate="0.25"
         brakingRate="0.01"
     />
@@ -98,10 +98,27 @@
         <node id="brake">
             <children>
                 <pointlight id="brakelight"
-                    color="60 60 60 0"
-                    position="0 100 0"
-                    intensity="1"
-                    decay="1"
+                    color="255 0 0 0"
+                    position="0 0 0"
+                    intensity="10"
+                    decay="2"
+                    enabled="false"
+                />
+
+                <pointlight id="reverselight"
+                    color="0 255 0 0"
+                    position="0 0 0"
+                    intensity="10"
+                    decay="2"
+                    enabled="false"
+                />
+
+                <pointlight id="headlight"
+                    color="0 0 255 0"
+                    position="0 0 0"
+                    intensity="10"
+                    decay="2"
+                    enabled="false"
                 />
             </children>
         </node>

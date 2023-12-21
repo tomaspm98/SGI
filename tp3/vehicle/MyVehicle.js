@@ -30,16 +30,77 @@ class MyVehicle {
     controlCar(event) {
         switch (event.keyCode) {
             case 87: // W
-                this._handleW(event)
+                switch (event.type) {
+                    case 'keydown':
+                        this.actualSpeed = Math.max(this.actualSpeed + this.accelerationRate, this.topSpeed)
+                        this.coasting = false
+                        break
+                    case 'keyup':
+                        this.coasting = true
+                        break
+                }
                 break
             case 83: // S
-                this._handleS(event)
+                switch (event.type) {
+                    case 'keydown':
+                        if (this.actualSpeed > 0) {
+                            this.actualSpeed = Math.max(this.actualSpeed - this.brakingRate, 0)
+                        } else {
+                            this.actualSpeed = Math.min(this.actualSpeed + this.brakingRate, 0)
+                        }
+                        for (const light of this.importantNodes.brakelights) {
+                            light.visible = true
+                        }
+                        this.coasting = false
+                        break
+                    case 'keyup':
+                        for (const light of this.importantNodes.brakelights) {
+                            light.visible = false
+                        }
+                        break
+                }
                 break
             case 65: // A
-                this._handleA(event)
+                switch (event.type) {
+                    case 'keydown':
+                        if (this.actualSpeed !== 0)
+                            this.actualRotation += this.turnRate
+                        break
+                }
                 break
             case 68: // D
-                this._handleD(event)
+                switch (event.type) {
+                    case 'keydown':
+                        if (this.actualSpeed !== 0)
+                            this.actualRotation -= this.turnRate
+                        break
+                }
+                break
+            case 82: // R
+                switch (event.type) {
+                    case 'keydown':
+                        this.actualSpeed = Math.min(this.actualSpeed - this.accelerationRate, this.minSpeed)
+                        this.coasting = false
+                        for (const light of this.importantNodes.reverselights) {
+                            light.visible = true
+                        }
+                        break
+                    case 'keyup':
+                        this.coasting = true
+                        for (const light of this.importantNodes.reverselights) {
+                            light.visible = false
+                        }
+                        break
+                }
+                break
+            case 76: // L
+                switch (event.type) {
+                    case 'keydown':
+                        for (const light of this.importantNodes.headlights) {
+                            light.visible = !light.visible
+                        }
+                        break
+                }
                 break
         }
     }
@@ -59,49 +120,6 @@ class MyVehicle {
         this.mesh.position.set(this.actualPosition.x, this.actualPosition.y, this.actualPosition.z)
         this.mesh.rotation.y = this.actualRotation
     }
-
-    _handleW(event) {
-        switch (event.type) {
-            case 'keydown':
-                this.actualSpeed = Math.max(this.actualSpeed + this.accelerationRate, this.topSpeed)
-                this.coasting = false
-                break
-            case 'keyup':
-                this.coasting = true
-                break
-        }
-    }
-
-    _handleS(event) {
-        switch (event.type) {
-            case 'keydown':
-                this.actualSpeed = Math.min(this.actualSpeed - this.accelerationRate, this.minSpeed)
-                this.coasting = false
-                break
-            case 'keyup':
-                this.coasting = true
-                break
-        }
-    }
-
-    _handleA(event) {
-        switch (event.type) {
-            case 'keydown':
-                if (this.actualSpeed !== 0)
-                    this.actualRotation += this.turnRate
-                break
-        }
-    }
-
-    _handleD(event) {
-        switch (event.type) {
-            case 'keydown':
-                if (this.actualSpeed !== 0)
-                    this.actualRotation -= this.turnRate
-                break
-        }
-    }
-
 }
 
 export { MyVehicle };
