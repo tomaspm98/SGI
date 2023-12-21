@@ -10,6 +10,7 @@ class MyVehicle {
     }
 
     constructor(mesh, importantNodes, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate, initialPosition, initialRotation) {
+        // Variables that describe the vehicle
         this.mesh = mesh
         this.topSpeed = topSpeed
         this.minSpeed = minSpeed
@@ -21,11 +22,13 @@ class MyVehicle {
         this.initialPosition = initialPosition
         this.initialRotation = initialRotation
 
+        // Variables that describe the state of the vehicle
         this.actualPosition = initialPosition
         this.actualRotationVehicle = initialRotation
         this.actualRotationWheel = 0
-
         this.actualSpeed = 0
+
+        // Variables that describe the actions of the vehicle
         this.coasting = false
         this.accelerating = false
         this.braking = false
@@ -141,17 +144,23 @@ class MyVehicle {
         }
 
         if (this.turningLeft) {
+            // If the car is not moving, it can't turn
             if (this.actualSpeed !== 0)
                 this.actualRotationVehicle -= this.turnRate
+            // Turning the wheels
             this.actualRotationWheel = Math.max(- this.turnRate + this.actualRotationWheel, -0.7)
         }
 
         if (this.turningRight) {
+            // If the car is not moving, it can't turn
             if (this.actualSpeed !== 0)
                 this.actualRotationVehicle += this.turnRate
+            // Turning the wheels
             this.actualRotationWheel = Math.min(this.turnRate + this.actualRotationWheel, 0.7)
         }
 
+        // When the vehicle is not accelerating or braking, it coasts
+        // Until it stops
         if (this.coasting) {
             this.actualSpeed += this.coastingRate * - Math.sign(this.actualSpeed)
             if (this.actualSpeed < 0.01 && this.actualSpeed > -0.01) {
@@ -160,23 +169,28 @@ class MyVehicle {
             }
         }
 
+        // Updating the vehicle position
         this.actualPosition.x += this.actualSpeed * Math.sin(this.actualRotationVehicle)
         this.actualPosition.z += this.actualSpeed * Math.cos(this.actualRotationVehicle)
-
         this.mesh.position.set(this.actualPosition.x, this.actualPosition.y, this.actualPosition.z)
+
+        // Updating the vehicle rotation
         this.mesh.rotation.y = this.actualRotationVehicle
 
+        // If the car is not turning, the wheels go back to their original position slowly
         if (!this.turningRight && this.actualRotationWheel > 0) {
             this.actualRotationWheel = Math.max(this.actualRotationWheel - this.turnRate, 0)
         } else if (!this.turningLeft && this.actualRotationWheel < 0) {
             this.actualRotationWheel = Math.min(this.actualRotationWheel + this.turnRate, 0)
         }
 
-        // TODO: make the front wheels spin
-
+        // Updating the wheels rotation on the y axis
         this.importantNodes.wheelFL.rotation.y = this.actualRotationWheel
         this.importantNodes.wheelFR.rotation.y = this.actualRotationWheel
 
+        // Updating the wheels rotation on the x axis
+        // TODO: make the front wheels spin
+        // TODO: implement this in shaders
         this.importantNodes.wheelBL.rotation.x += this.actualSpeed
         this.importantNodes.wheelBR.rotation.x += this.actualSpeed
     }
