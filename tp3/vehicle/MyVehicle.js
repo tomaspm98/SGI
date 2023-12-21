@@ -1,4 +1,6 @@
 import { MyVehicleRenderer } from './parser/MyVehicleRenderer.js'
+import * as THREE from 'three'
+
 
 class MyVehicle {
     static createVehicle(file, initialPosition = { x: 0, y: 0, z: 0 }, initialRotation = 0) {
@@ -118,18 +120,19 @@ class MyVehicle {
     }
 
     update() {
-        /*if (this.coasting) {
+        if (this.coasting) {
             this.actualSpeed += this.coastingRate * - Math.sign(this.actualSpeed)
             if (this.actualSpeed < 0.01 && this.actualSpeed > -0.01) {
                 this.actualSpeed = 0
                 this.coasting = false
             }
-        }*/
+        }
 
+        console.log(this.actualRotation)
         this.actualPosition.x += this.actualSpeed * Math.sin(this.actualRotation)
         this.actualPosition.z += this.actualSpeed * Math.cos(this.actualRotation)
 
-        //this.mesh.position.set(this.actualPosition.x, this.actualPosition.y, this.actualPosition.z)
+        this.mesh.position.set(this.actualPosition.x, this.actualPosition.y, this.actualPosition.z)
         this.mesh.rotation.y = this.actualRotation
 
         if (!this.rotating && this.actualRotationWheel > 0) {
@@ -138,15 +141,13 @@ class MyVehicle {
             this.actualRotationWheel = Math.min(this.actualRotationWheel + this.turnRate * 2, 0)
         }
 
+        // TODO: make the front wheels spin
 
-        //this.importantNodes.wheelBR.rotation.x += this.actualSpeed
-        //this.importantNodes.wheelBL.rotation.x += this.actualSpeed
-        //this.importantNodes.wheelFR.rotation.x += this.actualSpeed
-        //this.importantNodes.wheelFL.rotation.x += this.actualSpeed
+        this.importantNodes.wheelFL.rotation.y = this.actualRotationWheel
+        this.importantNodes.wheelFR.rotation.y = this.actualRotationWheel
 
-        this.importantNodes.wheelBR.rotation.y = this.actualRotationWheel
-        this.importantNodes.wheelBL.rotation.y = this.actualRotationWheel
-
+        this.importantNodes.wheelBL.rotation.x += this.actualSpeed
+        this.importantNodes.wheelBR.rotation.x += this.actualSpeed
     }
 }
 

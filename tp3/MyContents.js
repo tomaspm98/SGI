@@ -22,11 +22,7 @@ class MyContents {
    */
   init() {
     // create once
-    if (this.axis === null) {
-      // create and attach the axis to the scene
-      this.axis = new MyAxis(this);
-      this.app.scene.add(this.axis);
-    }
+
 
     const circuit = new MyCircuit("scene/circuits/circuit1.xml")
     circuit.build()
@@ -38,6 +34,11 @@ class MyContents {
     document.addEventListener('keydown', (event) => this.vehicle.controlCar(event))
     document.addEventListener('keyup', (event) => this.vehicle.controlCar(event))
 
+    if (this.axis === null) {
+      // create and attach the axis to the scene
+      this.axis = new MyAxis(this);
+      this.app.scene.add(this.axis);
+    }
   }
 
 
