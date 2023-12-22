@@ -28,7 +28,10 @@ class MyContents {
     circuit.build()
     this.app.scene = circuit.scene
 
-    this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml")
+    //this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml")
+    //this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle2/vehicle2.xml")
+    //this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle3/vehicle3.xml")
+    this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle_test/vehicleTest.xml")
     this.app.scene.add(this.vehicle.mesh)
 
     document.addEventListener('keydown', (event) => this.vehicle.controlCar(event))

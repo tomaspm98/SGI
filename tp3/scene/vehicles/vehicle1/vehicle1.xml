@@ -6,7 +6,7 @@
         minSpeed="-0.1"
         acceleration="0.01"
         deceleration="0.01"
-        turnRate="0.005"
+        turnRate="0.01"
         brakingRate="0.01"
     />
 
@@ -22,14 +22,14 @@
             shininess="0"
             textureref="tires"
         />
+
     </materials>
 
     <graph rootid="car">
         <node id="car">
             <transforms>
-                <translate value3="0 0 0" />
-                <!--<scale
-                value3="0.2 0.2 0.2" />-->
+                <translate value3="0 0.2 0" />
+                <scale value3="0.2 0.2 0.2" />
             </transforms>
             <children>
                 <noderef id="body" />
@@ -44,8 +44,7 @@
         <node id="body">
             <children>
                 <primitive>
-                    <cylinder base="1" top="1" height="0.75" slices="32" stacks="32"
-                        capsclose="true" />
+                    <model3d filepath="scene/vehicles/vehicle1/f1_car_color.gltf" />
                 </primitive>
             </children>
         </node>
@@ -87,7 +86,7 @@
 
         <node id="wheelFL">
             <transforms>
-                <translate value3="2.5 0 3" />
+                <translate value3="2.5 0 8.75" />
                 <rotate value3="0 0 0" />
             </transforms>
             <children>
@@ -97,7 +96,7 @@
 
         <node id="wheelFR">
             <transforms>
-                <translate value3="-2.5 0 3" />
+                <translate value3="-2.5 0 8.75" />
                 <rotate value3="0 0 0" />
             </transforms>
             <children>

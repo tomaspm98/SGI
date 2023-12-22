@@ -224,6 +224,8 @@ class MyVehicle {
         this.importantNodes.wheelBR.rotation.x += this.actualSpeed
         this.importantNodes.wheelFL.rotation.x += this.actualSpeed
         this.importantNodes.wheelFR.rotation.x += this.actualSpeed
+
+        console.log(this.mesh.position)
     }
 
     _translateToPivotPoint() {
