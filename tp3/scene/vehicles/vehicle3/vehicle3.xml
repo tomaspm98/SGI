@@ -115,7 +115,7 @@
             <children>
                 <spotlight id="brakelight3"
                     color="255 0 0 0"
-                    position="0 0.2 -4"
+                    position="0 0.4 -0.4"
                     intensity="2"
                     decay="2"
                     target="0 0 0"
@@ -125,7 +125,7 @@
 
                 <spotlight id="reverselight3"
                     color="255 255 255 0"
-                    position="0 0.6 0"
+                    position="0 0.4 -0.4"
                     intensity="2"
                     decay="2"
                     target="0 0 0"
@@ -135,7 +135,7 @@
 
                 <spotlight id="headlight3"
                     color="238 221 130 0"
-                    position="0 0 4"
+                    position="0 0.4 1"
                     intensity="5"
                     decay="2"
                     target="0 0 0"

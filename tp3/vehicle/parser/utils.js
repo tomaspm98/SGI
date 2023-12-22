@@ -138,10 +138,14 @@ function createThreeLight(light) {
             spotLight.visible = light.enabled
 
             const targetObject = new THREE.Object3D(); 
-            targetObject.position.set(light.position[0], light.position[1], light.position[2])
+            targetObject.position.set(light.position[0], 0, light.position[2])
             spotLight.add(targetObject)
             spotLight.target = targetObject
             console.log(spotLight)
+
+            const spotlightHelper = new THREE.SpotLightHelper(spotLight);
+            spotLight.add(spotlightHelper)
+
 
             return spotLight
 
