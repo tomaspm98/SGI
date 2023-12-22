@@ -21,6 +21,8 @@ class MyVehicle {
         this.importantNodes = importantNodes
         this.initialPosition = initialPosition
         this.initialRotation = initialRotation
+        this.importantNodes.wheelFL.rotation.order = 'YXZ';
+        this.importantNodes.wheelFR.rotation.order = 'YXZ';
 
         // Variables that describe the state of the vehicle
         this.actualPosition = initialPosition
@@ -195,6 +197,8 @@ class MyVehicle {
         // TODO: implement this in shaders
         this.importantNodes.wheelBL.rotation.x += this.actualSpeed
         this.importantNodes.wheelBR.rotation.x += this.actualSpeed
+        this.importantNodes.wheelFL.rotation.x += this.actualSpeed
+        this.importantNodes.wheelFR.rotation.x += this.actualSpeed
     }
 
     _translateToPivotPoint() {

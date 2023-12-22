@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { MyVehicleReader } from './MyVehicleReader.js';
 import { MyVehicleGraph } from './MyVehicleGraph.js';
+import * as Utils from './utils.js';
 
 
 class MyVehicleRenderer {
