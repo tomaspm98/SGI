@@ -43,7 +43,7 @@
 
         <node id="body">
             <transforms>
-                <translate value3="0 0.15 0" />
+                <translate value3="0 0.20 0" />
                 <scale value3="0.5 0.5 0.5" />
                 <rotate value3="0 3.14159 0" />
             </transforms>    
@@ -73,7 +73,7 @@
 
         <node id="wheelFR">
             <transforms>
-                <translate value3="-0.45 0.375 0.9" />
+                <translate value3="-0.45 0.4 0.9" />
                 <rotate value3="0 0 0" />
             </transforms>
             <children>
@@ -83,7 +83,7 @@
 
         <node id="wheelFL">
             <transforms>
-                <translate value3="0.45 0.375 0.9" />
+                <translate value3="0.45 0.4 0.9" />
                 <rotate value3="0 0 0" />
             </transforms>
             <children>
@@ -113,27 +113,33 @@
 
         <node id="brake">
             <children>
-                <pointlight id="brakelight"
+                <spotlight id="brakelight3"
                     color="255 0 0 0"
-                    position="0 0 0"
-                    intensity="10"
+                    position="0 0.4 -0.4"
+                    intensity="2"
                     decay="2"
+                    target="0 0 0"
+                    angle="15"
                     enabled="false"
                 />
 
-                <pointlight id="reverselight"
-                    color="0 255 0 0"
-                    position="0 0 0"
-                    intensity="10"
+                <spotlight id="reverselight3"
+                    color="255 255 255 0"
+                    position="0 0.4 -0.4"
+                    intensity="2"
                     decay="2"
+                    target="0 0 0"
+                    angle="15"
                     enabled="false"
                 />
 
-                <pointlight id="headlight"
-                    color="0 0 255 0"
-                    position="0 0 0"
-                    intensity="10"
+                <spotlight id="headlight3"
+                    color="238 221 130 0"
+                    position="0 0.4 1"
+                    intensity="5"
                     decay="2"
+                    target="0 0 0"
+                    angle="25"
                     enabled="false"
                 />
             </children>
