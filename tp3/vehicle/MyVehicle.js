@@ -44,7 +44,8 @@ class MyVehicle {
             case 87: // W
                 switch (event.type) {
                     case 'keydown':
-                        this.accelerating = true
+                        // If the car is reversing, it can't accelerate
+                        this.accelerating = !this.reversing && this.actualSpeed >= 0
                         this.coasting = false
                         break
                     case 'keyup':
@@ -98,20 +99,24 @@ class MyVehicle {
             case 82: // R
                 switch (event.type) {
                     case 'keydown':
-                        if (!this.reversing) {
+                        const canReverse = this.actualSpeed <= 0 && !this.accelerating
+                        if (canReverse) {
                             for (const light of this.importantNodes.reverselights) {
                                 light.visible = true
                             }
+                            console.log('reversing')
                         }
-                        this.reversing = true
-                        this.coasting = false
+                        this.reversing = canReverse
+                        this.coasting = !canReverse
                         break
                     case 'keyup':
-                        for (const light of this.importantNodes.reverselights) {
-                            light.visible = false
+                        if (this.reversing) {
+                            for (const light of this.importantNodes.reverselights) {
+                                light.visible = false
+                            }
+                            this.reversing = false
+                            this.coasting = true
                         }
-                        this.reversing = false
-                        this.coasting = true
                         break
                 }
                 break
