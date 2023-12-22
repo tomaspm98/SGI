@@ -200,7 +200,8 @@ class MyVehicle {
         // Updating the vehicle position
         this.actualPosition.x += this.actualSpeed * Math.sin(this.actualRotationVehicle)
         this.actualPosition.z += this.actualSpeed * Math.cos(this.actualRotationVehicle)
-        this.mesh.position.set(this.actualPosition.x, this.actualPosition.y, this.actualPosition.z)
+        this.mesh.position.setX(this.actualPosition.x)
+        this.mesh.position.setZ(this.actualPosition.z)
 
         // Updating the vehicle rotation
         this.mesh.rotation.y = this.actualRotationVehicle
