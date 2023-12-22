@@ -42,6 +42,9 @@
         </node>
 
         <node id="body">
+            <transforms>
+                <translate value3="0 0.01 0" />
+            </transforms>    
             <children>
                 <primitive>
                     <model3d filepath="scene/vehicles/vehicle1/f1_car_color.gltf" />
