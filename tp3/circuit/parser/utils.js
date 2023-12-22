@@ -1,6 +1,25 @@
 import * as THREE from 'three';
-import { MyNurbsBuilder } from './../../utils/MyNurbsBuilder.js';
+import { MyNurbsBuilder } from '../../utils/MyNurbsBuilder.js';
 import { MyTriangle } from '../../utils/MyTriangle.js';
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+
+function loadModel(filepath, parent) {
+    const loader = new GLTFLoader();
+    loader.load(filepath, function (gltf) {
+        parent.add(gltf.scene)
+        // If the model is loaded after the method updateInheritAttributesGraph
+        // It is necessary to update the inherit attributes of the model
+        gltf.scene.traverse((child) => {
+            if (child.isMesh) {
+                child.castShadow = parent.castShadow
+                child.receiveShadow = parent.receiveShadow
+            }
+        })
+    }, undefined, function (error) {
+
+    });
+}
 
 /**
  * Function to create a THREE.js geometry based on the provided primitive.
@@ -316,4 +335,4 @@ function createPolygon(stacks, slices, radius, centerColor, edgeColor) {
     return geometry
 }
 
-export { createThreeGeometry, applyTransformation, createThreeLight, convertFilterThree, loadMipmap };
+export { createThreeGeometry, applyTransformation, createThreeLight, convertFilterThree, loadMipmap, loadModel };

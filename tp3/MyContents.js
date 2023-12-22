@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { MyAxis } from "./MyAxis.js";
-import { MyCircuitReader } from "./circuit/MyCircuitReader.js";
+import { MyCircuit } from "./circuit/MyCircuit.js";
+import { MyVehicle } from "./vehicle/MyVehicle.js";
 
 
 /**
@@ -21,15 +22,23 @@ class MyContents {
    */
   init() {
     // create once
+
+
+    const circuit = new MyCircuit("scene/circuits/circuit1.xml")
+    circuit.build()
+    this.app.scene = circuit.scene
+
+    this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml")
+    this.app.scene.add(this.vehicle.mesh)
+
+    document.addEventListener('keydown', (event) => this.vehicle.controlCar(event))
+    document.addEventListener('keyup', (event) => this.vehicle.controlCar(event))
+
     if (this.axis === null) {
       // create and attach the axis to the scene
       this.axis = new MyAxis(this);
       this.app.scene.add(this.axis);
     }
-
-    const circuitReader = new MyCircuitReader()
-    const circuitScene = circuitReader.buildCircuitScene('scene/circuits/circuit1.xml')
-    this.app.scene = circuitScene
   }
 
 
@@ -38,6 +47,8 @@ class MyContents {
    * this method is called from the render method of the app
    */
   update() {
+    this.vehicle.update()
+
   }
 }
 

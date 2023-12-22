@@ -6,7 +6,7 @@
     <fog color="0 0 0 0" near="-1" far="-1" />
 
     <skybox
-        size="200 200 200"
+        size="1000 1000 1000"
         center="0 0 0"
         emissive="0.2 0.2 0.2 1"
         intensity="3"
@@ -42,8 +42,9 @@
 
 
     <activatables>
-        <powerup id="id1" subtype="1" position="0 0 0" scale="1 1 1" rotation="0 0 0" />
-        <obstacle id="id1" subtype="1" position="0 0 0" scale="1 1 1" rotation="0 0 0" />
+        <!--<powerup
+        id="id1" subtype="1" position="0 0 0" scale="1 1 1" rotation="0 0 0" />
+        <obstacle id="id1" subtype="1" position="0 0 0" scale="1 1 1" rotation="0 0 0" />-->
     </activatables>
 
     <graph rootid="light">
