@@ -165,16 +165,20 @@ class MyVehicle {
 
         if (this.turningLeft) {
             // If the car is not moving, it can't turn
-            if (this.actualSpeed !== 0)
+            if (this.actualSpeed > 0)
                 this.actualRotationVehicle -= this.turnRate
+            else if (this.actualSpeed < 0)
+                this.actualRotationVehicle += this.turnRate
             // Turning the wheels
             this.actualRotationWheel = Math.max(- this.turnRate + this.actualRotationWheel, -0.7)
         }
 
         if (this.turningRight) {
             // If the car is not moving, it can't turn
-            if (this.actualSpeed !== 0)
+            if (this.actualSpeed > 0)
                 this.actualRotationVehicle += this.turnRate
+            else if (this.actualSpeed < 0)
+                this.actualRotationVehicle -= this.turnRate
             // Turning the wheels
             this.actualRotationWheel = Math.min(this.turnRate + this.actualRotationWheel, 0.7)
         }
