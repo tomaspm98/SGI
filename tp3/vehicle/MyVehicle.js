@@ -21,6 +21,8 @@ class MyVehicle {
         this.importantNodes = importantNodes
         this.initialPosition = initialPosition
         this.initialRotation = initialRotation
+        this.importantNodes.wheelFL.rotation.order = 'YXZ';
+        this.importantNodes.wheelFR.rotation.order = 'YXZ';
 
         // Variables that describe the state of the vehicle
         this.actualPosition = initialPosition
