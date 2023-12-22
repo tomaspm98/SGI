@@ -113,27 +113,33 @@
 
         <node id="brake">
             <children>
-                <pointlight id="brakelight"
+                <spotlight id="brakelight2"
                     color="255 0 0 0"
-                    position="0 0 0"
+                    position="0 0.4 -1.5"
                     intensity="10"
                     decay="2"
+                    target="0 0 0"
+                    angle="15"
                     enabled="false"
                 />
 
-                <pointlight id="reverselight"
-                    color="0 255 0 0"
-                    position="0 0 0"
-                    intensity="10"
+                <spotlight id="reverselight2"
+                    color="255 255 255 0"
+                    position="0 0.4 -1"
+                    intensity="2"
                     decay="2"
+                    target="0 0 0"
+                    angle="15"
                     enabled="false"
                 />
 
-                <pointlight id="headlight"
-                    color="0 0 255 0"
+                <spotlight id="headlight2"
+                    color="238 221 130 0"
                     position="0 0 0"
-                    intensity="10"
+                    intensity="5"
                     decay="2"
+                    target="0 0 0"
+                    angle="25"
                     enabled="false"
                 />
             </children>
