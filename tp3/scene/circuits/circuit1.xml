@@ -6,7 +6,7 @@
     <fog color="0 0 0 0" near="-1" far="-1" />
 
     <skybox
-        size="200 200 200"
+        size="1000 1000 1000"
         center="0 0 0"
         emissive="0.2 0.2 0.2 1"
         intensity="3"

@@ -35,6 +35,8 @@ class MyVehicle {
         this.turningLeft = false
         this.turningRight = false
         this.reversing = false
+
+        this._translateToPivotPoint()
     }
 
     controlCar(event) {
@@ -193,6 +195,24 @@ class MyVehicle {
         // TODO: implement this in shaders
         this.importantNodes.wheelBL.rotation.x += this.actualSpeed
         this.importantNodes.wheelBR.rotation.x += this.actualSpeed
+    }
+
+    _translateToPivotPoint() {
+        // This function translates the child meshes of vehicle group
+        // to the center of the wheels
+        // This is done so that the vehicle can rotate around its center
+        const pos1 = this.importantNodes.wheelBL.position
+        const pos2 = this.importantNodes.wheelBR.position
+
+        const x = (pos1.x + pos2.x) / 2
+        const y = (pos1.y + pos2.y) / 2
+        const z = (pos1.z + pos2.z) / 2
+
+        for (const mesh1 of this.mesh.children) {
+            mesh1.position.x -= x
+            mesh1.position.y -= y
+            mesh1.position.z -= z
+        }
     }
 }
 

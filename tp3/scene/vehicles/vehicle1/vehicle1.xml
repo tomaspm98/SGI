@@ -2,11 +2,11 @@
 <yaf>
 
     <specs
-        topSpeed="0.1"
+        topSpeed="0.5"
         minSpeed="-0.01"
         acceleration="0.01"
         deceleration="0.01"
-        turnRate="0.01"
+        turnRate="0.005"
         brakingRate="0.01"
     />
 
@@ -26,14 +26,25 @@
         <node id="car">
             <transforms>
                 <translate value3="0 0 0" />
-                <scale value3="0.2 0.2 0.2" />
+                <!--<scale
+                value3="0.2 0.2 0.2" />-->
             </transforms>
             <children>
+                <noderef id="body" />
                 <noderef id="wheelBR" />
                 <noderef id="wheelBL" />
                 <noderef id="wheelFR" />
                 <noderef id="wheelFL" />
                 <noderef id="brake" />
+            </children>
+        </node>
+
+        <node id="body">
+            <children>
+                <primitive>
+                    <cylinder base="1" top="1" height="0.75" slices="32" stacks="32"
+                        capsclose="true" />
+                </primitive>
             </children>
         </node>
 
@@ -54,7 +65,7 @@
 
         <node id="wheelBR">
             <transforms>
-                <translate value3="-3.0 0 -2.75" />
+                <translate value3="-3.0 0 -3" />
                 <rotate value3="0 0 0" />
             </transforms>
             <children>
@@ -64,7 +75,7 @@
 
         <node id="wheelBL">
             <transforms>
-                <translate value3="3.0 0 -2.75" />
+                <translate value3="3.0 0 -3" />
                 <rotate value3="0 0 0" />
             </transforms>
             <children>
@@ -74,7 +85,7 @@
 
         <node id="wheelFL">
             <transforms>
-                <translate value3="2.5 0 8.75" />
+                <translate value3="2.5 0 3" />
                 <rotate value3="0 0 0" />
             </transforms>
             <children>
@@ -84,7 +95,7 @@
 
         <node id="wheelFR">
             <transforms>
-                <translate value3="-2.5 0 8.75" />
+                <translate value3="-2.5 0 3" />
                 <rotate value3="0 0 0" />
             </transforms>
             <children>
