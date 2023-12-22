@@ -163,24 +163,28 @@ class MyVehicle {
         }
 
 
+        // Turning left
+        // We avoid using nested if statements for performance reasons
         if (this.turningLeft) {
-            // If the car is not moving, it can't turn
-            if (this.actualSpeed > 0)
-                this.actualRotationVehicle -= this.turnRate
-            else if (this.actualSpeed < 0)
-                this.actualRotationVehicle += this.turnRate
-            // Turning the wheels
-            this.actualRotationWheel = Math.max(- this.turnRate + this.actualRotationWheel, -0.7)
+            this.actualRotationWheel = Math.max(- this.turnRate * 5 + this.actualRotationWheel, -0.7)
         }
 
+        if (this.turningLeft && this.actualSpeed > 0) {
+            this.actualRotationVehicle -= this.turnRate
+        } else if (this.turningLeft && this.actualSpeed < 0) {
+            this.actualRotationVehicle += this.turnRate
+        }
+
+        // Turning right
+        // We avoid using nested if statements for performance reasons
         if (this.turningRight) {
-            // If the car is not moving, it can't turn
-            if (this.actualSpeed > 0)
-                this.actualRotationVehicle += this.turnRate
-            else if (this.actualSpeed < 0)
-                this.actualRotationVehicle -= this.turnRate
-            // Turning the wheels
-            this.actualRotationWheel = Math.min(this.turnRate + this.actualRotationWheel, 0.7)
+            this.actualRotationWheel = Math.min(this.turnRate * 5 + this.actualRotationWheel, 0.7)
+        }
+
+        if (this.turningRight && this.actualSpeed > 0) {
+            this.actualRotationVehicle += this.turnRate
+        } else if (this.turningRight && this.actualSpeed < 0) {
+            this.actualRotationVehicle -= this.turnRate
         }
 
         // When the vehicle is not accelerating or braking, it coasts
@@ -203,9 +207,9 @@ class MyVehicle {
 
         // If the car is not turning, the wheels go back to their original position slowly
         if (!this.turningRight && this.actualRotationWheel > 0) {
-            this.actualRotationWheel = Math.max(this.actualRotationWheel - this.turnRate, 0)
+            this.actualRotationWheel = Math.max(this.actualRotationWheel - 5 * this.turnRate, 0)
         } else if (!this.turningLeft && this.actualRotationWheel < 0) {
-            this.actualRotationWheel = Math.min(this.actualRotationWheel + this.turnRate, 0)
+            this.actualRotationWheel = Math.min(this.actualRotationWheel + 5 * this.turnRate, 0)
         }
 
         // Updating the wheels rotation on the y axis
