@@ -11,6 +11,7 @@
     />
 
     <textures>
+        <texture id="tires" filepath="scene/vehicles/vehicle1/tires_tex.png" />
     </textures>
 
     <materials>
@@ -19,6 +20,7 @@
             color="1.0 1.0 1.0 1.0"
             specular="0 0 0 0"
             shininess="0"
+            textureref="tires"
         />
     </materials>
 

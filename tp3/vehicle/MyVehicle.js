@@ -21,6 +21,8 @@ class MyVehicle {
         this.importantNodes = importantNodes
         this.initialPosition = initialPosition
         this.initialRotation = initialRotation
+        this.importantNodes.wheelFL.rotation.order = 'YXZ';
+        this.importantNodes.wheelFR.rotation.order = 'YXZ';
 
         // Variables that describe the state of the vehicle
         this.actualPosition = initialPosition
@@ -45,12 +47,19 @@ class MyVehicle {
                 switch (event.type) {
                     case 'keydown':
                         // If the car is reversing, it can't accelerate
-                        this.accelerating = !this.reversing && this.actualSpeed >= 0
-                        this.coasting = false
+                        if (this.accelerating) {
+                            break
+                        }
+                        else if (!this.reversing && this.actualSpeed >= 0) {
+                            this.accelerating = true
+                            this.coasting = false
+                        }
                         break
                     case 'keyup':
-                        this.accelerating = false
-                        this.coasting = true
+                        if (this.accelerating) {
+                            this.accelerating = false
+                            this.coasting = true
+                        }
                         break
                 }
                 break
@@ -58,10 +67,11 @@ class MyVehicle {
                 switch (event.type) {
                     case 'keydown':
                         // To avoid putting the lights on when they are already on
-                        if (!this.braking) {
-                            for (const light of this.importantNodes.brakelights) {
-                                light.visible = true
-                            }
+                        if (this.braking) {
+                            break
+                        }
+                        for (const light of this.importantNodes.brakelights) {
+                            light.visible = true
                         }
                         this.braking = true
                         this.coasting = false
@@ -99,23 +109,23 @@ class MyVehicle {
             case 82: // R
                 switch (event.type) {
                     case 'keydown':
-                        const canReverse = this.actualSpeed <= 0 && !this.accelerating
-                        if (canReverse) {
+                        if (this.reversing) {
+                            break
+                        } else if (this.actualSpeed <= 0 && !this.accelerating) {
                             for (const light of this.importantNodes.reverselights) {
                                 light.visible = true
                             }
-                            console.log('reversing')
+                            this.reversing = true
+                            this.coasting = false
                         }
-                        this.reversing = canReverse
-                        this.coasting = !canReverse
                         break
                     case 'keyup':
                         if (this.reversing) {
                             for (const light of this.importantNodes.reverselights) {
                                 light.visible = false
+                                this.reversing = false
+                                this.coasting = true
                             }
-                            this.reversing = false
-                            this.coasting = true
                         }
                         break
                 }
@@ -200,6 +210,8 @@ class MyVehicle {
         // TODO: implement this in shaders
         this.importantNodes.wheelBL.rotation.x += this.actualSpeed
         this.importantNodes.wheelBR.rotation.x += this.actualSpeed
+        this.importantNodes.wheelFL.rotation.x += this.actualSpeed
+        this.importantNodes.wheelFR.rotation.x += this.actualSpeed
     }
 
     _translateToPivotPoint() {
