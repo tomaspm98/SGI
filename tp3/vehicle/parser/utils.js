@@ -6,7 +6,8 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 function loadModel(filepath, parent) {
     const loader = new GLTFLoader();
-    loader.load(filepath, function (gltf) {
+    loader.load(filepath.representations[0].filepath, function (gltf) {
+        console.log(gltf.scene)
         parent.add(gltf.scene)
         // If the model is loaded after the method updateInheritAttributesGraph
         // It is necessary to update the inherit attributes of the model
