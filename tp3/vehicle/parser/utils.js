@@ -130,12 +130,19 @@ function createThreeLight(light) {
             )
 
             spotLight.position.set(...light.position)
-            spotLight.target.position.set(...light.target)
+            //spotLight.target.position.set(...light.target)
             spotLight.castShadow = light.castshadow
             spotLight.shadow.camera.far = light.shadowfar
             spotLight.shadow.mapSize.width = light.shadowmapsize
             spotLight.shadow.mapSize.height = light.shadowmapsize
             spotLight.visible = light.enabled
+
+            const targetObject = new THREE.Object3D(); 
+            targetObject.position.set(light.position[0], 0, light.position[2])
+            spotLight.add(targetObject)
+            spotLight.target = targetObject
+            console.log(spotLight)
+
             return spotLight
 
         case 'pointlight':
