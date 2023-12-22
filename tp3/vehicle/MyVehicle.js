@@ -46,12 +46,20 @@ class MyVehicle {
             case 87: // W
                 switch (event.type) {
                     case 'keydown':
-                        this.accelerating = true
-                        this.coasting = false
+                        // If the car is reversing, it can't accelerate
+                        if (this.accelerating) {
+                            break
+                        }
+                        else if (!this.reversing && this.actualSpeed >= 0) {
+                            this.accelerating = true
+                            this.coasting = false
+                        }
                         break
                     case 'keyup':
-                        this.accelerating = false
-                        this.coasting = true
+                        if (this.accelerating) {
+                            this.accelerating = false
+                            this.coasting = true
+                        }
                         break
                 }
                 break
@@ -59,10 +67,11 @@ class MyVehicle {
                 switch (event.type) {
                     case 'keydown':
                         // To avoid putting the lights on when they are already on
-                        if (!this.braking) {
-                            for (const light of this.importantNodes.brakelights) {
-                                light.visible = true
-                            }
+                        if (this.braking) {
+                            break
+                        }
+                        for (const light of this.importantNodes.brakelights) {
+                            light.visible = true
                         }
                         this.braking = true
                         this.coasting = false
@@ -100,20 +109,24 @@ class MyVehicle {
             case 82: // R
                 switch (event.type) {
                     case 'keydown':
-                        if (!this.reversing) {
+                        if (this.reversing) {
+                            break
+                        } else if (this.actualSpeed <= 0 && !this.accelerating) {
                             for (const light of this.importantNodes.reverselights) {
                                 light.visible = true
                             }
+                            this.reversing = true
+                            this.coasting = false
                         }
-                        this.reversing = true
-                        this.coasting = false
                         break
                     case 'keyup':
-                        for (const light of this.importantNodes.reverselights) {
-                            light.visible = false
+                        if (this.reversing) {
+                            for (const light of this.importantNodes.reverselights) {
+                                light.visible = false
+                                this.reversing = false
+                                this.coasting = true
+                            }
                         }
-                        this.reversing = false
-                        this.coasting = true
                         break
                 }
                 break
@@ -139,28 +152,39 @@ class MyVehicle {
             this.actualSpeed = Math.min(this.actualSpeed + this.accelerationRate, this.topSpeed)
         }
 
-        if (this.braking) {
+        if (this.braking && this.actualSpeed > 0) {
             this.actualSpeed = Math.max(this.actualSpeed - this.brakingRate, 0)
+        } else if (this.braking && this.actualSpeed < 0) {
+            this.actualSpeed = Math.min(this.actualSpeed + this.brakingRate, 0)
         }
 
         if (this.reversing) {
             this.actualSpeed = Math.max(this.actualSpeed - this.accelerationRate, this.minSpeed)
         }
 
+
+        // Turning left
+        // We avoid using nested if statements for performance reasons
         if (this.turningLeft) {
-            // If the car is not moving, it can't turn
-            if (this.actualSpeed !== 0)
-                this.actualRotationVehicle -= this.turnRate
-            // Turning the wheels
-            this.actualRotationWheel = Math.max(- this.turnRate + this.actualRotationWheel, -0.7)
+            this.actualRotationWheel = Math.max(- this.turnRate * 5 + this.actualRotationWheel, -0.7)
         }
 
+        if (this.turningLeft && this.actualSpeed > 0) {
+            this.actualRotationVehicle -= this.turnRate
+        } else if (this.turningLeft && this.actualSpeed < 0) {
+            this.actualRotationVehicle += this.turnRate
+        }
+
+        // Turning right
+        // We avoid using nested if statements for performance reasons
         if (this.turningRight) {
-            // If the car is not moving, it can't turn
-            if (this.actualSpeed !== 0)
-                this.actualRotationVehicle += this.turnRate
-            // Turning the wheels
-            this.actualRotationWheel = Math.min(this.turnRate + this.actualRotationWheel, 0.7)
+            this.actualRotationWheel = Math.min(this.turnRate * 5 + this.actualRotationWheel, 0.7)
+        }
+
+        if (this.turningRight && this.actualSpeed > 0) {
+            this.actualRotationVehicle += this.turnRate
+        } else if (this.turningRight && this.actualSpeed < 0) {
+            this.actualRotationVehicle -= this.turnRate
         }
 
         // When the vehicle is not accelerating or braking, it coasts
@@ -184,9 +208,9 @@ class MyVehicle {
 
         // If the car is not turning, the wheels go back to their original position slowly
         if (!this.turningRight && this.actualRotationWheel > 0) {
-            this.actualRotationWheel = Math.max(this.actualRotationWheel - this.turnRate, 0)
+            this.actualRotationWheel = Math.max(this.actualRotationWheel - 5 * this.turnRate, 0)
         } else if (!this.turningLeft && this.actualRotationWheel < 0) {
-            this.actualRotationWheel = Math.min(this.actualRotationWheel + this.turnRate, 0)
+            this.actualRotationWheel = Math.min(this.actualRotationWheel + 5 * this.turnRate, 0)
         }
 
         // Updating the wheels rotation on the y axis

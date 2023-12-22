@@ -3,7 +3,7 @@
 
     <specs
         topSpeed="0.5"
-        minSpeed="-0.01"
+        minSpeed="-0.1"
         acceleration="0.01"
         deceleration="0.01"
         turnRate="0.01"
