@@ -80,7 +80,7 @@ class MyVehicle {
                         for (const light of this.importantNodes.brakelights) {
                             light.visible = false
                         }
-                        if (this.actualSpeed !== 0)
+                        if (this.actualSpeed !== 0 && !this.reversing && !this.accelerating)
                             this.coasting = true
                         this.braking = false
                         break
