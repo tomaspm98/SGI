@@ -152,13 +152,16 @@ class MyVehicle {
             this.actualSpeed = Math.min(this.actualSpeed + this.accelerationRate, this.topSpeed)
         }
 
-        if (this.braking) {
+        if (this.braking && this.actualSpeed > 0) {
             this.actualSpeed = Math.max(this.actualSpeed - this.brakingRate, 0)
+        } else if (this.braking && this.actualSpeed < 0) {
+            this.actualSpeed = Math.min(this.actualSpeed + this.brakingRate, 0)
         }
 
         if (this.reversing) {
             this.actualSpeed = Math.max(this.actualSpeed - this.accelerationRate, this.minSpeed)
         }
+
 
         if (this.turningLeft) {
             // If the car is not moving, it can't turn
