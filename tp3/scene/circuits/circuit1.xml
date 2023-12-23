@@ -48,9 +48,9 @@
     </materials>
 
     <track filepath="scene/f1-circuits/ae-2009.geojson"
-        size="10"
+        size="20"
         segments="500"
-        width="2"
+        width="4"
         texture="scene/textures/asphalt-texture.jpg"
     />
 
@@ -69,7 +69,10 @@
                 <noderef id="parking_lot1" />
                 <noderef id="parking_lot2" />
                 <noderef id="parking_lot3" />
-
+                <noderef id="start" />
+                <noderef id="check line" />
+                <noderef id="stands2Benches1" />
+                <noderef id="stands2Benches2" />
             </children>
         </node>
 
@@ -84,7 +87,7 @@
 
             <pointlight id="light2"
                 color="60 60 60 0"
-                position="15 100 -100"
+                position="15 100 -200"
                 intensity="1"
                 decay="1"
                 />
@@ -109,7 +112,7 @@
 
         <node id="parking_lot1">
             <transforms>
-                <translate value3="0 0 -100" />
+                <translate value3="0 0 -200" />
                 <rotate value3="0 0 0" />
             </transforms>    
 
@@ -122,7 +125,7 @@
 
         <node id="parking_lot2">
             <transforms>
-                <translate value3="15 0 -100.5" />
+                <translate value3="15 0 -200.5" />
                 <rotate value3="0 0 0" />
             </transforms>    
 
@@ -135,7 +138,7 @@
 
         <node id="parking_lot3_garage">
             <transforms>
-                <translate value3="31 0 -104" />
+                <translate value3="31 0 -204" />
                 <scale value3="0.02 0.03 0.015" />
                 <rotate value3="0 0 0" />
             </transforms>    
@@ -149,7 +152,7 @@
 
         <node id="parking_lot3_ground">
             <transforms>
-                <translate value3="30 0.1 -100" />
+                <translate value3="30 0.1 -200" />
                 <scale value3="1 1 10" />
                 <rotate value3="-1.5708 0 0" />
             </transforms> 
@@ -165,7 +168,7 @@
         
         <node id="parking_lot3_fence1">
             <transforms>
-                <translate value3="25 0.1 -100.5" />
+                <translate value3="25 0.1 -200.5" />
                 <scale value3="0.025 0.01 0.02" />
                 <rotate value3="0 1.5708 0" />
             </transforms> 
@@ -179,7 +182,7 @@
 
         <node id="parking_lot3_fence2">
             <transforms>
-                <translate value3="37 0.1 -100.5" />
+                <translate value3="37 0.1 -200.5" />
                 <scale value3="0.025 0.01 0.02" />
                 <rotate value3="0 1.5708 0" />
             </transforms> 
@@ -193,7 +196,7 @@
 
         <node id="parking_lot3_fence3">
             <transforms>
-                <translate value3="31 0.1 -106.5" />
+                <translate value3="31 0.1 -206.5" />
                 <scale value3="0.025 0.01 0.02" />
                 <rotate value3="0 0 0" />
             </transforms> 
@@ -220,6 +223,88 @@
                 <noderef id="fences" />
             </children>  
         </node>    
+
+        <node id="start">
+            <transforms>
+                <translate value3="0 0 0.1" />
+                <rotate value3="0 4.8416 0" />
+                <scale value3="0.5 0.5 0.5" />
+            </transforms>
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/race_drag_start_and_finish_line/scene.gltf" />
+                </primitive>
+            </children>
+        </node>  
+
+        <node id="check line">
+        <transforms>
+            <translate value3="-0.09 0.001 -0.7" />
+            <rotate value3="0 0.129 0" />
+            <scale value3="0.0312 0.001 0.003" />
+        </transforms>
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/checkered_tile_floor/scene.gltf" />
+                </primitive>
+            </children>  
+        </node>
+
+        <node id="stands1">
+        <transforms>
+            <translate value3="-10 0 0" />
+            <rotate value3="0 0.129 0" />
+            <scale value3="0.5 0.5 0.5" />
+        </transforms>
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/stands/untitled.gltf" />
+                </primitive>
+            </children>  
+        </node>
+
+        <node id="stands2">
+        <transforms>
+            <translate value3="-6.8 0 24.75" />
+            <rotate value3="0 0.129 0" />
+            <scale value3="0.5 0.5 0.5" />
+        </transforms>
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/stands/untitled.gltf" />
+                </primitive>
+            </children>  
+        </node>
+
+        <node id="stands2Benches">
+
+            <children>
+                <noderef id="stands1"/>
+                <noderef id="stands2" />
+            </children>
+        </node>  
+
+        <node id="stands2Benches1">
+            <transforms>
+                <translate value3="0 0 0" />
+                <rotate value3="0 3.14159 0" />
+            </transforms>
+
+            <children>
+                <noderef id="stands2Benches"/>
+            </children>
+        </node>     
+
+        <node id="stands2Benches2">
+            <transforms>
+
+            </transforms>
+
+            <children>
+                <noderef id="stands2Benches"/>
+            </children>
+        </node> 
 
     </graph>
 </yaf>
