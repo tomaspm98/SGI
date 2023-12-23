@@ -27,6 +27,7 @@ class MyContents {
 
     this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml")
     this.app.scene.add(this.vehicle.mesh)
+    console.log(this.vehicle.mesh)
 
     this.activatablesMeshes = []
     for (const activatable of this.circuit.activatables) {
@@ -39,12 +40,11 @@ class MyContents {
   }
 
   collisionDetectionNarrowPhase(activeObject, passiveObjects) {
-    const activeObjectBox = new THREE.Box3().setFromObject(activeObject)
     for (const passiveObject of passiveObjects) {
       const passiveObjectBox = new THREE.Box3().setFromObject(passiveObject.mesh)
-      if (activeObjectBox.containsBox(passiveObjectBox)) {
+      /*if (this.vehicle.boundingBox.intersectBox3(passiveObjectBox)) {
         return true
-      }
+      }*/
     }
     return false
   }

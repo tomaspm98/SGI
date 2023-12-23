@@ -41,6 +41,7 @@ class MyVehicle {
         this._translateToPivotPoint()
 
         this._createBoundingBox()
+        this._createBoundingBoxHelper()
     }
 
     controlCar(event) {
@@ -227,7 +228,10 @@ class MyVehicle {
         this.importantNodes.wheelFL.rotation.x += this.actualSpeed
         this.importantNodes.wheelFR.rotation.x += this.actualSpeed
 
-        this.boundingBox.applyMatrix4(this.mesh.matrixWorld)
+        //this.mesh.updateMatrixWorld()
+        this.obb.copy(this.originalOBB)
+        this.obb.applyMatrix4(this.mesh.matrixWorld)
+        console.log(this.obb)
     }
 
     _translateToPivotPoint() {
@@ -249,8 +253,21 @@ class MyVehicle {
     }
 
     _createBoundingBox() {
-        const box3 = new THREE.Box3().setFromObject(this.mesh)
-        this.boundingBox = new OBB().fromBox3(box3)
+        const box = new THREE.Box3().setFromObject(this.mesh)
+        this.obb = new OBB().fromBox3(box)
+        this.originalOBB = this.obb.clone()
+    }
+
+    _createBoundingBoxHelper() {
+        const obbGeometry = new THREE.BoxGeometry(1, 1, 1)
+        const obbMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
+        const obbMesh = new THREE.Mesh(obbGeometry, obbMaterial)
+
+        obbMesh.position.copy(this.obb.center)
+        obbMesh.scale.copy(this.obb.halfSize)
+        obbMesh.rotation.copy(this.obb.rotation)
+
+        this.obbHelper = obbMesh
     }
 }
 
