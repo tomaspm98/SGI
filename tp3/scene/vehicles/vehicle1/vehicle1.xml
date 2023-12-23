@@ -114,8 +114,9 @@
                     position="0 0.2 -0.01"
                     intensity="2"
                     decay="2"
-                    target="0 0 0"
-                    angle="15"
+                    target="0 0 -10"
+                    angle="20"
+                    distance="5"
                     enabled="false"
                 />
 
@@ -124,18 +125,20 @@
                     position="0 0.2 -0.01"
                     intensity="2"
                     decay="2"
-                    target="0 0 0"
+                    target="0 0 -10"
                     angle="15"
+                    distance="3"
                     enabled="false"
                 />
 
                 <spotlight id="headlight1"
                     color="238 221 130 0"
-                    position="0 0 4"
+                    position="0 0 8"
                     intensity="5"
                     decay="2"
-                    target="0 0 0"
+                    target="0 0 10"
                     angle="25"
+                    distance="20"
                     enabled="false"
                 />
             </children>

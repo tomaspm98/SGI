@@ -118,9 +118,10 @@
                     position="0 0.4 -0.4"
                     intensity="2"
                     decay="2"
-                    target="0 0 0"
-                    angle="15"
+                    target="0 0 -10"
+                    angle="20"
                     enabled="false"
+                    distance="5"
                 />
 
                 <spotlight id="reverselight3"
@@ -128,8 +129,9 @@
                     position="0 0.4 -0.4"
                     intensity="2"
                     decay="2"
-                    target="0 0 0"
+                    target="0 0 -10"
                     angle="15"
+                    distance="3"
                     enabled="false"
                 />
 
@@ -138,7 +140,8 @@
                     position="0 0.4 1"
                     intensity="5"
                     decay="2"
-                    target="0 0 0"
+                    target="0 0 10"
+                    distance="20"
                     angle="25"
                     enabled="false"
                 />
