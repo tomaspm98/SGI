@@ -1,8 +1,8 @@
-import {MyCircuitReader} from './MyCircuitReader.js';
+import { MyCircuitReader } from './MyCircuitReader.js';
 import * as THREE from 'three';
-import {MyCircuitGraph} from './MyCircuitGraph.js';
-import {MyTrack} from '../MyTrack.js';
-import {createActivatable} from '../utils.js';
+import { MyCircuitGraph } from './MyCircuitGraph.js';
+import { MyTrack } from '../MyTrack.js';
+import { createActivatable } from '../utils.js';
 
 
 class MyCircuitRenderer {
@@ -24,7 +24,7 @@ class MyCircuitRenderer {
         reader.open(yasfPath)
 
         // Return the circuit scene
-        return this.circuitScene
+        return [this.circuitScene, this.activatables]
     }
 
 
@@ -218,4 +218,4 @@ class MyCircuitRenderer {
 
 }
 
-export {MyCircuitRenderer}
+export { MyCircuitRenderer }

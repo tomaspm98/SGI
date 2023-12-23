@@ -22,23 +22,31 @@ class MyContents {
    */
   init() {
     // create once
-
-
-    const circuit = new MyCircuit("scene/circuits/circuit1.xml")
-    circuit.build()
-    this.app.scene = circuit.scene
+    this.circuit = MyCircuit.create("scene/circuits/circuit1.xml")
+    this.app.scene = this.circuit.scene
 
     this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml")
     this.app.scene.add(this.vehicle.mesh)
 
+    this.activatablesMeshes = []
+    for (const activatable of this.circuit.activatables) {
+      this.activatablesMeshes.push(activatable.mesh)
+      activatable.mesh.geometry.computeBoundingBox()
+    }
+
     document.addEventListener('keydown', (event) => this.vehicle.controlCar(event))
     document.addEventListener('keyup', (event) => this.vehicle.controlCar(event))
+  }
 
-    if (this.axis === null) {
-      // create and attach the axis to the scene
-      this.axis = new MyAxis(this);
-      this.app.scene.add(this.axis);
+  collisionDetectionNarrowPhase(activeObject, passiveObjects) {
+    const activeObjectBox = new THREE.Box3().setFromObject(activeObject)
+    for (const passiveObject of passiveObjects) {
+      const passiveObjectBox = new THREE.Box3().setFromObject(passiveObject.mesh)
+      if (activeObjectBox.containsBox(passiveObjectBox)) {
+        return true
+      }
     }
+    return false
   }
 
 
@@ -48,6 +56,9 @@ class MyContents {
    */
   update() {
     this.vehicle.update()
+    if (this.collisionDetectionNarrowPhase(this.vehicle.mesh, this.circuit.activatables)) {
+      console.log("collision")
+    }
 
   }
 }

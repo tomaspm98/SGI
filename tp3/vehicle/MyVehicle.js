@@ -1,6 +1,6 @@
 import { MyVehicleRenderer } from './parser/MyVehicleRenderer.js'
 import * as THREE from 'three'
-
+import { OBB } from 'three/addons/math/OBB.js';
 
 class MyVehicle {
     static createVehicle(file, initialPosition = { x: 0, y: 0, z: 0 }, initialRotation = 0) {
@@ -39,6 +39,8 @@ class MyVehicle {
         this.reversing = false
 
         this._translateToPivotPoint()
+
+        this._createBoundingBox()
     }
 
     controlCar(event) {
@@ -224,6 +226,8 @@ class MyVehicle {
         this.importantNodes.wheelBR.rotation.x += this.actualSpeed
         this.importantNodes.wheelFL.rotation.x += this.actualSpeed
         this.importantNodes.wheelFR.rotation.x += this.actualSpeed
+
+        this.boundingBox.applyMatrix4(this.mesh.matrixWorld)
     }
 
     _translateToPivotPoint() {
@@ -242,6 +246,11 @@ class MyVehicle {
             mesh1.position.y -= y
             mesh1.position.z -= z
         }
+    }
+
+    _createBoundingBox() {
+        const box3 = new THREE.Box3().setFromObject(this.mesh)
+        this.boundingBox = new OBB().fromBox3(box3)
     }
 }
 

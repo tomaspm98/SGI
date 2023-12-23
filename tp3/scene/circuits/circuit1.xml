@@ -42,9 +42,10 @@
 
 
     <activatables>
-        <!--<powerup
-        id="id1" subtype="1" position="0 0 0" scale="1 1 1" rotation="0 0 0" />
-        <obstacle id="id1" subtype="1" position="0 0 0" scale="1 1 1" rotation="0 0 0" />-->
+        <powerup
+            id="id1" subtype="1" position="0 0 20" scale="1 1 1" rotation="0 0 0" />
+        <obstacle
+            id="id1" subtype="1" position="0 0 -20" scale="1 1 1" rotation="0 0 0" />
     </activatables>
 
     <graph rootid="light">
