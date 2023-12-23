@@ -69,7 +69,7 @@
                 <noderef id="parking_lot1" />
                 <noderef id="parking_lot2" />
                 <noderef id="parking_lot3" />
-                <noderef id="parking_lot3_1" />
+
             </children>
         </node>
 
@@ -133,7 +133,7 @@
             </children>
         </node>     
 
-        <node id="parking_lot3">
+        <node id="parking_lot3_garage">
             <transforms>
                 <translate value3="31 0 -104" />
                 <scale value3="0.02 0.03 0.015" />
@@ -147,7 +147,7 @@
             </children>
         </node>     
 
-        <node id="parking_lot3_1">
+        <node id="parking_lot3_ground">
             <transforms>
                 <translate value3="30 0.1 -100" />
                 <scale value3="1 1 10" />
@@ -162,7 +162,64 @@
                 </primitive>
             </children>
         </node>     
+        
+        <node id="parking_lot3_fence1">
+            <transforms>
+                <translate value3="25 0.1 -100.5" />
+                <scale value3="0.025 0.01 0.02" />
+                <rotate value3="0 1.5708 0" />
+            </transforms> 
 
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/low_poly_metal_fence__agustin_honnun/scene.gltf"/>
+                </primitive>
+            </children>
+        </node>     
+
+        <node id="parking_lot3_fence2">
+            <transforms>
+                <translate value3="37 0.1 -100.5" />
+                <scale value3="0.025 0.01 0.02" />
+                <rotate value3="0 1.5708 0" />
+            </transforms> 
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/low_poly_metal_fence__agustin_honnun/scene.gltf"/>
+                </primitive>
+            </children>
+        </node>    
+
+        <node id="parking_lot3_fence3">
+            <transforms>
+                <translate value3="31 0.1 -106.5" />
+                <scale value3="0.025 0.01 0.02" />
+                <rotate value3="0 0 0" />
+            </transforms> 
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/low_poly_metal_fence__agustin_honnun/scene.gltf"/>
+                </primitive>
+            </children>
+        </node>  
+
+        <node id="fences">
+            <children>
+                <noderef id="parking_lot3_fence1" />
+                <noderef id="parking_lot3_fence2" />
+                <noderef id="parking_lot3_fence3" />
+            </children>
+        </node>      
+
+        <node id="parking_lot3">
+            <children>
+                <noderef id="parking_lot3_ground" />
+                <noderef id="parking_lot3_garage" />
+                <noderef id="fences" />
+            </children>  
+        </node>    
 
     </graph>
 </yaf>
