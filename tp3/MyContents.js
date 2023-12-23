@@ -22,11 +22,9 @@ class MyContents {
    */
   init() {
     // create once
-
-
-    const circuit = new MyCircuit("scene/circuits/circuit1.xml")
-    circuit.build()
-    this.app.scene = circuit.scene
+    this.circuit = MyCircuit.create("scene/circuits/circuit1.xml")
+    console.log(this.circuit)
+    this.app.scene = this.circuit.scene
 
     this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml")
     //this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle2/vehicle2.xml")

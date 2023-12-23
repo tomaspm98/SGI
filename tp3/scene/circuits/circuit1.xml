@@ -28,9 +28,23 @@
     </cameras>
 
     <textures>
+        <texture id="grassTex" filepath="scene/textures/grassTex.jpg" />
     </textures>
 
     <materials>
+        <material id="groundApp"
+            color="0.0 0.314 0.0 1.0"
+            emissive="0.0 0.0 0.0 1"
+            specular="0 0 0 0"
+            shininess="0"
+        />
+
+        <material id="roadApp"
+            color="0.04 0.04 0.04 1.0"
+            emissive="0.0 0.0 0.0 1"
+            specular="0 0 0 0"
+            shininess="0"
+        />
     </materials>
 
     <track filepath="scene/f1-circuits/ae-2009.geojson"
@@ -47,16 +61,108 @@
         <obstacle id="id1" subtype="1" position="0 0 0" scale="1 1 1" rotation="0 0 0" />-->
     </activatables>
 
-    <graph rootid="light">
-        <node id="light">
+    <graph rootid="scenario">
+        <node id="scenario">
             <children>
-                <pointlight id="light1"
-                    color="60 60 60 0"
-                    position="0 100 0"
-                    intensity="1"
-                    decay="1"
-                />
+                <noderef id="light" />
+                <noderef id="ground" />
+                <noderef id="parking_lot1" />
+                <noderef id="parking_lot2" />
+                <noderef id="parking_lot3" />
+                <noderef id="parking_lot3_1" />
             </children>
         </node>
+
+        <node id="light">
+        <children>
+            <pointlight id="light1"
+                color="60 60 60 0"
+                position="0 100 0"
+                intensity="1"
+                decay="1"
+            />
+
+            <pointlight id="light2"
+                color="60 60 60 0"
+                position="15 100 -100"
+                intensity="1"
+                decay="1"
+                />
+
+        </children>
+        </node>
+
+        <node id="ground">
+        <transforms>
+            <translate value3="0 -0.10 0" />
+            <rotate value3="-1.5708 0 0" />
+        </transforms>    
+
+        <materialref id="groundApp" />
+
+            <children>
+                <primitive>
+                  <rectangle xy1="-500 -500" xy2="500 500" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="parking_lot1">
+            <transforms>
+                <translate value3="0 0 -100" />
+                <rotate value3="0 0 0" />
+            </transforms>    
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/parking_lot_arena/scene.gltf" />
+                </primitive>
+            </children>
+        </node> 
+
+        <node id="parking_lot2">
+            <transforms>
+                <translate value3="15 0 -100.5" />
+                <rotate value3="0 0 0" />
+            </transforms>    
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/parking_lot_arena/scene.gltf" />
+                </primitive>
+            </children>
+        </node>     
+
+        <node id="parking_lot3">
+            <transforms>
+                <translate value3="31 0 -104" />
+                <scale value3="0.02 0.03 0.015" />
+                <rotate value3="0 0 0" />
+            </transforms>    
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/graffiti_garage_02/scene.gltf" />
+                </primitive>
+            </children>
+        </node>     
+
+        <node id="parking_lot3_1">
+            <transforms>
+                <translate value3="30 0.1 -100" />
+                <scale value3="1 1 10" />
+                <rotate value3="-1.5708 0 0" />
+            </transforms> 
+
+            <materialref id="roadApp" />   
+
+            <children>
+                <primitive>
+                  <rectangle xy1="-5 -5" xy2="7 6" />
+                </primitive>
+            </children>
+        </node>     
+
+
     </graph>
 </yaf>
