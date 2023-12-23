@@ -143,10 +143,6 @@ function createThreeLight(light) {
             spotLight.target = targetObject
             console.log(spotLight)
 
-            const spotlightHelper = new THREE.SpotLightHelper(spotLight);
-            spotLight.add(spotlightHelper)
-
-
             return spotLight
 
         case 'pointlight':

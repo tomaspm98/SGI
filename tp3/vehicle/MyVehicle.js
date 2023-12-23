@@ -24,8 +24,6 @@ class MyVehicle {
         this.initialRotation = initialRotation
         this.importantNodes.wheelFL.rotation.order = 'YXZ';
         this.importantNodes.wheelFR.rotation.order = 'YXZ';
-        const axesHelper = new AxesHelper(20);
-        this.mesh.add(axesHelper);
 
         // Variables that describe the state of the vehicle
         this.actualPosition = initialPosition

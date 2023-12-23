@@ -126,11 +126,12 @@
 
                 <spotlight id="reverselight2"
                     color="255 255 255 0"
-                    position="0 0.4 -1"
+                    position="0 0.4 -0.5"
                     intensity="2"
                     decay="2"
-                    target="0 0 0"
+                    target="0 0 -10"
                     angle="15"
+                    distance="3"
                     enabled="false"
                 />
 
@@ -139,8 +140,9 @@
                     position="0 0.4 1"
                     intensity="5"
                     decay="2"
-                    target="0 0 0"
+                    target="0 0 10"
                     angle="25"
+                    distance="20"
                     enabled="false"
                 />
             </children>
