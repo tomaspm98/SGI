@@ -1,5 +1,5 @@
 import { MyVehicleRenderer } from './parser/MyVehicleRenderer.js'
-import { NormalState, ReduceSpeedState } from './MyVehicleState.js'
+import { NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState } from './ImpVehicleStates.js'
 class MyVehicle {
     static createVehicle(file, initialPosition = { x: 0, y: 0, z: 0 }, initialRotation = 0) {
         const vehicleRenderer = new MyVehicleRenderer()
@@ -168,7 +168,9 @@ class MyVehicle {
     _createStates() {
         this.states = {
             "normal": new NormalState(this),
-            "reduceSpeed": new ReduceSpeedState(this),
+            "reducedSpeed": new ReducedSpeedState(this),
+            "increasedSpeed": new IncreasedSpeedState(this),
+            "invertedControls": new InvertedControlsState(this)
         }
         this.currentState = this.states["normal"]
     }

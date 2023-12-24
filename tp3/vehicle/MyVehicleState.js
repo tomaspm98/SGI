@@ -100,22 +100,4 @@ class MyVehicleState {
     }
 }
 
-class NormalState extends MyVehicleState {
-    constructor(vehicle) {
-        super(vehicle)
-    }
-}
-
-class ReduceSpeedState extends MyVehicleState {
-    constructor(vehicle) {
-        super(vehicle)
-    }
-
-    accelerate() {
-        if (this.vehicle.accelerating) {
-            this.vehicle.actualSpeed = Math.min((this.vehicle.actualSpeed + this.vehicle.accelerationRate) * 0.5, this.vehicle.topSpeed * 0.5)
-        }
-    }
-}
-
-export { NormalState, ReduceSpeedState }
+export { MyVehicleState }
