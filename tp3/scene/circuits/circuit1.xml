@@ -66,16 +66,25 @@
             <children>
                 <noderef id="light" />
                 <noderef id="ground" />
-                <noderef id="parking_lot1" />
-                <noderef id="parking_lot2" />
-                <noderef id="parking_lot3" />
-                <noderef id="start" />
-                <noderef id="check line" />
-                <noderef id="stands2Benches" />
-                <noderef id="stands2Benches1" />
-                <noderef id="stands2Benches2" />
-                <noderef id="stands2Benches3" />
-                <noderef id="stands2Benches4" />
+                <!--noderef id="parking_lot1" /-->
+                <!--noderef id="parking_lot2" /-->
+                <!--noderef id="parking_lot3" /-->
+                <!--noderef id="start" /-->
+                <!--noderef id="check line" /-->
+                <!--noderef id="stands2Benches" /-->
+                <!--noderef id="stands2Benches1" /-->
+                <!--noderef id="stands2Benches2" /-->
+                <!--noderef id="stands2Benches3" /-->
+                <!--noderef id="stands2Benches4" /-->
+                <!--noderef id="bathrooms" /-->
+                <!--noderef id="footbridge1" /-->
+                <!--noderef id="footbridge2" /-->
+                <!--noderef id="podium"/-->
+                <lodref id="peopleGroupLod"/>
+                <lodref id="peopleGroupLod2"/>
+                <lodref id="peopleGroupLod3"/>
+                <lodref id="peopleGroupLod4"/>
+                <lodref id="peopleGroupLod5"/>
             </children>
         </node>
 
@@ -117,6 +126,7 @@
             <transforms>
                 <translate value3="0 0 -200" />
                 <rotate value3="0 0 0" />
+                <scale value3="1.5 1.5 1.5" />
             </transforms>    
 
             <children>
@@ -128,8 +138,9 @@
 
         <node id="parking_lot2">
             <transforms>
-                <translate value3="15 0 -200.5" />
+                <translate value3="20 0 -200.5" />
                 <rotate value3="0 0 0" />
+                <scale value3="1.5 1.5 1.5" />
             </transforms>    
 
             <children>
@@ -220,6 +231,10 @@
         </node>      
 
         <node id="parking_lot3">
+        <transforms>
+            <scale value3="1.5 1.5 1.5" />
+            <translate value3="-6.5 0 100" />
+        </transforms>
             <children>
                 <noderef id="parking_lot3_ground" />
                 <noderef id="parking_lot3_garage" />
@@ -495,6 +510,378 @@
                 <noderef id="stands14" />
             </children>
         </node>  
+
+        <node id="bathroom1">
+        <transforms>
+            <translate value3="0 0.5 0" />
+            <scale value3="0.5 0.5 0.5" />
+            <rotate value3="0 0 0" />
+        </transforms>
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/abandoned_toilet_cabin_low_poly/scene.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="bathroom2">
+        <transforms>
+            <translate value3="0 0.5 -0.5" />
+            <scale value3="0.5 0.5 0.5" />
+            <rotate value3="0 0 0" />
+        </transforms>
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/abandoned_toilet_cabin_low_poly/scene.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="bathroom3">
+        <transforms>
+            <translate value3="0 0.5 -1.0" />
+            <scale value3="0.5 0.5 0.5" />
+            <rotate value3="0 0 0" />
+        </transforms>
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/abandoned_toilet_cabin_low_poly/scene.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="bathroom4">
+        <transforms>
+            <translate value3="0 0.5 -1.5" />
+            <scale value3="0.5 0.5 0.5" />
+            <rotate value3="0 0 0" />
+        </transforms>
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/abandoned_toilet_cabin_low_poly/scene.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+         <node id="bathroom5">
+        <transforms>
+            <translate value3="0 0.5 -2.0" />
+            <scale value3="0.5 0.5 0.5" />
+            <rotate value3="0 0 0" />
+        </transforms>
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/abandoned_toilet_cabin_low_poly/scene.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+         <node id="bathroom6">
+        <transforms>
+            <translate value3="0 0.5 -2.5" />
+            <scale value3="0.5 0.5 0.5" />
+            <rotate value3="0 0 0" />
+        </transforms>
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/abandoned_toilet_cabin_low_poly/scene.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="bathroom7">
+        <transforms>
+            <translate value3="0 0.5 -3.0" />
+            <scale value3="0.5 0.5 0.5" />
+            <rotate value3="0 0 0" />
+        </transforms>
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/abandoned_toilet_cabin_low_poly/scene.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="bathrooms">
+            <transforms>
+                <translate value3="-7.5 0 30" />
+                <rotate value3="0 0.129 0" />
+            </transforms>
+
+            <children>
+                <noderef id="bathroom1" />
+                <noderef id="bathroom2" />
+                <noderef id="bathroom3" />
+                <noderef id="bathroom4" />
+                <noderef id="bathroom5" />
+                <noderef id="bathroom6" />
+                <noderef id="bathroom7" />
+            </children>
+        </node>
+
+        <node id="footbridge1">
+        <transforms>
+            <translate value3="-41 0 0" />
+            <scale value3="1.5 1 1" />
+            <rotate value3="0 0.129 0" />
+        </transforms>
+            
+                <children>
+                    <primitive>
+                    <model3d filepath="scene/circuits/racetrack_footbridge/scene.gltf" />
+                    </primitive>
+                </children>
+        </node>
+
+        <node id="footbridge2">
+        <transforms>
+            <translate value3="140 0 9.5" />
+            <scale value3="1.5 1 1" />
+            <rotate value3="0 1.7 0" />
+        </transforms>
+            
+                <children>
+                    <primitive>
+                    <model3d filepath="scene/circuits/racetrack_footbridge/scene.gltf" />
+                    </primitive>
+                </children>
+        </node>
+
+        <node id="podium">
+        <transforms>
+            <translate value3="10 0 70" />
+            <rotate value3="0 3.14159 0" />
+            <scale value3="3 2 3" />
+        </transforms>
+            
+                <children>
+                    <primitive>
+                    <model3d filepath="scene/circuits/winner_podium/scene.gltf" />
+                    </primitive>
+                </children>
+        </node>
+
+        <node id="people">
+        <transforms>
+            <translate value3="40 0 60" />
+            <rotate value3="0 3.4 0" />
+            <scale value3="0.015 0.015 0.015" />
+        </transforms>
+            
+                <children>
+                    <primitive>
+                    <model3d filepath="scene/circuits/wip_-_lowpoly_people_-_2/scene_improved2.gltf" />
+                    </primitive>
+                </children>
+        </node>
+
+        <node id="people2">
+        <transforms>
+            <translate value3="44.4 0 58.8" />
+            <rotate value3="0 3.4 0" />
+            <scale value3="0.015 0.015 0.015" />
+        </transforms>
+            
+                <children>
+                    <primitive>
+                    <model3d filepath="scene/circuits/wip_-_lowpoly_people_-_2/scene_improved2.gltf" />
+                    </primitive>
+                </children>
+        </node>
+
+        <node id="peopleGroup">
+            <children>
+                <noderef id="people" />
+                <noderef id="people2" />
+            </children>
+        </node>
+
+        <node id="people3">
+        <transforms>
+            <translate value3="0 0 0" />
+            <rotate value3="0 3.4 0" />
+            <scale value3="0.015 0.015 0.015" />
+        </transforms>
+            
+                <children>
+                    <primitive>
+                    <model3d filepath="scene/circuits/wip_-_lowpoly_people_-_2/scene_improved2.gltf" />
+                    </primitive>
+                </children>
+        </node>
+
+        <node id="people4">
+        <transforms>
+            <translate value3="4.5 0 -1.2" />
+            <rotate value3="0 3.4 0" />
+            <scale value3="0.015 0.015 0.015" />
+        </transforms>
+            
+                <children>
+                    <primitive>
+                    <model3d filepath="scene/circuits/wip_-_lowpoly_people_-_2/scene_improved2.gltf" />
+                    </primitive>
+                </children>
+        </node>
+
+        <node id="peopleGroup2">
+        <transforms>
+            <translate value3="150 0 20" />
+            <rotate value3="0 -0.15 0" />
+        </transforms>
+            <children>
+                <noderef id="people3" />
+                <noderef id="people4" />
+            </children>
+        </node>
+
+        <node id="people5">
+        <transforms>
+            <translate value3="0 0 0" />
+            <rotate value3="0 3.4 0" />
+            <scale value3="0.015 0.015 0.015" />
+        </transforms>
+            
+                <children>
+                    <primitive>
+                    <model3d filepath="scene/circuits/wip_-_lowpoly_people_-_2/scene_improved2.gltf" />
+                    </primitive>
+                </children>
+        </node>
+
+        <node id="people6">
+        <transforms>
+            <translate value3="4.5 0 -1.2" />
+            <rotate value3="0 3.4 0" />
+            <scale value3="0.015 0.015 0.015" />
+        </transforms>
+            
+                <children>
+                    <primitive>
+                    <model3d filepath="scene/circuits/wip_-_lowpoly_people_-_2/scene_improved2.gltf" />
+                    </primitive>
+                </children>
+        </node>
+
+        <node id="peopleGroup3">
+        <transforms>
+            <translate value3="185 0 -10" />
+            <rotate value3="0 1.5708 0" />
+        </transforms>
+            <children>
+                <noderef id="people5" />
+                <noderef id="people6" />
+            </children>
+        </node>
+
+        <node id="peopleGroup4">
+        <transforms>
+            <translate value3="-35 0 -87.5" />
+            <rotate value3="0 0.5 0" />
+            <scale value3="0.015 0.015 0.015" />
+        </transforms>
+            
+                <children>
+                    <primitive>
+                    <model3d filepath="scene/circuits/wip_-_lowpoly_people_-_2/scene_improved2.gltf" />
+                    </primitive>
+                </children>
+        </node>
+
+        <node id="people7">
+        <transforms>
+            <translate value3="0 0 0" />
+            <rotate value3="0 3.4 0" />
+            <scale value3="0.015 0.015 0.015" />
+        </transforms>
+            
+                <children>
+                    <primitive>
+                    <model3d filepath="scene/circuits/wip_-_lowpoly_people_-_2/scene_improved2.gltf" />
+                    </primitive>
+                </children>
+        </node>
+
+        <node id="people8">
+        <transforms>
+            <translate value3="4.5 0 -1.2" />
+            <rotate value3="0 3.4 0" />
+            <scale value3="0.015 0.015 0.015" />
+        </transforms>
+            
+                <children>
+                    <primitive>
+                    <model3d filepath="scene/circuits/wip_-_lowpoly_people_-_2/scene_improved2.gltf" />
+                    </primitive>
+                </children>
+        </node>
+
+        <node id="people9">
+        <transforms>
+            <translate value3="9.0 0 -2.4" />
+            <rotate value3="0 3.4 0" />
+            <scale value3="0.015 0.015 0.015" />
+        </transforms>
+            
+                <children>
+                    <primitive>
+                    <model3d filepath="scene/circuits/wip_-_lowpoly_people_-_2/scene_improved2.gltf" />
+                    </primitive>
+                </children>
+        </node>
+
+        <node id="peopleGroup5">
+        <transforms>
+            <translate value3="-97 0 60" />
+            <rotate value3="0 1.25 0" />
+        </transforms>
+            <children>
+                <noderef id="people7" />
+                <noderef id="people8" />
+                <noderef id="people9" />
+            </children>
+        </node>
+
+        <node id="nothing">
+            <children>
+            </children>
+        </node>
+
+        <lod id="peopleGroupLod">
+            <noderef id="peopleGroup" mindist="0"/>
+            <noderef id="nothing" mindist="50"/>
+        </lod>
+
+        <lod id="peopleGroupLod2">
+            <noderef id="peopleGroup2" mindist="0"/>
+            <noderef id="nothing" mindist="50"/>
+        </lod>
+
+        <lod id="peopleGroupLod3">
+            <noderef id="peopleGroup3" mindist="0"/>
+            <noderef id="nothing" mindist="50"/>
+        </lod>
+
+        <lod id="peopleGroupLod4">
+            <noderef id="peopleGroup4" mindist="0"/>
+            <noderef id="nothing" mindist="50"/>
+        </lod>
+
+        <lod id="peopleGroupLod5">
+            <noderef id="peopleGroup5" mindist="0"/>
+            <noderef id="nothing" mindist="50"/>
+        </lod>
+
+
+        
+
     
 
 
