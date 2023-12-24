@@ -2,7 +2,7 @@
 <yaf>
 
     <specs
-        topSpeed="0.5"
+        topSpeed="0.1"
         minSpeed="-0.1"
         acceleration="0.01"
         deceleration="0.01"

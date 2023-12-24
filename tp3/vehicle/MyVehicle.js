@@ -1,6 +1,5 @@
 import { MyVehicleRenderer } from './parser/MyVehicleRenderer.js'
-import * as THREE from 'three'
-import { OBB } from 'three/addons/math/OBB.js';
+import { MyOBB } from '../collisions/MyOBB.js'
 
 class MyVehicle {
     static createVehicle(file, initialPosition = { x: 0, y: 0, z: 0 }, initialRotation = 0) {
@@ -40,8 +39,8 @@ class MyVehicle {
 
         this._translateToPivotPoint()
 
-        this._createBoundingBox()
-        this._createBoundingBoxHelper()
+        this.obb = new MyOBB(this.mesh)
+        this.obb.createHelper()
     }
 
     controlCar(event) {
@@ -228,15 +227,7 @@ class MyVehicle {
         this.importantNodes.wheelFL.rotation.x += this.actualSpeed
         this.importantNodes.wheelFR.rotation.x += this.actualSpeed
 
-        //this.mesh.updateMatrixWorld()
-        this.obb.copy(this.originalOBB)
-        this.obb.applyMatrix4(this.mesh.matrixWorld)
-
-        this.obbHelper.copy(this.obbHelperOriginal)
-        this.obbHelper.applyMatrix4(this.mesh.matrixWorld)
-        //this.obbHelper.position.copy(this.obb.center)
-        //this.obbHelper.rotation.copy(this.obb.rotation)
-
+        this.obb.update(this.mesh.matrixWorld)
     }
 
     _translateToPivotPoint() {
@@ -255,26 +246,6 @@ class MyVehicle {
             mesh1.position.y -= y
             mesh1.position.z -= z
         }
-    }
-
-    _createBoundingBox() {
-        const box = new THREE.Box3().setFromObject(this.mesh)
-        // For this game, we only care about the x and z coordinates
-        box.max.y = 0
-        box.min.y = 0
-
-        this.obb = new OBB().fromBox3(box)
-        this.originalOBB = this.obb.clone()
-    }
-
-    _createBoundingBoxHelper() {
-        const dimensions = this.obb.halfSize.multiplyScalar(2)
-        const geometry = new THREE.BoxGeometry(dimensions.x, dimensions.y, dimensions.z)
-        const material = new THREE.MeshBasicMaterial({ wireframe: true, color: 0x00ff00 })
-        this.obbHelper = new THREE.Mesh(geometry, material)
-        this.obbHelper.position.copy(this.obb.center)
-        this.obbHelper.rotation.copy(this.obb.rotation)
-        this.obbHelperOriginal = this.obbHelper.clone()
     }
 }
 

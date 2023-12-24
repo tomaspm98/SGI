@@ -27,7 +27,8 @@ class MyContents {
 
     this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml")
     this.app.scene.add(this.vehicle.mesh)
-    this.app.scene.add(this.vehicle.obbHelper)
+    this.app.scene.add(this.vehicle.obb.helper)
+    this.app.scene.add(this.circuit.activatables[0].obb.helper)
 
 
     document.addEventListener('keydown', (event) => this.vehicle.controlCar(event))
@@ -41,6 +42,9 @@ class MyContents {
    */
   update() {
     this.vehicle.update()
+    if (this.vehicle.obb.collision(this.circuit.activatables[0].obb)) {
+      console.log("COLLISION")
+    }
   }
 }
 
