@@ -30,6 +30,8 @@ class MyContents {
     this.app.scene.add(this.vehicle.obb.helper)
     this.app.scene.add(this.circuit.activatables[0].obb.helper)
 
+    this.vehicle.checkCollisions(this.circuit.activatables)
+
 
     document.addEventListener('keydown', (event) => this.vehicle.controlCar(event))
     document.addEventListener('keyup', (event) => this.vehicle.controlCar(event))
@@ -42,9 +44,6 @@ class MyContents {
    */
   update() {
     this.vehicle.update()
-    if (this.vehicle.obb.collision(this.circuit.activatables[0].obb)) {
-      console.log("COLLISION")
-    }
   }
 }
 

@@ -89,6 +89,7 @@ class MyCircuitData {
             { name: "position", type: "vector3" },
             { name: "rotation", type: "vector3", required: false, default: [0, 0, 0] },
             { name: "scale", type: "vector3", required: false, default: [1, 1, 1] },
+            { name: "duration", type: "float", required: false, default: 5000 }
         ]
 
         this.descriptors["obstacle"] = [
@@ -97,6 +98,7 @@ class MyCircuitData {
             { name: "position", type: "vector3" },
             { name: "rotation", type: "vector3", required: false, default: [0, 0, 0] },
             { name: "scale", type: "vector3", required: false, default: [1, 1, 1] },
+            { name: "duration", type: "float", required: false, default: 5000 }
         ]
 
         this.descriptors["orthogonal"] = [

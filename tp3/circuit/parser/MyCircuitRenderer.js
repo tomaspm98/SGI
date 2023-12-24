@@ -210,7 +210,7 @@ class MyCircuitRenderer {
 
     renderActivatables(data) {
         for (const activatable of data.activatables) {
-            const newActivatable = createActivatable(activatable.type, activatable.subtype, activatable.position, activatable.rotation, activatable.scale)
+            const newActivatable = createActivatable(activatable.type, activatable.subtype, activatable.position, activatable.rotation, activatable.scale, activatable.duration)
             this.activatables.push(newActivatable)
             this.circuitScene.add(newActivatable.mesh)
         }

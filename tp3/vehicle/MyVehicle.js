@@ -39,6 +39,8 @@ class MyVehicle {
 
         this._translateToPivotPoint()
 
+        // Collision detection
+
         this.obb = new MyOBB(this.mesh)
         this.obb.createHelper()
     }
@@ -146,7 +148,7 @@ class MyVehicle {
 
     update() {
         // To avoid calling update when the car is not moving
-        if (!this.accelerating && !this.braking && !this.reversing && !this.turningLeft && !this.turningRight && !this.coasting && this.actualSpeed === 0 && this.actualRotationVehicle === 0 && this.actualRotationWheel === 0) {
+        if (!this.accelerating && !this.reversing && !this.turningLeft && !this.turningRight && !this.coasting && this.actualSpeed === 0 && this.actualRotationVehicle === 0 && this.actualRotationWheel === 0) {
             return
         }
 
@@ -228,6 +230,10 @@ class MyVehicle {
         this.importantNodes.wheelFR.rotation.x += this.actualSpeed
 
         this.obb.update(this.mesh.matrixWorld)
+
+        if (this.collisionCandidates) {
+            this.detectCollisions()
+        }
     }
 
     _translateToPivotPoint() {
@@ -246,6 +252,18 @@ class MyVehicle {
             mesh1.position.y -= y
             mesh1.position.z -= z
         }
+    }
+
+    detectCollisions() {
+        for (const candidate of this.collisionCandidates) {
+            if (this.obb.collision(candidate.obb)) {
+                candidate.activate(this)
+            }
+        }
+    }
+
+    checkCollisions(collisionCandidates) {
+        this.collisionCandidates = collisionCandidates
     }
 }
 
