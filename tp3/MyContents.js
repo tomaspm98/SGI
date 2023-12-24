@@ -27,6 +27,7 @@ class MyContents {
 
     this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml")
     this.app.scene.add(this.vehicle.mesh)
+    this.app.scene.add(this.vehicle.obbHelper)
     console.log(this.vehicle.mesh)
 
     this.activatablesMeshes = []

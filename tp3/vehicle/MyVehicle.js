@@ -231,7 +231,14 @@ class MyVehicle {
         //this.mesh.updateMatrixWorld()
         this.obb.copy(this.originalOBB)
         this.obb.applyMatrix4(this.mesh.matrixWorld)
-        console.log(this.obb)
+        console.log(this.obb.halfSize)
+        const teste = { x: 0, y: 0, z: 0 }
+        teste.x = this.obb.halfSize.x * 2
+        teste.y = this.obb.halfSize.y * 2
+        teste.z = this.obb.halfSize.z * 2
+        this.obbHelper.position.copy(this.obb.center)
+        this.obbHelper.scale.copy(teste)
+        this.obbHelper.rotation.copy(this.obb.rotation)
     }
 
     _translateToPivotPoint() {
