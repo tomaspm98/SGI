@@ -9,6 +9,7 @@ class MyActivatable {
         this.draw()
         this.obb = new MyOBB(this.mesh)
         this.obb.createHelper()
+        this.active = false
     }
 
     draw() {
@@ -16,6 +17,13 @@ class MyActivatable {
         this.mesh.position.set(...this.position)
         this.mesh.rotation.set(...this.rotation)
         this.mesh.scale.set(...this.scale)
+    }
+
+    activate(){
+        if(!this.active){
+            this.active = true
+            this.mesh.visible = false
+        }
     }
 }
 

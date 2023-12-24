@@ -27,11 +27,6 @@ class MyContents {
 
     this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml")
     this.app.scene.add(this.vehicle.mesh)
-    this.app.scene.add(this.vehicle.obb.helper)
-    this.app.scene.add(this.circuit.activatables[0].obb.helper)
-
-    this.vehicle.checkCollisions(this.circuit.activatables)
-
 
     document.addEventListener('keydown', (event) => this.vehicle.controlCar(event))
     document.addEventListener('keyup', (event) => this.vehicle.controlCar(event))

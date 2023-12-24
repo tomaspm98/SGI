@@ -1,6 +1,5 @@
 import { MyVehicleRenderer } from './parser/MyVehicleRenderer.js'
-import { MyOBB } from '../collisions/MyOBB.js'
-
+import { NormalState, ReduceSpeedState } from './MyVehicleState.js'
 class MyVehicle {
     static createVehicle(file, initialPosition = { x: 0, y: 0, z: 0 }, initialRotation = 0) {
         const vehicleRenderer = new MyVehicleRenderer()
@@ -39,10 +38,8 @@ class MyVehicle {
 
         this._translateToPivotPoint()
 
-        // Collision detection
+        this._createStates()
 
-        this.obb = new MyOBB(this.mesh)
-        this.obb.createHelper()
     }
 
     controlCar(event) {
@@ -147,93 +144,7 @@ class MyVehicle {
     }
 
     update() {
-        // To avoid calling update when the car is not moving
-        if (!this.accelerating && !this.reversing && !this.turningLeft && !this.turningRight && !this.coasting && this.actualSpeed === 0 && this.actualRotationVehicle === 0 && this.actualRotationWheel === 0) {
-            return
-        }
-
-        if (this.accelerating) {
-            this.actualSpeed = Math.min(this.actualSpeed + this.accelerationRate, this.topSpeed)
-        }
-
-        if (this.braking && this.actualSpeed > 0) {
-            this.actualSpeed = Math.max(this.actualSpeed - this.brakingRate, 0)
-        } else if (this.braking && this.actualSpeed < 0) {
-            this.actualSpeed = Math.min(this.actualSpeed + this.brakingRate, 0)
-        }
-
-        if (this.reversing) {
-            this.actualSpeed = Math.max(this.actualSpeed - this.accelerationRate, this.minSpeed)
-        }
-
-
-        // Turning left
-        // We avoid using nested if statements for performance reasons
-        if (this.turningLeft) {
-            this.actualRotationWheel = Math.max(- this.turnRate * 5 + this.actualRotationWheel, -0.7)
-        }
-
-        if (this.turningLeft && this.actualSpeed > 0) {
-            this.actualRotationVehicle -= this.turnRate
-        } else if (this.turningLeft && this.actualSpeed < 0) {
-            this.actualRotationVehicle += this.turnRate
-        }
-
-        // Turning right
-        // We avoid using nested if statements for performance reasons
-        if (this.turningRight) {
-            this.actualRotationWheel = Math.min(this.turnRate * 5 + this.actualRotationWheel, 0.7)
-        }
-
-        if (this.turningRight && this.actualSpeed > 0) {
-            this.actualRotationVehicle += this.turnRate
-        } else if (this.turningRight && this.actualSpeed < 0) {
-            this.actualRotationVehicle -= this.turnRate
-        }
-
-        // When the vehicle is not accelerating or braking, it coasts
-        // Until it stops
-        if (this.coasting) {
-            this.actualSpeed += this.coastingRate * - Math.sign(this.actualSpeed)
-            if (this.actualSpeed < 0.01 && this.actualSpeed > -0.01) {
-                this.actualSpeed = 0
-                this.coasting = false
-            }
-        }
-
-        // Updating the vehicle position
-        this.actualPosition.x += this.actualSpeed * Math.sin(this.actualRotationVehicle)
-        this.actualPosition.z += this.actualSpeed * Math.cos(this.actualRotationVehicle)
-        this.mesh.position.setX(this.actualPosition.x)
-        this.mesh.position.setZ(this.actualPosition.z)
-
-        // Updating the vehicle rotation
-        this.mesh.rotation.y = this.actualRotationVehicle
-
-        // If the car is not turning, the wheels go back to their original position slowly
-        if (!this.turningRight && this.actualRotationWheel > 0) {
-            this.actualRotationWheel = Math.max(this.actualRotationWheel - 5 * this.turnRate, 0)
-        } else if (!this.turningLeft && this.actualRotationWheel < 0) {
-            this.actualRotationWheel = Math.min(this.actualRotationWheel + 5 * this.turnRate, 0)
-        }
-
-        // Updating the wheels rotation on the y axis
-        this.importantNodes.wheelFL.rotation.y = this.actualRotationWheel
-        this.importantNodes.wheelFR.rotation.y = this.actualRotationWheel
-
-        // Updating the wheels rotation on the x axis
-        // TODO: make the front wheels spin
-        // TODO: implement this in shaders
-        this.importantNodes.wheelBL.rotation.x += this.actualSpeed
-        this.importantNodes.wheelBR.rotation.x += this.actualSpeed
-        this.importantNodes.wheelFL.rotation.x += this.actualSpeed
-        this.importantNodes.wheelFR.rotation.x += this.actualSpeed
-
-        this.obb.update(this.mesh.matrixWorld)
-
-        if (this.collisionCandidates) {
-            this.detectCollisions()
-        }
+        this.currentState.update()
     }
 
     _translateToPivotPoint() {
@@ -254,16 +165,19 @@ class MyVehicle {
         }
     }
 
-    detectCollisions() {
-        for (const candidate of this.collisionCandidates) {
-            if (this.obb.collision(candidate.obb)) {
-                candidate.activate(this)
-            }
+    _createStates() {
+        this.states = {
+            "normal": new NormalState(this),
+            "reduceSpeed": new ReduceSpeedState(this),
         }
+        this.currentState = this.states["normal"]
     }
 
-    checkCollisions(collisionCandidates) {
-        this.collisionCandidates = collisionCandidates
+    _changeState(state, duration) {
+        this.currentState = this.states[state]
+        setTimeout(() => {
+            this.currentState = this.states["normal"]
+        }, duration)
     }
 }
 
