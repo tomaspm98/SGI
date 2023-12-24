@@ -66,25 +66,34 @@
             <children>
                 <noderef id="light" />
                 <noderef id="ground" />
-                <!--noderef id="parking_lot1" /-->
-                <!--noderef id="parking_lot2" /-->
-                <!--noderef id="parking_lot3" /-->
-                <!--noderef id="start" /-->
-                <!--noderef id="check line" /-->
-                <!--noderef id="stands2Benches" /-->
-                <!--noderef id="stands2Benches1" /-->
-                <!--noderef id="stands2Benches2" /-->
-                <!--noderef id="stands2Benches3" /-->
-                <!--noderef id="stands2Benches4" /-->
-                <!--noderef id="bathrooms" /-->
-                <!--noderef id="footbridge1" /-->
-                <!--noderef id="footbridge2" /-->
-                <!--noderef id="podium"/-->
+                <noderef id="parking_lot1" />
+                <noderef id="parking_lot2" />
+                <noderef id="parking_lot3" />
+                <noderef id="start" />
+                <noderef id="check line" />
+                <noderef id="stands2Benches" />
+                <noderef id="stands2Benches1" />
+                <noderef id="stands2Benches2" />
+                <noderef id="stands2Benches3" />
+                <noderef id="stands2Benches4" />
+                <!--noderef id="bathroom1" /-->
+                <noderef id="footbridge1" />
+                <noderef id="footbridge2" />
+                <noderef id="podium"/>
                 <lodref id="peopleGroupLod"/>
                 <lodref id="peopleGroupLod2"/>
                 <lodref id="peopleGroupLod3"/>
                 <lodref id="peopleGroupLod4"/>
                 <lodref id="peopleGroupLod5"/>
+                <noderef id="postLight1"/>
+                <noderef id="postLight2"/>
+                <noderef id="postLight3"/>
+                <noderef id="postLight4"/>
+                <noderef id="postLight5"/>
+                <noderef id="postLight6"/>
+                <noderef id="postLight7"/>
+                <noderef id="postLight8"/>
+                <noderef id="postLight9"/>
             </children>
         </node>
 
@@ -513,116 +522,15 @@
 
         <node id="bathroom1">
         <transforms>
-            <translate value3="0 0.5 0" />
+            <translate value3="-7.5 0.5 30" />
             <scale value3="0.5 0.5 0.5" />
-            <rotate value3="0 0 0" />
+            <rotate value3="0 0.129 0" />
         </transforms>
 
             <children>
                 <primitive>
                   <model3d filepath="scene/circuits/abandoned_toilet_cabin_low_poly/scene.gltf" />
                 </primitive>
-            </children>
-        </node>
-
-        <node id="bathroom2">
-        <transforms>
-            <translate value3="0 0.5 -0.5" />
-            <scale value3="0.5 0.5 0.5" />
-            <rotate value3="0 0 0" />
-        </transforms>
-
-            <children>
-                <primitive>
-                  <model3d filepath="scene/circuits/abandoned_toilet_cabin_low_poly/scene.gltf" />
-                </primitive>
-            </children>
-        </node>
-
-        <node id="bathroom3">
-        <transforms>
-            <translate value3="0 0.5 -1.0" />
-            <scale value3="0.5 0.5 0.5" />
-            <rotate value3="0 0 0" />
-        </transforms>
-
-            <children>
-                <primitive>
-                  <model3d filepath="scene/circuits/abandoned_toilet_cabin_low_poly/scene.gltf" />
-                </primitive>
-            </children>
-        </node>
-
-        <node id="bathroom4">
-        <transforms>
-            <translate value3="0 0.5 -1.5" />
-            <scale value3="0.5 0.5 0.5" />
-            <rotate value3="0 0 0" />
-        </transforms>
-
-            <children>
-                <primitive>
-                  <model3d filepath="scene/circuits/abandoned_toilet_cabin_low_poly/scene.gltf" />
-                </primitive>
-            </children>
-        </node>
-
-         <node id="bathroom5">
-        <transforms>
-            <translate value3="0 0.5 -2.0" />
-            <scale value3="0.5 0.5 0.5" />
-            <rotate value3="0 0 0" />
-        </transforms>
-
-            <children>
-                <primitive>
-                  <model3d filepath="scene/circuits/abandoned_toilet_cabin_low_poly/scene.gltf" />
-                </primitive>
-            </children>
-        </node>
-
-         <node id="bathroom6">
-        <transforms>
-            <translate value3="0 0.5 -2.5" />
-            <scale value3="0.5 0.5 0.5" />
-            <rotate value3="0 0 0" />
-        </transforms>
-
-            <children>
-                <primitive>
-                  <model3d filepath="scene/circuits/abandoned_toilet_cabin_low_poly/scene.gltf" />
-                </primitive>
-            </children>
-        </node>
-
-        <node id="bathroom7">
-        <transforms>
-            <translate value3="0 0.5 -3.0" />
-            <scale value3="0.5 0.5 0.5" />
-            <rotate value3="0 0 0" />
-        </transforms>
-
-            <children>
-                <primitive>
-                  <model3d filepath="scene/circuits/abandoned_toilet_cabin_low_poly/scene.gltf" />
-                </primitive>
-            </children>
-        </node>
-
-        <node id="bathrooms">
-            <transforms>
-                <translate value3="-7.5 0 30" />
-                <rotate value3="0 0.129 0" />
-            </transforms>
-
-            <children>
-                <noderef id="bathroom1" />
-                <noderef id="bathroom2" />
-                <noderef id="bathroom3" />
-                <noderef id="bathroom4" />
-                <noderef id="bathroom5" />
-                <noderef id="bathroom6" />
-                <noderef id="bathroom7" />
             </children>
         </node>
 
@@ -879,11 +787,131 @@
             <noderef id="nothing" mindist="50"/>
         </lod>
 
+        <node id="postLight1">
+        <transforms>
+            <translate value3="-13 0 30" />
+            <rotate value3="0 0.129 0" />
+            <scale value3="0.005 0.005 0.005" />
+        </transforms>
 
-        
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/stadium_light/scene_improved.gltf" />
+                </primitive>
+            </children>
+        </node>
 
-    
+        <node id="postLight2">
+        <transforms>
+            <translate value3="-21 0 -30" />
+            <rotate value3="0 0.129 0" />
+            <scale value3="0.005 0.005 0.005" />
+        </transforms>
 
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/stadium_light/scene_improved.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="postLight3">
+        <transforms>
+            <translate value3="72.5 0 20" />
+            <rotate value3="0 2.129 0" />
+            <scale value3="0.005 0.005 0.005" />
+        </transforms>
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/stadium_light/scene_improved.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="postLight4">
+        <transforms>
+            <translate value3="180 0 18" />
+            <rotate value3="0 2.129 0" />
+            <scale value3="0.005 0.005 0.005" />
+        </transforms>
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/stadium_light/scene_improved.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="postLight5">
+        <transforms>
+            <translate value3="52.5 0 -67.5" />
+            <rotate value3="0 -1.9 0" />
+            <scale value3="0.005 0.005 0.005" />
+        </transforms>
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/stadium_light/scene_improved.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="postLight6">
+        <transforms>
+            <translate value3="132.5 0 -40" />
+            <rotate value3="0 -1.9 0" />
+            <scale value3="0.005 0.005 0.005" />
+        </transforms>
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/stadium_light/scene_improved.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="postLight8">
+        <transforms>
+            <translate value3="-152.5 0 40" />
+            <rotate value3="0 -0.7 0" />
+            <scale value3="0.005 0.005 0.005" />
+        </transforms>
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/stadium_light/scene_improved.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="postLight7">
+        <transforms>
+            <translate value3="-95 0 -50" />
+            <rotate value3="0 -0.7 0" />
+            <scale value3="0.005 0.005 0.005" />
+        </transforms>
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/stadium_light/scene_improved.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="postLight9">
+        <transforms>
+            <translate value3="-53 0 10" />
+            <rotate value3="0 -1.5708 0" />
+            <scale value3="0.005 0.005 0.005" />
+        </transforms>
+
+            <children>
+                <primitive>
+                  <model3d filepath="scene/circuits/stadium_light/scene_improved.gltf" />
+                </primitive>
+            </children>
+        </node>
 
     </graph>
 </yaf>
