@@ -8,7 +8,7 @@
     <skybox
         size="1000 1000 1000"
         center="0 0 0"
-        emissive="0.2 0.2 0.2 1"
+        emissive="0.6 0.3 0.2 1"
         intensity="3"
         front="scene/textures/skybox_up.jpg"
         back="scene/textures/skybox_up.jpg"
@@ -29,6 +29,7 @@
 
     <textures>
         <texture id="grassTex" filepath="scene/textures/grassTex.jpg" />
+        <texture id="sunTex" filepath=" scenes/textures/sunTex.jpg" />
     </textures>
 
     <materials>
@@ -45,6 +46,18 @@
             specular="0 0 0 0"
             shininess="0"
         />
+
+        <material id="sunApp"
+                    emissive="1 0.761 0.0 1.0"
+                    color="1 0.761 0.0 1.0"
+                    specular="0.0 0.0 0.0 1.0"
+                    shininess="20"
+                    twosided="true"
+                    textureref="sunTex"
+                    shading="flat"
+        />
+
+
     </materials>
 
     <track filepath="scene/f1-circuits/ae-2009.geojson"
@@ -66,16 +79,19 @@
             <children>
                 <noderef id="light" />
                 <noderef id="ground" />
-                <noderef id="parking_lot1" />
-                <noderef id="parking_lot2" />
-                <noderef id="parking_lot3" />
+                <!--noderef id="parking_lot1" /-->
+                <!--noderef id="parking_lot2" /-->
+                <!--noderef id="parking_lot3" /-->
+                <lodref id="parkingLot1Lod"/>
+                <lodref id="parkingLot2Lod"/>
+                <lodref id="parkingLot3Lod"/>
                 <noderef id="start" />
                 <noderef id="check line" />
-                <noderef id="stands2Benches" />
-                <noderef id="stands2Benches1" />
-                <noderef id="stands2Benches2" />
-                <noderef id="stands2Benches3" />
-                <noderef id="stands2Benches4" />
+                <!--noderef id="stands2Benches" /-->
+                <!--noderef id="stands2Benches1" /-->
+                <!--noderef id="stands2Benches2" /-->
+                <!--noderef id="stands2Benches3" /-->
+                <!--noderef id="stands2Benches4" /-->
                 <!--noderef id="bathroom1" /-->
                 <noderef id="footbridge1" />
                 <noderef id="footbridge2" />
@@ -94,6 +110,7 @@
                 <noderef id="postLight7"/>
                 <noderef id="postLight8"/>
                 <noderef id="postLight9"/>
+                <noderef id="sun"/>
             </children>
         </node>
 
@@ -250,6 +267,21 @@
                 <noderef id="fences" />
             </children>  
         </node>    
+
+        <lod id="parkingLot1Lod">
+            <noderef id="parking_lot1" mindist="0"/>
+            <noderef id="nothing" mindist="50"/>
+        </lod>
+
+        <lod id="parkingLot2Lod">
+            <noderef id="parking_lot2" mindist="0"/>
+            <noderef id="nothing" mindist="50"/>
+        </lod>
+
+        <lod id="parkingLot3Lod">
+            <noderef id="parking_lot3" mindist="0"/>
+            <noderef id="nothing" mindist="50"/>
+        </lod>
 
         <node id="start">
             <transforms>
@@ -911,6 +943,21 @@
                   <model3d filepath="scene/circuits/stadium_light/scene_improved.gltf" />
                 </primitive>
             </children>
+        </node>
+
+        <node id="sun">
+            <transforms>
+                <translate value3="-190 80 -60"/>
+                <scale value3="2 2 2"/>
+            </transforms>
+
+            <materialref id="sunApp"/>
+
+            <children>
+                <primitive>
+                    <sphere radius="5" slices="32" stacks="32"/>
+                </primitive>
+            </children> 
         </node>
 
     </graph>
