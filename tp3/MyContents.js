@@ -28,26 +28,10 @@ class MyContents {
     this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml")
     this.app.scene.add(this.vehicle.mesh)
     this.app.scene.add(this.vehicle.obbHelper)
-    console.log(this.vehicle.mesh)
 
-    this.activatablesMeshes = []
-    for (const activatable of this.circuit.activatables) {
-      this.activatablesMeshes.push(activatable.mesh)
-      activatable.mesh.geometry.computeBoundingBox()
-    }
 
     document.addEventListener('keydown', (event) => this.vehicle.controlCar(event))
     document.addEventListener('keyup', (event) => this.vehicle.controlCar(event))
-  }
-
-  collisionDetectionNarrowPhase(activeObject, passiveObjects) {
-    for (const passiveObject of passiveObjects) {
-      const passiveObjectBox = new THREE.Box3().setFromObject(passiveObject.mesh)
-      /*if (this.vehicle.boundingBox.intersectBox3(passiveObjectBox)) {
-        return true
-      }*/
-    }
-    return false
   }
 
 
@@ -57,10 +41,6 @@ class MyContents {
    */
   update() {
     this.vehicle.update()
-    if (this.collisionDetectionNarrowPhase(this.vehicle.mesh, this.circuit.activatables)) {
-      console.log("collision")
-    }
-
   }
 }
 

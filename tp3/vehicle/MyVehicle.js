@@ -231,14 +231,12 @@ class MyVehicle {
         //this.mesh.updateMatrixWorld()
         this.obb.copy(this.originalOBB)
         this.obb.applyMatrix4(this.mesh.matrixWorld)
-        console.log(this.obb.halfSize)
-        const teste = { x: 0, y: 0, z: 0 }
-        teste.x = this.obb.halfSize.x * 2
-        teste.y = this.obb.halfSize.y * 2
-        teste.z = this.obb.halfSize.z * 2
-        this.obbHelper.position.copy(this.obb.center)
-        this.obbHelper.scale.copy(teste)
-        this.obbHelper.rotation.copy(this.obb.rotation)
+
+        this.obbHelper.copy(this.obbHelperOriginal)
+        this.obbHelper.applyMatrix4(this.mesh.matrixWorld)
+        //this.obbHelper.position.copy(this.obb.center)
+        //this.obbHelper.rotation.copy(this.obb.rotation)
+
     }
 
     _translateToPivotPoint() {
@@ -261,20 +259,22 @@ class MyVehicle {
 
     _createBoundingBox() {
         const box = new THREE.Box3().setFromObject(this.mesh)
+        // For this game, we only care about the x and z coordinates
+        box.max.y = 0
+        box.min.y = 0
+
         this.obb = new OBB().fromBox3(box)
         this.originalOBB = this.obb.clone()
     }
 
     _createBoundingBoxHelper() {
-        const obbGeometry = new THREE.BoxGeometry(1, 1, 1)
-        const obbMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
-        const obbMesh = new THREE.Mesh(obbGeometry, obbMaterial)
-
-        obbMesh.position.copy(this.obb.center)
-        obbMesh.scale.copy(this.obb.halfSize)
-        obbMesh.rotation.copy(this.obb.rotation)
-
-        this.obbHelper = obbMesh
+        const dimensions = this.obb.halfSize.multiplyScalar(2)
+        const geometry = new THREE.BoxGeometry(dimensions.x, dimensions.y, dimensions.z)
+        const material = new THREE.MeshBasicMaterial({ wireframe: true, color: 0x00ff00 })
+        this.obbHelper = new THREE.Mesh(geometry, material)
+        this.obbHelper.position.copy(this.obb.center)
+        this.obbHelper.rotation.copy(this.obb.rotation)
+        this.obbHelperOriginal = this.obbHelper.clone()
     }
 }
 
