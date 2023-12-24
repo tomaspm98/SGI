@@ -2,13 +2,15 @@ import * as THREE from 'three';
 import { MyOBB } from '../collisions/MyOBB.js';
 
 class MyActivatable {
-    constructor(position, rotation, scale) {
+    constructor(position, rotation, scale, duration) {
         this.position = position
         this.rotation = rotation
         this.scale = scale
+        this.duration = duration
+
         this.draw()
+
         this.obb = new MyOBB(this.mesh)
-        this.obb.createHelper()
         this.active = false
     }
 
@@ -19,10 +21,16 @@ class MyActivatable {
         this.mesh.scale.set(...this.scale)
     }
 
-    activate(){
-        if(!this.active){
+    activate(vehicle) {
+        if (!this.active) {
             this.active = true
             this.mesh.visible = false
+            vehicle.changeState(this.effect)
+            setTimeout(() => {
+                vehicle.changeState("normal")
+                this.active = false
+                this.mesh.visible = true
+            }, this.duration)
         }
     }
 }

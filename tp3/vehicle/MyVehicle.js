@@ -175,11 +175,8 @@ class MyVehicle {
         this.currentState = this.states["normal"]
     }
 
-    _changeState(state, duration) {
+    changeState(state) {
         this.currentState = this.states[state]
-        setTimeout(() => {
-            this.currentState = this.states["normal"]
-        }, duration)
     }
 }
 
