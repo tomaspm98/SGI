@@ -3,6 +3,7 @@ import { MyAxis } from "./MyAxis.js";
 import { MyCircuit } from "./circuit/MyCircuit.js";
 import { MyVehicle } from "./vehicle/MyVehicle.js";
 import { collisionDetection, checkVehicleOnTrack } from "./collisions/collisions.js";
+import { MyRTree } from "./collisions/MyRTree.js";
 
 
 /**
@@ -28,6 +29,9 @@ class MyContents {
 
         this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml")
         this.app.scene.add(this.vehicle.mesh)
+
+        this.rTree = new MyRTree()
+        this.rTree.insertMany(this.circuit.activatables)
 
         document.addEventListener('keydown', (event) => this.vehicle.controlCar(event))
         document.addEventListener('keyup', (event) => this.vehicle.controlCar(event))
