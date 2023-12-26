@@ -44,7 +44,7 @@ class MyContents {
      */
     update() {
         if (this.vehicle.update()) {
-            collisionDetection(this.vehicle, this.circuit.activatables)
+            collisionDetection(this.vehicle, this.rTree)
             checkVehicleOnTrack(this.vehicle, this.circuit.track)
         }
     }

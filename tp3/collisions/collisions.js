@@ -1,8 +1,12 @@
 import * as THREE from 'three';
 
-function collisionDetection(activeObject, passiveObjects) {
+function collisionDetection(activeObject, rTree) {
     // Collision detection broad phase
-    const selectedPassiveObjects = collisionDetectionBroadPhase(activeObject, passiveObjects);
+    const selectedPassiveObjects = collisionDetectionBroadPhase(activeObject, rTree);
+
+    if (selectedPassiveObjects.length == 0) {
+        return;
+    }
 
     // Collision detection narrow phase
     const collisions = collisionDetectionNarrowPhase(activeObject, selectedPassiveObjects);
@@ -13,7 +17,14 @@ function collisionDetection(activeObject, passiveObjects) {
 }
 
 // Implement collision detection broad phase
-function collisionDetectionBroadPhase(activeObject, passiveObjects) {
+function collisionDetectionBroadPhase(activeObject, rTree) {
+    const bb = {
+        minX: activeObject.bb.min.x,
+        minY: activeObject.bb.min.z,
+        maxX: activeObject.bb.max.x,
+        maxY: activeObject.bb.max.z,
+    }
+    const passiveObjects = rTree.search(bb);
     return passiveObjects;
 }
 

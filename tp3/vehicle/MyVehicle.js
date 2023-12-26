@@ -1,9 +1,10 @@
-import {MyVehicleRenderer} from './parser/MyVehicleRenderer.js'
-import {NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState} from './ImpVehicleStates.js'
-import {MyOBB} from '../collisions/MyOBB.js'
+import { MyVehicleRenderer } from './parser/MyVehicleRenderer.js'
+import { NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState } from './ImpVehicleStates.js'
+import { MyOBB } from '../collisions/MyOBB.js'
+import * as THREE from 'three'
 
 class MyVehicle {
-    static createVehicle(file, initialPosition = {x: 0, y: 0, z: 0}, initialRotation = 0) {
+    static createVehicle(file, initialPosition = { x: 0, y: 0, z: 0 }, initialRotation = 0) {
         const vehicleRenderer = new MyVehicleRenderer()
         const [mesh, specs, importantNodes] = vehicleRenderer.render(file)
         return new MyVehicle(mesh, importantNodes, specs.topSpeed, specs.minSpeed, specs.acceleration, specs.deceleration, specs.turnRate, specs.brakingRate, initialPosition, initialRotation)
@@ -43,7 +44,7 @@ class MyVehicle {
         this._createStates()
 
         this.obb = new MyOBB(this.mesh)
-
+        this.bb = new THREE.Box3().setFromObject(this.mesh)
     }
 
     controlCar(event) {
@@ -155,6 +156,7 @@ class MyVehicle {
         }
         this.currentState.update()
         this.obb.update(this.mesh.matrixWorld)
+        this.bb.setFromObject(this.mesh)
         return true
     }
 
@@ -191,4 +193,4 @@ class MyVehicle {
     }
 }
 
-export {MyVehicle};
+export { MyVehicle };

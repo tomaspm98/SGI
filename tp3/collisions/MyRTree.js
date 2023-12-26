@@ -29,14 +29,8 @@ class MyRTree {
         }
     }
 
-    search(object) {
-        const boundingBox = new THREE.Box3().setFromObject(object);
-        const results = this.tree.search({
-            minX: boundingBox.min.x,
-            minY: boundingBox.min.z,
-            maxX: boundingBox.max.x,
-            maxY: boundingBox.max.z,
-        });
+    search(bb) {
+        const results = this.tree.search(bb);
         return results.map(result => this.map[result.id]);
     }
 }
