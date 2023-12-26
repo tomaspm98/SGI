@@ -46,6 +46,8 @@ class MyVehicle {
         this._createStates()
 
         this.obb = new MyOBB(this.mesh)
+        this.obb.createHelper()
+
         this.bb = new THREE.Box3().setFromObject(this.mesh)
     }
 

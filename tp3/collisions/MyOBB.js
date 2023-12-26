@@ -9,7 +9,9 @@ class MyOBB {
         boundingBox.min.y = 0
 
         this.actualOBB = new OBB().fromBox3(boundingBox)
+
         this.actualOBB.center.y = 0
+
         this.initialOBB = this.actualOBB.clone()
     }
 

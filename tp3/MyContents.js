@@ -27,8 +27,9 @@ class MyContents {
         this.circuit = MyCircuit.create("scene/circuits/circuit1.xml")
         this.app.scene = this.circuit.scene
 
-        this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml")
+        this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle_test/vehicleTest.xml")
         this.app.scene.add(this.vehicle.mesh)
+        this.app.scene.add(this.vehicle.obb.helper)
 
         this.rTree = new MyRTree()
         this.rTree.insertMany(this.circuit.activatables)
