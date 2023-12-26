@@ -9,11 +9,13 @@ class MyOBB {
         boundingBox.min.y = 0
 
         this.actualOBB = new OBB().fromBox3(boundingBox)
+        this.actualOBB.center.y = 0
         this.initialOBB = this.actualOBB.clone()
     }
 
     update(matrixWorld) {
         this.actualOBB.copy(this.initialOBB).applyMatrix4(matrixWorld)
+        this.actualOBB.center.y = 0
         if (this.helper) {
             this.helper.copy(this.helperOriginal).applyMatrix4(matrixWorld)
         }

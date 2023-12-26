@@ -4,10 +4,10 @@ function collisionDetection(activeObject, rTree) {
     // Collision detection broad phase
     const selectedPassiveObjects = collisionDetectionBroadPhase(activeObject, rTree);
 
-    if (selectedPassiveObjects.length == 0) {
+    if (selectedPassiveObjects.length === 0) {
         return;
     }
-
+    
     // Collision detection narrow phase
     const collisions = collisionDetectionNarrowPhase(activeObject, selectedPassiveObjects);
 
@@ -31,6 +31,7 @@ function collisionDetectionBroadPhase(activeObject, rTree) {
 function collisionDetectionNarrowPhase(activeObject, passiveObjects) {
     let collisions = [];
     for (const passiveObject of passiveObjects) {
+        console.log(activeObject.obb);
         if (passiveObject.obb.collision(activeObject.obb)) {
             collisions.push(passiveObject);
         }
