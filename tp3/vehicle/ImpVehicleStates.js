@@ -1,4 +1,4 @@
-import { MyVehicleState } from './MyVehicleStates.js'
+import { MyVehicleState } from './MyVehicleState.js'
 
 class NormalState extends MyVehicleState {
     constructor(vehicle) {

@@ -38,6 +38,7 @@ class MyVehicle {
         this.turningLeft = false
         this.turningRight = false
         this.reversing = false
+        this.offTrack = false
 
         this._translateToPivotPoint()
 

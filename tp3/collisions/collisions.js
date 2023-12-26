@@ -42,10 +42,9 @@ function checkVehicleOnTrack(vehicle, track) {
     const pos = new THREE.Vector3(vehicle.actualPosition.x, vehicle.actualPosition.y, vehicle.actualPosition.z);
     const collisions = new THREE.Raycaster(pos, new THREE.Vector3(0, -1, 0), 0, 1).intersectObject(track.mesh);
     if (collisions.length > 0) {
-        vehicle.changeState("normal");
+        vehicle.offTrack = false;
     } else {
-        vehicle.changeState("reducedSpeed");
-        console.log("off track");
+        vehicle.offTrack = true;
     }
 }
 

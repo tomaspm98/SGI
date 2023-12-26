@@ -76,6 +76,10 @@ class MyVehicleState {
         this.coast()
         this.resetWheel()
 
+        if (this.vehicle.offTrack) {
+            this.vehicle.actualSpeed = this.vehicle.actualSpeed * 0.5
+        }
+
         // Updating the vehicle position
         this.vehicle.actualPosition.x += this.vehicle.actualSpeed * Math.sin(this.vehicle.actualRotationVehicle)
         this.vehicle.actualPosition.z += this.vehicle.actualSpeed * Math.cos(this.vehicle.actualRotationVehicle)
