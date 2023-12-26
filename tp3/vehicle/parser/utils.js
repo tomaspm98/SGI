@@ -7,7 +7,6 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 function loadModel(filepath, parent) {
     const loader = new GLTFLoader();
     loader.load(filepath.representations[0].filepath, function (gltf) {
-        console.log(gltf.scene)
         parent.add(gltf.scene)
         // If the model is loaded after the method updateInheritAttributesGraph
         // It is necessary to update the inherit attributes of the model
@@ -137,11 +136,10 @@ function createThreeLight(light) {
             spotLight.shadow.mapSize.height = light.shadowmapsize
             spotLight.visible = light.enabled
 
-            const targetObject = new THREE.Object3D(); 
+            const targetObject = new THREE.Object3D();
             targetObject.position.set(...light.target)
             spotLight.add(targetObject)
             spotLight.target = targetObject
-            console.log(spotLight)
 
             return spotLight
 
