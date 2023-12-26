@@ -7,20 +7,18 @@ class MyTrack {
         this.width = width
         this.numSegments = numSegments
         this._loadTexture(texture)
+        this._draw()
     }
 
-    draw() {
-        const trackGroup = new THREE.Group()
+    _draw() {
         const path = this._getCatmullRomCurve()
 
-        const line = this._drawLine(path)
-
-        const track = this._drawTrack(path)
-
-        trackGroup.add(line)
-        trackGroup.add(track)
-
-        return trackGroup
+        this.line = this._drawLine(path)
+        this.mesh = this._drawTrack(path)
+        
+        this.group = new THREE.Group()
+        this.group.add(this.line)
+        this.group.add(this.mesh)
     }
 
     _normalizePoints(points, size = 1) {

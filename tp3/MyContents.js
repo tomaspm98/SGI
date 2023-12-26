@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { MyAxis } from "./MyAxis.js";
 import { MyCircuit } from "./circuit/MyCircuit.js";
 import { MyVehicle } from "./vehicle/MyVehicle.js";
-import { collisionDetection } from "./collisions/collisions.js";
+import { collisionDetection, checkVehicleOnTrack } from "./collisions/collisions.js";
 
 
 /**
@@ -41,6 +41,7 @@ class MyContents {
     update() {
         if (this.vehicle.update()) {
             collisionDetection(this.vehicle, this.circuit.activatables)
+            checkVehicleOnTrack(this.vehicle, this.circuit.track)
         }
     }
 

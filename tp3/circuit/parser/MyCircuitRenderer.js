@@ -18,24 +18,24 @@ class MyCircuitRenderer {
         this.videoTextureCount = 0
         this.activatables = []
         this.circuitScene = new THREE.Scene()
+        this.track = null
 
         // Read the file
         const reader = new MyCircuitReader(this, this._renderCircuitFile)
         reader.open(yasfPath)
-
         // Return the circuit scene
-        return [this.circuitScene, this.activatables]
+        return [this.circuitScene, this.activatables, this.track]
     }
 
 
     _renderCircuitFile(data) {
+        this.renderTrack(data)
         this.renderCameras(data)
         this.renderTextures(data)
         this.renderMaterials(data)
         this.renderBackground(data)
         this.renderFog(data)
         this.renderSkyBox(data)
-        this.renderTrack(data)
         this.renderActivatables(data)
 
         this.sceneGraph = new MyCircuitGraph(data.nodes, data.rootId, this.materials, data['materials'])
@@ -190,21 +190,23 @@ class MyCircuitRenderer {
         return video;
     }
 
-    async _openJSON(jsonFile) {
-        const response = await fetch(jsonFile);
+    _openJSON(file) {
+        var request = new XMLHttpRequest();
+        request.open('GET', file, false);
+        request.send(null);
 
-        if (!response.ok) {
-            throw new Error("Error fetching json file");
+        if (request.status === 200) {
+            return JSON.parse(request.responseText);
+        } else {
+            throw new Error('Failed to load file: ' + file);
         }
-
-        return response.json();
     }
 
-    async renderTrack(data) {
-        const geoJSON = await this._openJSON(data.track['filepath'])
+    renderTrack(data) {
+        const geoJSON = this._openJSON(data.track['filepath'])
         const points = geoJSON["features"][0]["geometry"]["coordinates"]
-        const track = new MyTrack(points, data.track['size'], data.track['segments'], data.track['width'], data.track['texture'])
-        this.circuitScene.add(track.draw())
+        this.track = new MyTrack(points, data.track['size'], data.track['segments'], data.track['width'], data.track['texture'])
+        this.circuitScene.add(this.track.group)
     }
 
 
