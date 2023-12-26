@@ -68,8 +68,6 @@ class MyVehicleState {
     }
 
     update() {
-        
-        
         this.accelerate()
         this.brake()
         this.reverse()

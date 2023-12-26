@@ -2,7 +2,7 @@ import { MyCircuitReader } from './MyCircuitReader.js';
 import * as THREE from 'three';
 import { MyCircuitGraph } from './MyCircuitGraph.js';
 import { MyTrack } from '../MyTrack.js';
-import { createActivatable } from '../utils.js';
+import { createActivatable } from './utils.js';
 
 
 class MyCircuitRenderer {
@@ -210,7 +210,7 @@ class MyCircuitRenderer {
 
     renderActivatables(data) {
         for (const activatable of data.activatables) {
-            const newActivatable = createActivatable(activatable.type, activatable.subtype, activatable.position, activatable.rotation, activatable.scale, activatable.duration)
+            const newActivatable = createActivatable(activatable.type, activatable.subtype, activatable.position, activatable.duration, activatable.rotation, activatable.scale)
             this.activatables.push(newActivatable)
             this.circuitScene.add(newActivatable.mesh)
         }

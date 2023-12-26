@@ -1,7 +1,9 @@
-import { MyVehicleRenderer } from './parser/MyVehicleRenderer.js'
-import { NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState } from './ImpVehicleStates.js'
+import {MyVehicleRenderer} from './parser/MyVehicleRenderer.js'
+import {NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState} from './ImpVehicleStates.js'
+import {MyOBB} from '../collisions/MyOBB.js'
+
 class MyVehicle {
-    static createVehicle(file, initialPosition = { x: 0, y: 0, z: 0 }, initialRotation = 0) {
+    static createVehicle(file, initialPosition = {x: 0, y: 0, z: 0}, initialRotation = 0) {
         const vehicleRenderer = new MyVehicleRenderer()
         const [mesh, specs, importantNodes] = vehicleRenderer.render(file)
         return new MyVehicle(mesh, importantNodes, specs.topSpeed, specs.minSpeed, specs.acceleration, specs.deceleration, specs.turnRate, specs.brakingRate, initialPosition, initialRotation)
@@ -40,6 +42,8 @@ class MyVehicle {
 
         this._createStates()
 
+        this.obb = new MyOBB(this.mesh)
+
     }
 
     controlCar(event) {
@@ -50,8 +54,7 @@ class MyVehicle {
                         // If the car is reversing, it can't accelerate
                         if (this.accelerating) {
                             break
-                        }
-                        else if (!this.reversing && this.actualSpeed >= 0) {
+                        } else if (!this.reversing && this.actualSpeed >= 0) {
                             this.accelerating = true
                             this.coasting = false
                         }
@@ -144,7 +147,15 @@ class MyVehicle {
     }
 
     update() {
+        // If the vehicle is not doing anything, there is no need to update
+        // And return false to indicate that the vehicle is not moving
+        // Therefore, is not necessary run the collision detection function
+        if (!this.accelerating && !this.reversing && !this.turningLeft && !this.turningRight && !this.coasting && this.actualSpeed === 0 && this.actualRotationVehicle === 0 && this.actualRotationWheel === 0) {
+            return false
+        }
         this.currentState.update()
+        this.obb.update(this.mesh.matrixWorld)
+        return true
     }
 
     _translateToPivotPoint() {
@@ -180,4 +191,4 @@ class MyVehicle {
     }
 }
 
-export { MyVehicle };
+export {MyVehicle};
