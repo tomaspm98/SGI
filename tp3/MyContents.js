@@ -1,7 +1,8 @@
 import * as THREE from "three";
-import {MyAxis} from "./MyAxis.js";
-import {MyCircuit} from "./circuit/MyCircuit.js";
-import {MyVehicle} from "./vehicle/MyVehicle.js";
+import { MyAxis } from "./MyAxis.js";
+import { MyCircuit } from "./circuit/MyCircuit.js";
+import { MyVehicle } from "./vehicle/MyVehicle.js";
+import { collisionDetection } from "./collisions/collisions.js";
 
 
 /**
@@ -39,39 +40,11 @@ class MyContents {
      */
     update() {
         if (this.vehicle.update()) {
-            this.collisionDetection()
+            collisionDetection(this.vehicle, this.circuit.activatables)
         }
     }
 
-    collisionDetection() {
-        const activeObject = this.vehicle
-        let passiveObjects = this.circuit.activatables
 
-        // Collision detection broad phase
-        passiveObjects = this.collisionDetectionBroadPhase(activeObject, passiveObjects)
-
-        // Collision detection narrow phase
-        const collisions = this.collisionDetectionNarrowPhase(activeObject, passiveObjects)
-        
-        collisions.forEach(collision => {
-            collision.activate(activeObject)
-        })
-    }
-
-    // TODO - implement collision detection broad phase
-    collisionDetectionBroadPhase(activeObject, passiveObjects) {
-        return passiveObjects
-    }
-
-    collisionDetectionNarrowPhase(activeObject, passiveObjects) {
-        let collisions = []
-        for (const passiveObject of passiveObjects) {
-            if (passiveObject.obb.collision(activeObject.obb)) {
-                collisions.push(passiveObject)
-            }
-        }
-        return collisions
-    }
 }
 
-export {MyContents};
+export { MyContents };
