@@ -2,8 +2,9 @@ import * as THREE from 'three';
 import { MyActivatable } from "./MyActivatable.js";
 
 class MyPowerUp1 extends MyActivatable {
-    constructor(position, rotation, scale) {
-        super(position, rotation, scale)
+    constructor(position, rotation, scale, duration) {
+        super(position, rotation, scale, duration)
+        this.effect = "increasedSpeed"
     }
 
     _constructMesh() {

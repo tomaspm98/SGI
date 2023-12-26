@@ -1,14 +1,16 @@
-import {MyCircuitRenderer} from "./parser/MyCircuitRenderer.js";
+import { MyCircuitRenderer } from "./parser/MyCircuitRenderer.js";
 
 class MyCircuit {
-    constructor(filePath) {
-        this.filePath = filePath;
-    }
-
-    build() {
+    static create(filePath) {
         const renderer = new MyCircuitRenderer();
-        this.scene = renderer.render(this.filePath);
+        const [circuitScene, activatables, track] = renderer.render(filePath);
+        return new MyCircuit(circuitScene, activatables, track);
+    }
+    constructor(circuitScene, activatables, track) {
+        this.scene = circuitScene;
+        this.activatables = activatables;
+        this.track = track;
     }
 }
 
-export {MyCircuit};
+export { MyCircuit };

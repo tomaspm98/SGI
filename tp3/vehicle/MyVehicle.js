@@ -1,7 +1,8 @@
 import { MyVehicleRenderer } from './parser/MyVehicleRenderer.js'
+import { NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState } from './ImpVehicleStates.js'
+import { MyOBB } from '../collisions/MyOBB.js'
 import * as THREE from 'three'
 import { AxesHelper } from 'three'
-
 
 class MyVehicle {
     static createVehicle(file, initialPosition = { x: 0, y: 0, z: 0 }, initialRotation = 0) {
@@ -38,8 +39,14 @@ class MyVehicle {
         this.turningLeft = false
         this.turningRight = false
         this.reversing = false
+        this.offTrack = false
 
         this._translateToPivotPoint()
+
+        this._createStates()
+
+        this.obb = new MyOBB(this.mesh)
+        this.bb = new THREE.Box3().setFromObject(this.mesh)
     }
 
     controlCar(event) {
@@ -50,8 +57,7 @@ class MyVehicle {
                         // If the car is reversing, it can't accelerate
                         if (this.accelerating) {
                             break
-                        }
-                        else if (!this.reversing && this.actualSpeed >= 0) {
+                        } else if (!this.reversing && this.actualSpeed >= 0) {
                             this.accelerating = true
                             this.coasting = false
                         }
@@ -81,7 +87,7 @@ class MyVehicle {
                         for (const light of this.importantNodes.brakelights) {
                             light.visible = false
                         }
-                        if (this.actualSpeed !== 0)
+                        if (this.actualSpeed !== 0 && !this.reversing && !this.accelerating)
                             this.coasting = true
                         this.braking = false
                         break
@@ -144,89 +150,16 @@ class MyVehicle {
     }
 
     update() {
-        // To avoid calling update when the car is not moving
-        if (!this.accelerating && !this.braking && !this.reversing && !this.turningLeft && !this.turningRight && !this.coasting && this.actualSpeed === 0 && this.actualRotationVehicle === 0 && this.actualRotationWheel === 0) {
-            return
+        // If the vehicle is not doing anything, there is no need to update
+        // And return false to indicate that the vehicle is not moving
+        // Therefore, is not necessary run the collision detection function
+        if (!this.accelerating && !this.reversing && !this.turningLeft && !this.turningRight && !this.coasting && this.actualSpeed === 0 && this.actualRotationVehicle === 0 && this.actualRotationWheel === 0) {
+            return false
         }
-
-        if (this.accelerating) {
-            this.actualSpeed = Math.min(this.actualSpeed + this.accelerationRate, this.topSpeed)
-        }
-
-        if (this.braking && this.actualSpeed > 0) {
-            this.actualSpeed = Math.max(this.actualSpeed - this.brakingRate, 0)
-        } else if (this.braking && this.actualSpeed < 0) {
-            this.actualSpeed = Math.min(this.actualSpeed + this.brakingRate, 0)
-        }
-
-        if (this.reversing) {
-            this.actualSpeed = Math.max(this.actualSpeed - this.accelerationRate, this.minSpeed)
-        }
-
-
-        // Turning left
-        // We avoid using nested if statements for performance reasons
-        if (this.turningLeft) {
-            this.actualRotationWheel = Math.max(- this.turnRate * 5 + this.actualRotationWheel, -0.7)
-        }
-
-        if (this.turningLeft && this.actualSpeed > 0) {
-            this.actualRotationVehicle -= this.turnRate
-        } else if (this.turningLeft && this.actualSpeed < 0) {
-            this.actualRotationVehicle += this.turnRate
-        }
-
-        // Turning right
-        // We avoid using nested if statements for performance reasons
-        if (this.turningRight) {
-            this.actualRotationWheel = Math.min(this.turnRate * 5 + this.actualRotationWheel, 0.7)
-        }
-
-        if (this.turningRight && this.actualSpeed > 0) {
-            this.actualRotationVehicle += this.turnRate
-        } else if (this.turningRight && this.actualSpeed < 0) {
-            this.actualRotationVehicle -= this.turnRate
-        }
-
-        // When the vehicle is not accelerating or braking, it coasts
-        // Until it stops
-        if (this.coasting) {
-            this.actualSpeed += this.coastingRate * - Math.sign(this.actualSpeed)
-            if (this.actualSpeed < 0.01 && this.actualSpeed > -0.01) {
-                this.actualSpeed = 0
-                this.coasting = false
-            }
-        }
-
-        // Updating the vehicle position
-        this.actualPosition.x += this.actualSpeed * Math.sin(this.actualRotationVehicle)
-        this.actualPosition.z += this.actualSpeed * Math.cos(this.actualRotationVehicle)
-        this.mesh.position.setX(this.actualPosition.x)
-        this.mesh.position.setZ(this.actualPosition.z)
-
-        // Updating the vehicle rotation
-        this.mesh.rotation.y = this.actualRotationVehicle
-
-        // If the car is not turning, the wheels go back to their original position slowly
-        if (!this.turningRight && this.actualRotationWheel > 0) {
-            this.actualRotationWheel = Math.max(this.actualRotationWheel - 5 * this.turnRate, 0)
-        } else if (!this.turningLeft && this.actualRotationWheel < 0) {
-            this.actualRotationWheel = Math.min(this.actualRotationWheel + 5 * this.turnRate, 0)
-        }
-
-        // Updating the wheels rotation on the y axis
-        this.importantNodes.wheelFL.rotation.y = this.actualRotationWheel
-        this.importantNodes.wheelFR.rotation.y = this.actualRotationWheel
-
-        // Updating the wheels rotation on the x axis
-        // TODO: make the front wheels spin
-        // TODO: implement this in shaders
-        this.importantNodes.wheelBL.rotation.x += this.actualSpeed
-        this.importantNodes.wheelBR.rotation.x += this.actualSpeed
-        this.importantNodes.wheelFL.rotation.x += this.actualSpeed
-        this.importantNodes.wheelFR.rotation.x += this.actualSpeed
-
-        console.log(this.mesh.position)
+        this.currentState.update()
+        this.obb.update(this.mesh.matrixWorld)
+        this.bb.setFromObject(this.mesh)
+        return true
     }
 
     _translateToPivotPoint() {
@@ -245,6 +178,20 @@ class MyVehicle {
             mesh1.position.y -= y
             mesh1.position.z -= z
         }
+    }
+
+    _createStates() {
+        this.states = {
+            "normal": new NormalState(this),
+            "reducedSpeed": new ReducedSpeedState(this),
+            "increasedSpeed": new IncreasedSpeedState(this),
+            "invertedControls": new InvertedControlsState(this)
+        }
+        this.currentState = this.states["normal"]
+    }
+
+    changeState(state) {
+        this.currentState = this.states[state]
     }
 }
 
