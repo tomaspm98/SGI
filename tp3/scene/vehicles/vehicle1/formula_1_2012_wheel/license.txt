@@ -1,0 +1,11 @@
+Model Information:
+* title:	Formula 1 2012 Wheel
+* source:	https://sketchfab.com/3d-models/formula-1-2012-wheel-88dd841fdd29458785a02428559095bb
+* author:	Maxence Leret d'Aubigny (https://sketchfab.com/ahurig)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Formula 1 2012 Wheel" (https://sketchfab.com/3d-models/formula-1-2012-wheel-88dd841fdd29458785a02428559095bb) by Maxence Leret d'Aubigny (https://sketchfab.com/ahurig) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

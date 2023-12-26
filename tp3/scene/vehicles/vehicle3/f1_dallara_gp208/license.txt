@@ -1,0 +1,11 @@
+Model Information:
+* title:	F1 Dallara Gp208
+* source:	https://sketchfab.com/3d-models/f1-dallara-gp208-9e0e706bb5344830b34c560f8819d636
+* author:	Adam Hardy (https://sketchfab.com/AdamH04)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "F1 Dallara Gp208" (https://sketchfab.com/3d-models/f1-dallara-gp208-9e0e706bb5344830b34c560f8819d636) by Adam Hardy (https://sketchfab.com/AdamH04) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

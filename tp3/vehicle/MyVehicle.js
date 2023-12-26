@@ -2,6 +2,7 @@ import { MyVehicleRenderer } from './parser/MyVehicleRenderer.js'
 import { NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState } from './ImpVehicleStates.js'
 import { MyOBB } from '../collisions/MyOBB.js'
 import * as THREE from 'three'
+import { AxesHelper } from 'three'
 
 class MyVehicle {
     static createVehicle(file, initialPosition = { x: 0, y: 0, z: 0 }, initialRotation = 0) {

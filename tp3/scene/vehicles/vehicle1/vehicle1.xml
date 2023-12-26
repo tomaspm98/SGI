@@ -22,14 +22,14 @@
             shininess="0"
             textureref="tires"
         />
+
     </materials>
 
     <graph rootid="car">
         <node id="car">
             <transforms>
-                <translate value3="0 0 0" />
-                <!--<scale
-                value3="0.2 0.2 0.2" />-->
+                <translate value3="0 0.2 0" />
+                <scale value3="0.2 0.2 0.2" />
             </transforms>
             <children>
                 <noderef id="body" />
@@ -42,10 +42,12 @@
         </node>
 
         <node id="body">
+            <transforms>
+                <translate value3="0 0.01 0" />
+            </transforms>    
             <children>
                 <primitive>
-                    <cylinder base="1" top="1" height="0.75" slices="32" stacks="32"
-                        capsclose="true" />
+                    <model3d filepath="scene/vehicles/vehicle1/f1_car_color.gltf" />
                 </primitive>
             </children>
         </node>
@@ -87,7 +89,7 @@
 
         <node id="wheelFL">
             <transforms>
-                <translate value3="2.5 0 3" />
+                <translate value3="2.5 0 8.75" />
                 <rotate value3="0 0 0" />
             </transforms>
             <children>
@@ -97,7 +99,7 @@
 
         <node id="wheelFR">
             <transforms>
-                <translate value3="-2.5 0 3" />
+                <translate value3="-2.5 0 8.75" />
                 <rotate value3="0 0 0" />
             </transforms>
             <children>
@@ -107,27 +109,36 @@
 
         <node id="brake">
             <children>
-                <pointlight id="brakelight"
+                <spotlight id="brakelight1"
                     color="255 0 0 0"
-                    position="0 0 0"
-                    intensity="10"
+                    position="0 0.2 -0.01"
+                    intensity="2"
                     decay="2"
+                    target="0 0 -10"
+                    angle="20"
+                    distance="5"
                     enabled="false"
                 />
 
-                <pointlight id="reverselight"
-                    color="0 255 0 0"
-                    position="0 0 0"
-                    intensity="10"
+                <spotlight id="reverselight1"
+                    color="255 255 255 0"
+                    position="0 0.2 -0.01"
+                    intensity="2"
                     decay="2"
+                    target="0 0 -10"
+                    angle="15"
+                    distance="3"
                     enabled="false"
                 />
 
-                <pointlight id="headlight"
-                    color="0 0 255 0"
-                    position="0 0 0"
-                    intensity="10"
+                <spotlight id="headlight1"
+                    color="238 221 130 0"
+                    position="0 0 8"
+                    intensity="5"
                     decay="2"
+                    target="0 0 10"
+                    angle="25"
+                    distance="20"
                     enabled="false"
                 />
             </children>
