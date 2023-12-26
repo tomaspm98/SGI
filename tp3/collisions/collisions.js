@@ -31,7 +31,6 @@ function collisionDetectionBroadPhase(activeObject, rTree) {
 function collisionDetectionNarrowPhase(activeObject, passiveObjects) {
     let collisions = [];
     for (const passiveObject of passiveObjects) {
-        console.log(activeObject.obb);
         if (passiveObject.obb.collision(activeObject.obb)) {
             collisions.push(passiveObject);
         }
