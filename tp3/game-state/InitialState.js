@@ -33,11 +33,8 @@ class InitialState extends MyGameState {
         const f1LogoMesh = new THREE.Mesh(f1LogoGeometry, f1LogoMaterial);
         f1LogoMesh.position.set(-450, 300, 1);
 
-        const startButtonGeometry = new THREE.PlaneGeometry(300, 100);
-        const startButtonMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        const startButtonMesh = new THREE.Mesh(startButtonGeometry, startButtonMaterial);
-        startButtonMesh.position.set(0, -250, 1);
-
+        const startText = text.transformString("(Press ENTER to start)", [1000, 50]);
+        startText.position.set(-300, -400, 1);
 
         this.scene = new THREE.Scene();
         this.scene.add(interfacePlane);
@@ -45,7 +42,7 @@ class InitialState extends MyGameState {
         this.scene.add(author2Mesh);
         this.scene.add(feupLogoMesh);
         this.scene.add(f1LogoMesh);
-        //this.scene.add(startButtonMesh);
+        this.scene.add(startText);
     }
 
     _createCameras() {
