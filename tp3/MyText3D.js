@@ -1,8 +1,12 @@
 import * as THREE from 'three';
 
 class MyText3D {
-    constructor(spriteSheetPath, spriteSheetWidth, spriteSheetHeight, charWidth, charHeight) {
+    constructor(spriteSheetPath, spriteSheetSize, charSize) {
         this.spriteSheetTexture = new THREE.TextureLoader().load(spriteSheetPath);
+
+        const [spriteSheetWidth, spriteSheetHeight] = spriteSheetSize
+        const [charWidth, charHeight] = charSize
+
         this.numCharsWidth = spriteSheetWidth / charWidth;
         this.numCharsHeight = spriteSheetHeight / charHeight;
         this.charSizeU = 1 / this.numCharsWidth;
