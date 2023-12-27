@@ -49,7 +49,7 @@ class MyText3D {
 
         for (let i = 0; i < string.length; i++) {
             const char = this.transformChar(string[i], [widthChar, heightChar]);
-            char.position.x = i * widthChar;
+            char.position.x = i * widthChar * 0.65;
             group.add(char);
         }
         return group;
