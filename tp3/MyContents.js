@@ -4,6 +4,7 @@ import { MyCircuit } from "./circuit/MyCircuit.js";
 import { MyVehicle } from "./vehicle/MyVehicle.js";
 import { collisionDetection, checkVehicleOnTrack } from "./collisions/collisions.js";
 import { MyRTree } from "./collisions/MyRTree.js";
+import { MyText3D } from "./spritesheet/MyText3D.js";
 
 
 /**
@@ -28,11 +29,15 @@ class MyContents {
         this.app.scene = this.circuit.scene
 
         this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle_test/vehicleTest.xml")
-        this.app.scene.add(this.vehicle.mesh)
-        this.app.scene.add(this.vehicle.obb.helper)
+        //this.app.scene.add(this.vehicle.mesh)
+        //this.app.scene.add(this.vehicle.obb.helper)
 
         this.rTree = new MyRTree()
         this.rTree.insertMany(this.circuit.activatables)
+
+        this.text = new MyText3D("spritesheet/sprite_sheet.png", 640, 640, 64, 64)
+        const textMesh = this.text.transformChar("B")
+        this.app.scene.add(textMesh)
 
         document.addEventListener('keydown', (event) => this.vehicle.controlCar(event))
         document.addEventListener('keyup', (event) => this.vehicle.controlCar(event))
