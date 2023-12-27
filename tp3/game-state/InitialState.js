@@ -60,14 +60,10 @@ class InitialState extends MyGameState {
         this.activeCameraName = "Perspective";
     }
 
-    setActiveCamera(name) {
-        this.activeCameraName = name;
-    }
-
     _addDocumentListeners() {
         document.addEventListener("keypress", (event) => {
             if (event.code === "Enter") {
-                this._changeState({ name: "chooseMap" });
+                this._changeState({ name: "chooseCircuit" });
             }
         });
     }

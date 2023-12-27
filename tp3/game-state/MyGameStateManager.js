@@ -1,9 +1,9 @@
 import { InitialState } from "./InitialState.js";
-import { ChooseMapState } from "./ChooseMapState.js";
+import { ChooseCircuitState } from "./ChooseCircuitState.js";
 
 class MyGameStateManager {
     constructor(app) {
-        this.actualState = this.createNewState({ name: "initial" });
+        this.actualState = this.createNewState({ name: "chooseCircuit" });
         this.savedStates = [];
         this.app = app;
     }
@@ -35,8 +35,8 @@ class MyGameStateManager {
         switch (stateInfo.name) {
             case "initial":
                 return new InitialState(this);
-            case "chooseMap":
-                return new ChooseMapState(this);
+            case "chooseCircuit":
+                return new ChooseCircuitState(this, "../scene/circuits.json");
             default:
                 throw new Error("Invalid state name");
         }
