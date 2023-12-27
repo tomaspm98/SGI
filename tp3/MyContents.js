@@ -36,7 +36,7 @@ class MyContents {
         this.rTree.insertMany(this.circuit.activatables)
 
         this.text = new MyText3D("spritesheet/sprite_sheet.png", 640, 640, 64, 64)
-        const textMesh = this.text.transformChar("B")
+        const textMesh = this.text.transformString("w x", [10, 10])
         this.app.scene.add(textMesh)
 
         document.addEventListener('keydown', (event) => this.vehicle.controlCar(event))

@@ -11,27 +11,44 @@ class MyText3D {
     }
 
     _getUV(character) {
-        let charPosition = character.charCodeAt(0) - 32;
-        console.log(charPosition);
+        const charPosition = character.charCodeAt(0) - 32;
+        const u = (charPosition % this.numCharsWidth) * this.charSizeU;
 
-        let row = Math.floor(charPosition / this.numCharsWidth);
-        let column = charPosition % this.numCharsWidth;
+        // the v starts from the bottom
+        // so we need to get the row and subtract it from the total number of rows
+        // we also need to subtract 1 because the first row is 0
+        const v = (this.numCharsHeight - 1 - (Math.floor(charPosition / this.numCharsWidth))) * this.charSizeV;
 
-        console.log(row, column);
-
-        const u = column * this.charSizeU;
-        const v = (this.numCharsWidth - row - 1 ) * this.charSizeV;
         return [u, v];
     }
 
-    transformChar(character) {
+    transformChar(character, size = [1, 1]) {
         const [u, v] = this._getUV(character);
-        const geometry = new THREE.PlaneGeometry(2, 2);
-        const material = new THREE.MeshBasicMaterial({ map: this.spriteSheetTexture, transparent: true });
+        const [width, height] = size;
+
+        const spriteSheetClone = this.spriteSheetTexture.clone();
+
+        const geometry = new THREE.PlaneGeometry(width, height);
+        const material = new THREE.MeshBasicMaterial({ map: spriteSheetClone, transparent: true });
         const mesh = new THREE.Mesh(geometry, material);
-        console.log(u, v);
+
         mesh.material.map.offset.set(u, v);
+
         return mesh;
+    }
+
+    transformString(string, size = [1, 1]) {
+        const group = new THREE.Group();
+
+        const widthChar = size[0] / string.length;
+        const heightChar = size[1];
+
+        for (let i = 0; i < string.length; i++) {
+            const char = this.transformChar(string[i], [widthChar, heightChar]);
+            char.position.x = i * widthChar;
+            group.add(char);
+        }
+        return group;
     }
 }
 
