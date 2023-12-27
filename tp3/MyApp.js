@@ -1,7 +1,5 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { MyContents } from './MyContents.js';
-import { MyGuiInterface } from './MyGuiInterface.js';
 import Stats from 'three/addons/libs/stats.module.js'
 import { MyGameStateManager } from './game-state/MyGameStateManager.js';
 
@@ -53,9 +51,8 @@ class MyApp {
         // manage window resizes
         window.addEventListener('resize', this.onResize.bind(this), false);
 
-        this.gameStateManager = new MyGameStateManager();
-        this.setCameras(this.gameStateManager.actualState.cameras);
-        this.setActiveCamera(this.gameStateManager.actualState.activeCameraName);
+        this.gameStateManager = new MyGameStateManager(this);
+        this.updateState()
     }
 
     setCameras(cameras) {
@@ -73,6 +70,11 @@ class MyApp {
         this.activeCameraName = cameraName
         this.activeCamera = this.cameras[this.activeCameraName].camera
     }
+
+    updateActiveCamera() {
+        this.setActiveCamera(this.gameStateManager.actualState.activeCameraName)
+    }
+
 
     /**
      * updates the active camera if required
@@ -112,7 +114,6 @@ class MyApp {
     onResize() {
         if (this.activeCamera !== undefined && this.activeCamera !== null) {
             this.activeCamera.aspect = window.innerWidth / window.innerHeight;
-            console.log(this.activeCamera)
             this.activeCamera.updateProjectionMatrix();
             this.renderer.setSize(window.innerWidth, window.innerHeight);
         }
@@ -144,6 +145,12 @@ class MyApp {
 
         this.lastCameraName = this.activeCameraName
         this.stats.end()
+    }
+
+    updateState() {
+        this.scene = this.gameStateManager.actualState.scene;
+        this.setCameras(this.gameStateManager.actualState.cameras);
+        this.setActiveCamera(this.gameStateManager.actualState.activeCameraName);
     }
 }
 

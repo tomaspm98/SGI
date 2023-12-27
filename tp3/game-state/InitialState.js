@@ -3,8 +3,9 @@ import { MyText3D } from "../MyText3D.js";
 import * as THREE from 'three';
 
 class InitialState extends MyGameState {
-    constructor(stateInfo) {
-        super();
+    constructor(gameStateManager) {
+        super(gameStateManager);
+        this.name = "initial";
     }
 
     _createScene() {
@@ -36,6 +37,10 @@ class InitialState extends MyGameState {
         const startText = text.transformString("(Press ENTER to start)", [1000, 50]);
         startText.position.set(-300, -400, 1);
 
+        setInterval(() => {
+            startText.visible = !startText.visible;
+        }, 500);
+
         this.scene = new THREE.Scene();
         this.scene.add(interfacePlane);
         this.scene.add(author1Mesh);
@@ -57,6 +62,14 @@ class InitialState extends MyGameState {
 
     setActiveCamera(name) {
         this.activeCameraName = name;
+    }
+
+    _addDocumentListeners() {
+        document.addEventListener("keypress", (event) => {
+            if (event.code === "Enter") {
+                this._changeState({ name: "chooseMap" });
+            }
+        });
     }
 }
 
