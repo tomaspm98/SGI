@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { MyContents } from './MyContents.js';
 import { MyGuiInterface } from './MyGuiInterface.js';
 import Stats from 'three/addons/libs/stats.module.js'
+import { MyGameStateManager } from './game-state/MyGameStateManager.js';
 
 /**
  * This class contains the application object
@@ -25,8 +26,8 @@ class MyApp {
         // other attributes
         this.renderer = null
         this.controls = null
-        this.gui = null
-        this.contents = null
+
+        this.gameStateManager = null
     }
     /**
      * initializes the application
@@ -52,41 +53,9 @@ class MyApp {
         // manage window resizes
         window.addEventListener('resize', this.onResize.bind(this), false);
 
-    }
-
-    updateCameraToFollowTarget(targetObject) {
-        if (!targetObject || !this.activeCamera) {
-            return;
-        }
-
-        const offsetDistance = 5; // Distance behind the vehicle
-        const offsetHeight = 3; // Height above the ground
-
-        // Calculate the offset based on the vehicle's rotation
-        const offset = new THREE.Vector3(0, 0, - offsetDistance);
-        offset.applyQuaternion(targetObject.quaternion);
-        offset.y += offsetHeight;
-
-        // Calculate the desired position of the camera
-        this.targetPosition = new THREE.Vector3();
-        targetObject.getWorldPosition(this.targetPosition);
-
-        this.activeCamera.position.copy(this.targetPosition).add(offset);
-        // Set the camera to look at the object
-        this.activeCamera.position.lerp(this.activeCamera.position, 0.05); // Smooth transition
-        //this.activeCamera.lookAt(targetPosition);
-    }
-
-    /**
-     * initializes all the cameras
-     */
-    initCameras() {
-        const aspect = window.innerWidth / window.innerHeight;
-
-        // Create a basic perspective camera
-        const perspective1 = new THREE.PerspectiveCamera(75, aspect, 0.1, 2000)
-        perspective1.position.set(10, 10, 600)
-        this.cameras['Perspective'] = perspective1
+        this.gameStateManager = new MyGameStateManager();
+        this.setCameras(this.gameStateManager.actualState.cameras);
+        this.setActiveCamera(this.gameStateManager.actualState.activeCameraName);
     }
 
     setCameras(cameras) {
@@ -148,25 +117,6 @@ class MyApp {
             this.renderer.setSize(window.innerWidth, window.innerHeight);
         }
     }
-    /**
-     * 
-     * @param {MyContents} contents the contents object 
-     */
-    setContents(contents) {
-        this.contents = contents;
-        this.vehicle = this.contents.vehicle;
-    }
-
-    /**
-     * @param {MyGuiInterface} contents the gui interface object
-     */
-    setGui(gui) {
-        this.gui = gui
-    }
-
-    /*setVehicle(vehicle) {
-        this.vehicle = vehicle;
-    }*/
 
     /**
     * the main render function. Called in a requestAnimationFrame loop
@@ -177,9 +127,8 @@ class MyApp {
             this.updateCameraIfRequired()
         }
 
-        // update the animation if contents were provided
-        if (this.activeCamera !== undefined && this.activeCamera !== null) {
-            this.contents.update()
+        if (this.gameStateManager !== null) {
+            //this.gameStateManager.actualState.update()
         }
 
         // required if controls.enableDamping or controls.autoRotate are set to true

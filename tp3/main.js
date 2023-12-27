@@ -13,7 +13,6 @@ let contents = new MyContents(app)
 // initializes the contents
 contents.init()
 // hooks the contents object in the application object
-app.setContents(contents);
 
 // create the gui interface object
 //let gui = new MyGuiInterface(app)

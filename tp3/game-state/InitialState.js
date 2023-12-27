@@ -3,7 +3,7 @@ import { MyText3D } from "../MyText3D.js";
 import * as THREE from 'three';
 
 class InitialState extends MyGameState {
-    constructor() {
+    constructor(stateInfo) {
         super();
     }
 
@@ -52,6 +52,7 @@ class InitialState extends MyGameState {
         camera1.position.set(0, 0, 600);
 
         this.cameras.push({ name: "Perspective", camera: camera1, locked: true });
+        this.activeCameraName = "Perspective";
     }
 
     setActiveCamera(name) {

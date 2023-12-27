@@ -18,6 +18,7 @@ class MyContents {
      */
     constructor(app) {
         this.app = app;
+        this.gameStateManager = null;
         this.gameState = null;
     }
 
