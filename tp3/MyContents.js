@@ -5,6 +5,7 @@ import { MyVehicle } from "./vehicle/MyVehicle.js";
 import { collisionDetection, checkVehicleOnTrack } from "./collisions/collisions.js";
 import { MyRTree } from "./collisions/MyRTree.js";
 import { MyText3D } from "./MyText3D.js";
+import { InitialState } from "./game-state/InitialState.js";
 
 
 /**
@@ -17,27 +18,20 @@ class MyContents {
      */
     constructor(app) {
         this.app = app;
-        this.axis = null;
+        this.gameState = null;
     }
 
     /**
      * initializes the contents
      */
     init() {
-        // create once
-        this.circuit = MyCircuit.create("scene/circuits/circuit1.xml")
-        this.app.scene = this.circuit.scene
+        this.gameState = new InitialState();
+        this.gameState.setActiveCamera("Perspective");
 
-        this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle_test/vehicleTest.xml")
-        this.app.scene.add(this.vehicle.mesh)
-        this.app.scene.add(this.vehicle.obb.helper)
+        this.app.scene = this.gameState.scene;
 
-        this.rTree = new MyRTree()
-        this.rTree.insertMany(this.circuit.activatables)
-
-
-        document.addEventListener('keydown', (event) => this.vehicle.controlCar(event))
-        document.addEventListener('keyup', (event) => this.vehicle.controlCar(event))
+        this.app.setCameras(this.gameState.cameras);
+        this.app.setActiveCamera("Perspective");
     }
 
 
@@ -46,10 +40,10 @@ class MyContents {
      * this method is called from the render method of the app
      */
     update() {
-        if (this.vehicle.update()) {
+        /*if (this.vehicle.update()) {
             collisionDetection(this.vehicle, this.rTree)
             checkVehicleOnTrack(this.vehicle, this.circuit.track)
-        }
+        }*/
     }
 
 

@@ -26,9 +26,6 @@ class MyApp {
         this.renderer = null
         this.controls = null
         this.gui = null
-        this.axis = null
-        this.contents == null
-        this.vehicle = null
         this.contents = null
     }
     /**
@@ -37,15 +34,9 @@ class MyApp {
     init() {
 
         // Create an empty scene
-        this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0x101010);
-
         this.stats = new Stats()
-        this.stats.showPanel(1) // 0: fps, 1: ms, 2: mb, 3+: custom
+        this.stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
         document.body.appendChild(this.stats.dom)
-
-        this.initCameras();
-        this.setActiveCamera('Perspective')
 
         // Create a renderer with Antialiasing
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -93,9 +84,16 @@ class MyApp {
         const aspect = window.innerWidth / window.innerHeight;
 
         // Create a basic perspective camera
-        const perspective1 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        perspective1.position.set(10,10,10)
+        const perspective1 = new THREE.PerspectiveCamera(75, aspect, 0.1, 2000)
+        perspective1.position.set(10, 10, 600)
         this.cameras['Perspective'] = perspective1
+    }
+
+    setCameras(cameras) {
+        this.cameras = []
+        for (const camera of cameras) {
+            this.cameras[camera.name] = camera
+        }
     }
 
     /**
@@ -104,7 +102,7 @@ class MyApp {
      */
     setActiveCamera(cameraName) {
         this.activeCameraName = cameraName
-        this.activeCamera = this.cameras[this.activeCameraName]
+        this.activeCamera = this.cameras[this.activeCameraName].camera
     }
 
     /**
@@ -118,7 +116,7 @@ class MyApp {
         // camera changed?
         if (this.lastCameraName !== this.activeCameraName) {
             this.lastCameraName = this.activeCameraName;
-            this.activeCamera = this.cameras[this.activeCameraName]
+            this.activeCamera = this.cameras[this.activeCameraName].camera
             document.getElementById("camera").innerHTML = this.activeCameraName
 
             // call on resize to update the camera aspect ratio
@@ -145,6 +143,7 @@ class MyApp {
     onResize() {
         if (this.activeCamera !== undefined && this.activeCamera !== null) {
             this.activeCamera.aspect = window.innerWidth / window.innerHeight;
+            console.log(this.activeCamera)
             this.activeCamera.updateProjectionMatrix();
             this.renderer.setSize(window.innerWidth, window.innerHeight);
         }
@@ -174,13 +173,8 @@ class MyApp {
     */
     render() {
         this.stats.begin()
-        this.updateCameraIfRequired()
-
-        if (this.vehicle && this.vehicle.carMesh) {
-            this.updateCameraToFollowTarget(this.vehicle.carMesh);
-            const targetPosition = new THREE.Vector3();
-            this.vehicle.carMesh.getWorldPosition(targetPosition);
-            this.controls.target.copy(targetPosition);
+        if (!this.cameras[this.activeCameraName].locked) {
+            this.updateCameraIfRequired()
         }
 
         // update the animation if contents were provided
@@ -188,12 +182,10 @@ class MyApp {
             this.contents.update()
         }
 
-        /*if (this.vehicle) {
-            this.vehicle.update();
-        }*/
-
         // required if controls.enableDamping or controls.autoRotate are set to true
-        this.controls.update();
+        if (!this.cameras[this.activeCameraName].locked) {
+            this.controls.update();
+        }
 
         // render the scene
         this.renderer.render(this.scene, this.activeCamera);
