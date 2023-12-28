@@ -76,23 +76,21 @@ class MyFirework {
             this.colors[i*3] = color.r
             this.colors[i*3+1] = color.g
             this.colors[i*3+2] = color.b
-            let to = new THREE.Vector3(THREE.MathUtils.randFloat(vector[0] - 10, vector[0] + 10),
-            THREE.MathUtils.randFloat(vector[1] - 10, vector[1] + 10),
-            THREE.MathUtils.randFloat(vector[2] - 10, vector[2] + 10));
+            let x = THREE.MathUtils.randFloat( -5, 5 ) 
+            let y = THREE.MathUtils.randFloat( this.height * 0.8, this.height * 1.2)
+            let z = THREE.MathUtils.randFloat( -5, 5 ) 
+
+            this.dest.push( x, y, z);
 
             let from =
                 [Math.fround(vector[0]), Math.fround(vector[1]), Math.fround(vector[2])];
-
-                this.dest.push( to ); 
 
                 this.positions[i*3]=from[0]
                 this.positions[i*3+1] = from[1]
                 this.positions[i*3+2] = from[2]                    
         }
-        console.log(this.positions)
         this.geometry.setAttribute( 'color', new THREE.BufferAttribute( new Float32Array(this.colors), 3 ) );
         this.geometry.setAttribute( 'position',  new THREE.BufferAttribute( new Float32Array(this.positions), 3 ) );
-        console.log(this.geometry)
         this.app.scene.add( this.points );
 }
     /**
@@ -164,7 +162,7 @@ class MyFirework {
             }
             
             // remove, reset and stop animating 
-            if( this.material.opacity <= -3 )
+            if( this.material.opacity <= 0 )
             {
                 this.reset() 
                 this.done = true 
