@@ -4,7 +4,7 @@ import { ChooseCircuitState } from "./ChooseCircuitState.js";
 class MyGameStateManager {
     constructor(app) {
         this.app = app;
-        this.actualState = this.createNewState({ name: "chooseCircuit" });
+        this.actualState = this.createNewState({ name: "initial" });
         this.savedStates = [];
     }
 
@@ -20,16 +20,17 @@ class MyGameStateManager {
 
     goBack() {
         this.actualState = this.savedStates.pop();
+        this.app.updateState()
     }
 
-    goBackTo(stateInfo) {
+    /*goBackTo(stateInfo) {
         while (this.actualState.name !== stateInfo.name) {
             if (this.savedStates.length === 0) {
                 throw new Error("State not found");
             }
             this.goBack();
         }
-    }
+    }*/
 
     createNewState(stateInfo) {
         switch (stateInfo.name) {

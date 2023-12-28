@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 class MyPicking {
-    constructor(objects, near, far, camera, pickingHandler, listeners) {
+    constructor(objects, near, far, camera, pickingHandler, resetPickedObject, listeners) {
         this.raycaster = new THREE.Raycaster();
         this.raycaster.near = near;
         this.raycaster.far = far;
@@ -12,7 +12,10 @@ class MyPicking {
         this.updateLayer();
 
         this.pickingHandler = pickingHandler;
+        this.resetPickedObject = resetPickedObject
         this.camera = camera;
+
+        this.lastPickedObject = null
 
         this._addListeners(listeners);
     }
@@ -25,7 +28,13 @@ class MyPicking {
 
         const intersects = this.raycaster.intersectObjects(this.pickableObjects);
 
-        this.pickingHandler(intersects, event);
+        if (intersects.length > 0) {
+            this.pickingHandler(intersects[0].object, event);
+            this.lastPickedObject = intersects[0].object
+        } else if (this.resetPickedObject && this.lastPickedObject) {
+            this.resetPickedObject(this.lastPickedObject)
+            this.lastPickedObject = null
+        }
     }
 
     updateCamera(camera) {

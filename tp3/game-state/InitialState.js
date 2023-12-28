@@ -16,8 +16,8 @@ class InitialState extends MyGameState {
 
         const text = new MyText3D("scene/sprite_sheet.png", [1020, 1020], [102, 102]);
 
-        const author1Mesh = text.transformString("Daniel Rodrigues", [450, 50]);
-        const author2Mesh = text.transformString("Tomas Maciel", [400, 50]);
+        const author1Mesh = text.transformString("Daniel Rodrigues", [50, 50]);
+        const author2Mesh = text.transformString("Tomas Maciel", [50, 50]);
 
         author1Mesh.position.set(550, -350, 1);
         author2Mesh.position.set(550, -400, 1);
@@ -34,7 +34,7 @@ class InitialState extends MyGameState {
         const f1LogoMesh = new THREE.Mesh(f1LogoGeometry, f1LogoMaterial);
         f1LogoMesh.position.set(-450, 300, 1);
 
-        const startText = text.transformString("(Press ENTER to start)", [1000, 50]);
+        const startText = text.transformString("(Press ENTER to start)", [50, 50]);
         startText.position.set(-300, -400, 1);
 
         setInterval(() => {

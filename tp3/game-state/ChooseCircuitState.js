@@ -10,10 +10,10 @@ class ChooseCircuitState extends MyGameState {
         this.circuits = this._openJSON(pathToJSON);
         this.name = "chooseMap";
 
-        this.lastPickedObjects = []
-        this.picking = new MyPicking([], 0, 2000, this.cameras[0].camera, this._handlePicking.bind(this), ["pointerdown", "pointermove"]);
+        this.picking = new MyPicking([], 0, 2000, this.cameras[0].camera, this.handlePicking.bind(this), this.resetPickedObject.bind(this), ["pointerdown", "pointermove"]);
 
         this._displayCircuits();
+        this._createGoBack();
     }
 
     _createScene() {
@@ -24,9 +24,8 @@ class ChooseCircuitState extends MyGameState {
 
         const text = new MyText3D("scene/sprite_sheet.png", [1020, 1020], [102, 102]);
 
-        const title = text.transformString("Choose a map", [1000, 150]);
+        const title = text.transformString("Choose a map", [150, 150]);
         title.position.set(-250, 350, 0);
-
 
         this.scene = new THREE.Scene();
         this.scene.add(interfacePlane);
@@ -71,35 +70,47 @@ class ChooseCircuitState extends MyGameState {
             planeCircuit.position.set(-500 + col * 1000, 150 - row * 200, 0);
             this.picking.addPickableObject(planeCircuit);
 
-            const circuitName = text.transformString(this.circuits[i].name, [800, 150]);
-            circuitName.position.set(-700 + col * 1000, 150 - row * 200, 0)
+            const circuitName = text.transformString(this.circuits[i].name, [100, 100]);
+            circuitName.position.set(-800 + col * 1000, 150 - row * 200, 0)
 
             this.scene.add(planeCircuit);
             this.scene.add(circuitName)
         }
     }
 
-    _handlePicking(intersects, event) {
-        if (intersects.length > 0) {
-            if (event.type === "pointerdown") {
-                console.log(intersects[0].object.name)
-                console.log(intersects[0].object.path)
-                //this._changeState({ name: "game", path: intersects[0].object.path });
-            } else if (event.type === "pointermove") {
-                intersects[0].object.material.opacity = 0.85;
+    handlePicking(object, event) {
+        if (event.type === "pointerdown") {
+            if (object.name === "goBack") {
+                this.gameStateManager.goBack()
+            } else {
+                console.log(object.name)
+                console.log(object.path)
             }
-            this.lastPickedObjects.push(intersects[0].object)
-        } else {
-            while (this.lastPickedObjects.length !== 0) {
-                const last = this.lastPickedObjects.pop()
-                last.material.opacity = 0.5
-            }
-
-            /*if (this.lastPickedObject) {
-                this.lastPickedObject.material.opacity = 0.5
-                this.lastPickedObject = null
-            }*/
+        } else if (event.type === "pointermove") {
+            object.material.opacity = 0.85;
         }
+    }
+
+    resetPickedObject(object) {
+        object.material.opacity = 0.5;
+    }
+
+    _createGoBack() {
+        const text = new MyText3D("scene/sprite_sheet_white.png", [1020, 1020], [102, 102]);
+
+        const goBackGeometry = new THREE.PlaneGeometry(100, 100);
+        const goBackMaterial = new THREE.MeshBasicMaterial({ color: "#000000", transparent: true, opacity: 0.5 });
+        const goBack = new THREE.Mesh(goBackGeometry, goBackMaterial);
+        goBack.name = "goBack"
+        const goBackText = text.transformChar("<", [200, 200])
+
+        goBack.position.set(-850, 350, 0)
+        goBackText.position.set(-790, 360, 0)
+
+        this.picking.addPickableObject(goBack)
+        this.scene.add(goBack)
+        this.scene.add(goBackText)
+
     }
 
 
