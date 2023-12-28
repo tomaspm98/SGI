@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { MyTriangle } from '../utils/MyTriangle.js';
-import { orderPoints } from './utils.js'
 
 class MyTrack {
     constructor(points, size, numSegments, width, texture) {
@@ -8,20 +7,18 @@ class MyTrack {
         this.width = width
         this.numSegments = numSegments
         this._loadTexture(texture)
+        this._draw()
     }
 
-    draw() {
-        const trackGroup = new THREE.Group()
+    _draw() {
         const path = this._getCatmullRomCurve()
 
-        const line = this._drawLine(path)
-
-        const track = this._drawTrack(path)
-
-        trackGroup.add(line)
-        trackGroup.add(track)
-
-        return trackGroup
+        this.line = this._drawLine(path)
+        this.mesh = this._drawTrack(path)
+        
+        this.group = new THREE.Group()
+        this.group.add(this.line)
+        this.group.add(this.mesh)
     }
 
     _normalizePoints(points, size = 1) {
@@ -76,12 +73,12 @@ class MyTrack {
             nextI = (i + 1) % pkPoints1.length
 
             // Draw the top triangle
-            orderedPoints = orderPoints(pkPoints1[i], pkPoints1[nextI], pkPoints2[i])
+            orderedPoints = this._orderPoints(pkPoints1[i], pkPoints1[nextI], pkPoints2[i])
             triangleTop = new MyTriangle(...orderedPoints)
             triangleTopMesh = new THREE.Mesh(triangleTop, this.roadMaterial)
 
             // Draw the bottom triangle
-            orderedPoints = orderPoints(pkPoints2[i], pkPoints2[nextI], pkPoints1[nextI])
+            orderedPoints = this._orderPoints(pkPoints2[i], pkPoints2[nextI], pkPoints1[nextI])
             triangleBottom = new MyTriangle(...orderedPoints)
             triangleBottomMesh = new THREE.Mesh(triangleBottom, this.roadMaterial)
 
@@ -104,6 +101,22 @@ class MyTrack {
                 shininess: 0,
                 color: 0xaaaaaa,
             });
+    }
+
+    _orderPoints(pA, pB, pC) {
+        const vAB = new THREE.Vector3(pB[0] - pA[0], pB[1] - pA[1], pB[2] - pA[2])
+        const vAC = new THREE.Vector3(pC[0] - pA[0], pC[1] - pA[1], pC[2] - pA[2])
+
+        // normal vector to the plane defined by the triangle
+        const normal = new THREE.Vector3().crossVectors(vAB, vAC)
+
+        // if the y component of normal vector is negative, then the triangle is facing down
+        // so we need to swap the order of the points
+        if (normal.y > 0) {
+            return [pA, pB, pC]
+        } else {
+            return [pA, pC, pB]
+        }
     }
 }
 

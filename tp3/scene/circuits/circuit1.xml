@@ -69,9 +69,10 @@
 
 
     <activatables>
-        <!--<powerup
-        id="id1" subtype="1" position="0 0 0" scale="1 1 1" rotation="0 0 0" />
-        <obstacle id="id1" subtype="1" position="0 0 0" scale="1 1 1" rotation="0 0 0" />-->
+        <powerup
+            id="id1" subtype="1" position="0 0 -20" scale="1 1 1" rotation="0 0 0" duration="5000" />
+        <obstacle
+            id="id1" subtype="1" position="0 0 20" scale="1 1 1" rotation="0 0 0" duration="5000" />
     </activatables>
 
     <graph rootid="scenario">
@@ -79,19 +80,19 @@
             <children>
                 <noderef id="light" />
                 <noderef id="ground" />
-                <!--noderef id="parking_lot1" /-->
-                <!--noderef id="parking_lot2" /-->
-                <!--noderef id="parking_lot3" /-->
+                <noderef id="parking_lot1" />
+                <noderef id="parking_lot2" />
+                <noderef id="parking_lot3" />
                 <lodref id="parkingLot1Lod"/>
                 <lodref id="parkingLot2Lod"/>
                 <lodref id="parkingLot3Lod"/>
                 <noderef id="start" />
                 <noderef id="check line" />
-                <!--noderef id="stands2Benches" /-->
-                <!--noderef id="stands2Benches1" /-->
-                <!--noderef id="stands2Benches2" /-->
-                <!--noderef id="stands2Benches3" /-->
-                <!--noderef id="stands2Benches4" /-->
+                <noderef id="stands2Benches" />
+                <noderef id="stands2Benches1" />
+                <noderef id="stands2Benches2" />
+                <noderef id="stands2Benches3" />
+                <noderef id="stands2Benches4" />
                 <!--noderef id="bathroom1" /-->
                 <noderef id="footbridge1" />
                 <noderef id="footbridge2" />

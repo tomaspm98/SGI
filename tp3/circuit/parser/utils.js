@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { MyNurbsBuilder } from '../../utils/MyNurbsBuilder.js';
 import { MyTriangle } from '../../utils/MyTriangle.js';
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { MyObstacle1, MyObstacle2 } from '../MyObstacles.js';
+import { MyPowerUp1 } from '../MyPowerUps.js';
 
 
 function loadModel(filepath, parent) {
@@ -335,4 +337,25 @@ function createPolygon(stacks, slices, radius, centerColor, edgeColor) {
     return geometry
 }
 
-export { createThreeGeometry, applyTransformation, createThreeLight, convertFilterThree, loadMipmap, loadModel };
+function createActivatable(type, subtype, position, duration, rotation = [0, 0, 0], scale = [1, 1, 1]) {
+    if (type === 'obstacle') {
+        if (subtype === '1') {
+            return new MyObstacle1(position, rotation, scale, duration)
+        } else if (subtype === '2') {
+            return new MyObstacle2(position, rotation, scale, duration)
+        } else {
+            throw new Error('Invalid subtype of obstacle')
+        }
+
+    } else if (type === 'powerup') {
+        if (subtype === '1') {
+            return new MyPowerUp1(position, rotation, scale, duration)
+        } else {
+            throw new Error('Invalid subtype of powerUp')
+        }
+    } else {
+        throw new Error('Invalid type of activatable')
+    }
+}
+
+export { createThreeGeometry, applyTransformation, createThreeLight, convertFilterThree, loadMipmap, loadModel, createActivatable };

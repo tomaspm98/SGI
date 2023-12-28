@@ -41,13 +41,13 @@
         </node>
 
         <node id="body">
-        <transforms>
+            <transforms>
                 <translate value3="-2.4 0 -5" />
             </transforms>
 
             <children>
                 <primitive>
-                    <box xyz1="0 0 0" xyz2="5 5 15"/>
+                    <box xyz1="0 0 0" xyz2="5 5 15" />
                 </primitive>
             </children>
         </node>
