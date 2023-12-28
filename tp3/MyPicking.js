@@ -17,7 +17,7 @@ class MyPicking {
 
         this.lastPickedObject = null
 
-        this._addListeners(listeners);
+        this.addListeners(listeners);
     }
 
     _handlePointerEvent(event) {
@@ -51,9 +51,17 @@ class MyPicking {
         }
     }
 
-    _addListeners(listeners) {
+    addListeners(listeners) {
+        this.listeners = listeners;
+        this.eventHandler = this._handlePointerEvent.bind(this)
         listeners.forEach(listener => {
-            window.addEventListener(listener, this._handlePointerEvent.bind(this));
+            window.addEventListener(listener, this.eventHandler);
+        });
+    }
+
+    stopListeners() {
+        this.listeners.forEach(listener => {
+            window.removeEventListener(listener, this.eventHandler);
         });
     }
 

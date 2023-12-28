@@ -6,10 +6,9 @@ import * as THREE from 'three';
 class ChooseCircuitState extends MyGameState {
     constructor(gameStateManager, pathToJSON) {
         super(gameStateManager);
-
-        this.circuits = this._openJSON(pathToJSON);
         this.name = "chooseMap";
-
+        
+        this.circuits = this._openJSON(pathToJSON);
         this.picking = new MyPicking([], 0, 2000, this.cameras[0].camera, this.handlePicking.bind(this), this.resetPickedObject.bind(this), ["pointerdown", "pointermove"]);
 
         this._displayCircuits();
@@ -43,7 +42,7 @@ class ChooseCircuitState extends MyGameState {
     }
 
     _openJSON(file) {
-        var request = new XMLHttpRequest();
+        let request = new XMLHttpRequest();
         request.open('GET', file, false);
         request.send(null);
 
@@ -84,7 +83,6 @@ class ChooseCircuitState extends MyGameState {
                 this.gameStateManager.goBack()
             } else {
                 console.log(object.name)
-                console.log(object.path)
             }
         } else if (event.type === "pointermove") {
             object.material.opacity = 0.85;
@@ -110,10 +108,7 @@ class ChooseCircuitState extends MyGameState {
         this.picking.addPickableObject(goBack)
         this.scene.add(goBack)
         this.scene.add(goBackText)
-
     }
-
-
 }
 
 export { ChooseCircuitState }

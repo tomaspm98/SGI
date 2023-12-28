@@ -1,5 +1,5 @@
-import { MyGameState } from "./MyGameState.js";
-import { MyText3D } from "../MyText3D.js";
+import {MyGameState} from "./MyGameState.js";
+import {MyText3D} from "../MyText3D.js";
 import * as THREE from 'three';
 
 class InitialState extends MyGameState {
@@ -11,7 +11,7 @@ class InitialState extends MyGameState {
     _createScene() {
         const planeGeometry = new THREE.PlaneGeometry(1920, 1080); // Adjust size as needed
         const wallpaper = new THREE.TextureLoader().load("scene/wallpaper.jpg")
-        const planeMaterial = new THREE.MeshBasicMaterial({ map: wallpaper });
+        const planeMaterial = new THREE.MeshBasicMaterial({map: wallpaper});
         const interfacePlane = new THREE.Mesh(planeGeometry, planeMaterial);
 
         const text = new MyText3D("scene/sprite_sheet.png", [1020, 1020], [102, 102]);
@@ -24,13 +24,13 @@ class InitialState extends MyGameState {
 
         const feupLogo = new THREE.TextureLoader().load("scene/feup_logo.png");
         const feupLogoGeometry = new THREE.PlaneGeometry(300, 100);
-        const feupLogoMaterial = new THREE.MeshBasicMaterial({ map: feupLogo, transparent: true });
+        const feupLogoMaterial = new THREE.MeshBasicMaterial({map: feupLogo, transparent: true});
         const feupLogoMesh = new THREE.Mesh(feupLogoGeometry, feupLogoMaterial);
         feupLogoMesh.position.set(675, -250, 1);
 
         const f1Logo = new THREE.TextureLoader().load("scene/f1_logo.png");
         const f1LogoGeometry = new THREE.PlaneGeometry(800, 150);
-        const f1LogoMaterial = new THREE.MeshBasicMaterial({ map: f1Logo, transparent: true });
+        const f1LogoMaterial = new THREE.MeshBasicMaterial({map: f1Logo, transparent: true});
         const f1LogoMesh = new THREE.Mesh(f1LogoGeometry, f1LogoMaterial);
         f1LogoMesh.position.set(-450, 300, 1);
 
@@ -56,17 +56,20 @@ class InitialState extends MyGameState {
         const camera1 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
         camera1.position.set(0, 0, 600);
 
-        this.cameras.push({ name: "Perspective", camera: camera1, locked: true });
+        this.cameras.push({name: "Perspective", camera: camera1, locked: true});
         this.activeCameraName = "Perspective";
     }
+    
+    _createDocumentListeners() {
+        this.listeners.push({type: "keypress", handler: this.handleKeyPress.bind(this)})
+    }
 
-    _addDocumentListeners() {
-        document.addEventListener("keypress", (event) => {
-            if (event.code === "Enter") {
-                this._changeState({ name: "chooseCircuit" });
-            }
-        });
+    handleKeyPress(event) {
+        if (event.code === "Enter") {
+            console.log("enter");
+            this.gameStateManager.changeState({name: "chooseCircuit"});
+        }
     }
 }
 
-export { InitialState };
+export {InitialState};

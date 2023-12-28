@@ -5,10 +5,12 @@ class MyGameStateManager {
     constructor(app) {
         this.app = app;
         this.actualState = this.createNewState({ name: "initial" });
+        
         this.savedStates = [];
     }
 
     changeState(stateInfo) {
+        this.actualState.stopDocumentListeners();
         this.savedStates.push(this.actualState);
         this.actualState = this.createNewState(stateInfo);
         this.app.updateState()
@@ -19,7 +21,11 @@ class MyGameStateManager {
     }
 
     goBack() {
+        this.actualState.stopDocumentListeners();
+
         this.actualState = this.savedStates.pop();
+        this.actualState.startDocumentListeners();
+
         this.app.updateState()
     }
 
