@@ -1,8 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { MyContents } from './MyContents.js';
-import { MyGuiInterface } from './MyGuiInterface.js';
 import Stats from 'three/addons/libs/stats.module.js'
+import { MyGameStateManager } from './game-state/MyGameStateManager.js';
 
 /**
  * This class contains the application object
@@ -25,11 +24,8 @@ class MyApp {
         // other attributes
         this.renderer = null
         this.controls = null
-        this.gui = null
-        this.axis = null
-        this.contents == null
-        this.vehicle = null
-        this.contents = null
+
+        this.gameStateManager = null
     }
     /**
      * initializes the application
@@ -37,15 +33,9 @@ class MyApp {
     init() {
 
         // Create an empty scene
-        this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0x101010);
-
         this.stats = new Stats()
-        this.stats.showPanel(1) // 0: fps, 1: ms, 2: mb, 3+: custom
+        this.stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
         document.body.appendChild(this.stats.dom)
-
-        this.initCameras();
-        this.setActiveCamera('Perspective')
 
         // Create a renderer with Antialiasing
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -61,41 +51,15 @@ class MyApp {
         // manage window resizes
         window.addEventListener('resize', this.onResize.bind(this), false);
 
+        this.gameStateManager = new MyGameStateManager(this);
+        this.updateState()
     }
 
-    updateCameraToFollowTarget(targetObject) {
-        if (!targetObject || !this.activeCamera) {
-            return;
+    setCameras(cameras) {
+        this.cameras = []
+        for (const camera of cameras) {
+            this.cameras[camera.name] = camera
         }
-
-        const offsetDistance = 5; // Distance behind the vehicle
-        const offsetHeight = 3; // Height above the ground
-
-        // Calculate the offset based on the vehicle's rotation
-        const offset = new THREE.Vector3(0, 0, - offsetDistance);
-        offset.applyQuaternion(targetObject.quaternion);
-        offset.y += offsetHeight;
-
-        // Calculate the desired position of the camera
-        this.targetPosition = new THREE.Vector3();
-        targetObject.getWorldPosition(this.targetPosition);
-
-        this.activeCamera.position.copy(this.targetPosition).add(offset);
-        // Set the camera to look at the object
-        this.activeCamera.position.lerp(this.activeCamera.position, 0.05); // Smooth transition
-        //this.activeCamera.lookAt(targetPosition);
-    }
-
-    /**
-     * initializes all the cameras
-     */
-    initCameras() {
-        const aspect = window.innerWidth / window.innerHeight;
-
-        // Create a basic perspective camera
-        const perspective1 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
-        perspective1.position.set(10,10,10)
-        this.cameras['Perspective'] = perspective1
     }
 
     /**
@@ -104,8 +68,13 @@ class MyApp {
      */
     setActiveCamera(cameraName) {
         this.activeCameraName = cameraName
-        this.activeCamera = this.cameras[this.activeCameraName]
+        this.activeCamera = this.cameras[this.activeCameraName].camera
     }
+
+    updateActiveCamera() {
+        this.setActiveCamera(this.gameStateManager.actualState.activeCameraName)
+    }
+
 
     /**
      * updates the active camera if required
@@ -118,7 +87,7 @@ class MyApp {
         // camera changed?
         if (this.lastCameraName !== this.activeCameraName) {
             this.lastCameraName = this.activeCameraName;
-            this.activeCamera = this.cameras[this.activeCameraName]
+            this.activeCamera = this.cameras[this.activeCameraName].camera
             document.getElementById("camera").innerHTML = this.activeCameraName
 
             // call on resize to update the camera aspect ratio
@@ -149,51 +118,24 @@ class MyApp {
             this.renderer.setSize(window.innerWidth, window.innerHeight);
         }
     }
-    /**
-     * 
-     * @param {MyContents} contents the contents object 
-     */
-    setContents(contents) {
-        this.contents = contents;
-        this.vehicle = this.contents.vehicle;
-    }
-
-    /**
-     * @param {MyGuiInterface} contents the gui interface object
-     */
-    setGui(gui) {
-        this.gui = gui
-    }
-
-    /*setVehicle(vehicle) {
-        this.vehicle = vehicle;
-    }*/
 
     /**
     * the main render function. Called in a requestAnimationFrame loop
     */
     render() {
         this.stats.begin()
-        this.updateCameraIfRequired()
-
-        if (this.vehicle && this.vehicle.carMesh) {
-            this.updateCameraToFollowTarget(this.vehicle.carMesh);
-            const targetPosition = new THREE.Vector3();
-            this.vehicle.carMesh.getWorldPosition(targetPosition);
-            this.controls.target.copy(targetPosition);
+        if (!this.cameras[this.activeCameraName].locked) {
+            this.updateCameraIfRequired()
         }
 
-        // update the animation if contents were provided
-        if (this.activeCamera !== undefined && this.activeCamera !== null) {
-            this.contents.update()
+        if (this.gameStateManager !== null) {
+            //this.gameStateManager.actualState.update()
         }
-
-        /*if (this.vehicle) {
-            this.vehicle.update();
-        }*/
 
         // required if controls.enableDamping or controls.autoRotate are set to true
-        this.controls.update();
+        if (!this.cameras[this.activeCameraName].locked) {
+            this.controls.update();
+        }
 
         // render the scene
         this.renderer.render(this.scene, this.activeCamera);
@@ -203,6 +145,12 @@ class MyApp {
 
         this.lastCameraName = this.activeCameraName
         this.stats.end()
+    }
+
+    updateState() {
+        this.scene = this.gameStateManager.actualState.scene;
+        this.setCameras(this.gameStateManager.actualState.cameras);
+        this.setActiveCamera(this.gameStateManager.actualState.activeCameraName);
     }
 }
 

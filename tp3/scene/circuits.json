@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Yas Marina",
+        "path": "scene/circuits/circuit.xml"
+    },
+    {
+        "name": "Monaco",
+        "path": "scene/circuits/circuit.xml"
+    },
+    {
+        "name": "Monza",
+        "path": "scene/circuits/circuit.xml"
+    },
+    {
+        "name": "Silverstone",
+        "path": "scene/circuits/circuit.xml"
+    },
+    {
+        "name": "Spa",
+        "path": "scene/circuits/circuit.xml"
+    },
+    {
+        "name": "Suzuka",
+        "path": "scene/circuits/circuit.xml"
+    }
+]

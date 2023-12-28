@@ -44,12 +44,9 @@ class MyText3D {
     transformString(string, size = [1, 1]) {
         const group = new THREE.Group();
 
-        const widthChar = size[0] / string.length;
-        const heightChar = size[1];
-
         for (let i = 0; i < string.length; i++) {
-            const char = this.transformChar(string[i], [widthChar, heightChar]);
-            char.position.x = i * widthChar;
+            const char = this.transformChar(string[i], [size[0], size[1]]);
+            char.position.x = i * size[0] * 0.4;
             group.add(char);
         }
         return group;
