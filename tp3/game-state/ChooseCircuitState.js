@@ -10,10 +10,10 @@ class ChooseCircuitState extends MyGameState {
         this.circuits = this._openJSON(pathToJSON);
         this.name = "chooseMap";
 
-        this.picking = new MyPicking([], 0, 2000, this.cameras[0].camera, this._handlePicking, ["pointerdown", "pointermove"]);
-        this.lastPickedObject = null
+        this.lastPickedObjects = []
+        this.picking = new MyPicking([], 0, 2000, this.cameras[0].camera, this._handlePicking.bind(this), ["pointerdown", "pointermove"]);
 
-        this._displayCircuits();    
+        this._displayCircuits();
     }
 
     _createScene() {
@@ -73,7 +73,7 @@ class ChooseCircuitState extends MyGameState {
 
             const circuitName = text.transformString(this.circuits[i].name, [800, 150]);
             circuitName.position.set(-700 + col * 1000, 150 - row * 200, 0)
-            
+
             this.scene.add(planeCircuit);
             this.scene.add(circuitName)
         }
@@ -88,12 +88,17 @@ class ChooseCircuitState extends MyGameState {
             } else if (event.type === "pointermove") {
                 intersects[0].object.material.opacity = 0.85;
             }
-            this.lastPickedObject = intersects[0].object
+            this.lastPickedObjects.push(intersects[0].object)
         } else {
-            if (this.lastPickedObject) {
+            while (this.lastPickedObjects.length !== 0) {
+                const last = this.lastPickedObjects.pop()
+                last.material.opacity = 0.5
+            }
+
+            /*if (this.lastPickedObject) {
                 this.lastPickedObject.material.opacity = 0.5
                 this.lastPickedObject = null
-            }
+            }*/
         }
     }
 
