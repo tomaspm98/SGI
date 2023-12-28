@@ -32,7 +32,7 @@ class MyVehicle {
         this.actualRotationVehicle = initialRotation
         this.actualRotationWheel = 0
         this.actualSpeed = 0
-        this.opponent = false;
+        this.opponent = true;
 
         // Variables that describe the actions of the vehicle
         this.coasting = false
@@ -198,6 +198,7 @@ class MyVehicle {
     }
 
     controlCarOpponent(){
+        this.accelerating=true
         let times=[]
         let kf=[]
         for (let i=0;i<this.keyPoints.length;i++){
