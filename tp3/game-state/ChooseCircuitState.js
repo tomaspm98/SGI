@@ -1,5 +1,4 @@
 import { MyGameState } from "./MyGameState.js";
-import { MyText3D } from "../MyText3D.js";
 import { MyPicking } from "../MyPicking.js";
 import * as THREE from 'three';
 
@@ -82,7 +81,7 @@ class ChooseCircuitState extends MyGameState {
             if (object.name === "goBack") {
                 this.gameStateManager.goBack()
             } else {
-                console.log(object.name)
+                this.gameStateManager.changeState({ name: "configRace", circuitPath: object.path, circuitName: object.name })
             }
         } else if (event.type === "pointermove") {
             object.material.opacity = 0.85;

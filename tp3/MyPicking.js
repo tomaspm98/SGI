@@ -16,7 +16,8 @@ class MyPicking {
         this.camera = camera;
 
         this.lastPickedObject = null
-
+    
+        this.listeners = []
         this.addListeners(listeners);
     }
 
@@ -52,16 +53,20 @@ class MyPicking {
     }
 
     addListeners(listeners) {
-        this.listeners = listeners;
-        this.eventHandler = this._handlePointerEvent.bind(this)
-        listeners.forEach(listener => {
-            window.addEventListener(listener, this.eventHandler);
+        for(const listener of listeners) {
+            this.listeners.push({type: listener, handler: this._handlePointerEvent.bind(this)})
+        }
+    }
+    
+    startListeners() {
+        this.listeners.forEach(listener => {
+            window.addEventListener(listener.type, listener.handler);
         });
     }
-
+    
     stopListeners() {
         this.listeners.forEach(listener => {
-            window.removeEventListener(listener, this.eventHandler);
+            window.removeEventListener(listener.type, listener.handler);
         });
     }
 

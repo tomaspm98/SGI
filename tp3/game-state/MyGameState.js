@@ -1,4 +1,10 @@
+import { MyText3D } from "../MyText3D.js";
+
 class MyGameState {
+    static textWhite = new MyText3D("scene/sprite_sheet_white.png", [1020, 1020], [102, 102]);
+    static textRed = new MyText3D("scene/sprite_sheet.png", [1020, 1020], [102, 102]);
+
+    
     constructor(gameStateManager) {
         this.scene = null;
         this.cameras = [];
@@ -6,11 +12,10 @@ class MyGameState {
         this.gameStateManager = gameStateManager;
         this.listeners = [];
         this.picking = null;
-
+        
         this._createScene()
         this._createCameras()
         this._createDocumentListeners()
-        this.startDocumentListeners()
     }
 
     update() {
@@ -29,6 +34,9 @@ class MyGameState {
         this.listeners.forEach(listener => {
             document.addEventListener(listener.type, listener.handler);
         })
+        if(this.picking) {
+            this.picking.startListeners()
+        }
     }
     
     stopDocumentListeners() {

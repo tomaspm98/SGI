@@ -66,7 +66,6 @@ class InitialState extends MyGameState {
 
     handleKeyPress(event) {
         if (event.code === "Enter") {
-            console.log("enter");
             this.gameStateManager.changeState({name: "chooseCircuit"});
         }
     }
