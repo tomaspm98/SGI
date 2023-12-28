@@ -78,6 +78,8 @@ class MyPicking {
             this.lastPickedObject = null
         }
         
+        this.clearPickedHelpers()
+        
         this.listeners.forEach(listener => {
             window.removeEventListener(listener.type, listener.handler);
         });
