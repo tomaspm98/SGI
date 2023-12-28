@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import {MyNurbsBuilder} from './MyNurbsBuilder.js';
-import {MyTriangle} from './MyTriangle.js';
+import {MyNurbsBuilder} from './utils/MyNurbsBuilder.js';
+import {MyTriangle} from './utils/MyTriangle.js';
 import { GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
 
 
@@ -233,6 +233,33 @@ function convertFilterThree(filter) {
  * @param {number} level - The level of the mipmap.
  * @param {string} path - The path to the mipmap image.
  */
+
+function distance(p1,p2){
+    return Math.sqrt(Math.pow(p1[0]-p2[0],2)+Math.pow(p1[1]-p2[1],2)+Math.pow(p1[2]-p2[2],2))
+}
+
+function calculateAngleVariation(array1, array2) {
+    const euler1 = new THREE.Euler().fromArray(array1);
+    const euler2 = new THREE.Euler().fromArray(array2);
+
+    // Convert Euler angles to quaternions
+    const quaternion1 = new THREE.Quaternion().setFromEuler(euler1);
+    const quaternion2 = new THREE.Quaternion().setFromEuler(euler2);
+
+    // Calculate the quaternion representing the rotation from quaternion1 to quaternion2
+    const quaternion = quaternion2.clone().multiply(quaternion1.clone().conjugate());
+
+    // Calculate the axis and angle of the rotation represented by the quaternion
+    const axis = new THREE.Vector3();
+    const angle = 2 * Math.acos(Math.min(1, quaternion.w));
+    axis.set(quaternion.x, quaternion.y, quaternion.z).normalize();
+
+    // Convert the angle to degrees
+    const angleVariation = THREE.MathUtils.radToDeg(angle);
+
+    return 2.976821-angle;
+}
+
 function loadMipmap(parentTexture, level, path) {
     // Load texture. On loaded call the function to create the mipmap for the specified level 
     new THREE.TextureLoader().load(path,
@@ -331,4 +358,4 @@ function createPolygon(stacks, slices, radius, centerColor, edgeColor) {
     return geometry
 }
 
-export {createThreeGeometry, applyTransformation, createThreeLight, convertFilterThree, loadMipmap, loadModel};
+export {createThreeGeometry, applyTransformation, createThreeLight, convertFilterThree, loadMipmap, loadModel, distance, calculateAngleVariation};

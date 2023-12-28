@@ -41,6 +41,12 @@ class MyContents {
         this.rTree = new MyRTree()
         this.rTree.insertMany(this.circuit.activatables)
 
+        if (this.axis === null) {
+            // create and attach the axis to the scene
+            this.axis = new MyAxis(this)
+            this.app.scene.add(this.axis)
+        }
+
 
         document.addEventListener('keydown', (event) => this.vehicle.controlCar(event))
         document.addEventListener('keyup', (event) => this.vehicle.controlCar(event))

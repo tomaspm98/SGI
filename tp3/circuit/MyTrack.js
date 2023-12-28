@@ -16,6 +16,8 @@ class MyTrack {
 
         this.line = this._drawLine(path)
         this.mesh = this._drawTrack(path)
+
+        console.log(path)
         
         this.group = new THREE.Group()
         this.group.add(this.line)
