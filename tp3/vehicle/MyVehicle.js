@@ -5,15 +5,16 @@ import * as THREE from 'three'
 import { AxesHelper } from 'three'
 
 class MyVehicle {
-    static createVehicle(file, initialPosition = { x: 0, y: 0, z: 0 }, initialRotation = 0) {
+    static createVehicle(file, keyPoints, initialPosition = { x: 0, y: 0, z: 0 }, initialRotation = 0) {
         const vehicleRenderer = new MyVehicleRenderer()
         const [mesh, specs, importantNodes] = vehicleRenderer.render(file)
-        return new MyVehicle(mesh, importantNodes, specs.topSpeed, specs.minSpeed, specs.acceleration, specs.deceleration, specs.turnRate, specs.brakingRate, initialPosition, initialRotation)
+        return new MyVehicle(mesh, keyPoints, importantNodes, specs.topSpeed, specs.minSpeed, specs.acceleration, specs.deceleration, specs.turnRate, specs.brakingRate, initialPosition, initialRotation)
     }
 
-    constructor(mesh, importantNodes, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate, initialPosition, initialRotation) {
+    constructor(mesh, keyPoints, importantNodes, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate, initialPosition, initialRotation) {
         // Variables that describe the vehicle
         this.mesh = mesh
+        this.keyPoints = keyPoints
         this.topSpeed = topSpeed
         this.minSpeed = minSpeed
         this.accelerationRate = accelerationRate
@@ -31,6 +32,7 @@ class MyVehicle {
         this.actualRotationVehicle = initialRotation
         this.actualRotationWheel = 0
         this.actualSpeed = 0
+        this.opponent = false;
 
         // Variables that describe the actions of the vehicle
         this.coasting = false
@@ -48,7 +50,14 @@ class MyVehicle {
         this.obb = new MyOBB(this.mesh)
         this.obb.createHelper()
 
+        this.clock = new THREE.Clock()
+
         this.bb = new THREE.Box3().setFromObject(this.mesh)
+
+        if (this.opponent){
+            this.controlCarOpponent();
+        }
+
     }
 
     controlCar(event) {
@@ -161,6 +170,12 @@ class MyVehicle {
         this.currentState.update()
         this.obb.update(this.mesh.matrixWorld)
         this.bb.setFromObject(this.mesh)
+        if(this.opponent){
+            const delta = this.clock.getDelta(); // assuming you have a clock
+            if (this.mixer) {
+                this.mixer.update(delta);
+            }
+        }
         return true
     }
 
@@ -180,6 +195,26 @@ class MyVehicle {
             mesh1.position.y -= y
             mesh1.position.z -= z
         }
+    }
+
+    controlCarOpponent(){
+        let times=[]
+        let kf=[]
+        for (let i=0;i<this.keyPoints.length;i++){
+            times.push(i)
+        }
+
+        for (let i=0;i<this.keyPoints.length;i++){
+            kf.push(...this.keyPoints[i])
+        }
+
+        console.log(kf)
+        const positionKF = new THREE.VectorKeyframeTrack('.position', times, kf, THREE.InterpolateSmooth);
+        this.mixer = new THREE.AnimationMixer(this.mesh);
+        this.clip = new THREE.AnimationClip('positionAnimation', 60, [positionKF]);
+        const action = this.mixer.clipAction(this.clip);
+        console.log(action)
+        action.play();   
     }
 
     _createStates() {
