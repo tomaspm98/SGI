@@ -62,7 +62,7 @@ class MyGameState {
 
 
     getActiveCamera() {
-        return this.cameras[this.activeCameraName].camera;
+        return this.cameras[this.activeCameraName];
     }
 }
 

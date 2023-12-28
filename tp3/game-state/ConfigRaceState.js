@@ -9,7 +9,7 @@ class ConfigRaceState extends MyGameState {
         this.name = "configRace";
         this.stateInfo = stateInfo;
 
-        this.picking = new MyPicking([], 0, 2000, this.cameras[0].camera, this.handlePicking.bind(this), this.resetPickedObject.bind(this), ["pointerdown", "pointermove"]);
+        this.picking = new MyPicking([], 0, 2000, this.getActiveCamera(), this.handlePicking.bind(this), this.resetPickedObject.bind(this), ["pointerdown", "pointermove"]);
 
         this.playerName = ""
         this.difficulty = null
@@ -128,8 +128,11 @@ class ConfigRaceState extends MyGameState {
 
         const camera1 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
         camera1.position.set(0, 0, 600);
-
-        this.cameras.push({name: "Perspective", camera: camera1, locked: true});
+        
+        camera1.name = "Perspective";
+        camera1.locked = true;
+        
+        this.cameras[camera1.name] = camera1;
         this.activeCameraName = "Perspective";
     }
 

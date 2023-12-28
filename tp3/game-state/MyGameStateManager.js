@@ -5,10 +5,10 @@ import {ConfigRaceState} from "./ConfigRaceState.js";
 class MyGameStateManager {
     constructor(app) {
         this.app = app;
-        this.actualState = this.createNewState({ name: "initial", circuitName: "Yas Marina", circuitPath: "scene/circuit1.json" });
+        this.actualState = this.createNewState({ name: "initial"});
         this.actualState.startDocumentListeners();
-        
         this.savedStates = [];
+        this.updateApp()
     }
 
     changeState(stateInfo) {
@@ -18,11 +18,7 @@ class MyGameStateManager {
         this.actualState = this.createNewState(stateInfo);
         this.actualState.startDocumentListeners();
         
-        this.app.updateState()
-    }
-
-    changeActiveCamera() {
-        this.app.updateActiveCamera();
+        this.updateApp()
     }
 
     goBack() {
@@ -31,7 +27,7 @@ class MyGameStateManager {
         this.actualState = this.savedStates.pop();
         this.actualState.startDocumentListeners();
 
-        this.app.updateState()
+        this.updateApp()
     }
 
     /*goBackTo(stateInfo) {
@@ -57,6 +53,17 @@ class MyGameStateManager {
             default:
                 throw new Error("Invalid state name");
         }
+    }
+    
+    updateApp(){
+        this.app.scene = this.actualState.scene
+        this.app.cameras = this.actualState.cameras
+        this.updateActiveCamera()
+    }
+    
+    updateActiveCamera() {
+        this.app.activeCameraName = this.actualState.activeCameraName
+        this.app.activeCamera = this.app.cameras[this.app.activeCameraName]
     }
 }
 

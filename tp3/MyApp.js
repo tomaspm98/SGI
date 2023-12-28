@@ -52,29 +52,8 @@ class MyApp {
         window.addEventListener('resize', this.onResize.bind(this), false);
 
         this.gameStateManager = new MyGameStateManager(this);
-        this.updateState()
     }
-
-    setCameras(cameras) {
-        this.cameras = []
-        for (const camera of cameras) {
-            this.cameras[camera.name] = camera
-        }
-    }
-
-    /**
-     * sets the active camera by name
-     * @param {String} cameraName 
-     */
-    setActiveCamera(cameraName) {
-        this.activeCameraName = cameraName
-        this.activeCamera = this.cameras[this.activeCameraName].camera
-    }
-
-    updateActiveCamera() {
-        this.setActiveCamera(this.gameStateManager.actualState.activeCameraName)
-    }
-
+    
 
     /**
      * updates the active camera if required
@@ -129,7 +108,7 @@ class MyApp {
         }
 
         if (this.gameStateManager !== null) {
-            //this.gameStateManager.actualState.update()
+            this.gameStateManager.actualState.update()
         }
 
         // required if controls.enableDamping or controls.autoRotate are set to true
@@ -145,12 +124,6 @@ class MyApp {
 
         this.lastCameraName = this.activeCameraName
         this.stats.end()
-    }
-
-    updateState() {
-        this.scene = this.gameStateManager.actualState.scene;
-        this.setCameras(this.gameStateManager.actualState.cameras);
-        this.setActiveCamera(this.gameStateManager.actualState.activeCameraName);
     }
 }
 
