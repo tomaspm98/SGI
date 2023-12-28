@@ -1,0 +1,11 @@
+Model Information:
+* title:	Graffiti Garage 02
+* source:	https://sketchfab.com/3d-models/graffiti-garage-02-2542852d1d354170bd3f3549a0b75a96
+* author:	jimbogies (https://sketchfab.com/jimbogies)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Graffiti Garage 02" (https://sketchfab.com/3d-models/graffiti-garage-02-2542852d1d354170bd3f3549a0b75a96) by jimbogies (https://sketchfab.com/jimbogies) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

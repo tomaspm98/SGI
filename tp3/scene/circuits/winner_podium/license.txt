@@ -1,0 +1,11 @@
+Model Information:
+* title:	Winner Podium
+* source:	https://sketchfab.com/3d-models/winner-podium-9e9b1e5ecfd8460bbb387f3dd6989c38
+* author:	digitallysavvy (https://sketchfab.com/hermes.frangoudis)
+
+Model License:
+* license type:	CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)
+* requirements:	Author must be credited. No commercial use. Modified versions must have the same license.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Winner Podium" (https://sketchfab.com/3d-models/winner-podium-9e9b1e5ecfd8460bbb387f3dd6989c38) by digitallysavvy (https://sketchfab.com/hermes.frangoudis) licensed under CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)
