@@ -51,18 +51,18 @@ class ChooseCircuitState extends MyGameState {
     }
 
     _displayCircuits() {
-        const text = new MyText3D("scene/sprite_sheet.png", [1020, 1020], [102, 102]);
+        const text = new MyText3D("scene/sprite_sheet_white.png", [1020, 1020], [102, 102]);
 
         let row, col
         for (let i = 0; i < this.circuits.length && i < 6; i++) {
             row = Math.floor(i / 2)
             col = i % 2
 
-            const planeCircuitGeometry = new THREE.PlaneGeometry(900, 150);
+            const planeCircuitGeometry = new THREE.PlaneGeometry(800, 150);
             const planeCircuitMaterial = new THREE.MeshBasicMaterial({ color: "#000000", transparent: true, opacity: 0.5 });
             const planeCircuit = new THREE.Mesh(planeCircuitGeometry, planeCircuitMaterial);
     
-            const circuitName = text.transformString(this.circuits[i].name, [900, 150]);
+            const circuitName = text.transformString(this.circuits[i].name, [800, 150]);
             planeCircuit.add(circuitName);
             circuitName.position.set(-200, 0, 1);
 

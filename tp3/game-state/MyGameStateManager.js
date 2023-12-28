@@ -36,7 +36,7 @@ class MyGameStateManager {
             case "initial":
                 return new InitialState(this);
             case "chooseCircuit":
-                return new ChooseCircuitState(this, "../scene/circuits.json");
+                return new ChooseCircuitState(this, "scene/circuits.json");
             default:
                 throw new Error("Invalid state name");
         }
