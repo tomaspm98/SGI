@@ -1,5 +1,6 @@
 import { MyGameState } from "./MyGameState.js";
 import { MyText3D } from "../MyText3D.js";
+import { MyPicking } from "../MyPicking.js";
 import * as THREE from 'three';
 
 class ChooseCircuitState extends MyGameState {
@@ -8,7 +9,11 @@ class ChooseCircuitState extends MyGameState {
 
         this.circuits = this._openJSON(pathToJSON);
         this.name = "chooseMap";
-        this._displayCircuits();
+
+        this.picking = new MyPicking([], 0, 2000, this.cameras[0].camera, this._handlePicking, ["pointerdown", "pointermove"]);
+        this.lastPickedObject = null
+
+        this._displayCircuits();    
     }
 
     _createScene() {
@@ -61,15 +66,38 @@ class ChooseCircuitState extends MyGameState {
             const planeCircuitGeometry = new THREE.PlaneGeometry(800, 150);
             const planeCircuitMaterial = new THREE.MeshBasicMaterial({ color: "#000000", transparent: true, opacity: 0.5 });
             const planeCircuit = new THREE.Mesh(planeCircuitGeometry, planeCircuitMaterial);
-    
-            const circuitName = text.transformString(this.circuits[i].name, [800, 150]);
-            planeCircuit.add(circuitName);
-            circuitName.position.set(-200, 0, 1);
-
+            planeCircuit.name = this.circuits[i].name;
+            planeCircuit.path = this.circuits[i].path;
             planeCircuit.position.set(-500 + col * 1000, 150 - row * 200, 0);
+            this.picking.addPickableObject(planeCircuit);
+
+            const circuitName = text.transformString(this.circuits[i].name, [800, 150]);
+            circuitName.position.set(-700 + col * 1000, 150 - row * 200, 0)
+            
             this.scene.add(planeCircuit);
+            this.scene.add(circuitName)
         }
     }
+
+    _handlePicking(intersects, event) {
+        if (intersects.length > 0) {
+            if (event.type === "pointerdown") {
+                console.log(intersects[0].object.name)
+                console.log(intersects[0].object.path)
+                //this._changeState({ name: "game", path: intersects[0].object.path });
+            } else if (event.type === "pointermove") {
+                intersects[0].object.material.opacity = 0.85;
+            }
+            this.lastPickedObject = intersects[0].object
+        } else {
+            if (this.lastPickedObject) {
+                this.lastPickedObject.material.opacity = 0.5
+                this.lastPickedObject = null
+            }
+        }
+    }
+
+
 }
 
 export { ChooseCircuitState }

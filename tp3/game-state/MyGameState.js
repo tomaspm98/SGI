@@ -34,6 +34,10 @@ class MyGameState {
     _changeState(stateInfo) {
         this.gameStateManager.changeState(stateInfo);
     }
+
+    getActiveCamera() {
+        return this.cameras[this.activeCameraName].camera;
+    }
 }
 
 export { MyGameState }

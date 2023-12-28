@@ -3,9 +3,9 @@ import { ChooseCircuitState } from "./ChooseCircuitState.js";
 
 class MyGameStateManager {
     constructor(app) {
+        this.app = app;
         this.actualState = this.createNewState({ name: "chooseCircuit" });
         this.savedStates = [];
-        this.app = app;
     }
 
     changeState(stateInfo) {
