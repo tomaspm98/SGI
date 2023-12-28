@@ -96,6 +96,19 @@ class MyApp {
         const perspective1 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
         perspective1.position.set(10,10,10)
         this.cameras['Perspective'] = perspective1
+
+        const parkingLot1 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        parkingLot1.position.set(10,15,-200)
+        this.cameras['parking_Lot1'] = parkingLot1
+
+        const parkingLot2 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        parkingLot2.position.set(30,15,-200.5)
+        this.cameras['parking_Lot2'] = parkingLot2
+
+        const parkingLot3 = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 )
+        parkingLot3.position.set(40,10,-185)
+        this.cameras['parking_Lot3'] = parkingLot3
+
     }
 
     /**
@@ -134,6 +147,18 @@ class MyApp {
             }
             else {
                 this.controls.object = this.activeCamera
+                if (this.activeCameraName === 'parking_Lot1') {
+                    this.controls.target = new THREE.Vector3(0, 0, -200)
+                } else if(this.activeCameraName === 'parking_Lot2') {
+                    this.controls.target =new THREE.Vector3(20, 0, -200.5)
+                }
+                else if (this.activeCameraName === 'Perspective') {
+                    this.controls.target = new THREE.Vector3(0, 0, 0)
+                }
+                else if(this.activeCameraName === 'parking_Lot3') {
+                    this.controls.target = new THREE.Vector3(40, 0, -201)
+                }
+
 
             }
         }

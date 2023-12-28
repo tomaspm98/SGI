@@ -83,9 +83,9 @@
                 <noderef id="parking_lot1" />
                 <noderef id="parking_lot2" />
                 <noderef id="parking_lot3" />
-                <lodref id="parkingLot1Lod"/>
-                <lodref id="parkingLot2Lod"/>
-                <lodref id="parkingLot3Lod"/>
+                <!--lodref id="parkingLot1Lod"/-->
+                <!--lodref id="parkingLot2Lod"/-->
+                <!--lodref id="parkingLot3Lod"/-->
                 <noderef id="start" />
                 <noderef id="check line" />
                 <noderef id="stands2Benches" />
