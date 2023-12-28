@@ -138,17 +138,8 @@ class ConfigRaceState extends MyGameState {
         if (object.name === "goBack" && event.type === "pointerdown") {
             this.gameStateManager.goBack();
         } else if (object.difficulty && event.type === "pointerdown") {
-            if (this.difficulty !== object.difficulty) {
-                // To reset the opacity of the previous selected difficulty
-                for (const child of this.scene.children) {
-                    if (child.difficulty && this.difficulty === child.difficulty) {
-                        child.material.opacity = 0.25;
-                    }
-                }
-
-                object.material.opacity = 0.7;
-                this.difficulty = object.difficulty
-            }
+            this.picking.clearPickedHelpers()
+            this.picking.addPickedHelper(object)
             this.difficulty = object.difficulty
         } else if (object.name === "next" && event.type === "pointerdown" && this.playerName !== "" && this.difficulty) {
             this.gameStateManager.changeState({
@@ -162,10 +153,7 @@ class ConfigRaceState extends MyGameState {
     }
 
     resetPickedObject(object) {
-        // To mantain the opacity of the selected difficulty
-        if (!(object.difficulty && this.difficulty === object.difficulty)) {
-            object.material.opacity = 0.25;
-        }
+        object.material.opacity = 0.25;
     }
 
     _createGoBack() {

@@ -16,6 +16,7 @@ class MyPicking {
         this.camera = camera;
 
         this.lastPickedObject = null
+        this.savePickedHelpers = []
     
         this.listeners = []
         this.addListeners(listeners);
@@ -31,7 +32,13 @@ class MyPicking {
 
         if (intersects.length > 0) {
             this.pickingHandler(intersects[0].object, event);
-            this.lastPickedObject = intersects[0].object
+            
+            if(!this.savePickedHelpers.includes(intersects[0].object)) {
+                this.lastPickedObject = intersects[0].object
+            }else{
+                this.lastPickedObject = null
+            }
+            
         } else if (this.resetPickedObject && this.lastPickedObject) {
             this.resetPickedObject(this.lastPickedObject)
             this.lastPickedObject = null
@@ -79,7 +86,25 @@ class MyPicking {
     addPickableObject(object) {
         this.pickableObjects.push(object);
     }
-
+    
+    addPickedHelper(object) {
+        this.savePickedHelpers.push(object);
+    }
+    
+    removePickedHelper(object) {
+        const len = this.savePickedHelpers.length;
+        this.savePickedHelpers = this.savePickedHelpers.filter(h => h !== object);
+        if(this.savePickedHelpers.length !== len) {
+            this.resetPickedObject(object);
+        }
+    }
+    
+    clearPickedHelpers() {
+        this.savePickedHelpers.forEach((h) => {
+            this.resetPickedObject(h)
+        });
+        this.savePickedHelpers = [];
+    }
 }
 
 export { MyPicking };
