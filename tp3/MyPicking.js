@@ -65,6 +65,12 @@ class MyPicking {
     }
     
     stopListeners() {
+        // Before stopping, reset last picked object
+        if (this.resetPickedObject && this.lastPickedObject) {
+            this.resetPickedObject(this.lastPickedObject)
+            this.lastPickedObject = null
+        }
+        
         this.listeners.forEach(listener => {
             window.removeEventListener(listener.type, listener.handler);
         });

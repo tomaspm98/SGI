@@ -19,10 +19,8 @@ class ChooseCircuitState extends MyGameState {
         const wallpaper = new THREE.TextureLoader().load("scene/wallpaper.jpg")
         const planeMaterial = new THREE.MeshBasicMaterial({ map: wallpaper });
         const interfacePlane = new THREE.Mesh(planeGeometry, planeMaterial);
-
-        const text = new MyText3D("scene/sprite_sheet.png", [1020, 1020], [102, 102]);
-
-        const title = text.transformString("Choose a map", [150, 150]);
+        
+        const title = MyGameState.textRed.transformString("Choose a map", [150, 150]);
         title.position.set(-250, 350, 0);
 
         this.scene = new THREE.Scene();
@@ -53,8 +51,6 @@ class ChooseCircuitState extends MyGameState {
     }
 
     _displayCircuits() {
-        const text = new MyText3D("scene/sprite_sheet_white.png", [1020, 1020], [102, 102]);
-
         let row, col
         for (let i = 0; i < this.circuits.length && i < 6; i++) {
             row = Math.floor(i / 2)
@@ -68,7 +64,7 @@ class ChooseCircuitState extends MyGameState {
             planeCircuit.position.set(-500 + col * 1000, 150 - row * 200, 0);
             this.picking.addPickableObject(planeCircuit);
 
-            const circuitName = text.transformString(this.circuits[i].name, [100, 100]);
+            const circuitName = MyGameState.textWhite.transformString(this.circuits[i].name, [100, 100]);
             circuitName.position.set(-800 + col * 1000, 150 - row * 200, 0)
 
             this.scene.add(planeCircuit);
@@ -93,13 +89,11 @@ class ChooseCircuitState extends MyGameState {
     }
 
     _createGoBack() {
-        const text = new MyText3D("scene/sprite_sheet_white.png", [1020, 1020], [102, 102]);
-
         const goBackGeometry = new THREE.PlaneGeometry(100, 100);
         const goBackMaterial = new THREE.MeshBasicMaterial({ color: "#000000", transparent: true, opacity: 0.5 });
         const goBack = new THREE.Mesh(goBackGeometry, goBackMaterial);
         goBack.name = "goBack"
-        const goBackText = text.transformChar("<", [200, 200])
+        const goBackText = MyGameState.textWhite.transformChar("<", [200, 200])
 
         goBack.position.set(-850, 350, 0)
         goBackText.position.set(-790, 360, 0)

@@ -5,7 +5,7 @@ import {ConfigRaceState} from "./ConfigRaceState.js";
 class MyGameStateManager {
     constructor(app) {
         this.app = app;
-        this.actualState = this.createNewState({ name: "configRace", circuitName: "Yas Marina", circuitPath: "scene/circuit1.json" });
+        this.actualState = this.createNewState({ name: "initial", circuitName: "Yas Marina", circuitPath: "scene/circuit1.json" });
         this.actualState.startDocumentListeners();
         
         this.savedStates = [];
@@ -51,6 +51,9 @@ class MyGameStateManager {
                 return new ChooseCircuitState(this, "scene/circuits.json");
             case "configRace":
                 return new ConfigRaceState(this, stateInfo);
+            case "choosePlayerCar":
+                console.log("choosePlayerCar");
+                break;
             default:
                 throw new Error("Invalid state name");
         }
