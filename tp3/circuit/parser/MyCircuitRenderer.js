@@ -14,7 +14,7 @@ class MyCircuitRenderer {
         // Reset the variables
         this.textures = []
         this.materials = []
-        this.cameras_map = new Map()
+        this.cameras = []
         this.videoTextureCount = 0
         this.activatables = []
         this.circuitScene = new THREE.Scene()
@@ -156,13 +156,20 @@ class MyCircuitRenderer {
     renderCameras(data) {
         for (let key in data.cameras) {
             let camera = data.cameras[key];
+            let cameraObject;
             if (camera.type === 'orthogonal') {
-                this.cameras_map.set(camera.id, new THREE.OrthographicCamera(camera.left, camera.right, camera.top, camera.bottom, camera.near, camera.far))
+                cameraObject = new THREE.OrthographicCamera(camera.left, camera.right, camera.top, camera.bottom, camera.near, camera.far)
             } else if (camera.type === 'perspective') {
-                this.cameras_map.set(camera.id, new THREE.PerspectiveCamera(camera.angle, window, camera.near, camera.far))
+                cameraObject = new THREE.PerspectiveCamera(camera.angle, window, camera.near, camera.far)
             }
-            this.cameras_map.get(camera.id).position.set(...camera.location)
-            this.cameras_map.get(camera.id).lookAt(...camera.target)
+            cameraObject.position.set(...camera.location)
+            
+            const target = new THREE.Object3D()
+            target.position.set(...camera.target)
+            this.circuitScene.add(target)
+            cameraObject.target = target
+
+            this.cameras[key] = cameraObject
         }
         this.activeCamera = data.activeCameraId;
     }
