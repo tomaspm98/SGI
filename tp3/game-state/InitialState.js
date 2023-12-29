@@ -3,8 +3,8 @@ import {MyText3D} from "../MyText3D.js";
 import * as THREE from 'three';
 
 class InitialState extends MyGameState {
-    constructor(gameStateManager) {
-        super(gameStateManager);
+    constructor(gameStateManager, stateInfo) {
+        super(gameStateManager, stateInfo);
         this.name = "initial";
     }
 

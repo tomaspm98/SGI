@@ -24,7 +24,7 @@ class MyCircuitRenderer {
         const reader = new MyCircuitReader(this, this._renderCircuitFile)
         reader.open(yasfPath)
         // Return the circuit scene
-        return [this.circuitScene, this.activatables, this.track]
+        return [this.circuitScene, this.activatables, this.track, this.cameras]
     }
 
 

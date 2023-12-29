@@ -1,11 +1,12 @@
 import { InitialState } from "./InitialState.js";
 import { ChooseCircuitState } from "./ChooseCircuitState.js";
-import {ConfigRaceState} from "./ConfigRaceState.js";
+import { ConfigRaceState } from "./ConfigRaceState.js";
+import { ChoosePlayerCar } from "./ChoosePlayerCar.js";
 
 class MyGameStateManager {
     constructor(app) {
         this.app = app;
-        this.actualState = this.createNewState({ name: "initial"});
+        this.actualState = this.createNewState({ name: "initial" });
         this.actualState.startDocumentListeners();
         this.savedStates = [];
         this.updateApp()
@@ -14,10 +15,10 @@ class MyGameStateManager {
     changeState(stateInfo) {
         this.actualState.stopDocumentListeners();
         this.savedStates.push(this.actualState);
-        
+
         this.actualState = this.createNewState(stateInfo);
         this.actualState.startDocumentListeners();
-        
+
         this.updateApp()
     }
 
@@ -44,23 +45,23 @@ class MyGameStateManager {
             case "initial":
                 return new InitialState(this);
             case "chooseCircuit":
-                return new ChooseCircuitState(this, "scene/circuits.json");
+                return new ChooseCircuitState(this,{path: "scene/circuits.json"});
             case "configRace":
                 return new ConfigRaceState(this, stateInfo);
             case "choosePlayerCar":
-                console.log("choosePlayerCar");
+                return new ChoosePlayerCar(this, stateInfo);
                 break;
             default:
                 throw new Error("Invalid state name");
         }
     }
-    
-    updateApp(){
+
+    updateApp() {
         this.app.scene = this.actualState.scene
         this.app.cameras = this.actualState.cameras
         this.updateActiveCamera()
     }
-    
+
     updateActiveCamera() {
         this.app.activeCameraName = this.actualState.activeCameraName
         this.app.activeCamera = this.app.cameras[this.app.activeCameraName]

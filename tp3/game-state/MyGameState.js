@@ -5,13 +5,15 @@ class MyGameState {
     static textRed = new MyText3D("scene/sprite_sheet.png", [1020, 1020], [102, 102]);
 
     
-    constructor(gameStateManager) {
+    constructor(gameStateManager, stateInfo) {
         this.scene = null;
         this.cameras = [];
         this.activeCameraName = null;
         this.gameStateManager = gameStateManager;
         this.listeners = [];
         this.picking = null;
+        this.stateInfo = stateInfo;
+
         
         this._createScene()
         this._createCameras()

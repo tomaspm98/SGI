@@ -3,11 +3,11 @@ import { MyPicking } from "../MyPicking.js";
 import * as THREE from 'three';
 
 class ChooseCircuitState extends MyGameState {
-    constructor(gameStateManager, pathToJSON) {
-        super(gameStateManager);
+    constructor(gameStateManager, stateInfo) {
+        super(gameStateManager, stateInfo);
         this.name = "chooseMap";
         
-        this.circuits = this._openJSON(pathToJSON);
+        this.circuits = this._openJSON(stateInfo.path);
         this.picking = new MyPicking([], 0, 2000, this.getActiveCamera(), this.handlePicking.bind(this), this.resetPickedObject.bind(this), ["pointerdown", "pointermove"]);
 
         this._displayCircuits();

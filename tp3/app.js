@@ -127,20 +127,6 @@ class MyApp {
             this.renderer.setSize(window.innerWidth, window.innerHeight);
         }
     }
-    /**
-     * 
-     * @param {MyContents} contents the contents object 
-     */
-    setContents(contents) {
-        this.contents = contents;
-    }
-
-    /**
-     * @param {MyGuiInterface} contents the gui interface object
-     */
-    setGui(gui) {
-        this.gui = gui
-    }
 
     /**
     * the main render function. Called in a requestAnimationFrame loop

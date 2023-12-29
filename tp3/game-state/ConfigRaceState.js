@@ -5,9 +5,8 @@ import * as THREE from 'three';
 
 class ConfigRaceState extends MyGameState {
     constructor(gameStateManager, stateInfo) {
-        super(gameStateManager);
+        super(gameStateManager, stateInfo);
         this.name = "configRace";
-        this.stateInfo = stateInfo;
 
         this.picking = new MyPicking([], 0, 2000, this.getActiveCamera(), this.handlePicking.bind(this), this.resetPickedObject.bind(this), ["pointerdown", "pointermove"]);
 
@@ -15,7 +14,7 @@ class ConfigRaceState extends MyGameState {
         this.difficulty = null
 
         this._createGoBack();
-        this._diplayCircuitName()
+        this._displayCircuitName()
         this._displayDifficulty()
         this._createNext()
     }
@@ -46,7 +45,7 @@ class ConfigRaceState extends MyGameState {
         this.scene.add(difficultyText);
     }
 
-    _diplayCircuitName() {
+    _displayCircuitName() {
         const circuitName = MyGameState.textWhite.transformString(this.stateInfo.circuitName, [150, 150]);
         circuitName.position.set(-300, 225, 0);
 
