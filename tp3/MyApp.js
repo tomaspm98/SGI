@@ -62,11 +62,10 @@ class MyApp {
      * it updates the active camera and the controls
      */
     updateCameraIfRequired() {
-
         // camera changed?
         if (this.lastCameraName !== this.activeCameraName) {
             this.lastCameraName = this.activeCameraName;
-            this.activeCamera = this.cameras[this.activeCameraName].camera
+            this.activeCamera = this.cameras[this.activeCameraName]
             document.getElementById("camera").innerHTML = this.activeCameraName
 
             // call on resize to update the camera aspect ratio
