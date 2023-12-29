@@ -8,7 +8,7 @@ import { RaceState } from "./RaceState.js";
 class MyGameStateManager {
     constructor(app) {
         this.app = app;
-        this.actualState = this.createNewState({ name: "initial"});
+        this.actualState = this.createNewState({ name: "choosePlayerCar", circuitPath: "scene/circuits/circuitTest.xml"});
         this.actualState.startDocumentListeners();
         this.savedStates = [];
         this.updateApp()

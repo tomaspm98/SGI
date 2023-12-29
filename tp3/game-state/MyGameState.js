@@ -52,7 +52,7 @@ class MyGameState {
 
     changeActiveCamera(name) {
         this.activeCameraName = name;
-        this.gameStateManager.changeActiveCamera();
+        this.gameStateManager.updateActiveCamera();
 
         // If the game state has a picking object
         // We need to update the camera inside the object 

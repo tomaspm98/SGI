@@ -25,7 +25,7 @@ class MyVehicleState {
 
     turnLeft() {
         if (this.vehicle.turningLeft) {
-            this.vehicle.actualRotationWheel = Math.max(- this.vehicle.turnRate * 5 + this.vehicle.actualRotationWheel, -0.7)
+            this.vehicle.actualRotationWheel = Math.max(- this.vehicle.turnRate * 1.5 + this.vehicle.actualRotationWheel, -0.7)
         }
 
         if (this.vehicle.turningLeft && this.vehicle.actualSpeed > 0) {
@@ -37,7 +37,7 @@ class MyVehicleState {
 
     turnRight() {
         if (this.vehicle.turningRight) {
-            this.vehicle.actualRotationWheel = Math.min(this.vehicle.turnRate * 5 + this.vehicle.actualRotationWheel, 0.7)
+            this.vehicle.actualRotationWheel = Math.min(this.vehicle.turnRate * 1.5 + this.vehicle.actualRotationWheel, 0.7)
         }
 
         if (this.vehicle.turningRight && this.vehicle.actualSpeed > 0) {
@@ -60,9 +60,9 @@ class MyVehicleState {
     resetWheel() {
         if (!this.vehicle.turningLeft && !this.vehicle.turningRight) {
             if (this.vehicle.actualRotationWheel > 0) {
-                this.vehicle.actualRotationWheel = Math.max(this.vehicle.actualRotationWheel - this.vehicle.turnRate * 5, 0)
+                this.vehicle.actualRotationWheel = Math.max(this.vehicle.actualRotationWheel - this.vehicle.turnRate * 1.5, 0)
             } else if (this.vehicle.actualRotationWheel < 0) {
-                this.vehicle.actualRotationWheel = Math.min(this.vehicle.actualRotationWheel + this.vehicle.turnRate * 5, 0)
+                this.vehicle.actualRotationWheel = Math.min(this.vehicle.actualRotationWheel + this.vehicle.turnRate * 1.5, 0)
             }
         }
     }
@@ -79,6 +79,9 @@ class MyVehicleState {
         if (this.vehicle.offTrack) {
             this.vehicle.actualSpeed = this.vehicle.actualSpeed * 0.5
         }
+
+        this.vehicle.actualRotationVehicle = this.vehicle.actualRotationVehicle % (2 * Math.PI)
+        this.vehicle.actualRotationWheel = this.vehicle.actualRotationWheel % (2 * Math.PI)
 
         // Updating the vehicle position
         this.vehicle.actualPosition.x += this.vehicle.actualSpeed * Math.sin(this.vehicle.actualRotationVehicle)
