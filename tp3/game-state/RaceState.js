@@ -40,11 +40,27 @@ class RaceState extends MyGameState {
     }
 
     _createPovCameras() {
-        const pov1 = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
+        const pov1 = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000)
+        const pov2 = pov1.clone()
+        const pov3 = pov1.clone()
+        
         pov1.followObject = this.vehiclePlayer.mesh
         pov1.followObjectDistance = 5
         pov1.followObjectHeight = 2
+
+        pov2.followObject = this.vehiclePlayer.mesh
+        pov2.followObjectDistance = 2
+        pov2.followObjectHeight = 0.5
+
+        pov3.followObject = this.vehiclePlayer.mesh
+        pov3.followObjectDistance = 2
+        pov3.followObjectHeight = 20
+
         this.cameras['pov1'] = pov1
+        this.cameras['pov2'] = pov2
+        this.cameras['pov3'] = pov3
+
+        this.orderCameras = ['pov2', 'pov3', 'general', 'pov1']
         this.changeActiveCamera('pov1')
     }
 
@@ -60,13 +76,19 @@ class RaceState extends MyGameState {
     }
 
     keyHandler(event) {
-        if(event.code === 'KeyV' && event.type === 'keydown') {
-            console.log('change camera')
-        }else if(event.code === 'KeyV' && event.type === 'keyup') {
-            
-        }else{
+        if (event.code === 'KeyV' && event.type === 'keydown') {
+            this._changeCamera()
+        } else if (event.code === 'KeyV' && event.type === 'keyup') {
+
+        } else {
             this.vehiclePlayer.controlCar(event)
         }
+    }
+
+    _changeCamera() {
+        const newActiveCamera = this.orderCameras.shift()
+        this.changeActiveCamera(newActiveCamera)
+        this.orderCameras.push(newActiveCamera)
     }
 
     update() {
