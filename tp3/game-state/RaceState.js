@@ -1,10 +1,12 @@
 import { MyGameState } from "./MyGameState.js"
+import * as THREE from 'three'
 
 class RaceState extends MyGameState{
     constructor(gameStateManager, stateInfo){
         super(gameStateManager, stateInfo)
         this.name = "race"
         this._loadVehicles()
+        this._createPovCameras()
     }
 
     _createScene(){
@@ -34,6 +36,12 @@ class RaceState extends MyGameState{
 
         this.scene.add(this.vehiclePlayer.mesh)
         this.scene.add(this.opponentVehicle.mesh)
+    }
+
+    _createPovCameras(){
+        const pov1 = THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
+        pov1.position.set(0, 10, 0)
+        
     }
 
 }
