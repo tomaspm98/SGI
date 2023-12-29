@@ -7,7 +7,7 @@ import { ChooseOpponentCar } from "./ChooseOpponentCar.js";
 class MyGameStateManager {
     constructor(app) {
         this.app = app;
-        this.actualState = this.createNewState({ name: "choosePlayerCar", circuitPath: "scene/circuits/circuitTest.xml" });
+        this.actualState = this.createNewState({ name: "initial"});
         this.actualState.startDocumentListeners();
         this.savedStates = [];
         this.updateApp()

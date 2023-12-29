@@ -37,8 +37,15 @@ class ChooseOpponentCar extends MyGameState {
         }
     }
 
+    _removeVehiclesScene() {
+        for (const vehicle of Object.values(this.vehicles)) {
+            this.scene.remove(vehicle.mesh)
+        }
+    }
+
     handlePicking(object, event) {
         if (event.type === "pointerdown") {
+            this._removeVehiclesScene()
             console.log("STARTING RACE")
         } else if (event.type === "pointermove") {
             // It is necessary to traverse the object's children
