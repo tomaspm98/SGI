@@ -2,11 +2,12 @@ import { InitialState } from "./InitialState.js";
 import { ChooseCircuitState } from "./ChooseCircuitState.js";
 import { ConfigRaceState } from "./ConfigRaceState.js";
 import { ChoosePlayerCar } from "./ChoosePlayerCar.js";
+import { ChooseOpponentCar } from "./ChooseOpponentCar.js";
 
 class MyGameStateManager {
     constructor(app) {
         this.app = app;
-        this.actualState = this.createNewState({ name: "choosePlayerCar", circuitPath: "scene/circuits/circuit1.xml" });
+        this.actualState = this.createNewState({ name: "choosePlayerCar", circuitPath: "scene/circuits/circuitTest.xml" });
         this.actualState.startDocumentListeners();
         this.savedStates = [];
         this.updateApp()
@@ -50,6 +51,8 @@ class MyGameStateManager {
                 return new ConfigRaceState(this, stateInfo);
             case "choosePlayerCar":
                 return new ChoosePlayerCar(this, stateInfo);
+            case "chooseOpponentCar":
+                return new ChooseOpponentCar(this, stateInfo);
             default:
                 throw new Error("Invalid state name");
         }

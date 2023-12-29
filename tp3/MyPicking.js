@@ -31,10 +31,11 @@ class MyPicking {
         const intersects = this.raycaster.intersectObjects(this.pickableObjects);
 
         if (intersects.length > 0) {
-            this.pickingHandler(intersects[0].object, event);
+            const parent = this._getParent(intersects[0].object);
+            this.pickingHandler(parent, event);
             
-            if(!this.savePickedHelpers.includes(intersects[0].object)) {
-                this.lastPickedObject = intersects[0].object
+            if(!this.savePickedHelpers.includes(parent)) {
+                this.lastPickedObject = parent
             }else{
                 this.lastPickedObject = null
             }
@@ -106,6 +107,13 @@ class MyPicking {
             this.resetPickedObject(h)
         });
         this.savePickedHelpers = [];
+    }
+    _getParent(object) {
+        let parent = object;
+        while(!this.pickableObjects.includes(parent)) {
+            parent = parent.parent;
+        }
+        return parent;
     }
 }
 

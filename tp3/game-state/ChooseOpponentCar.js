@@ -4,36 +4,28 @@ import { openJSON } from "../utils.js";
 import { MyVehicle } from "../vehicle/MyVehicle.js";
 import { MyPicking } from "../MyPicking.js";
 
-class ChoosePlayerCar extends MyGameState {
+class ChooseOpponentCar extends MyGameState {
     constructor(gameStateManager, stateInfo) {
         super(gameStateManager, stateInfo);
-        this.name = "choosePlayerCar";
+        this.name = "chooseOpponentCar";
         this.picking = new MyPicking([], 0, 50, this.getActiveCamera(), this.handlePicking.bind(this), this.resetPickedObject.bind(this), ["pointerdown", "pointermove"]);
-        this._loadVehicles()
         this._displayVehicles()
     }
 
     _createScene() {
-        this.circuit = MyCircuit.create(this.stateInfo.circuitPath);
+        this.circuit = this.stateInfo.circuit;
         this.scene = this.circuit.scene;
+        this.vehicles = this.stateInfo.vehicles;
     }
 
     _createCameras() {
         this.cameras = this.circuit.cameras
-        this.activeCameraName = 'parkingLotCam1'
+        this.activeCameraName = 'parkingLotCam2'
     }
 
-    _loadVehicles() {
-        this.vehicles = []
-        const vehiclePaths = openJSON('scene/vehicles.json')
-        for (const vehiclePath of vehiclePaths) {
-            const newVehicle = MyVehicle.create(vehiclePath)
-            this.vehicles[newVehicle.name] = newVehicle
-        }
-    }
 
     _displayVehicles() {
-        const slotsAvailable = this.circuit.slots.filter(slot => slot.object === "parkingLot1")
+        const slotsAvailable = this.circuit.slots.filter(slot => slot.object === "parkingLot2")
         let vehicleArray = Object.values(this.vehicles)
         for (let i = 0; i < slotsAvailable.length && i < vehicleArray.length; i++) {
             const vehicle = vehicleArray[i]
@@ -45,24 +37,9 @@ class ChoosePlayerCar extends MyGameState {
         }
     }
 
-    _removeVehiclesScene() {
-        for (const vehicle of Object.values(this.vehicles)) {
-            this.scene.remove(vehicle.mesh)
-        }
-    }
-
     handlePicking(object, event) {
         if (event.type === "pointerdown") {
-            this._removeVehiclesScene()
-            this.gameStateManager.changeState({
-                name: "chooseOpponentCar",
-                circuit: this.circuit,
-                vehicles: this.vehicles,
-                playerVehicle: object.name,
-                circuitName: this.stateInfo.circuitName,
-                playerName: this.stateInfo.playerName,
-                difficulty: this.stateInfo.difficulty
-            })
+            console.log("STARTING RACE")
         } else if (event.type === "pointermove") {
             // It is necessary to traverse the object's children
             // Because the object itself is a group
@@ -73,7 +50,7 @@ class ChoosePlayerCar extends MyGameState {
                     if(!child.material.originalColor){
                         child.material.originalColor = child.material.color.clone()
                     }
-                    child.material.color.setHex(0xc2db02)
+                    child.material.color.setHex(0x005ba6)
                 }
             })
         }
@@ -89,4 +66,4 @@ class ChoosePlayerCar extends MyGameState {
     }
 }
 
-export { ChoosePlayerCar }
+export { ChooseOpponentCar }

@@ -3,7 +3,7 @@ import {NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsSta
 import {MyOBB} from '../collisions/MyOBB.js'
 import * as THREE from 'three'
 
-class MyVehicle {
+class MyVehicle extends THREE.Object3D {
     static create(file) {
         const vehicleRenderer = new MyVehicleRenderer()
         const [mesh, specs, importantNodes] = vehicleRenderer.render(file)
@@ -12,6 +12,7 @@ class MyVehicle {
 
     constructor(mesh, importantNodes, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate, name) {
         // Variables that describe the vehicle
+        super()
         this.mesh = mesh
         this.mesh.name = name
         this.topSpeed = topSpeed
