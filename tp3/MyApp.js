@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import Stats from 'three/addons/libs/stats.module.js'
-import { MyGameStateManager } from './game-state/MyGameStateManager.js';
+import {MyGameStateManager} from './game-state/MyGameStateManager.js';
 
 /**
  * This class contains the application object
@@ -27,6 +27,7 @@ class MyApp {
 
         this.gameStateManager = null
     }
+
     /**
      * initializes the application
      */
@@ -38,7 +39,7 @@ class MyApp {
         document.body.appendChild(this.stats.dom)
 
         // Create a renderer with Antialiasing
-        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        this.renderer = new THREE.WebGLRenderer({antialias: true});
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setClearColor("#000000");
 
@@ -78,10 +79,11 @@ class MyApp {
                 this.controls = new OrbitControls(this.activeCamera, this.renderer.domElement);
                 this.controls.enableZoom = true;
 
-                this.controls.target = new THREE.Vector3(-200, 10, 0);
+                if (this.activeCamera.positionTarget) {
+                    this.controls.target = new THREE.Vector3(this.activeCamera.positionTarget)
+                }
                 this.controls.update();
-            }
-            else {
+            } else {
                 this.controls.object = this.activeCamera
 
             }
@@ -100,8 +102,8 @@ class MyApp {
     }
 
     /**
-    * the main render function. Called in a requestAnimationFrame loop
-    */
+     * the main render function. Called in a requestAnimationFrame loop
+     */
     render() {
         this.stats.begin()
         if (!this.cameras[this.activeCameraName].locked) {
@@ -129,4 +131,4 @@ class MyApp {
 }
 
 
-export { MyApp };
+export {MyApp};

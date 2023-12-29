@@ -163,16 +163,7 @@ class MyCircuitRenderer {
                 cameraObject = new THREE.PerspectiveCamera(camera.angle, window, camera.near, camera.far)
             }
             cameraObject.position.set(...camera.location)
-            
-            const target = new THREE.Object3D()
-            target.position.set(...camera.target)
-            this.circuitScene.add(target)
-            cameraObject.target = target
-            cameraObject.targetPosition = target.position
-            cameraObject.lookAt(target)
-
-            console.log(key)
-            console.log(target.position)
+            cameraObject.positionTarget = camera.target
 
             this.cameras[key] = cameraObject
         }
