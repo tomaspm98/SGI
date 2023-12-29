@@ -1,19 +1,19 @@
-import { MyVehicleRenderer } from './parser/MyVehicleRenderer.js'
-import { NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState } from './ImpVehicleStates.js'
-import { MyOBB } from '../collisions/MyOBB.js'
+import {MyVehicleRenderer} from './parser/MyVehicleRenderer.js'
+import {NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState} from './ImpVehicleStates.js'
+import {MyOBB} from '../collisions/MyOBB.js'
 import * as THREE from 'three'
-import { AxesHelper } from 'three'
 
 class MyVehicle {
-    static createVehicle(file, initialPosition = { x: 0, y: 0, z: 0 }, initialRotation = 0) {
+    static create(file) {
         const vehicleRenderer = new MyVehicleRenderer()
         const [mesh, specs, importantNodes] = vehicleRenderer.render(file)
-        return new MyVehicle(mesh, importantNodes, specs.topSpeed, specs.minSpeed, specs.acceleration, specs.deceleration, specs.turnRate, specs.brakingRate, initialPosition, initialRotation)
+        return new MyVehicle(mesh, importantNodes, specs.topSpeed, specs.minSpeed, specs.acceleration, specs.deceleration, specs.turnRate, specs.brakingRate, specs.name)
     }
 
-    constructor(mesh, importantNodes, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate, initialPosition, initialRotation) {
+    constructor(mesh, importantNodes, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate, name) {
         // Variables that describe the vehicle
         this.mesh = mesh
+        this.mesh.name = name
         this.topSpeed = topSpeed
         this.minSpeed = minSpeed
         this.accelerationRate = accelerationRate
@@ -21,14 +21,13 @@ class MyVehicle {
         this.turnRate = turnRate
         this.brakingRate = brakingRate
         this.importantNodes = importantNodes
-        this.initialPosition = initialPosition
-        this.initialRotation = initialRotation
         this.importantNodes.wheelFL.rotation.order = 'YXZ';
         this.importantNodes.wheelFR.rotation.order = 'YXZ';
+        this.name = name
 
         // Variables that describe the state of the vehicle
-        this.actualPosition = initialPosition
-        this.actualRotationVehicle = initialRotation
+        this.actualPosition = {x: 0, y: 0, z: 0}
+        this.actualRotationVehicle = 0
         this.actualRotationWheel = 0
         this.actualSpeed = 0
 
@@ -195,6 +194,16 @@ class MyVehicle {
     changeState(state) {
         this.currentState = this.states[state]
     }
+
+    setPosition(pos) {
+        this.mesh.position.set(pos.x, pos.y, pos.z)
+        this.actualPosition = pos
+    }
+
+    setRotation(rot) {
+        this.mesh.rotation.y = rot
+        this.actualRotationVehicle = rot
+    }
 }
 
-export { MyVehicle };
+export {MyVehicle};

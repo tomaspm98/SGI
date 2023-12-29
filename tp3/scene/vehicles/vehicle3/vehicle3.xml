@@ -2,6 +2,7 @@
 <yaf>
 
     <specs
+        name="Vehicle 3"
         topSpeed="0.5"
         minSpeed="-0.01"
         acceleration="0.01"

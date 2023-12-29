@@ -149,6 +149,7 @@ class MyVehicleData {
             { name: "deceleration", type: "float" },
             { name: "turnRate", type: "float" },
             { name: "brakingRate", type: "float" },
+            {name:"name", type:"string"},
         ]
 
         this.descriptors["spotlight"] = [
