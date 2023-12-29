@@ -207,20 +207,23 @@ class MyVehicle {
         let qf=[]
         let kf_arrays=[]
         let tangents = []
+        let save_added_points = []
         
 
         for (let i=0;i<this.keyPoints.length;i++){
             kf.push(...this.keyPoints[i])
-            /*if (i==this.keyPoints.length-1){
+            if (i==this.keyPoints.length-1){
                 if (Utils.distance(this.keyPoints[i],this.keyPoints[0])>30){
                     let mediumPoint = [(this.keyPoints[i][0]+this.keyPoints[0][0])/2,(this.keyPoints[i][1]+this.keyPoints[0][1])/2,(this.keyPoints[i][2]+this.keyPoints[0][2])/2]
                     kf.push(...mediumPoint)
+                    save_added_points.push(i+1)
                 }
             }
             else if (Utils.distance(this.keyPoints[i],this.keyPoints[i+1])>30){
                 let mediumPoint = [(this.keyPoints[i][0]+this.keyPoints[i+1][0])/2,(this.keyPoints[i][1]+this.keyPoints[i+1][1])/2,(this.keyPoints[i][2]+this.keyPoints[i+1][2])/2]
                 kf.push(...mediumPoint)
-            }   */
+                save_added_points.push(i+1)
+            }   
         }
 
         for (let i=0;i<kf.length;i++){
@@ -233,23 +236,6 @@ class MyVehicle {
         for (let i=0;i<kf.length/3;i++){
             times.push(i*timeScale)
         }
-
-        /*const yAxis = new THREE.Vector3(0, 1, 0)
-        const q1 = new THREE.Quaternion().setFromAxisAngle(yAxis, THREE.MathUtils.degToRad(0))
-        const q2 = new THREE.Quaternion().setFromAxisAngle(yAxis, THREE.MathUtils.degToRad(90))
-        const q3 = new THREE.Quaternion().setFromAxisAngle(yAxis, THREE.MathUtils.degToRad(90))
-        const q4 = new THREE.Quaternion().setFromAxisAngle(yAxis, THREE.MathUtils.degToRad(-150))
-        const q5 = new THREE.Quaternion().setFromAxisAngle(yAxis, THREE.MathUtils.degToRad(-180))
-
-
-        const quaternionKF = new THREE.QuaternionKeyframeTrack('.quaternion', [2, 7, 8, 16,18],
-            [q1.x, q1.y, q1.z, q1.w,
-            q2.x, q2.y, q2.z, q2.w,
-            q3.x, q3.y, q3.z, q3.w,
-            q4.x, q4.y, q4.z, q4.w,
-            q5.x, q5.y, q5.z, q5.w]
-        );
-        */
 
         console.log(times)
         for (let i=0;i<=1;i+= 1/132){
@@ -273,7 +259,17 @@ class MyVehicle {
             }
         }
 
-        console.log(tangents)
+
+        for (let j = 0; j < save_added_points.length; j++) {
+            const index = save_added_points[j];
+            console.log(index)
+            let elementToAdd = qf.slice((index-1)*4,(index)*4)
+            console.log(elementToAdd)
+            qf.splice((index * 4)+4, 0, ...elementToAdd);
+        }
+        
+
+        console.log(kf_arrays)
         console.log(qf)
         const positionKF = new THREE.VectorKeyframeTrack('.position', times, kf, THREE.InterpolateSmooth);
         const quaternionKF = new THREE.QuaternionKeyframeTrack('.quaternion', times, qf, THREE.InterpolateSmooth);
