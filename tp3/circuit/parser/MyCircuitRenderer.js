@@ -168,6 +168,11 @@ class MyCircuitRenderer {
             target.position.set(...camera.target)
             this.circuitScene.add(target)
             cameraObject.target = target
+            cameraObject.targetPosition = target.position
+            cameraObject.lookAt(target)
+
+            console.log(key)
+            console.log(target.position)
 
             this.cameras[key] = cameraObject
         }

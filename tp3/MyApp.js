@@ -53,7 +53,7 @@ class MyApp {
 
         this.gameStateManager = new MyGameStateManager(this);
     }
-    
+
 
     /**
      * updates the active camera if required
@@ -77,6 +77,8 @@ class MyApp {
                 // Orbit controls allow the camera to orbit around a target.
                 this.controls = new OrbitControls(this.activeCamera, this.renderer.domElement);
                 this.controls.enableZoom = true;
+
+                this.controls.target = new THREE.Vector3(-200, 10, 0);
                 this.controls.update();
             }
             else {
