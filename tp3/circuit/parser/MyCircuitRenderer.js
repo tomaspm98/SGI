@@ -1,4 +1,4 @@
-import { MyCircuitReader } from './MyCircuitReader.js';
+import {MyCircuitReader} from './MyCircuitReader.js';
 import * as THREE from 'three';
 import {MyCircuitGraph} from './MyCircuitGraph.js';
 import {MyTrack} from '../MyTrack.js';
@@ -170,8 +170,7 @@ class MyCircuitRenderer {
         this.activeCamera = data.activeCameraId;
     }
 
-    /**        console.log("HELLO")
-
+    /**
      * Function to add a video tag to the HTML document.
      * @param {string} videoPath - The path to the video file.
      * @param {string} videoId - The id to give to the video element.
@@ -223,4 +222,4 @@ class MyCircuitRenderer {
 
 }
 
-export { MyCircuitRenderer }
+export {MyCircuitRenderer}

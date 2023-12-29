@@ -80,8 +80,9 @@ class MyApp {
                 this.controls.enableZoom = true;
 
                 if (this.activeCamera.positionTarget) {
-                    this.controls.target = new THREE.Vector3(this.activeCamera.positionTarget)
+                    this.controls.target = new THREE.Vector3(...this.activeCamera.positionTarget)
                 }
+
                 this.controls.update();
             } else {
                 this.controls.object = this.activeCamera
