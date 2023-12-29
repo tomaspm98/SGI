@@ -29,12 +29,9 @@ class MyAutonomousVehicle {
         this.importantNodes.wheelFL.rotation.order = 'YXZ';
         this.importantNodes.wheelFR.rotation.order = 'YXZ';
 
-        // Variables that describe the state of the vehicle
-        this.actualPosition = initialPosition
-        this.actualRotationVehicle = initialRotation
-        this.actualRotationWheel = 0
-        this.actualSpeed = 0
         this.opponent = true;
+        this.timeScale =3;
+        this.actualSpeed = 1/(2*this.timeScale);
 
         this._translateToPivotPoint()
 
@@ -54,6 +51,12 @@ class MyAutonomousVehicle {
                 this.mixer.update(delta);
             }
         }
+
+        this.importantNodes.wheelBL.rotation.x += this.actualSpeed
+        this.importantNodes.wheelBR.rotation.x += this.actualSpeed
+        this.importantNodes.wheelFL.rotation.x += this.actualSpeed
+        this.importantNodes.wheelFR.rotation.x += this.actualSpeed
+
         return true
     }
 
@@ -76,7 +79,6 @@ class MyAutonomousVehicle {
     }
 
     controlCarOpponent(){
-        let timeScale = 0.5
         this.accelerating=true
         let times=[]
         let kf=[]
@@ -110,7 +112,7 @@ class MyAutonomousVehicle {
         console.log(kf_arrays)
 
         for (let i=0;i<kf.length/3;i++){
-            times.push(i*timeScale)
+            times.push(i*this.timeScale)
         }
 
         console.log(times)
