@@ -27,6 +27,8 @@ class ChooseOpponentCar extends MyGameState {
     _displayVehicles() {
         const slotsAvailable = this.circuit.slots.filter(slot => slot.object === "parkingLot2")
         let vehicleArray = Object.values(this.vehicles)
+        vehicleArray = vehicleArray.filter(vehicle => vehicle.name !== this.stateInfo.playerVehicle)
+
         for (let i = 0; i < slotsAvailable.length && i < vehicleArray.length; i++) {
             const vehicle = vehicleArray[i]
             const slot = slotsAvailable[i]
@@ -46,7 +48,16 @@ class ChooseOpponentCar extends MyGameState {
     handlePicking(object, event) {
         if (event.type === "pointerdown") {
             this._removeVehiclesScene()
-            console.log("STARTING RACE")
+            this.gameStateManager.changeState({
+                name: "raceState",
+                circuit: this.circuit,
+                vehicles: this.vehicles,
+                playerVehicle: this.stateInfo.playerVehicle,
+                opponentVehicle: object.name,
+                circuitName: this.stateInfo.circuitName,
+                playerName: this.stateInfo.playerName,
+                difficulty: this.stateInfo.difficulty
+            })
         } else if (event.type === "pointermove") {
             // It is necessary to traverse the object's children
             // Because the object itself is a group

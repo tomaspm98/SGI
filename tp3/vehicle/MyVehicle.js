@@ -51,6 +51,7 @@ class MyVehicle extends THREE.Object3D {
         this.bb = new THREE.Box3().setFromObject(this.mesh)
     }
 
+
     controlCar(event) {
         switch (event.keyCode) {
             case 87: // W
