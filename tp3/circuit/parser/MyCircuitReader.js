@@ -127,6 +127,7 @@ class MyCircuitReader {
 			this.loadTrack(rootElement);
 			this.loadNodes(rootElement);
 			this.loadActivatables(rootElement);
+			this.loadSlots(rootElement);
 		}
 		catch (error) {
 			this.errorMessage = error;
@@ -687,6 +688,11 @@ class MyCircuitReader {
 		let elem = this.getAndCheck(rootElement, 'activatables')
 		this.loadXmlItems(elem, 'powerup', this.data.descriptors["powerup"], [["type", "powerup"]], this.data.addActivatable)
 		this.loadXmlItems(elem, 'obstacle', this.data.descriptors["obstacle"], [["type", "obstacle"]], this.data.addActivatable)
+	}
+
+	loadSlots(rootElement) {
+		let elem = this.getAndCheck(rootElement, 'slots')
+		this.loadXmlItems(elem, 'slot', this.data.descriptors["slot"], [["type", "slot"]], this.data.addSlot)
 	}
 
 	/**

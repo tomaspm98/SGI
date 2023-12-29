@@ -32,6 +32,8 @@ class MyCircuitData {
 
         this.lods = [];
 
+        this.slots = []
+
         this.descriptors = [];
 
         this.customAttributeName = "custom"
@@ -271,7 +273,15 @@ class MyCircuitData {
             { name: "filepath", type: "string" }
         ]
 
-        this.primaryNodeIds = ["globals", "fog", "skybox", "textures", "materials", "cameras", "graph", "track", "activatables"]
+        this.descriptors["slot"] = [
+            { name: "object", type: "string" },
+            { name: "position", type: "vector3" },
+            { name: "rotation", type: "float", required: false, default: 0 }
+        ]
+
+
+
+        this.primaryNodeIds = ["globals", "fog", "skybox", "textures", "materials", "cameras", "graph", "track", "activatables", "slots"]
 
         this.primitiveIds = ["cylinder", "rectangle", "triangle", "sphere", "nurbs", "box", "model3d", "skybox", "lod", "polygon"]
     }
@@ -343,6 +353,10 @@ class MyCircuitData {
 
     addActivatable(activatable) {
         this.activatables.push(activatable)
+    }
+
+    addSlot(slot) {
+        this.slots.push(slot)
     }
 
     addTexture(texture) {

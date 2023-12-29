@@ -1,7 +1,7 @@
-import {MyCircuitReader} from './MyCircuitReader.js';
+import { MyCircuitReader } from './MyCircuitReader.js';
 import * as THREE from 'three';
-import {MyCircuitGraph} from './MyCircuitGraph.js';
-import {MyTrack} from '../MyTrack.js';
+import { MyCircuitGraph } from './MyCircuitGraph.js';
+import { MyTrack } from '../MyTrack.js';
 import * as Utils from './utils.js';
 
 
@@ -19,12 +19,13 @@ class MyCircuitRenderer {
         this.activatables = []
         this.circuitScene = new THREE.Scene()
         this.track = null
+        this.slots = []
 
         // Read the file
         const reader = new MyCircuitReader(this, this._renderCircuitFile)
         reader.open(yasfPath)
         // Return the circuit scene
-        return [this.circuitScene, this.activatables, this.track, this.cameras]
+        return [this.circuitScene, this.activatables, this.track, this.cameras, this.slots]
     }
 
 
@@ -37,6 +38,7 @@ class MyCircuitRenderer {
         this.renderFog(data)
         this.renderSkyBox(data)
         this.renderActivatables(data)
+        this.renderSlots(data)
 
         this.sceneGraph = new MyCircuitGraph(data.nodes, data.rootId, this.materials, data['materials'])
         this.sceneGraph.constructSceneGraph()
@@ -220,6 +222,12 @@ class MyCircuitRenderer {
         }
     }
 
+    renderSlots(data) {
+        for (const slot of data.slots) {
+            this.slots.push({ object: slot.object, position: slot.position, rotation: slot.rotation })
+        }
+    }
+
 }
 
-export {MyCircuitRenderer}
+export { MyCircuitRenderer }
