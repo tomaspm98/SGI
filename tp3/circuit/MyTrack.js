@@ -12,12 +12,12 @@ class MyTrack {
     }
 
     _draw() {
-        const path = this._getCatmullRomCurve()
+        this.path = this._getCatmullRomCurve()
 
-        this.line = this._drawLine(path)
-        this.mesh = this._drawTrack(path)
+        this.line = this._drawLine(this.path)
+        this.mesh = this._drawTrack(this.path)
 
-        console.log(path)
+        console.log(this.path)
         
         this.group = new THREE.Group()
         this.group.add(this.line)
@@ -28,6 +28,10 @@ class MyTrack {
             cube.position.set(element[0], element[1], element[2]); // Set the cube's position based on the current element
             this.group.add(cube); // Add the cube to the group
         });
+    }
+
+    _getPath(){
+        return this.path;
     }
 
     createCube(){

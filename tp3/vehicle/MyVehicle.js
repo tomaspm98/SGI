@@ -6,16 +6,17 @@ import * as Utils from '../utils.js'
 import { AxesHelper } from 'three'
 
 class MyVehicle {
-    static createVehicle(file, keyPoints, initialPosition = { x: 0, y: 0, z: 0 }, initialRotation = 0) {
+    static createVehicle(file, keyPoints, pathCurve, initialPosition = { x: 0, y: 0, z: 0 }, initialRotation = 0) {
         const vehicleRenderer = new MyVehicleRenderer()
         const [mesh, specs, importantNodes] = vehicleRenderer.render(file)
-        return new MyVehicle(mesh, keyPoints, importantNodes, specs.topSpeed, specs.minSpeed, specs.acceleration, specs.deceleration, specs.turnRate, specs.brakingRate, initialPosition, initialRotation)
+        return new MyVehicle(mesh, keyPoints, pathCurve,importantNodes, specs.topSpeed, specs.minSpeed, specs.acceleration, specs.deceleration, specs.turnRate, specs.brakingRate, initialPosition, initialRotation)
     }
 
-    constructor(mesh, keyPoints, importantNodes, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate, initialPosition, initialRotation) {
+    constructor(mesh, keyPoints, pathCurve, importantNodes, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate, initialPosition, initialRotation) {
         // Variables that describe the vehicle
         this.mesh = mesh
         this.keyPoints = keyPoints
+        this.pathCurve = pathCurve
         this.topSpeed = topSpeed
         this.minSpeed = minSpeed
         this.accelerationRate = accelerationRate
@@ -199,17 +200,18 @@ class MyVehicle {
     }
 
     controlCarOpponent(){
-        let timeScale = 3
+        let timeScale = 0.5
         this.accelerating=true
         let times=[]
         let kf=[]
         let qf=[]
         let kf_arrays=[]
+        let tangents = []
         
 
         for (let i=0;i<this.keyPoints.length;i++){
             kf.push(...this.keyPoints[i])
-            if (i==this.keyPoints.length-1){
+            /*if (i==this.keyPoints.length-1){
                 if (Utils.distance(this.keyPoints[i],this.keyPoints[0])>30){
                     let mediumPoint = [(this.keyPoints[i][0]+this.keyPoints[0][0])/2,(this.keyPoints[i][1]+this.keyPoints[0][1])/2,(this.keyPoints[i][2]+this.keyPoints[0][2])/2]
                     kf.push(...mediumPoint)
@@ -218,7 +220,7 @@ class MyVehicle {
             else if (Utils.distance(this.keyPoints[i],this.keyPoints[i+1])>30){
                 let mediumPoint = [(this.keyPoints[i][0]+this.keyPoints[i+1][0])/2,(this.keyPoints[i][1]+this.keyPoints[i+1][1])/2,(this.keyPoints[i][2]+this.keyPoints[i+1][2])/2]
                 kf.push(...mediumPoint)
-            }   
+            }   */
         }
 
         for (let i=0;i<kf.length;i++){
@@ -232,21 +234,46 @@ class MyVehicle {
             times.push(i*timeScale)
         }
 
-        for(let i=0;i<kf_arrays.length;i++){
+        /*const yAxis = new THREE.Vector3(0, 1, 0)
+        const q1 = new THREE.Quaternion().setFromAxisAngle(yAxis, THREE.MathUtils.degToRad(0))
+        const q2 = new THREE.Quaternion().setFromAxisAngle(yAxis, THREE.MathUtils.degToRad(90))
+        const q3 = new THREE.Quaternion().setFromAxisAngle(yAxis, THREE.MathUtils.degToRad(90))
+        const q4 = new THREE.Quaternion().setFromAxisAngle(yAxis, THREE.MathUtils.degToRad(-150))
+        const q5 = new THREE.Quaternion().setFromAxisAngle(yAxis, THREE.MathUtils.degToRad(-180))
+
+
+        const quaternionKF = new THREE.QuaternionKeyframeTrack('.quaternion', [2, 7, 8, 16,18],
+            [q1.x, q1.y, q1.z, q1.w,
+            q2.x, q2.y, q2.z, q2.w,
+            q3.x, q3.y, q3.z, q3.w,
+            q4.x, q4.y, q4.z, q4.w,
+            q5.x, q5.y, q5.z, q5.w]
+        );
+        */
+
+        console.log(times)
+        for (let i=0;i<=1;i+= 1/132){
+            const cPoint = this.pathCurve.getPoint(i)
+            const cTangent = this.pathCurve.getTangent(i)
+            tangents.push(cTangent)
+        }
+
+        this.angleVariation = 0;
+        for(let i=0;i<tangents.length;i++){
             if (i==0){
                 qf.push(0,0,0,1)
             }
             else {
-     
-                let angleVariation = Utils.calculateAngleVariation(kf_arrays[i-1], kf_arrays[i]);
-                console.log(angleVariation)
+                this.angleVariation += Utils.calculateAngleVariation(tangents[i-1], tangents[i]);
+                console.log(i,this.angleVariation, Utils.calculateAngleVariation(tangents[i-1], tangents[i]))
                 let axis = new THREE.Vector3(0, 1, 0); // You may need to adjust the axis based on your specific scenario
-                let quaternion = new THREE.Quaternion().setFromAxisAngle(axis, angleVariation);
+                let quaternion = new THREE.Quaternion().setFromAxisAngle(axis, this.angleVariation);
                 //console.log(quaternion)
                 qf.push(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
             }
         }
 
+        console.log(tangents)
         console.log(qf)
         const positionKF = new THREE.VectorKeyframeTrack('.position', times, kf, THREE.InterpolateSmooth);
         const quaternionKF = new THREE.QuaternionKeyframeTrack('.quaternion', times, qf, THREE.InterpolateSmooth);

@@ -238,26 +238,23 @@ function distance(p1,p2){
     return Math.sqrt(Math.pow(p1[0]-p2[0],2)+Math.pow(p1[1]-p2[1],2)+Math.pow(p1[2]-p2[2],2))
 }
 
-function calculateAngleVariation(array1, array2) {
-    const euler1 = new THREE.Euler().fromArray(array1);
-    const euler2 = new THREE.Euler().fromArray(array2);
+function calculateAngleVariation(tangent1, tangent2) {
+    // Normalize the tangent vectors
+    tangent1.normalize();
+    tangent2.normalize();
 
-    // Convert Euler angles to quaternions
-    const quaternion1 = new THREE.Quaternion().setFromEuler(euler1);
-    const quaternion2 = new THREE.Quaternion().setFromEuler(euler2);
+    // Calculate the dot product of the tangent vectors
+    const dotProduct = tangent1.dot(tangent2);
 
-    // Calculate the quaternion representing the rotation from quaternion1 to quaternion2
-    const quaternion = quaternion2.clone().multiply(quaternion1.clone().conjugate());
+    console.log(tangent1,tangent2,dotProduct)
 
-    // Calculate the axis and angle of the rotation represented by the quaternion
-    const axis = new THREE.Vector3();
-    const angle = 2 * Math.acos(Math.min(1, quaternion.w));
-    axis.set(quaternion.x, quaternion.y, quaternion.z).normalize();
+    // Calculate the angle in radians
+    const angleRadians = Math.acos(dotProduct);
 
-    // Convert the angle to degrees
-    const angleVariation = THREE.MathUtils.radToDeg(angle);
+    const crossProduct = new THREE.Vector3().crossVectors(tangent1, tangent2);
+    const sign = crossProduct.y >= 0 ? 1 : -1;
 
-    return 2.976821-angle;
+    return angleRadians * sign;
 }
 
 function loadMipmap(parentTexture, level, path) {
