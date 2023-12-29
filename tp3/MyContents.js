@@ -5,6 +5,7 @@ import { MyVehicle } from "./vehicle/MyVehicle.js";
 import { collisionDetection, checkVehicleOnTrack } from "./collisions/collisions.js";
 import { MyRTree } from "./collisions/MyRTree.js";
 import { MyText3D } from "./MyText3D.js";
+import { MyAutonomousVehicle } from "./vehicle/MyAutonomousVehicle.js";
 
 
 /**
@@ -31,13 +32,14 @@ class MyContents {
         console.log(this.circuit.track._getPath())
         this.app.scene = this.circuit.scene
 
-        this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml", this.circuit.track.pointsGeoJSON, this.circuit.track._getPath(), { x: 0, y: 0, z: 0 }, 0)
+        this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml", { x: 0, y: 0, z: 0 }, 0)
         //this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle2/vehicle2.xml")
         //this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle3/vehicle3.xml")
         //this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle_test/vehicleTest.xml")
         this.app.scene.add(this.vehicle.mesh)
         this.app.scene.add(this.vehicle.obb.helper)
-
+        this.opponent = MyAutonomousVehicle.createVehicle("scene/vehicles/vehicle2/vehicle2.xml", this.circuit.track.pointsGeoJSON, this.circuit.track._getPath(), { x: 0, y: 0, z: 0 }, 0)
+        this.app.scene.add(this.opponent.mesh)
         this.rTree = new MyRTree()
         this.rTree.insertMany(this.circuit.activatables)
 
@@ -62,6 +64,8 @@ class MyContents {
             collisionDetection(this.vehicle, this.rTree)
             checkVehicleOnTrack(this.vehicle, this.circuit.track)
         }
+
+        this.opponent.update();
     }
 
 
