@@ -38,7 +38,7 @@ class MyContents {
         //this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle_test/vehicleTest.xml")
         this.app.scene.add(this.vehicle.mesh)
         this.app.scene.add(this.vehicle.obb.helper)
-        this.opponent = MyAutonomousVehicle.createVehicle("scene/vehicles/vehicle2/vehicle2.xml", this.circuit.track.pointsGeoJSON, this.circuit.track._getPath(), { x: 0, y: 0, z: 0 }, 0)
+        this.opponent = MyAutonomousVehicle.createVehicle("scene/vehicles/vehicle1/vehicle1.xml", this.circuit.track.pointsGeoJSON, this.circuit.track._getPath(), { x: 0, y: 0, z: 0 }, 0)
         this.app.scene.add(this.opponent.mesh)
         this.rTree = new MyRTree()
         this.rTree.insertMany(this.circuit.activatables)

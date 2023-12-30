@@ -29,8 +29,13 @@ class MyAutonomousVehicle {
         this.importantNodes.wheelFL.rotation.order = 'YXZ';
         this.importantNodes.wheelFR.rotation.order = 'YXZ';
 
-        this.opponent = true;
-        this.timeScale =3;
+        this.wheelsOrientation = Math.PI/6
+
+        this.previousKeyPointIndex = -1; // Initialize to an invalid index
+        this.currentKeyPointIndex = -1;
+        this.angleVariations = []
+
+        this.timeScale = 2;
         this.actualSpeed = 1/(2*this.timeScale);
 
         this._translateToPivotPoint()
@@ -45,11 +50,31 @@ class MyAutonomousVehicle {
 
     
     update() {
-        if(this.opponent){
-            const delta = this.clock.getDelta(); // assuming you have a clock
-            if (this.mixer) {
-                this.mixer.update(delta);
-            }
+
+        const delta = this.clock.getDelta(); // assuming you have a clock
+        if (this.mixer) {
+            this.mixer.update(delta);
+        }
+
+        this.currentTime += delta;
+
+        this.previousKeyPointIndex = this.currentKeyPointIndex;
+        this.currentKeyPointIndex = this.getCurrentKeyPointIndex();
+
+        if (Utils.distance(this.kf_arrays[this.currentKeyPointIndex], this.kf_arrays[this.currentKeyPointIndex+1]) > 5) {
+            this.importantNodes.wheelFL.rotation.y = 0
+            this.importantNodes.wheelFR.rotation.y = 0
+        }
+        else if (this.angleVariations[this.currentKeyPointIndex] > 0) {
+            this.importantNodes.wheelFL.rotation.y = Math.PI/8
+            this.importantNodes.wheelFR.rotation.y = Math.PI/8
+        } else if(this.angleVariations[this.currentKeyPointIndex] < 0) {
+            this.importantNodes.wheelFL.rotation.y = -Math.PI/8
+            this.importantNodes.wheelFR.rotation.y = -Math.PI/8
+        }
+
+        if (this.currentKeyPointIndex !== this.previousKeyPointIndex) {
+            console.log(`Vehicle passed key point ${this.currentKeyPointIndex}`);
         }
 
         this.importantNodes.wheelBL.rotation.x += this.actualSpeed
@@ -83,7 +108,7 @@ class MyAutonomousVehicle {
         let times=[]
         let kf=[]
         let qf=[]
-        let kf_arrays=[]
+        this.kf_arrays=[]
         let tangents = []
         let save_added_points = []
         
@@ -106,10 +131,10 @@ class MyAutonomousVehicle {
 
         for (let i=0;i<kf.length;i++){
             if (i%3==0){
-                kf_arrays.push(kf.slice(i,i+3))
+                this.kf_arrays.push(kf.slice(i,i+3))
             }
         }
-        console.log(kf_arrays)
+        console.log(this.kf_arrays)
 
         for (let i=0;i<kf.length/3;i++){
             times.push(i*this.timeScale)
@@ -117,7 +142,6 @@ class MyAutonomousVehicle {
 
         console.log(times)
         for (let i=0;i<=1;i+= 1/132){
-            const cPoint = this.pathCurve.getPoint(i)
             const cTangent = this.pathCurve.getTangent(i)
             tangents.push(cTangent)
         }
@@ -126,9 +150,11 @@ class MyAutonomousVehicle {
         for(let i=0;i<tangents.length;i++){
             if (i==0){
                 qf.push(0,0,0,1)
+                this.angleVariations.push(0)
             }
             else {
                 this.angleVariation += Utils.calculateAngleVariation(tangents[i-1], tangents[i]);
+                this.angleVariations.push(Utils.calculateAngleVariation(tangents[i-1], tangents[i]))
                 console.log(i,this.angleVariation, Utils.calculateAngleVariation(tangents[i-1], tangents[i]))
                 let axis = new THREE.Vector3(0, 1, 0); // You may need to adjust the axis based on your specific scenario
                 let quaternion = new THREE.Quaternion().setFromAxisAngle(axis, this.angleVariation);
@@ -137,17 +163,19 @@ class MyAutonomousVehicle {
             }
         }
 
-
         for (let j = 0; j < save_added_points.length; j++) {
             const index = save_added_points[j];
             console.log(index)
             let elementToAdd = qf.slice((index-1)*4,(index)*4)
             console.log(elementToAdd)
             qf.splice((index * 4)+4, 0, ...elementToAdd);
+            this.angleVariations.splice(index, 0, 0);
         }
+
+        console.log(this.angleVariations)
         
 
-        console.log(kf_arrays)
+        console.log(this.kf_arrays)
         console.log(qf)
         const positionKF = new THREE.VectorKeyframeTrack('.position', times, kf, THREE.InterpolateSmooth);
         const quaternionKF = new THREE.QuaternionKeyframeTrack('.quaternion', times, qf, THREE.InterpolateSmooth);
@@ -161,6 +189,30 @@ class MyAutonomousVehicle {
         action.play();   
         rotationAction.play();
     }
+
+    getCurrentKeyPointIndex() {
+        const currentPosition = this.mesh.position.clone();
+
+        // Calculate distances from the current position to each keyPoint
+        const distances = this.kf_arrays.map(keyPoint => Utils.distance(currentPosition.toArray(), keyPoint));
+
+        // Find the index of the keyPoint with the minimum distance
+        const minDistanceIndex = distances.indexOf(Math.min(...distances));
+
+        return minDistanceIndex;
+    }
+
+    /*getCurrentQuaternion() {
+        if (this.mixer) {
+            const quaternion = new THREE.Quaternion();
+            this.mixer.update(this.currentTime); // Make sure the mixer is updated to the current time
+            console.log(this.mesh)
+            //this.mesh.quaternion.copy(this.mesh.skeleton.bones[0].quaternion); // Assuming the quaternion is stored in the first bone
+            return quaternion;
+        }
+
+        return null;
+    }*/
 
     
 }
