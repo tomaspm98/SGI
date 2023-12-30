@@ -34,7 +34,7 @@ class MyObstacle2 extends MyActivatable {
         });      
         //this._constructShader() 
         console.log(this.shaderPulsate)
-        const cube = new THREE.Mesh(geometry, this.shaderPulsate);
+        const cube = new THREE.Mesh(geometry, material);
         //cube.material= this.shaderPulsate.material
         return cube
     }

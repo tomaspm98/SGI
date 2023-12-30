@@ -67,6 +67,10 @@ class MyShader {
             // report built!
             console.log("built shader from " + this.vert_url + ", " + this.frag_url)  
             this.ready = true
+
+            if (this.onMaterialReady) {
+                this.onMaterialReady(this.material);
+            }
         }
     }
 

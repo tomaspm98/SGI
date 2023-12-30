@@ -37,6 +37,7 @@ class MyContents {
         //this.vehicle = MyVehicle.createVehicle("scene/vehicles/vehicle_test/vehicleTest.xml")
         this.app.scene.add(this.vehicle.mesh)
         this.app.scene.add(this.vehicle.obb.helper)
+        this.app.clock = new THREE.Clock()
 
         this.rTree = new MyRTree()
         console.log(this.circuit.activatables)
@@ -49,12 +50,16 @@ class MyContents {
             timeFactor: { type: 'f', value: 0.0 },
         });
 
-        for (let i=0;i<this.circuit.activatables.length;i++){
-            if (this.circuit.activatables[i].effect == "reducedSpeed"){
-                this.circuit.activatables[i].mesh.material = this.shaderPulsate
-                console.log(this.circuit.activatables[i].mesh.material)
+        this.shaderPulsate.onMaterialReady = (material) => {
+            console.log(material);
+            for (let i = 0; i < this.circuit.activatables.length; i++) {
+                if (this.circuit.activatables[i].effect == "reducedSpeed") {
+                    this.circuit.activatables[i].mesh.material = material;
+                    console.log(this.circuit.activatables[i].mesh.material);
+                }
             }
-        }
+        };
+
         this.rTree.insertMany(this.circuit.activatables)
 
         if (this.axis === null) {
@@ -79,7 +84,14 @@ class MyContents {
             collisionDetection(this.vehicle, this.rTree)
             checkVehicleOnTrack(this.vehicle, this.circuit.track)
         }
+        let t = this.app.clock.getElapsedTime()
+        if (this.shaderPulsate) {
+            if (this.shaderPulsate.hasUniform("timeFactor")) {
+                this.shaderPulsate.updateUniformsValue("timeFactor", t  );
+            }
+        }
     }
+
 
 
 }
