@@ -24,8 +24,7 @@ function collisionDetectionBroadPhase(activeObject, rTree) {
         maxX: activeObject.bb.max.x,
         maxY: activeObject.bb.max.z,
     }
-    const passiveObjects = rTree.search(bb);
-    return passiveObjects;
+    return rTree.search(bb);
 }
 
 function collisionDetectionNarrowPhase(activeObject, passiveObjects) {
@@ -41,11 +40,15 @@ function collisionDetectionNarrowPhase(activeObject, passiveObjects) {
 function checkVehicleOnTrack(vehicle, track) {
     const pos = new THREE.Vector3(vehicle.actualPosition.x, vehicle.actualPosition.y, vehicle.actualPosition.z);
     const collisions = new THREE.Raycaster(pos, new THREE.Vector3(0, -1, 0), 0, 1).intersectObject(track.mesh);
-    if (collisions.length > 0) {
-        vehicle.offTrack = false;
-    } else {
-        vehicle.offTrack = true;
-    }
+    vehicle.offTrack = collisions.length <= 0;
 }
 
-export { collisionDetection, checkVehicleOnTrack };
+function checkCollisionVehicleOnVehicle(playerVehicle, opponentVehicle) {
+    if(playerVehicle.obb.collision(opponentVehicle.obb)){
+        console.log("COLLISION")
+    }
+    
+    playerVehicle.collisionVehicle = !!playerVehicle.obb.collision(opponentVehicle.obb);
+}
+
+export { collisionDetection, checkVehicleOnTrack, checkCollisionVehicleOnVehicle };

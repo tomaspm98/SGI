@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { OBB } from 'three/addons/math/OBB.js';
+import {OBB} from 'three/addons/math/OBB.js';
 
 class MyOBB {
     constructor(mesh) {
@@ -21,7 +21,7 @@ class MyOBB {
         // Otherwise, the OBB will be scaled as well
 
         const matrix = new THREE.Matrix4().copy(matrixWorld)
-        
+
         const position = new THREE.Vector3()
         const quaternion = new THREE.Quaternion()
         const scale = new THREE.Vector3()
@@ -44,12 +44,29 @@ class MyOBB {
     createHelper() {
         const dimensions = this.initialOBB.halfSize.clone().multiplyScalar(2)
         const geometry = new THREE.BoxGeometry(dimensions.x, dimensions.y, dimensions.z)
-        const material = new THREE.MeshBasicMaterial({ wireframe: true, color: 0x00ff00 })
+        const material = new THREE.MeshBasicMaterial({wireframe: true, color: 0x00ff00})
         this.helper = new THREE.Mesh(geometry, material)
         this.helper.position.copy(this.initialOBB.center)
         this.helper.rotation.copy(this.initialOBB.rotation)
         this.helperOriginal = this.helper.clone()
     }
+
+    recalculate(mesh) {
+        const boundingBox = new THREE.Box3().setFromObject(mesh)
+        // For this game, we only care about the x and z coordinates
+        boundingBox.max.y = 0
+        boundingBox.min.y = 0
+
+        this.actualOBB = new OBB().fromBox3(boundingBox)
+
+        this.actualOBB.center.y = 0
+
+        this.initialOBB = this.actualOBB.clone()
+        if (this.helper) {
+            this.createHelper()
+        }
+
+    }
 }
 
-export { MyOBB }
+export {MyOBB}

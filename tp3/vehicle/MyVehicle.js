@@ -28,8 +28,8 @@ class MyVehicle {
         this.actualRotationVehicle = 0
 
         this._translateToPivotPoint()
-
         this.obb = new MyOBB(this.mesh)
+        this.obb.createHelper()
     }
 
     _translateToPivotPoint() {
@@ -51,17 +51,21 @@ class MyVehicle {
     }
 
     setPosition(pos) {
-        this.mesh.position.x = pos.x
-        this.mesh.position.z = pos.z
-
+        this.mesh.position.setX(pos.x)
+        this.mesh.position.setZ(pos.z)
+        
         this.actualPosition.x = pos.x
         this.actualPosition.z = pos.z
+        
+        this.obb.update(this.mesh.matrixWorld)
     }
 
     setRotation(rot) {
         this.mesh.rotation.y = rot
         this.actualRotationVehicle = rot
+        this.obb.update(this.mesh.matrixWorld)
     }
+    
 }
 
 export {MyVehicle};

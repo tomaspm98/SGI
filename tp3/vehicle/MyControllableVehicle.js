@@ -28,7 +28,11 @@ class MyControllableVehicle extends MyVehicle {
     }
 
     static fromVehicle(vehicle) {
-        return new MyControllableVehicle(vehicle.mesh, vehicle.name, vehicle.importantNodes, vehicle.topSpeed, vehicle.minSpeed, vehicle.accelerationRate, vehicle.coastingRate, vehicle.turnRate, vehicle.brakingRate)
+        const newMesh = vehicle.mesh.clone()
+        newMesh.position.x = 0
+        newMesh.position.z = 0
+        newMesh.rotation.set(0, 0, 0)
+        return new MyControllableVehicle(newMesh, vehicle.name, vehicle.importantNodes, vehicle.topSpeed, vehicle.minSpeed, vehicle.accelerationRate, vehicle.coastingRate, vehicle.turnRate, vehicle.brakingRate)
     }
 
     controlCar(event) {
