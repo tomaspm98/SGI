@@ -65,7 +65,7 @@ class ChooseOpponentCar extends MyGameState {
                 if (child.material) {
                     // To save the original color of the object
                     // To later restore it when the object is no longer picked
-                    if(!child.material.originalColor){
+                    if (!child.material.originalColor) {
                         child.material.originalColor = child.material.color.clone()
                     }
                     child.material.color.setHex(0x005ba6)
@@ -81,6 +81,20 @@ class ChooseOpponentCar extends MyGameState {
                 child.material.originalColor = null
             }
         })
+    }
+
+
+    _createDocumentListeners() {
+        this.listeners.push({
+            type: 'keydown',
+            handler: this.keyHandler.bind(this)
+        })
+    }
+
+    keyHandler(event) {
+        if (event.code === 'KeyB' && event.type === 'keydown') {
+            this.gameStateManager.goBack()
+        }
     }
 }
 

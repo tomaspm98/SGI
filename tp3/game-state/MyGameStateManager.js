@@ -8,7 +8,8 @@ import { RaceState } from "./RaceState.js";
 class MyGameStateManager {
     constructor(app) {
         this.app = app;
-        this.actualState = this.createNewState({ name: "choosePlayerCar", circuitPath: "scene/circuits/circuitTest.xml"});
+        //this.actualState = this.createNewState({ name: "choosePlayerCar", circuitPath: "scene/circuits/circuitTest.xml"});
+        this.actualState = this.createNewState({ name: "initial"});
         this.actualState.startDocumentListeners();
         this.savedStates = [];
         this.updateApp()
@@ -33,14 +34,20 @@ class MyGameStateManager {
         this.updateApp()
     }
 
-    /*goBackTo(stateInfo) {
-        while (this.actualState.name !== stateInfo.name) {
-            if (this.savedStates.length === 0) {
-                throw new Error("State not found");
+    goBackTo(stateInfo) {
+        const newSavedStates = []
+        for(let i = 0; i < this.savedStates.length; i++) {
+            if(this.savedStates[i].name === stateInfo.name) {
+                this.actualState.stopDocumentListeners();
+                this.actualState = this.savedStates[i];
+                this.savedStates = newSavedStates;
+                this.actualState.startDocumentListeners();
+                this.updateApp()
+                return
             }
-            this.goBack();
+            newSavedStates.push(this.savedStates[i])
         }
-    }*/
+    }
 
     createNewState(stateInfo) {
         switch (stateInfo.name) {

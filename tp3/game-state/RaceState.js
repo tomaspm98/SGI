@@ -7,12 +7,14 @@ class RaceState extends MyGameState {
         super(gameStateManager, stateInfo)
         console.log(stateInfo)
         this.name = "race"
+
         this._loadVehicles()
         this._createPovCameras()
         this.setCheckPointsInfo()
 
         this.vehiclePlayerLap = 0
         this.vehicleOpponentLap = 0
+
     }
 
     _createScene() {
@@ -93,11 +95,15 @@ class RaceState extends MyGameState {
             this._changeCamera()
         } if (event.code === 'KeyT' && event.type === 'keydown') {
             this._tpToLastCheckpoint()
-        } else if (event.code === 'KeyV' && event.type === 'keyup') {
-
-        } else {
+        } else if (event.code === 'Escape' && event.type === 'keydown') {
+            this.gameStateManager.goBackTo({ name: 'initial' })
+        } else if (event.code === 'KeyP' && event.type === 'keydown') {
+        
+        } 
+        else {
             this.vehiclePlayer.controlCar(event)
         }
+
     }
 
     _changeCamera() {

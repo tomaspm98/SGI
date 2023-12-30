@@ -87,6 +87,19 @@ class ChoosePlayerCar extends MyGameState {
             }
         })
     }
+
+    _createDocumentListeners() {
+        this.listeners.push({
+            type: 'keydown',
+            handler: this.keyHandler.bind(this)
+        })
+    }
+
+    keyHandler(event) {
+        if (event.code === 'KeyB' && event.type === 'keydown') {
+            this.gameStateManager.goBack()
+        }
+    }
 }
 
 export { ChoosePlayerCar }
