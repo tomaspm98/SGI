@@ -209,7 +209,7 @@ class MyCircuitRenderer {
     renderTrack(data) {
         const geoJSON = this._openJSON(data.track['filepath'])
         const points = geoJSON["features"][0]["geometry"]["coordinates"]
-        this.track = new MyTrack(points, data.track['size'], data.track['segments'], data.track['width'], data.track['texture'])
+        this.track = new MyTrack(points, data.track['size'], data.track['segments'], data.track['width'], data.track['texture'], data.track['checkpoints'], data.track['checkpointModel'])
         this.circuitScene.add(this.track.group)
     }
 

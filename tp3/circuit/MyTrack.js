@@ -1,14 +1,25 @@
 import * as THREE from 'three';
 import { MyTriangle } from '../utils/MyTriangle.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 class MyTrack {
-    constructor(points, size, numSegments, width, texture, numCheckPoints = 30) {
+    constructor(points, size, numSegments, width, texture, numCheckPoints, checkPointModel) {
         this.pointsGeoJSON = this._normalizePoints(points, size);
         this.width = width
         this.numSegments = numSegments
         this.numCheckPoints = numCheckPoints
+        this.checkPointModel = checkPointModel
         this._loadTexture(texture)
         this._draw()
+
+        if (checkPointModel) {
+            const loader = new GLTFLoader();
+            loader.load(checkPointModel, this._addCheckPointsModel.bind(this),
+                undefined,
+                function (error) {
+                    console.error(error);
+                });
+        }
     }
 
     _draw() {
@@ -17,7 +28,6 @@ class MyTrack {
         this.line = this._drawLine(path)
         this.mesh = this._drawTrack(path)
         this.checkPoints = this._getCheckPoints(path, this.numCheckPoints)
-        console.log(this.checkPoints)
 
         this.group = new THREE.Group()
         this.group.add(this.line)
@@ -148,6 +158,24 @@ class MyTrack {
         } else {
             return [pA, pC, pB]
         }
+    }
+
+    _addCheckPointsModel(gltf) {
+        const checkPointsGroup = new THREE.Group()
+        checkPointsGroup.name = 'checkPoints'
+        const model = gltf.scene
+        model.scale.set(1.5, 1.5, 1.5)
+        for (const checkPoint of this.checkPoints) {
+            const newModel = model.clone()
+            const newModel2 = model.clone()
+
+            newModel.position.set(checkPoint.pk1.x, checkPoint.pk1.y + 0.15, checkPoint.pk1.z)
+            newModel2.position.set(checkPoint.pk2.x, checkPoint.pk2.y + 0.15, checkPoint.pk2.z)
+
+            checkPointsGroup.add(newModel)
+            checkPointsGroup.add(newModel2)
+        }
+        this.group.add(checkPointsGroup)
     }
 }
 

@@ -9,7 +9,10 @@ class RaceState extends MyGameState {
         this.name = "race"
         this._loadVehicles()
         this._createPovCameras()
-        this.createCheckPoints()
+        this.setCheckPointsInfo()
+
+        this.vehiclePlayerLap = 0
+        this.vehicleOpponentLap = 0
     }
 
     _createScene() {
@@ -111,7 +114,7 @@ class RaceState extends MyGameState {
         }
     }
 
-    createCheckPoints() {
+    setCheckPointsInfo() {
         this.checkPoints = this.circuit.track.checkPoints
         this.widthTrack = this.circuit.track.width
         this.activeCheckPoint = 0
@@ -119,7 +122,6 @@ class RaceState extends MyGameState {
             this.checkPoints[this.activeCheckPoint].direction,
             0,
             this.widthTrack)
-
     }
 
     updateCheckPoint() {
@@ -130,8 +132,12 @@ class RaceState extends MyGameState {
                 this.checkPoints[this.activeCheckPoint].direction,
                 0,
                 this.widthTrack)
-            
+
             console.log(this.activeCheckPoint)
+            if (this.activeCheckPoint === 0) {
+                console.log("Player - Lap completed")
+                this.vehiclePlayerLap++
+            }
         }
     }
 

@@ -266,6 +266,8 @@ class MyCircuitData {
             { name: "segments", type: "integer", required: false, default: 500 },
             { name: "width", type: "float", required: false, default: 3.0 },
             { name: "texture", type: "string" },
+            { name: "checkpoints", type: "integer", required: false, default: 30 },
+            {name: "checkpointModel", type: "string", required: false},
         ]
 
         this.descriptors["vehicle"] = [

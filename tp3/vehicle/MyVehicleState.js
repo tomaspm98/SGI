@@ -76,8 +76,9 @@ class MyVehicleState {
         this.coast()
         this.resetWheel()
 
+
         if (this.vehicle.offTrack) {
-            this.vehicle.actualSpeed = this.vehicle.actualSpeed * 0.5
+            this.vehicle.actualSpeed = this.vehicle.actualSpeed * 0.95
         }
 
         this.vehicle.actualRotationVehicle = this.vehicle.actualRotationVehicle % (2 * Math.PI)
