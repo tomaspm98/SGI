@@ -177,8 +177,8 @@ class MyAutonomousVehicle {
 
         console.log(this.kf_arrays)
         console.log(qf)
-        const positionKF = new THREE.VectorKeyframeTrack('.position', times, kf, THREE.InterpolateSmooth);
-        const quaternionKF = new THREE.QuaternionKeyframeTrack('.quaternion', times, qf, THREE.InterpolateSmooth);
+        const positionKF = new THREE.VectorKeyframeTrack('.position', times, kf, THREE.InterpolateCatmullRom);
+        const quaternionKF = new THREE.QuaternionKeyframeTrack('.quaternion', times, qf, THREE.InterpolateCatmullRom);
         console.log(quaternionKF)
         this.mixer = new THREE.AnimationMixer(this.mesh);
         this.clip = new THREE.AnimationClip('positionAnimation', times[times.length-1], [positionKF]);
