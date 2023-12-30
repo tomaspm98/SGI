@@ -43,7 +43,8 @@ class RaceState extends MyGameState {
         const pov1 = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000)
         const pov2 = pov1.clone()
         const pov3 = pov1.clone()
-        
+        const pov4 = pov1.clone()
+
         pov1.followObject = this.vehiclePlayer.mesh
         pov1.followObjectDistance = 5
         pov1.followObjectHeight = 2
@@ -56,11 +57,16 @@ class RaceState extends MyGameState {
         pov3.followObjectDistance = 2
         pov3.followObjectHeight = 20
 
+        pov4.followObject = this.vehiclePlayer.mesh
+        pov4.followObjectDistance = -7
+        pov4.followObjectHeight = 2
+
         this.cameras['pov1'] = pov1
         this.cameras['pov2'] = pov2
         this.cameras['pov3'] = pov3
+        this.cameras['pov4'] = pov4
 
-        this.orderCameras = ['pov2', 'pov3', 'general', 'pov1']
+        this.orderCameras = ['pov2', 'pov3', 'pov4', 'general', 'pov1']
         this.changeActiveCamera('pov1')
     }
 
