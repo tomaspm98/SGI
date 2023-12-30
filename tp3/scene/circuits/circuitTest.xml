@@ -54,6 +54,14 @@
                   shininess="20"
                   textureref="metal2Tex"
                   shading="flat"/>
+
+        <material id="screenApp"
+            emissive="0.0 0.0 0.0 1.0"
+            color="1.0 1.0 1.0 1.0"
+            specular="1.0 1.0 1.0 1.0"
+            shininess="0"
+            twosided="true"
+        />
     </materials>
 
     <track filepath="scene/f1-circuits/ae-2009.geojson"
@@ -80,6 +88,7 @@
                 <noderef id="parking_lot1" />
                 <noderef id="parking_lot2" />
                 <noderef id="parking_lot3" />
+                <noderef id="screen" />
             </children>
         </node>
 
@@ -235,7 +244,24 @@
                 <noderef id="parking_lot3_garage" />
                 <noderef id="fences" />
             </children>  
-        </node>    
+        </node>
+
+        <node id ="screen">
+            <transforms>
+                <translate value3="-15 0 0" />
+                <scale value3="1 1 1" />
+                <rotate value3="0 0 0" />
+            </transforms>    
+
+            <materialref id="screenApp" />
+
+            <children>
+                <primitive>
+                  <rectangle xy1="0 0" xy2="10 5" />
+                </primitive>
+            </children>
+        </node>
+
         <node id="nothing">
             <children>
             </children>
