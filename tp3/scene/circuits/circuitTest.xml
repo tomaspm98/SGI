@@ -253,8 +253,6 @@
                 <rotate value3="0 0 0" />
             </transforms>    
 
-            <materialref id="screenApp" />
-
             <children>
                 <primitive>
                   <rectangle xy1="0 0" xy2="10 5" />

@@ -50,15 +50,49 @@ class MyContents {
             timeFactor: { type: 'f', value: 0.0 },
         });
 
+        const textureScreen = new THREE.TextureLoader().load('scene/ferrari.jpg' )
+        textureScreen.wrapS = THREE.RepeatWrapping;
+        textureScreen.wrapT = THREE.RepeatWrapping;
+        
+        const textureScreenBW = new THREE.TextureLoader().load('scene/ferrari_bump.jpg' )
+
+        this.shaderDisplay = new MyShader(this.app, 'Displacement Shader', 'Shader with Displacement Map',
+        'circuit/shaders/bump.vert', 'circuit/shaders/bump.frag', {
+            uTexture: { type: 'sampler2D', value: textureScreen },
+            lgrayTexture: { type: 'sampler2D', value: textureScreenBW },
+            normScale: { type: 'f', value: 0.1 },
+            normalizationFactor: { type: 'f', value: 1 },
+                blendScale: { type: 'f', value: 0.5 },
+                timeFactor: { type: 'f', value: 0.0 },
+                resolution: { type: 'vec2', value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+        })
+
         this.shaderPulsate.onMaterialReady = (material) => {
             console.log(material);
             for (let i = 0; i < this.circuit.activatables.length; i++) {
                 if (this.circuit.activatables[i].effect == "reducedSpeed") {
                     this.circuit.activatables[i].mesh.material = material;
-                    console.log(this.circuit.activatables[i].mesh.material);
                 }
             }
         };
+
+        this.shaderDisplay.onMaterialReady = (material) => {
+            console.log(material)
+            for (let i=0;i<this.circuit.scene.children.length;i++){
+            if (this.circuit.scene.children[i].name == "scenario"){
+                for (let j=0;j<this.circuit.scene.children[i].children.length;j++){
+                    if (this.circuit.scene.children[i].children[j].name == "screen"){
+                        console.log(this.circuit.scene.children[i].children[j])
+                        this.circuit.scene.children[i].children[j].children[0].material = material;
+                        this.circuit.scene.children[i].children[j].material = material;
+
+                }
+        }
+    }
+}
+        }
+
+        console.log(this.shaderDisplay)
 
         this.rTree.insertMany(this.circuit.activatables)
 
