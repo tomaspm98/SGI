@@ -1,4 +1,5 @@
 import { MyCircuitRenderer } from "./parser/MyCircuitRenderer.js";
+import {RBush} from '../collisions/RBush.js';
 
 class MyCircuit {
     static create(filePath) {
@@ -12,6 +13,11 @@ class MyCircuit {
         this.track = track;
         this.cameras = cameras;
         this.slots = slots
+    }
+
+    createRTree(){
+        this.rTree = new RBush();
+
     }
 }
 

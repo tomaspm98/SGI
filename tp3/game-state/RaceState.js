@@ -1,4 +1,5 @@
 import { MyGameState } from "./MyGameState.js"
+import { collisionDetection, checkVehicleOnTrack } from "../collisions/collisions.js"
 import * as THREE from 'three'
 
 class RaceState extends MyGameState {
@@ -105,6 +106,8 @@ class RaceState extends MyGameState {
     update() {
         if (this.vehiclePlayer.update()) {
             this.updateCheckPoint()
+            checkVehicleOnTrack(this.vehiclePlayer, this.circuit.track)
+            collisionDetection(this.vehiclePlayer, this.circuit.rTree)
         }
     }
 
@@ -121,14 +124,14 @@ class RaceState extends MyGameState {
 
     updateCheckPoint() {
         if (this.activeRayCheckPoint.intersectObject(this.vehiclePlayer.mesh).length > 0) {
-            console.log("CheckPoint: " + this.activeCheckPoint)
             this.activeCheckPoint = (this.activeCheckPoint + 1) % this.checkPoints.length
-            console.log(this.widthTrack)
+
             this.activeRayCheckPoint = new THREE.Raycaster(this.checkPoints[this.activeCheckPoint].pk1,
                 this.checkPoints[this.activeCheckPoint].direction,
                 0,
                 this.widthTrack)
-            console.log("New checkpoint: " + this.activeCheckPoint)
+            
+            console.log(this.activeCheckPoint)
         }
     }
 
