@@ -8,6 +8,7 @@ class RaceState extends MyGameState {
         this.name = "race"
         this._loadVehicles()
         this._createPovCameras()
+        this.createCheckPoints()
     }
 
     _createScene() {
@@ -67,9 +68,9 @@ class RaceState extends MyGameState {
         this.cameras['pov4'] = pov4
 
         this.orderCameras = ['pov2', 'pov3', 'pov4', 'general', 'pov1']
-        //this.changeActiveCamera('pov1')
+        this.changeActiveCamera('pov1')
 
-        this.changeActiveCamera('general')
+        //this.changeActiveCamera('general')
     }
 
     _createDocumentListeners() {
@@ -100,9 +101,46 @@ class RaceState extends MyGameState {
     }
 
     update() {
-        this.vehiclePlayer.update()
+        if (this.vehiclePlayer.update()) {
+            this.updateCheckPoint()
+        }
     }
 
+    createCheckPoints() {
+        this.checkPoints = this.circuit.track.checkPoints
+        this.widthTrack = this.circuit.track.width
+        this.activeCheckPoint = 0
+        this.activeRayCheckPoint = new THREE.Raycaster(this.checkPoints[this.activeCheckPoint].pk1,
+            this.checkPoints[this.activeCheckPoint].direction,
+            0,
+            this.widthTrack)
+
+        const cylinderGeometry = new THREE.CylinderGeometry(0.1, 0.1, 1, 32);
+        const cylinderMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+        for (const checkPoint of this.checkPoints) {
+            const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+            cylinder.position.set(checkPoint.pk1.x, checkPoint.pk1.y, checkPoint.pk1.z)
+
+            const cylinder2 = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+            cylinder2.position.set(checkPoint.pk2.x, checkPoint.pk2.y, checkPoint.pk2.z)
+
+            this.scene.add(cylinder)
+            this.scene.add(cylinder2)
+        }
+    }
+
+    updateCheckPoint() {
+        if (this.activeRayCheckPoint.intersectObject(this.vehiclePlayer.mesh).length > 0) {
+            console.log("CheckPoint: " + this.activeCheckPoint)
+            this.activeCheckPoint = (this.activeCheckPoint + 1) % this.checkPoints.length
+            console.log(this.widthTrack)
+            this.activeRayCheckPoint = new THREE.Raycaster(this.checkPoints[this.activeCheckPoint].pk1,
+                this.checkPoints[this.activeCheckPoint].direction,
+                0,
+                this.widthTrack * 2)
+            console.log("New checkpoint: " + this.activeCheckPoint)
+        }
+    }
 }
 
 export { RaceState }

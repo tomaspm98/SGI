@@ -156,7 +156,8 @@ class MyVehicle extends THREE.Object3D {
         // If the vehicle is not doing anything, there is no need to update
         // And return false to indicate that the vehicle is not moving
         // Therefore, is not necessary run the collision detection function
-        if (!this.accelerating && !this.reversing && !this.turningLeft && !this.turningRight && !this.coasting && this.actualSpeed === 0 && this.actualRotationVehicle === 0 && this.actualRotationWheel === 0) {
+
+        if (!this.accelerating && !this.reversing && !this.turningLeft && !this.turningRight && !this.coasting && this.actualSpeed === 0 && this.actualRotationWheel === 0) {
             return false
         }
         this.currentState.update()

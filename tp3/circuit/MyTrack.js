@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { MyTriangle } from '../utils/MyTriangle.js';
 
 class MyTrack {
-    constructor(points, size, numSegments, width, texture, numCheckPoints = 40) {
+    constructor(points, size, numSegments, width, texture, numCheckPoints = 30) {
         this.pointsGeoJSON = this._normalizePoints(points, size);
         this.width = width
         this.numSegments = numSegments
@@ -122,9 +122,13 @@ class MyTrack {
 
     _getCheckPoints(curve, numCheckPoints) {
         const checkPoints = []
-        const [pkPoints1, pkPoints2, cPoints] = this._getPointsCurve(curve, this.numSegments)
+        const [pkPoints1, pkPoints2, cPoints] = this._getPointsCurve(curve, numCheckPoints)
         for (let i = 0; i < numCheckPoints; i++) {
-            checkPoints.push({ center: cPoints[i], pk1: pkPoints1[i], pk2: pkPoints2[i] })
+            const pkPoints1Vector = new THREE.Vector3(pkPoints1[i].x, pkPoints1[i].y, pkPoints1[i].z)
+            const pkPoints2Vector = new THREE.Vector3(pkPoints2[i].x, pkPoints2[i].y, pkPoints2[i].z)
+            const cPointsVector = new THREE.Vector3(cPoints[i].x, cPoints[i].y, cPoints[i].z)
+            const direction = new THREE.Vector3().subVectors(pkPoints2Vector, pkPoints1Vector).normalize()
+            checkPoints.push({ center: cPointsVector, pk1: pkPoints1Vector, pk2: pkPoints2Vector, direction: direction })
         }
         return checkPoints
 
