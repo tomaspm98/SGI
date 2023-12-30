@@ -1,19 +1,18 @@
-import { MyVehicleRenderer } from './parser/MyVehicleRenderer.js'
-import { NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState } from './ImpVehicleStates.js'
-import { MyOBB } from '../collisions/MyOBB.js'
-import * as THREE from 'three'
+import {MyVehicleRenderer} from './parser/MyVehicleRenderer.js'
+import {MyOBB} from '../collisions/MyOBB.js'
 
-class MyVehicle extends THREE.Object3D {
-    static create(file) {
+class MyVehicle {
+    static createVehicle(file) {
         const vehicleRenderer = new MyVehicleRenderer()
         const [mesh, specs, importantNodes] = vehicleRenderer.render(file)
-        return new MyVehicle(mesh, importantNodes, specs.topSpeed, specs.minSpeed, specs.acceleration, specs.deceleration, specs.turnRate, specs.brakingRate, specs.name)
+        return new MyVehicle(mesh, specs.name, importantNodes, specs.topSpeed, specs.minSpeed, specs.acceleration, specs.deceleration, specs.turnRate, specs.brakingRate)
     }
 
-    constructor(mesh, importantNodes, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate, name) {
+    constructor(mesh, name, importantNodes, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate) {
         // Variables that describe the vehicle
         super()
         this.mesh = mesh
+        this.name = name
         this.mesh.name = name
         this.topSpeed = topSpeed
         this.minSpeed = minSpeed
@@ -26,144 +25,12 @@ class MyVehicle extends THREE.Object3D {
         this.importantNodes.wheelFR.rotation.order = 'YXZ';
         this.name = name
 
-        // Variables that describe the state of the vehicle
-        this.actualPosition = { x: 0, y: 0, z: 0 }
+        this.actualPosition = {x: 0, y: 0, z: 0}
         this.actualRotationVehicle = 0
-        this.actualRotationWheel = 0
-        this.actualSpeed = 0
-
-        // Variables that describe the actions of the vehicle
-        this.coasting = false
-        this.accelerating = false
-        this.braking = false
-        this.turningLeft = false
-        this.turningRight = false
-        this.reversing = false
-        this.offTrack = false
 
         this._translateToPivotPoint()
 
-        this._createStates()
-
         this.obb = new MyOBB(this.mesh)
-        this.obb.createHelper()
-
-        this.bb = new THREE.Box3().setFromObject(this.mesh)
-    }
-
-
-    controlCar(event) {
-        switch (event.keyCode) {
-            case 87: // W
-                switch (event.type) {
-                    case 'keydown':
-                        // If the car is reversing, it can't accelerate
-                        if (this.accelerating) {
-                            break
-                        } else if (!this.reversing && this.actualSpeed >= 0) {
-                            this.accelerating = true
-                            this.coasting = false
-                        }
-                        break
-                    case 'keyup':
-                        if (this.accelerating) {
-                            this.accelerating = false
-                            this.coasting = true
-                        }
-                        break
-                }
-                break
-            case 83: // S
-                switch (event.type) {
-                    case 'keydown':
-                        // To avoid putting the lights on when they are already on
-                        if (this.braking) {
-                            break
-                        }
-                        for (const light of this.importantNodes.brakelights) {
-                            light.visible = true
-                        }
-                        this.braking = true
-                        this.coasting = false
-                        break
-                    case 'keyup':
-                        for (const light of this.importantNodes.brakelights) {
-                            light.visible = false
-                        }
-                        if (this.actualSpeed !== 0 && !this.reversing && !this.accelerating)
-                            this.coasting = true
-                        this.braking = false
-                        break
-                }
-                break
-            case 65: // A
-                switch (event.type) {
-                    case 'keydown':
-                        this.turningRight = true
-                        break
-                    case 'keyup':
-                        this.turningRight = false
-                        break
-                }
-                break
-            case 68: // D
-                switch (event.type) {
-                    case 'keydown':
-                        this.turningLeft = true
-                        break
-                    case 'keyup':
-                        this.turningLeft = false
-                        break
-                }
-                break
-            case 82: // R
-                switch (event.type) {
-                    case 'keydown':
-                        if (this.reversing) {
-                            break
-                        } else if (this.actualSpeed <= 0 && !this.accelerating) {
-                            for (const light of this.importantNodes.reverselights) {
-                                light.visible = true
-                            }
-                            this.reversing = true
-                            this.coasting = false
-                        }
-                        break
-                    case 'keyup':
-                        if (this.reversing) {
-                            for (const light of this.importantNodes.reverselights) {
-                                light.visible = false
-                                this.reversing = false
-                                this.coasting = true
-                            }
-                        }
-                        break
-                }
-                break
-            case 76: // L
-                switch (event.type) {
-                    case 'keydown':
-                        for (const light of this.importantNodes.headlights) {
-                            light.visible = !light.visible
-                        }
-                        break
-                }
-                break
-        }
-    }
-
-    update() {
-        // If the vehicle is not doing anything, there is no need to update
-        // And return false to indicate that the vehicle is not moving
-        // Therefore, is not necessary run the collision detection function
-
-        if (!this.accelerating && !this.reversing && !this.turningLeft && !this.turningRight && !this.coasting && this.actualSpeed === 0 && this.actualRotationWheel === 0) {
-            return false
-        }
-        this.currentState.update()
-        this.obb.update(this.mesh.matrixWorld)
-        this.bb.setFromObject(this.mesh)
-        return true
     }
 
     _translateToPivotPoint() {
@@ -184,18 +51,21 @@ class MyVehicle extends THREE.Object3D {
         }
     }
 
-    _createStates() {
-        this.states = {
-            "normal": new NormalState(this),
-            "reducedSpeed": new ReducedSpeedState(this),
-            "increasedSpeed": new IncreasedSpeedState(this),
-            "invertedControls": new InvertedControlsState(this)
-        }
-        this.currentState = this.states["normal"]
+    setPosition(pos) {
+        this.mesh.position.x = pos.x
+        this.mesh.position.z = pos.z
+
+        this.actualPosition.x = pos.x
+        this.actualPosition.z = pos.z
     }
 
-    changeState(state) {
-        this.currentState = this.states[state]
+    setRotation(rot) {
+        this.mesh.rotation.y = rot
+        this.actualRotationVehicle = rot
+    }
+
+    setSpeed(speed) {
+        this.actualSpeed = speed
     }
 
     setPosition(pos) {
@@ -216,4 +86,4 @@ class MyVehicle extends THREE.Object3D {
     }
 }
 
-export { MyVehicle };
+export {MyVehicle};
