@@ -1,5 +1,6 @@
 import {NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState} from './ImpVehicleStates.js'
 import {MyVehicle} from './MyVehicle.js'
+import * as THREE from 'three'
 
 
 class MyControllableVehicle extends MyVehicle {
@@ -21,10 +22,11 @@ class MyControllableVehicle extends MyVehicle {
         this.offTrack = false
 
         this._createStates()
-        
+
+        // To be used in the R-Tree
         this.bb = new THREE.Box3().setFromObject(this.mesh)
     }
-    
+
     static fromVehicle(vehicle) {
         return new MyControllableVehicle(vehicle.mesh, vehicle.name, vehicle.importantNodes, vehicle.topSpeed, vehicle.minSpeed, vehicle.accelerationRate, vehicle.coastingRate, vehicle.turnRate, vehicle.brakingRate)
     }
@@ -139,6 +141,7 @@ class MyControllableVehicle extends MyVehicle {
         }
         this.currentState.update()
         this.obb.update(this.mesh.matrixWorld)
+        this.bb.setFromObject(this.mesh)
         return true
     }
 

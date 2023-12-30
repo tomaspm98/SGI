@@ -62,27 +62,6 @@ class MyVehicle {
         this.mesh.rotation.y = rot
         this.actualRotationVehicle = rot
     }
-
-    setSpeed(speed) {
-        this.actualSpeed = speed
-    }
-
-    setPosition(pos) {
-        this.mesh.position.x = pos.x
-        this.mesh.position.z = pos.z
-
-        this.actualPosition.x = pos.x
-        this.actualPosition.z = pos.z
-    }
-
-    setRotation(rot) {
-        this.mesh.rotation.y = rot
-        this.actualRotationVehicle = rot
-    }
-
-    setSpeed(speed){
-        this.actualSpeed = speed
-    }
 }
 
 export {MyVehicle};
