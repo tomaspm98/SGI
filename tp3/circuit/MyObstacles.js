@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { MyActivatable } from "./MyActivatable.js";
+import { MyShader } from './MyShader.js';
 
 class MyObstacle1 extends MyActivatable {
     constructor(position, rotation, scale, duration) {
@@ -30,10 +31,24 @@ class MyObstacle2 extends MyActivatable {
             specular: 0x7A7F80,
             color: 0x7A7F80, 
             side: THREE.DoubleSide
-        });       
-        const cube = new THREE.Mesh(geometry, material);
+        });      
+        //this._constructShader() 
+        console.log(this.shaderPulsate)
+        const cube = new THREE.Mesh(geometry, this.shaderPulsate);
+        //cube.material= this.shaderPulsate.material
         return cube
     }
+
+    /*_constructShader(){
+        this.shaderPulsate = new MyShader(this.app, 'Pulsating', "Load a texture and pulsate it", "circuit/shaders/pulsate.vert", "circuit/shaders/pulsate.frag", {
+            normScale: { type: 'f', value: 0.1 },
+            displacement: { type: 'f', value: 0.0 },
+            normalizationFactor: { type: 'f', value: 1 },
+            blendScale: { type: 'f', value: 0.5 },
+            timeFactor: { type: 'f', value: 0.0 },
+        });
+
+    }*/
 }
 
 export { MyObstacle1, MyObstacle2 };

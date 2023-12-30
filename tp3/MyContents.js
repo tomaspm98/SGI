@@ -5,7 +5,7 @@ import { MyVehicle } from "./vehicle/MyVehicle.js";
 import { collisionDetection, checkVehicleOnTrack } from "./collisions/collisions.js";
 import { MyRTree } from "./collisions/MyRTree.js";
 import { MyText3D } from "./MyText3D.js";
-
+import { MyShader } from "./circuit/MyShader.js";
 
 /**
  *  This class contains the contents of out application
@@ -39,6 +39,22 @@ class MyContents {
         this.app.scene.add(this.vehicle.obb.helper)
 
         this.rTree = new MyRTree()
+        console.log(this.circuit.activatables)
+
+        this.shaderPulsate = new MyShader(this.app, 'Pulsating', "Load a texture and pulsate it", "circuit/shaders/pulsate.vert", "circuit/shaders/pulsate.frag", {
+            normScale: { type: 'f', value: 0.1 },
+            displacement: { type: 'f', value: 0.0 },
+            normalizationFactor: { type: 'f', value: 1 },
+            blendScale: { type: 'f', value: 0.5 },
+            timeFactor: { type: 'f', value: 0.0 },
+        });
+
+        for (let i=0;i<this.circuit.activatables.length;i++){
+            if (this.circuit.activatables[i].effect == "reducedSpeed"){
+                this.circuit.activatables[i].mesh.material = this.shaderPulsate
+                console.log(this.circuit.activatables[i].mesh.material)
+            }
+        }
         this.rTree.insertMany(this.circuit.activatables)
 
         if (this.axis === null) {
