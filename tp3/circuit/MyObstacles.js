@@ -8,10 +8,10 @@ class MyObstacle1 extends MyActivatable {
     }
 
     _constructMesh() {
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        const cube = new THREE.Mesh(geometry, material);
-        return cube
+        const geometry = new THREE.TorusGeometry(1.2, 0.4, 16, 100);
+        const material = new THREE.MeshBasicMaterial({ color: 0x101116 });
+        const mesh = new THREE.Mesh(geometry, material);
+        return mesh
     }
 }
 
@@ -22,8 +22,15 @@ class MyObstacle2 extends MyActivatable {
     }
 
     _constructMesh() {
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshBasicMaterial({ color: 0x005500 });
+        const geometry = new THREE.CylinderGeometry(1, 1, 4, 32);
+        const textureMetal = new THREE.TextureLoader().load('../scene/textures/metalTex2.jpg');
+        const material = new THREE.MeshPhongMaterial({
+            map: textureMetal,
+            shininess: 20,
+            specular: 0x7A7F80,
+            color: 0x7A7F80, 
+            side: THREE.DoubleSide
+        });       
         const cube = new THREE.Mesh(geometry, material);
         return cube
     }
