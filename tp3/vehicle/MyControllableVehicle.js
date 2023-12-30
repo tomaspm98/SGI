@@ -21,6 +21,8 @@ class MyControllableVehicle extends MyVehicle {
         this.offTrack = false
 
         this._createStates()
+        
+        this.bb = new THREE.Box3().setFromObject(this.mesh)
     }
     
     static fromVehicle(vehicle) {

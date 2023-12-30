@@ -1,5 +1,8 @@
 import { MyGameState } from "./MyGameState.js"
 import { collisionDetection, checkVehicleOnTrack } from "../collisions/collisions.js"
+import { MyAutonomousVehicle } from "../vehicle/MyAutonomousVehicle.js";
+import { MyControllableVehicle} from "../vehicle/MyControllableVehicle.js";
+
 import * as THREE from 'three'
 
 class RaceState extends MyGameState {
@@ -33,8 +36,8 @@ class RaceState extends MyGameState {
             throw new Error("Not enough slots")
         }
 
-        this.vehiclePlayer = this.stateInfo.vehicles[this.stateInfo.playerVehicle]
-        this.opponentVehicle = this.stateInfo.vehicles[this.stateInfo.opponentVehicle]
+        this.vehiclePlayer = MyControllableVehicle.fromVehicle(this.stateInfo.vehicles[this.stateInfo.playerVehicle])
+        this.opponentVehicle = MyAutonomousVehicle.fromVehicle(this.stateInfo.vehicles[this.stateInfo.opponentVehicle], this.circuit.track.pointsGeoJSON, this.circuit.track._getPath(), this.stateInfo.difficulty)
 
         this.vehiclePlayer.setRotation(slots[0].rotation)
         this.vehiclePlayer.setPosition({ x: slots[0].position[0], y: slots[0].position[1], z: slots[0].position[2] })
@@ -118,6 +121,7 @@ class RaceState extends MyGameState {
             checkVehicleOnTrack(this.vehiclePlayer, this.circuit.track)
             collisionDetection(this.vehiclePlayer, this.circuit.rTree)
         }
+        this.opponentVehicle.update()
     }
 
     setCheckPointsInfo() {

@@ -2,7 +2,7 @@ import {MyVehicleRenderer} from './parser/MyVehicleRenderer.js'
 import {MyOBB} from '../collisions/MyOBB.js'
 
 class MyVehicle {
-    static createVehicle(file) {
+    static create(file) {
         const vehicleRenderer = new MyVehicleRenderer()
         const [mesh, specs, importantNodes] = vehicleRenderer.render(file)
         return new MyVehicle(mesh, specs.name, importantNodes, specs.topSpeed, specs.minSpeed, specs.acceleration, specs.deceleration, specs.turnRate, specs.brakingRate)
@@ -10,7 +10,6 @@ class MyVehicle {
 
     constructor(mesh, name, importantNodes, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate) {
         // Variables that describe the vehicle
-        super()
         this.mesh = mesh
         this.name = name
         this.mesh.name = name

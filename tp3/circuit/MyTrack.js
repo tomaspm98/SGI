@@ -5,7 +5,6 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 class MyTrack {
     constructor(points, size, numSegments, width, texture, numCheckPoints, checkPointModel) {
         this.pointsGeoJSON = this._normalizePoints(points, size);
-        console.log("points", this.pointsGeoJSON)
         this.width = width
         this.numSegments = numSegments
         this.numCheckPoints = numCheckPoints
@@ -25,31 +24,17 @@ class MyTrack {
 
     _draw() {
         this.path = this._getCatmullRomCurve()
-
-        this.line = this._drawLine(path)
-        this.mesh = this._drawTrack(path)
-        this.checkPoints = this._getCheckPoints(path, this.numCheckPoints)
+        this.line = this._drawLine()
+        this.mesh = this._drawTrack(this.path)
+        this.checkPoints = this._getCheckPoints(this.numCheckPoints)
 
         this.group = new THREE.Group()
         this.group.add(this.line)
         this.group.add(this.mesh)
-
-        this.pointsGeoJSON.forEach((element) => {
-            const cube = this.createCube(); // Create a cube using the createCube function
-            cube.position.set(element[0], element[1], element[2]); // Set the cube's position based on the current element
-            this.group.add(cube); // Add the cube to the group
-        });
     }
 
     _getPath(){
         return this.path;
-    }
-
-    createCube(){
-        const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-        const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-        const cube = new THREE.Mesh( geometry, material );
-        return cube;
     }
 
     _normalizePoints(points, size = 1) {
@@ -73,18 +58,17 @@ class MyTrack {
         return path
     }
 
-    _drawLine(path) {
-        const points = path.getPoints(this.numSegments)
+    _drawLine() {
+        const points = this.path.getPoints(this.numSegments)
         const bGeometry = new THREE.BufferGeometry().setFromPoints(points)
-        const line = new THREE.Line(bGeometry)
-        return line
+        return new THREE.Line(bGeometry)
     }
 
-    _drawTrack(curve) {
+    _drawTrack() {
         const track = new THREE.Group()
 
         let nextI, orderedPoints, triangleTop, triangleBottom, triangleTopMesh, triangleBottomMesh
-        const [pkPoints1, pkPoints2, _] = this._getPointsCurve(curve, this.numSegments)
+        const [pkPoints1, pkPoints2, _] = this._getPointsCurve(this.numSegments)
 
         for (let i = 0; i < pkPoints1.length; i++) {
             nextI = (i + 1) % pkPoints1.length
@@ -115,16 +99,16 @@ class MyTrack {
         return track
     }
 
-    _getPointsCurve(curve, numPoints) {
+    _getPointsCurve(numPoints) {
         // The pk points are defined using the algorithm described in the class
         const pkPoints1 = []
         const pkPoints2 = []
         const cPoints = []
         const upVector = new THREE.Vector3(0, 1, 0)
         for (let t = 0; t <= 1; t += 1 / numPoints) {
-            const cPoint = curve.getPoint(t)
+            const cPoint = this.path.getPoint(t)
             const nkVector = new THREE.Vector3()
-            nkVector.crossVectors(upVector, curve.getTangent(t))
+            nkVector.crossVectors(upVector, this.path.getTangent(t))
             nkVector.multiplyScalar(this.width / 2)
             const pkPoint1 = { x: cPoint.x + nkVector.x, y: cPoint.y + nkVector.y, z: cPoint.z + nkVector.z }
             const pkPoint2 = { x: cPoint.x - nkVector.x, y: cPoint.y - nkVector.y, z: cPoint.z - nkVector.z }
@@ -148,9 +132,9 @@ class MyTrack {
             });
     }
 
-    _getCheckPoints(curve, numCheckPoints) {
+    _getCheckPoints(numCheckPoints) {
         const checkPoints = []
-        const [pkPoints1, pkPoints2, cPoints] = this._getPointsCurve(curve, numCheckPoints)
+        const [pkPoints1, pkPoints2, cPoints] = this._getPointsCurve(numCheckPoints)
         for (let i = 0; i < numCheckPoints; i++) {
             const pkPoints1Vector = new THREE.Vector3(pkPoints1[i].x, pkPoints1[i].y, pkPoints1[i].z)
             const pkPoints2Vector = new THREE.Vector3(pkPoints2[i].x, pkPoints2[i].y, pkPoints2[i].z)
