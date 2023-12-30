@@ -97,7 +97,7 @@ class MyTrack {
             const cPoint = curve.getPoint(t)
             const nkVector = new THREE.Vector3()
             nkVector.crossVectors(upVector, curve.getTangent(t))
-            nkVector.multiplyScalar(this.width)
+            nkVector.multiplyScalar(this.width / 2)
             const pkPoint1 = { x: cPoint.x + nkVector.x, y: cPoint.y + nkVector.y, z: cPoint.z + nkVector.z }
             const pkPoint2 = { x: cPoint.x - nkVector.x, y: cPoint.y - nkVector.y, z: cPoint.z - nkVector.z }
             pkPoints1.push(pkPoint1)
