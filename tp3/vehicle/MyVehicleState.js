@@ -99,10 +99,11 @@ class MyVehicleState {
         // Updating the wheels rotation on the x axis
         // TODO: make the front wheels spin
         // TODO: implement this in shaders
-        this.vehicle.importantNodes.wheelBL.rotation.x += this.vehicle.actualSpeed
-        this.vehicle.importantNodes.wheelBR.rotation.x += this.vehicle.actualSpeed
-        this.vehicle.importantNodes.wheelFL.rotation.x += this.vehicle.actualSpeed
-        this.vehicle.importantNodes.wheelFR.rotation.x += this.vehicle.actualSpeed
+        const rotationSpeed = (this.vehicle.importantNodes.wheelBL.rotation.x + this.vehicle.actualSpeed) % (2 * Math.PI)
+        this.vehicle.importantNodes.wheelBL.rotation.x = rotationSpeed
+        this.vehicle.importantNodes.wheelBR.rotation.x = rotationSpeed
+        this.vehicle.importantNodes.wheelFL.rotation.x = rotationSpeed
+        this.vehicle.importantNodes.wheelFR.rotation.x = rotationSpeed
 
     }
 }

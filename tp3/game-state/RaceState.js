@@ -87,6 +87,8 @@ class RaceState extends MyGameState {
     keyHandler(event) {
         if (event.code === 'KeyV' && event.type === 'keydown') {
             this._changeCamera()
+        } if (event.code === 'KeyT' && event.type === 'keydown') {
+            this._tpToLastCheckpoint()
         } else if (event.code === 'KeyV' && event.type === 'keyup') {
 
         } else {
@@ -115,18 +117,6 @@ class RaceState extends MyGameState {
             0,
             this.widthTrack)
 
-        const cylinderGeometry = new THREE.CylinderGeometry(0.1, 0.1, 1, 32);
-        const cylinderMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-        for (const checkPoint of this.checkPoints) {
-            const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
-            cylinder.position.set(checkPoint.pk1.x, checkPoint.pk1.y, checkPoint.pk1.z)
-
-            const cylinder2 = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
-            cylinder2.position.set(checkPoint.pk2.x, checkPoint.pk2.y, checkPoint.pk2.z)
-
-            this.scene.add(cylinder)
-            this.scene.add(cylinder2)
-        }
     }
 
     updateCheckPoint() {
@@ -137,9 +127,17 @@ class RaceState extends MyGameState {
             this.activeRayCheckPoint = new THREE.Raycaster(this.checkPoints[this.activeCheckPoint].pk1,
                 this.checkPoints[this.activeCheckPoint].direction,
                 0,
-                this.widthTrack * 2)
+                this.widthTrack)
             console.log("New checkpoint: " + this.activeCheckPoint)
         }
+    }
+
+    _tpToLastCheckpoint() {
+        const lastI = this.activeCheckPoint === 0 ? this.checkPoints.length - 1 : this.activeCheckPoint - 1
+        const pos = this.checkPoints[lastI].center
+
+        this.vehiclePlayer.setPosition(pos)
+        this.vehiclePlayer.setSpeed(0)
     }
 }
 

@@ -1,6 +1,6 @@
-import {MyVehicleRenderer} from './parser/MyVehicleRenderer.js'
-import {NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState} from './ImpVehicleStates.js'
-import {MyOBB} from '../collisions/MyOBB.js'
+import { MyVehicleRenderer } from './parser/MyVehicleRenderer.js'
+import { NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState } from './ImpVehicleStates.js'
+import { MyOBB } from '../collisions/MyOBB.js'
 import * as THREE from 'three'
 
 class MyVehicle extends THREE.Object3D {
@@ -27,7 +27,7 @@ class MyVehicle extends THREE.Object3D {
         this.name = name
 
         // Variables that describe the state of the vehicle
-        this.actualPosition = {x: 0, y: 0, z: 0}
+        this.actualPosition = { x: 0, y: 0, z: 0 }
         this.actualRotationVehicle = 0
         this.actualRotationWheel = 0
         this.actualSpeed = 0
@@ -199,14 +199,21 @@ class MyVehicle extends THREE.Object3D {
     }
 
     setPosition(pos) {
-        this.mesh.position.set(pos.x, pos.y, pos.z)
-        this.actualPosition = pos
+        this.mesh.position.x = pos.x
+        this.mesh.position.z = pos.z
+
+        this.actualPosition.x = pos.x
+        this.actualPosition.z = pos.z
     }
 
     setRotation(rot) {
         this.mesh.rotation.y = rot
         this.actualRotationVehicle = rot
     }
+
+    setSpeed(speed){
+        this.actualSpeed = speed
+    }
 }
 
-export {MyVehicle};
+export { MyVehicle };
