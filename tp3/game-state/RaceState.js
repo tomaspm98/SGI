@@ -67,7 +67,9 @@ class RaceState extends MyGameState {
         this.cameras['pov4'] = pov4
 
         this.orderCameras = ['pov2', 'pov3', 'pov4', 'general', 'pov1']
-        this.changeActiveCamera('pov1')
+        //this.changeActiveCamera('pov1')
+
+        this.changeActiveCamera('general')
     }
 
     _createDocumentListeners() {
