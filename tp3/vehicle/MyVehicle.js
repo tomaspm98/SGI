@@ -67,7 +67,6 @@ class MyVehicle {
         this.importantNodes.reverseLights = []
 
         const reactiveLights = this.mesh.getObjectsByProperty('reactiveLight', true)
-        console.log(reactiveLights)
         for (const reactiveLight of reactiveLights) {
             if (reactiveLight.name.startsWith('headlight')) {
                 this.importantNodes.headlights.push(reactiveLight)
