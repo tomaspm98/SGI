@@ -75,6 +75,7 @@ class MyGameStateManager {
     }
 
     updateActiveCamera() {
+        this.app.lasActiveCameraName = this.app.activeCameraName
         this.app.activeCameraName = this.actualState.activeCameraName
         this.app.activeCamera = this.app.cameras[this.app.activeCameraName]
     }
