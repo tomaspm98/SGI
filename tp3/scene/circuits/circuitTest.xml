@@ -112,6 +112,8 @@
                 <noderef id="light" />
                 <noderef id="ground" />
                 <noderef id="podium" />
+                <noderef id="personWinner" />
+                <noderef id="personLoser" />
             </children>
         </node>
 
@@ -159,6 +161,34 @@
             <children>
                 <primitive>
                     <model3d filepath="scene/circuits/winner_podium/scene.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="personWinner">
+            <transforms>
+                <translate value3="9.6 1.6 70" />
+                <rotate value3="0 3.14159 0" />
+                <scale value3="0.015 0.015 0.015" />
+            </transforms>
+
+            <children>
+                <primitive>
+                    <model3d filepath="scene/circuits/solo_guy_1/solo_guy_1.gltf" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="personLoser">
+            <transforms>
+                <translate value3="11 1.09 70" />
+                <rotate value3="0 3.14159 0" />
+                <scale value3="0.015 0.015 0.015" />
+            </transforms>
+
+            <children>
+                <primitive>
+                    <model3d filepath="scene/circuits/solo_guy_2/solo_guy_3.gltf" />
                 </primitive>
             </children>
         </node>
