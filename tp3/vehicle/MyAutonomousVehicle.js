@@ -60,7 +60,7 @@ class MyAutonomousVehicle extends MyVehicle {
         this.previousKeyPointIndex = this.currentKeyPointIndex;
         this.currentKeyPointIndex = this.getCurrentKeyPointIndex();
 
-        if (Utils.distance(this.kf_arrays[this.currentKeyPointIndex], this.kf_arrays[this.currentKeyPointIndex + 1]) > 5) {
+        if (Utils.distance(this.kf_arrays[this.currentKeyPointIndex], this.kf_arrays[this.currentKeyPointIndex + 1]) > 7) {
             this.importantNodes.wheelFL.rotation.y = 0
             this.importantNodes.wheelFR.rotation.y = 0
         } else if (this.angleVariations[this.currentKeyPointIndex] > 0) {
