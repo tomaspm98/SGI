@@ -61,6 +61,8 @@ class MyApp {
         // manage window resizes
         window.addEventListener('resize', this.onResize.bind(this), false);
 
+        this.clock = new THREE.Clock()
+
     }
 
     updateCameraToFollowTarget(targetObject) {
@@ -197,7 +199,7 @@ class MyApp {
     /**
     * the main render function. Called in a requestAnimationFrame loop
     */
-    render() {
+    render() {    
         this.stats.begin()
         this.updateCameraIfRequired()
 
@@ -226,8 +228,28 @@ class MyApp {
         // subsequent async calls to the render loop
         requestAnimationFrame(this.render.bind(this));
 
+        if (this.clock.getElapsedTime()>=60){
+            console.log("NICE")
+            this.clock.stop()
+            this.clock.start()
+            const rgbDataURL = this.renderer.domElement.toDataURL();
+            const rgbImage = new Image();
+            rgbImage.src = rgbDataURL;
+            this.displayCapturedImage(rgbImage);
+        }
+
         this.lastCameraName = this.activeCameraName
         this.stats.end()
+    }
+
+    displayCapturedImage(image) {
+        // Create an HTML img element
+        const imgElement = document.createElement('img');
+        imgElement.src = image.src;
+    
+        // Append the img element to a container in the document
+        //const container = document.getElementById('imageContainer'); // Replace with the actual container ID
+        //container.appendChild(imgElement);
     }
 }
 

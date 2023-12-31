@@ -25,8 +25,8 @@ class MyContents {
      */
     init() {
         // create once
-        this.circuit = MyCircuit.create("scene/circuits/circuit1.xml")
-        //this.circuit = MyCircuit.create("scene/circuits/circuitTest.xml")
+        //this.circuit = MyCircuit.create("scene/circuits/circuit1.xml")
+        this.circuit = MyCircuit.create("scene/circuits/circuitTest.xml")
 
         console.log(this.circuit)
         this.app.scene = this.circuit.scene
