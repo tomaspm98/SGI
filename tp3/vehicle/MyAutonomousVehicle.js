@@ -60,7 +60,7 @@ class MyAutonomousVehicle extends MyVehicle {
         this.previousKeyPointIndex = this.currentKeyPointIndex;
         this.currentKeyPointIndex = this.getCurrentKeyPointIndex();
 
-        if (Utils.distance(this.kf_arrays[this.currentKeyPointIndex], this.kf_arrays[this.currentKeyPointIndex + 1]) > 5) {
+        if (Utils.distance(this.kf_arrays[this.currentKeyPointIndex], this.kf_arrays[this.currentKeyPointIndex + 1]) > 7) {
             this.importantNodes.wheelFL.rotation.y = 0
             this.importantNodes.wheelFR.rotation.y = 0
         } else if (this.angleVariations[this.currentKeyPointIndex] > 0) {
@@ -94,7 +94,7 @@ class MyAutonomousVehicle extends MyVehicle {
 
         for (let i = 0; i < this.keyPoints.length; i++) {
             kf.push(...this.keyPoints[i])
-            if (i === this.keyPoints.length - 1) {
+            /*if (i === this.keyPoints.length - 1) {
                 if (Utils.distance(this.keyPoints[i], this.keyPoints[0]) > 30) {
                     let mediumPoint = [(this.keyPoints[i][0] + this.keyPoints[0][0]) / 2, (this.keyPoints[i][1] + this.keyPoints[0][1]) / 2, (this.keyPoints[i][2] + this.keyPoints[0][2]) / 2]
                     kf.push(...mediumPoint)
@@ -104,7 +104,7 @@ class MyAutonomousVehicle extends MyVehicle {
                 let mediumPoint = [(this.keyPoints[i][0] + this.keyPoints[i + 1][0]) / 2, (this.keyPoints[i][1] + this.keyPoints[i + 1][1]) / 2, (this.keyPoints[i][2] + this.keyPoints[i + 1][2]) / 2]
                 kf.push(...mediumPoint)
                 save_added_points.push(i + 1)
-            }
+            }*/
         }
 
         for (let i = 0; i < kf.length; i++) {
@@ -113,7 +113,11 @@ class MyAutonomousVehicle extends MyVehicle {
             }
         }
 
+        console.log(this.kf_arrays)
+        console.log(kf)
+
         for (let i = 0; i < kf.length / 3; i++) {
+
             times.push(i * this.timeScale)
         }
 
@@ -136,12 +140,12 @@ class MyAutonomousVehicle extends MyVehicle {
             }
         }
 
-        for (let j = 0; j < save_added_points.length; j++) {
+        /*for (let j = 0; j < save_added_points.length; j++) {
             const index = save_added_points[j];
             let elementToAdd = qf.slice((index - 1) * 4, (index) * 4)
             qf.splice((index * 4) + 4, 0, ...elementToAdd);
             this.angleVariations.splice(index, 0, 0);
-        }
+        }*/
 
         //console.log(this.angleVariations)
 
@@ -164,9 +168,21 @@ class MyAutonomousVehicle extends MyVehicle {
             }
         }
 
-        let new_times = []
+        let new_times = [];
         for (let i = 0; i < this.kf_arrays.length; i++) {
-            new_times.push(i * this.timeScale)
+            if (i === this.kf_arrays.length - 1) {
+                if (Utils.distance(this.kf_arrays[i], this.kf_arrays[0]) > 30) {
+                    new_times.push(new_times[i-1]+(2*this.timeScale)); // Double the time
+                } else {
+                    new_times.push(new_times[i-1]+this.timeScale);
+                }
+            } else if (i === 0) {
+                new_times.push(0);
+            } else if (Utils.distance(this.kf_arrays[i], this.kf_arrays[i + 1]) > 30) {
+                new_times.push(new_times[i-1]+(2*this.timeScale)); // Double the time
+            } else {
+                new_times.push(new_times[i-1]+this.timeScale);
+            }
         }
 
         let new_kf=[]
@@ -174,7 +190,9 @@ class MyAutonomousVehicle extends MyVehicle {
             new_kf.push(...this.kf_arrays[i])
         }
 
-        //console.log(this.kf_arrays)
+        console.log(new_kf)
+        console.log(new_times)
+        console.log(qf)
 
         const positionKF = new THREE.VectorKeyframeTrack('.position', new_times, new_kf, THREE.InterpolateCatmullRom);
         const quaternionKF = new THREE.QuaternionKeyframeTrack('.quaternion', new_times, qf, THREE.InterpolateCatmullRom);
