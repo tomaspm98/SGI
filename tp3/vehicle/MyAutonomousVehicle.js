@@ -4,9 +4,9 @@ import * as Utils from '../utils.js'
 
 class MyAutonomousVehicle extends MyVehicle {
 
-    constructor(mesh, name, keyPoints, pathCurve, importantNodes, difficulty) {
+    constructor(mesh, name, keyPoints, pathCurve, difficulty) {
         // Variables that describe the vehicle
-        super(mesh, name, importantNodes)
+        super(mesh, name)
         this.keyPoints = keyPoints
         this.pathCurve = pathCurve
 
@@ -26,7 +26,8 @@ class MyAutonomousVehicle extends MyVehicle {
         newMesh.position.x = 0
         newMesh.position.z = 0
         newMesh.rotation.set(0, 0, 0)
-        return new MyAutonomousVehicle(newMesh, vehicle.name, keyPoints, pathCurve, vehicle.importantNodes, difficulty)
+        
+        return new MyAutonomousVehicle(newMesh, vehicle.name, keyPoints, pathCurve, difficulty)
     }
 
     adaptDifficulty(difficulty) {
@@ -72,7 +73,7 @@ class MyAutonomousVehicle extends MyVehicle {
         }
 
         if (this.currentKeyPointIndex !== this.previousKeyPointIndex) {
-            console.log(`Vehicle passed key point ${this.currentKeyPointIndex}`);
+            //console.log(`Vehicle passed key point ${this.currentKeyPointIndex}`);
         }
 
         this.importantNodes.wheelBL.rotation.x += this.actualSpeed
@@ -101,26 +102,26 @@ class MyAutonomousVehicle extends MyVehicle {
                     save_added_points.push(i + 1)
                 }
             } else if (Utils.distance(this.keyPoints[i], this.keyPoints[i + 1]) > 30) {
-                console.log("dist", Utils.distance(this.keyPoints[1], this.keyPoints[2]))
+                //console.log("dist", Utils.distance(this.keyPoints[1], this.keyPoints[2]))
                 let mediumPoint = [(this.keyPoints[i][0] + this.keyPoints[i + 1][0]) / 2, (this.keyPoints[i][1] + this.keyPoints[i + 1][1]) / 2, (this.keyPoints[i][2] + this.keyPoints[i + 1][2]) / 2]
                 kf.push(...mediumPoint)
                 save_added_points.push(i + 1)
             }
         }
 
-        console.log(kf)
+        //console.log(kf)
 
-        console.log(kf)
+        //console.log(kf)
 
         for (let i = 0; i < kf.length; i++) {
             if (i % 3 === 0) {
                 this.kf_arrays.push(kf.slice(i, i + 3))
             }
         }
-        console.log(this.kf_arrays)
+        //console.log(this.kf_arrays)
 
         for (let i = 0; i < this.kf_arrays.length; i++) {
-            console.log(i,this.kf_arrays.length)
+            //console.log(i,this.kf_arrays.length)
             if (i>=this.kf_arrays.length-1){
                 break;
             }
@@ -131,13 +132,13 @@ class MyAutonomousVehicle extends MyVehicle {
                     i--;
                 }
             } else if (Utils.distance(this.kf_arrays[i], this.kf_arrays[i + 1]) < 5) {
-                console.log("NICE")
+                //console.log("NICE")
                 this.kf_arrays.splice(i+1, 1);
                 i--;
                 //save_added_points.splice(i + 1)
             }
         }
-        console.log(this.kf_arrays)
+        //console.log(this.kf_arrays)
 
         const kf_new = []
 
@@ -145,13 +146,13 @@ class MyAutonomousVehicle extends MyVehicle {
             kf_new.push(...this.kf_arrays[j])
         }
 
-        console.log(kf_new)
+        //console.log(kf_new)
 
         for (let i = 0; i < kf_new.length / 3; i++) {
             times.push(i * this.timeScale)
         }
 
-        console.log(times)
+        //console.log(times)
         for (let i = 0; i <= 1; i += 1 / 132) {
             const cTangent = this.pathCurve.getTangent(i)
             tangents.push(cTangent)
@@ -165,37 +166,37 @@ class MyAutonomousVehicle extends MyVehicle {
             } else {
                 this.angleVariation += Utils.calculateAngleVariation(tangents[i - 1], tangents[i]);
                 this.angleVariations.push(Utils.calculateAngleVariation(tangents[i - 1], tangents[i]))
-                console.log(i, this.angleVariation, Utils.calculateAngleVariation(tangents[i - 1], tangents[i]))
+                //console.log(i, this.angleVariation, Utils.calculateAngleVariation(tangents[i - 1], tangents[i]))
                 let axis = new THREE.Vector3(0, 1, 0); // You may need to adjust the axis based on your specific scenario
                 let quaternion = new THREE.Quaternion().setFromAxisAngle(axis, this.angleVariation);
-                //console.log(quaternion)
+                ////console.log(quaternion)
                 qf.push(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
             }
         }
 
         for (let j = 0; j < save_added_points.length; j++) {
             const index = save_added_points[j];
-            console.log(index)
+            //console.log(index)
             let elementToAdd = qf.slice((index - 1) * 4, (index) * 4)
-            console.log(elementToAdd)
+            //console.log(elementToAdd)
             qf.splice((index * 4) + 4, 0, ...elementToAdd);
             this.angleVariations.splice(index, 0, 0);
         }
 
-        console.log(this.angleVariations)
+        //console.log(this.angleVariations)
 
 
-        console.log(this.kf_arrays)
-        console.log(qf)
+        //console.log(this.kf_arrays)
+        //console.log(qf)
         const positionKF = new THREE.VectorKeyframeTrack('.position', times, kf_new, THREE.InterpolateCatmullRom);
         const quaternionKF = new THREE.QuaternionKeyframeTrack('.quaternion', times, qf, THREE.InterpolateCatmullRom);
-        console.log(quaternionKF)
+        //console.log(quaternionKF)
         this.mixer = new THREE.AnimationMixer(this.mesh);
         this.clip = new THREE.AnimationClip('positionAnimation', times[times.length - 1], [positionKF]);
         this.rotationClip = new THREE.AnimationClip('rotationAnimation', times[times.length - 1], [quaternionKF]);
         const action = this.mixer.clipAction(this.clip);
         const rotationAction = this.mixer.clipAction(this.rotationClip);
-        console.log(action)
+        //console.log(action)
         action.play();
         //rotationAction.play();
     }

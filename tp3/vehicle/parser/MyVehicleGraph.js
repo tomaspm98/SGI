@@ -19,15 +19,6 @@ class MyVehicleGraph {
         this.root_id = root_id;
         this.materials = materials;
         this.materialsDecl = materialsDecl;
-        this.importantNodes = {
-            "wheelFL": null,
-            "wheelFR": null,
-            "wheelBL": null,
-            "wheelBR": null,
-            "headlights": [],
-            "brakelights": [],
-            "reverselights": [],
-        };
         this.getWireframeValues();
     }
 
@@ -126,7 +117,7 @@ class MyVehicleGraph {
                 if (node.subtype === 'model3d') {
                     //  Special case for the 3d model
                     // To avoid using await and asyncs, the model is added to the scene when loaded
-                    Utils.loadModel(node, parent, this.importantNodes);
+                    Utils.loadModel(node, parent);
                 } else {
                     // Handle other primitives here
                     parent.add(new THREE.Mesh(Utils.createThreeGeometry(node)))
@@ -135,15 +126,10 @@ class MyVehicleGraph {
                 const light = Utils.createThreeLight(node)
                 light.name = node.id
                 parent.add(light)
-                if (node.id.startsWith("headlight")) {
-                    this.importantNodes.headlights.push(light)
+                
+                if(node.id.startsWith("headlight") || node.id.startsWith("brakelight") || node.id.startsWith("reverselight")) {
                     light.visible = false
-                } else if (node.id.startsWith("brakelight")) {
-                    this.importantNodes.brakelights.push(light)
-                    light.visible = false
-                } else if (node.id.startsWith("reverselight")) {
-                    this.importantNodes.reverselights.push(light)
-                    light.visible = false
+                    light.reactiveLight = true
                 }
             } else if (visited.hasOwnProperty(node.id + node.type)) {
                 const objCloned = visited[node.id + node.type].clone();
@@ -172,10 +158,6 @@ class MyVehicleGraph {
 
                 //The key is the id + type to avoid collisions when the id is the same but the type is different
                 visited[node.id + node.type] = newSceneNode;
-
-                if (node.id === "wheelFL" || node.id === "wheelFR" || node.id === "wheelBL" || node.id === "wheelBR") {
-                    this.importantNodes[node.id] = newSceneNode
-                }
             }
         }
         return meshGraph.children.length === 1 ? meshGraph.children[0] : meshGraph;

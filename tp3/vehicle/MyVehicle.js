@@ -4,11 +4,11 @@ import {MyOBB} from '../collisions/MyOBB.js'
 class MyVehicle {
     static create(file) {
         const vehicleRenderer = new MyVehicleRenderer()
-        const [mesh, specs, importantNodes] = vehicleRenderer.render(file)
-        return new MyVehicle(mesh, specs.name, importantNodes, specs.topSpeed, specs.minSpeed, specs.acceleration, specs.deceleration, specs.turnRate, specs.brakingRate)
+        const [mesh, specs] = vehicleRenderer.render(file)
+        return new MyVehicle(mesh, specs.name, specs.topSpeed, specs.minSpeed, specs.acceleration, specs.deceleration, specs.turnRate, specs.brakingRate)
     }
 
-    constructor(mesh, name, importantNodes, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate) {
+    constructor(mesh, name, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate) {
         // Variables that describe the vehicle
         this.mesh = mesh
         this.name = name
@@ -19,16 +19,16 @@ class MyVehicle {
         this.coastingRate = coastingRate
         this.turnRate = turnRate
         this.brakingRate = brakingRate
-        this.importantNodes = importantNodes
-        this.importantNodes.wheelFL.rotation.order = 'YXZ';
-        this.importantNodes.wheelFR.rotation.order = 'YXZ';
         this.name = name
 
+        this._createImportantNodes()
+        
         this.actualPosition = {x: 0, y: 0, z: 0}
-        this.actualRotationVehicle = 0
 
+        this.actualRotationVehicle = 0
         this._translateToPivotPoint()
         this.obb = new MyOBB(this.mesh)
+
         this.obb.createHelper()
     }
 
@@ -50,13 +50,42 @@ class MyVehicle {
         }
     }
 
+    _createImportantNodes() {
+        this.importantNodes = {}
+        this.importantNodes.wheelFL = this.mesh.getObjectByName('wheelFL')
+        this.importantNodes.wheelFL.rotation.order = 'YXZ';
+
+        this.importantNodes.wheelFR = this.mesh.getObjectByName('wheelFR')
+        this.importantNodes.wheelFR.rotation.order = 'YXZ';
+
+        this.importantNodes.wheelBL = this.mesh.getObjectByName('wheelBL')
+
+        this.importantNodes.wheelBR = this.mesh.getObjectByName('wheelBR')
+
+        this.importantNodes.headlights = []
+        this.importantNodes.brakeLights = []
+        this.importantNodes.reverseLights = []
+
+        const reactiveLights = this.mesh.getObjectsByProperty('reactiveLight', true)
+        console.log(reactiveLights)
+        for (const reactiveLight of reactiveLights) {
+            if (reactiveLight.name.startsWith('headlight')) {
+                this.importantNodes.headlights.push(reactiveLight)
+            } else if (reactiveLight.name.startsWith('brakeLight')) {
+                this.importantNodes.brakeLights.push(reactiveLight)
+            } else if (reactiveLight.name.startsWith('reverseLight')) {
+                this.importantNodes.reverseLights.push(reactiveLight)
+            }
+        }
+    }
+
     setPosition(pos) {
         this.mesh.position.setX(pos.x)
         this.mesh.position.setZ(pos.z)
-        
+
         this.actualPosition.x = pos.x
         this.actualPosition.z = pos.z
-        
+
         this.obb.update(this.mesh.matrixWorld)
     }
 
@@ -65,7 +94,7 @@ class MyVehicle {
         this.actualRotationVehicle = rot
         this.obb.update(this.mesh.matrixWorld)
     }
-    
+
 }
 
 export {MyVehicle};

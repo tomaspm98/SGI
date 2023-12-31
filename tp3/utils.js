@@ -23,9 +23,7 @@ function calculateAngleVariation(tangent1, tangent2) {
 
     // Calculate the dot product of the tangent vectors
     const dotProduct = tangent1.dot(tangent2);
-
-    console.log(tangent1,tangent2,dotProduct)
-
+    
     // Calculate the angle in radians
     const angleRadians = Math.acos(dotProduct);
 

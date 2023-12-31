@@ -5,9 +5,9 @@ import * as THREE from 'three'
 
 class MyControllableVehicle extends MyVehicle {
 
-    constructor(mesh, name, importantNodes, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate) {
+    constructor(mesh, name, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate) {
         // Variables that describe the vehicle
-        super(mesh, name, importantNodes, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate)
+        super(mesh, name, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate)
 
         this.actualRotationWheel = 0
         this.actualSpeed = 0
@@ -32,7 +32,8 @@ class MyControllableVehicle extends MyVehicle {
         newMesh.position.x = 0
         newMesh.position.z = 0
         newMesh.rotation.set(0, 0, 0)
-        return new MyControllableVehicle(newMesh, vehicle.name, vehicle.importantNodes, vehicle.topSpeed, vehicle.minSpeed, vehicle.accelerationRate, vehicle.coastingRate, vehicle.turnRate, vehicle.brakingRate)
+        
+        return new MyControllableVehicle(newMesh, vehicle.name, vehicle.topSpeed, vehicle.minSpeed, vehicle.accelerationRate, vehicle.coastingRate, vehicle.turnRate, vehicle.brakingRate)
     }
 
     controlCar(event) {

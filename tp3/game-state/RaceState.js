@@ -8,15 +8,14 @@ import * as THREE from 'three'
 class RaceState extends MyGameState {
     constructor(gameStateManager, stateInfo) {
         super(gameStateManager, stateInfo)
-        console.log(stateInfo)
         this.name = "race"
 
         this._loadVehicles()
         this._createPovCameras()
         this.setCheckPointsInfo()
 
-        this.vehiclePlayerLap = 0
-        this.vehicleOpponentLap = 0
+        this.playerLap = 0
+        this.opponentLap = 0
 
     }
 
@@ -40,7 +39,7 @@ class RaceState extends MyGameState {
         this.opponentVehicle = MyAutonomousVehicle.fromVehicle(this.stateInfo.vehicles[this.stateInfo.opponentVehicle], this.circuit.track.pointsGeoJSON, this.circuit.track._getPath(), this.stateInfo.difficulty)
 
         this.vehiclePlayer.setRotation(slots[0].rotation)
-        //this.vehiclePlayer.setPosition({ x: slots[0].position[0], y: slots[0].position[1], z: slots[0].position[2] })
+        this.vehiclePlayer.setPosition({ x: slots[0].position[0], y: slots[0].position[1], z: slots[0].position[2] })
         
         this.opponentVehicle.setRotation(slots[1].rotation)
         this.opponentVehicle.setPosition({ x: slots[1].position[0], y: slots[1].position[1], z: slots[1].position[2] })
@@ -146,7 +145,7 @@ class RaceState extends MyGameState {
                 0,
                 this.widthTrack)
 
-            console.log(this.activeCheckPoint)
+            console.log(`Checkpoint ${this.activeCheckPoint}`)
             if (this.activeCheckPoint === 0) {
                 console.log("Player - Lap completed")
                 this.vehiclePlayerLap++
