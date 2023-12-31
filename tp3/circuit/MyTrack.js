@@ -31,7 +31,23 @@ class MyTrack {
         this.group = new THREE.Group()
         this.group.add(this.line)
         this.group.add(this.mesh)
+
+
+        this.pointsGeoJSON.forEach((element) => {
+            const cube = this.createCube(); // Create a cube using the createCube function
+            cube.position.set(element[0], element[1], element[2]); // Set the cube's position based on the current element
+            this.group.add(cube); // Add the cube to the group
+        });
+
     }
+
+    createCube(){
+        const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+        const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+        const cube = new THREE.Mesh( geometry, material );
+        return cube;
+    }
+
 
     _getPath(){
         return this.path;
