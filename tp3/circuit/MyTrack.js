@@ -33,11 +33,11 @@ class MyTrack {
         this.group.add(this.mesh)
 
 
-        this.pointsGeoJSON.forEach((element) => {
+        /*this.pointsGeoJSON.forEach((element) => {
             const cube = this.createCube(); // Create a cube using the createCube function
             cube.position.set(element[0], element[1], element[2]); // Set the cube's position based on the current element
             this.group.add(cube); // Add the cube to the group
-        });
+        });*/
 
     }
 

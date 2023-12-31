@@ -190,9 +190,9 @@ class MyAutonomousVehicle extends MyVehicle {
             new_kf.push(...this.kf_arrays[i])
         }
 
-        console.log(new_kf)
-        console.log(new_times)
-        console.log(qf)
+        //console.log(new_kf)
+        //console.log(new_times)
+        //console.log(qf)
 
         const positionKF = new THREE.VectorKeyframeTrack('.position', new_times, new_kf, THREE.InterpolateCatmullRom);
         const quaternionKF = new THREE.QuaternionKeyframeTrack('.quaternion', new_times, qf, THREE.InterpolateCatmullRom);

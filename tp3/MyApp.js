@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import Stats from 'three/addons/libs/stats.module.js'
-import { MyGameStateManager } from './game-state/MyGameStateManager.js';
+import {MyGameStateManager} from './game-state/MyGameStateManager.js';
 
 /**
  * This class contains the application object
@@ -39,7 +39,7 @@ class MyApp {
         document.body.appendChild(this.stats.dom)
 
         // Create a renderer with Antialiasing
-        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        this.renderer = new THREE.WebGLRenderer({antialias: true});
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setClearColor("#000000");
 
@@ -73,6 +73,10 @@ class MyApp {
             // among other things
             this.onResize()
 
+            if (this.activeCamera.locked) {
+                return
+            }
+
             // are the controls yet?
             if (this.controls === null) {
                 // Orbit controls allow the camera to orbit around a target.
@@ -86,7 +90,6 @@ class MyApp {
                 this.controls.update();
             } else {
                 this.controls.object = this.activeCamera
-
             }
         }
     }
@@ -97,7 +100,7 @@ class MyApp {
         }
 
         // Calculate the offset based on the vehicle's rotation
-        const offset = new THREE.Vector3(0, 0, - this.activeCamera.followObjectDistance);
+        const offset = new THREE.Vector3(0, 0, -this.activeCamera.followObjectDistance);
         offset.applyQuaternion(object.quaternion);
         offset.y += this.activeCamera.followObjectHeight;
 
@@ -126,11 +129,10 @@ class MyApp {
      */
     render() {
         this.stats.begin()
-        if (!this.activeCamera.locked) {
-            this.updateCameraIfRequired()
-        }
+        this.updateCameraIfRequired()
 
-        if(this.activeCamera.followObject){
+
+        if (this.activeCamera.followObject) {
             this.updateCameraToFollowObject(this.activeCamera.followObject)
             const objectPosition = new THREE.Vector3()
             this.activeCamera.followObject.getWorldPosition(objectPosition)
@@ -152,10 +154,9 @@ class MyApp {
         // subsequent async calls to the render loop
         requestAnimationFrame(this.render.bind(this));
 
-        this.lastCameraName = this.activeCameraName
         this.stats.end()
     }
 }
 
 
-export { MyApp };
+export {MyApp};
