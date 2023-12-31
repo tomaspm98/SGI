@@ -153,12 +153,12 @@ class MyAutonomousVehicle extends MyVehicle {
             }
 
             if (i === this.kf_arrays.length - 1) {
-                if (Utils.distance(this.kf_arrays[i], this.kf_arrays[0]) < 5) {
+                if (Utils.distance(this.kf_arrays[i], this.kf_arrays[0]) < 3.5) {
                     this.kf_arrays.splice(i+1, 1);
                     qf.splice((i + 1) * 4, 4);
                     i--;
                 }
-            } else if (Utils.distance(this.kf_arrays[i], this.kf_arrays[i + 1]) < 5) {
+            } else if (Utils.distance(this.kf_arrays[i], this.kf_arrays[i + 1]) < 3.5) {
                 this.kf_arrays.splice(i+1, 1);
                 qf.splice((i + 1) * 4, 4);
                 i--;
@@ -174,6 +174,8 @@ class MyAutonomousVehicle extends MyVehicle {
         for (let i = 0; i < this.kf_arrays.length; i++) {
             new_kf.push(...this.kf_arrays[i])
         }
+
+        console.log(this.kf_arrays)
 
         const positionKF = new THREE.VectorKeyframeTrack('.position', new_times, new_kf, THREE.InterpolateCatmullRom);
         const quaternionKF = new THREE.QuaternionKeyframeTrack('.quaternion', new_times, qf, THREE.InterpolateCatmullRom);
