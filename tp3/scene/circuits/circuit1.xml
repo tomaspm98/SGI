@@ -30,6 +30,7 @@
     <textures>
         <texture id="grassTex" filepath="scene/textures/grassTex.jpg" />
         <texture id="sunTex" filepath=" scenes/textures/sunTex.jpg" />
+        <texture id ="metalTex" filepath ="scene/textures/metalTex2.jpg" />
     </textures>
 
     <materials>
@@ -57,6 +58,14 @@
                     shading="flat"
         />
 
+         <material id="metalApp"
+                  emissive="0.0 0.0 0.0 1"
+                  color="0.478 0.498 0.502 1.0"
+                  specular="0.478 0.498 0.502 1.0"
+                  shininess="20"
+                  textureref="metal2Tex"
+                  shading="flat"/>
+
 
     </materials>
 
@@ -72,7 +81,9 @@
         <powerup
             id="id1" subtype="1" position="0 0 -20" scale="1 1 1" rotation="0 0 0" duration="5000" />
         <obstacle
-            id="id1" subtype="1" position="0 0 20" scale="1 1 1" rotation="0 0 0" duration="5000" />
+            id="id1" subtype="1" position="0.5 0.4 20" scale="1 1 1" rotation="1.5708 0 0" duration="5000" />
+        <obstacle
+            id="id2" subtype="2" position="0 1.5 10" scale="1 1 1" rotation="0 0 0" duration="5000" />
     </activatables>
 
     <graph rootid="scenario">
@@ -80,9 +91,9 @@
             <children>
                 <noderef id="light" />
                 <noderef id="ground" />
-                <noderef id="parking_lot1" />
-                <noderef id="parking_lot2" />
-                <noderef id="parking_lot3" />
+                <!--noderef id="parking_lot1" /-->
+                <!--noderef id="parking_lot2" /-->
+                <!--noderef id="parking_lot3" /-->
                 <!--lodref id="parkingLot1Lod"/-->
                 <!--lodref id="parkingLot2Lod"/-->
                 <!--lodref id="parkingLot3Lod"/-->
@@ -97,9 +108,9 @@
                 <noderef id="footbridge1" />
                 <noderef id="footbridge2" />
                 <noderef id="podium"/>
-                <lodref id="peopleGroupLod"/>
-                <lodref id="peopleGroupLod2"/>
-                <lodref id="peopleGroupLod3"/>
+                <!--lodref id="peopleGroupLod"/-->
+                <!--lodref id="peopleGroupLod2"/-->
+                <!--lodref id="peopleGroupLod3"/-->
                 <lodref id="peopleGroupLod4"/>
                 <lodref id="peopleGroupLod5"/>
                 <noderef id="postLight1"/>
@@ -112,6 +123,7 @@
                 <noderef id="postLight8"/>
                 <noderef id="postLight9"/>
                 <noderef id="sun"/>
+                <noderef id="screenFull" />
             </children>
         </node>
 
@@ -959,6 +971,72 @@
                     <sphere radius="5" slices="32" stacks="32"/>
                 </primitive>
             </children> 
+        </node>
+
+        <node id ="screen">
+            <transforms>
+                <translate value3="-15 5 0" />
+                <scale value3="1 1 1" />
+                <rotate value3="0 1.5708 0" />
+            </transforms>    
+
+            <children>
+                <primitive>
+                  <rectangle xy1="0 0" xy2="10 5" parts_x="50" parts_y="50" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="screenSupportBase">
+            <transforms>
+                <scale value3="1 10 1" />
+            </transforms>    
+
+            <materialref id="metalApp" />
+
+            <children>
+                <primitive>
+                  <box xyz1="0 0 0" xyz2="0.5 0.5 0.5" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="screenSupport1">
+            <transforms>
+                <translate value3="-15.25 0 -0.5" />
+                <scale value3="1 1 1" />
+                <rotate value3="0 0 0" />
+            </transforms>    
+
+            <children>
+                <noderef id="screenSupportBase" />
+            </children>
+        </node>
+
+        <node id="screenSupport2">
+            <transforms>
+                <translate value3="-15.25 0 -10" />
+                <scale value3="1 1 1" />
+                <rotate value3="0 0 0" />
+            </transforms>    
+
+            <children>
+                <noderef id="screenSupportBase" />
+            </children>
+        </node>
+
+        <node id="screenFull">
+            <transforms>
+                <translate value3="10 0 50" />
+                <scale value3="1 1 1" />
+                <rotate value3="0 0.129 0" />
+            </transforms>
+
+            <children>
+                <noderef id="screen" />
+                <noderef id="screenSupport1" />
+                <noderef id="screenSupport2" />
+            </children>
         </node>
 
     </graph>
