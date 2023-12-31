@@ -4,6 +4,7 @@ import { ConfigRaceState } from "./ConfigRaceState.js";
 import { ChoosePlayerCar } from "./ChoosePlayerCar.js";
 import { ChooseOpponentCar } from "./ChooseOpponentCar.js";
 import { RaceState } from "./RaceState.js";
+import { ResultState } from "./ResultState.js";
 
 class MyGameStateManager {
     constructor(app) {
@@ -63,6 +64,8 @@ class MyGameStateManager {
                 return new ChooseOpponentCar(this, stateInfo);
             case "raceState":
                 return new RaceState(this, stateInfo);
+            case "result":
+                return new ResultState(this, stateInfo);
             default:
                 throw new Error("Invalid state name");
         }
