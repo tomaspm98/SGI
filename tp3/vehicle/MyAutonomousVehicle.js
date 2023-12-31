@@ -22,12 +22,11 @@ class MyAutonomousVehicle extends MyVehicle {
     }
     
     static fromVehicle(vehicle, keyPoints, pathCurve, difficulty) {
-        const newMesh = vehicle.mesh.clone()
-        newMesh.position.x = 0
-        newMesh.position.z = 0
-        newMesh.rotation.set(0, 0, 0)
+        vehicle.mesh.position.x = 0
+        vehicle.mesh.position.z = 0
+        vehicle.mesh.rotation.set(0, 0, 0)
         
-        return new MyAutonomousVehicle(newMesh, vehicle.name, keyPoints, pathCurve, difficulty)
+        return new MyAutonomousVehicle(vehicle.mesh, vehicle.name, keyPoints, pathCurve, difficulty)
     }
 
     adaptDifficulty(difficulty) {

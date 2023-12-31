@@ -36,6 +36,8 @@ class RaceState extends MyGameState {
         }
 
         this.vehiclePlayer = MyControllableVehicle.fromVehicle(this.stateInfo.vehicles[this.stateInfo.playerVehicle])
+        //this.vehiclePlayer = MyControllableVehicle.create("scene/vehicles/vehicle1/vehicle1.xml")
+        
         this.opponentVehicle = MyAutonomousVehicle.fromVehicle(this.stateInfo.vehicles[this.stateInfo.opponentVehicle], this.circuit.track.pointsGeoJSON, this.circuit.track._getPath(), this.stateInfo.difficulty)
 
         this.vehiclePlayer.setRotation(slots[0].rotation)

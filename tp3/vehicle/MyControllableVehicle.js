@@ -1,6 +1,7 @@
 import {NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState} from './ImpVehicleStates.js'
 import {MyVehicle} from './MyVehicle.js'
 import * as THREE from 'three'
+import {MyVehicleRenderer} from "./parser/MyVehicleRenderer.js";
 
 
 class MyControllableVehicle extends MyVehicle {
@@ -25,27 +26,20 @@ class MyControllableVehicle extends MyVehicle {
 
         // To be used in the R-Tree
         this.bb = new THREE.Box3().setFromObject(this.mesh)
-        
-        console.log(this.mesh.getObjectByName("headlight1"))
     }
 
     static fromVehicle(vehicle) {
-        const newMesh = vehicle.mesh.clone()
-        newMesh.position.x = 0
-        newMesh.position.z = 0
-        newMesh.rotation.set(0, 0, 0)
+        vehicle.mesh.position.x = 0
+        vehicle.mesh.position.z = 0
+        vehicle.mesh.rotation.set(0, 0, 0)
 
-        // This is important because clone mesh doesn't pass the reactiveLight property
-        let lights = []
-        lights = lights.concat(vehicle.importantNodes.headlights)
-        lights = lights.concat(vehicle.importantNodes.brakelights)
-        lights = lights.concat(vehicle.importantNodes.reverselights)
+        return new MyControllableVehicle(vehicle.mesh, vehicle.name, vehicle.topSpeed, vehicle.minSpeed, vehicle.accelerationRate, vehicle.coastingRate, vehicle.turnRate, vehicle.brakingRate)
+    }
 
-        for (const light of lights) {
-            newMesh.getObjectByName(light.name).reactiveLight = true
-        }
-
-        return new MyControllableVehicle(newMesh, vehicle.name, vehicle.topSpeed, vehicle.minSpeed, vehicle.accelerationRate, vehicle.coastingRate, vehicle.turnRate, vehicle.brakingRate)
+    static create(file) {
+        const vehicleRenderer = new MyVehicleRenderer()
+        const [mesh, specs] = vehicleRenderer.render(file)
+        return new MyControllableVehicle(mesh, specs.name, specs.topSpeed, specs.minSpeed, specs.acceleration, specs.deceleration, specs.turnRate, specs.brakingRate)
     }
 
     controlCar(event) {
