@@ -78,10 +78,12 @@ class MyContents {
             console.log(material)
             for (let i=0;i<this.circuit.scene.children.length;i++){
             if (this.circuit.scene.children[i].name == "scenario"){
+                console.log(this.circuit.scene.children[i].children)
                 for (let j=0;j<this.circuit.scene.children[i].children.length;j++){
-                    if (this.circuit.scene.children[i].children[j].name == "screen"){
-                        this.circuit.scene.children[i].children[j].children[0].material = material;
-                        this.circuit.scene.children[i].children[j].children[0].material.needsUpdate = true;
+                    if (this.circuit.scene.children[i].children[j].name == "screenFull"){
+                        console.log(this.circuit.scene.children[i].children[j])
+                        this.circuit.scene.children[i].children[j].children[0].children[0].material = material;
+                        this.circuit.scene.children[i].children[j].children[0].children[0].material.needsUpdate = true;
                 }
         }
     }
