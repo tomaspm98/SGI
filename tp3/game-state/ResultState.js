@@ -4,7 +4,6 @@ class ResultState extends MyGameState{
     constructor(gameStateManager, stateInfo) {
         super(gameStateManager, stateInfo)
         this.name = "result"
-        console.log(stateInfo)
     }
 
     _createScene(){
