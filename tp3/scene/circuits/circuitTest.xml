@@ -255,7 +255,7 @@
 
             <children>
                 <primitive>
-                  <rectangle xy1="0 0" xy2="10 5" />
+                  <rectangle xy1="0 0" xy2="10 5" parts_x="50" parts_y="50" />
                 </primitive>
             </children>
         </node>

@@ -11,7 +11,7 @@ void main() {
     vUv = uv;
 
     float displacementAmount = texture2D(lgrayTexture, vUv).r;
-    vec3 displacedPosition = position + normal * displacementAmount * 0.9; 
+    vec3 displacedPosition = position + normal * displacementAmount * 0.3; 
 
     gl_Position = projectionMatrix * viewMatrix * vec4(displacedPosition, 1.0);
 

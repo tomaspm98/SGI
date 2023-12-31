@@ -61,14 +61,12 @@ class MyContents {
             uTexture: { type: 'sampler2D', value: textureScreen },
             lgrayTexture: { type: 'sampler2D', value: textureScreenBW },
             normScale: { type: 'f', value: 0.1 },
-            normalizationFactor: { type: 'f', value: 1 },
-                blendScale: { type: 'f', value: 0.5 },
-                timeFactor: { type: 'f', value: 0.0 },
-                resolution: { type: 'vec2', value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+            blendScale: { type: 'f', value: 0.5 },
+            timeFactor: { type: 'f', value: 0.0 },
+            resolution: { type: 'vec2', value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
         })
 
         this.shaderPulsate.onMaterialReady = (material) => {
-            console.log(material);
             for (let i = 0; i < this.circuit.activatables.length; i++) {
                 if (this.circuit.activatables[i].effect == "reducedSpeed") {
                     this.circuit.activatables[i].mesh.material = material;
@@ -82,17 +80,13 @@ class MyContents {
             if (this.circuit.scene.children[i].name == "scenario"){
                 for (let j=0;j<this.circuit.scene.children[i].children.length;j++){
                     if (this.circuit.scene.children[i].children[j].name == "screen"){
-                        console.log(this.circuit.scene.children[i].children[j])
                         this.circuit.scene.children[i].children[j].children[0].material = material;
-                        this.circuit.scene.children[i].children[j].material = material;
-
+                        this.circuit.scene.children[i].children[j].children[0].material.needsUpdate = true;
                 }
         }
     }
 }
         }
-
-        console.log(this.shaderDisplay)
 
         this.rTree.insertMany(this.circuit.activatables)
 
@@ -124,10 +118,17 @@ class MyContents {
                 this.shaderPulsate.updateUniformsValue("timeFactor", t  );
             }
         }
+
+        if (this.shaderDisplay) {
+            if (this.shaderDisplay.hasUniform("timeFactor")) {
+                this.shaderDisplay.updateUniformsValue("timeFactor", t  );
+            }
+        }
+    }
     }
 
 
 
-}
+
 
 export { MyContents };
