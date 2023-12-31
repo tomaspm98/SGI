@@ -63,6 +63,13 @@
             far="1000"
             location="40 10 -185"
             target="40 0 -201" />
+
+            <perspective id="podium"
+            angle="75"
+            near="0.1"
+            far="1000"
+            location="10 1 62"
+            target="10 5 81" />
     </cameras>
 
     <textures>

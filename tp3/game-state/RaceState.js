@@ -26,7 +26,7 @@ class RaceState extends MyGameState {
 
     _createCameras() {
         this.cameras = this.circuit.cameras
-        this.activeCameraName = 'general'
+        this.activeCameraName = 'podium'
     }
 
     _loadVehicles() {
@@ -82,7 +82,7 @@ class RaceState extends MyGameState {
         this.orderCameras = ['pov2', 'pov3', 'pov4', 'general', 'pov1']
         this.changeActiveCamera('pov1')
 
-        //this.changeActiveCamera('general')
+        //this.changeActiveCamera('podium')
     }
 
     _createDocumentListeners() {
