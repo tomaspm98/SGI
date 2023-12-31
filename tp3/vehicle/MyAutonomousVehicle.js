@@ -144,10 +144,10 @@ class MyAutonomousVehicle extends MyVehicle {
             this.angleVariations.splice(index, 0, 0);
         }
 
-        console.log(this.angleVariations)
+        //console.log(this.angleVariations)
 
         for (let i = 0; i < this.kf_arrays.length; i++) {
-            console.log(i,this.kf_arrays.length)
+            //console.log(i,this.kf_arrays.length)
             if (i>=this.kf_arrays.length-1){
                 break;
             }
@@ -175,7 +175,7 @@ class MyAutonomousVehicle extends MyVehicle {
             new_kf.push(...this.kf_arrays[i])
         }
 
-        console.log(this.kf_arrays)
+        //console.log(this.kf_arrays)
 
         const positionKF = new THREE.VectorKeyframeTrack('.position', new_times, new_kf, THREE.InterpolateCatmullRom);
         const quaternionKF = new THREE.QuaternionKeyframeTrack('.quaternion', new_times, qf, THREE.InterpolateCatmullRom);

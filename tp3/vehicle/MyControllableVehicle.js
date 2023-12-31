@@ -25,6 +25,8 @@ class MyControllableVehicle extends MyVehicle {
 
         // To be used in the R-Tree
         this.bb = new THREE.Box3().setFromObject(this.mesh)
+        
+        console.log(this.mesh.getObjectByName("headlight1"))
     }
 
     static fromVehicle(vehicle) {
@@ -32,7 +34,17 @@ class MyControllableVehicle extends MyVehicle {
         newMesh.position.x = 0
         newMesh.position.z = 0
         newMesh.rotation.set(0, 0, 0)
-        
+
+        // This is important because clone mesh doesn't pass the reactiveLight property
+        let lights = []
+        lights = lights.concat(vehicle.importantNodes.headlights)
+        lights = lights.concat(vehicle.importantNodes.brakelights)
+        lights = lights.concat(vehicle.importantNodes.reverselights)
+
+        for (const light of lights) {
+            newMesh.getObjectByName(light.name).reactiveLight = true
+        }
+
         return new MyControllableVehicle(newMesh, vehicle.name, vehicle.topSpeed, vehicle.minSpeed, vehicle.accelerationRate, vehicle.coastingRate, vehicle.turnRate, vehicle.brakingRate)
     }
 

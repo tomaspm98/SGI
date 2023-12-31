@@ -63,17 +63,17 @@ class MyVehicle {
         this.importantNodes.wheelBR = this.mesh.getObjectByName('wheelBR')
 
         this.importantNodes.headlights = []
-        this.importantNodes.brakeLights = []
-        this.importantNodes.reverseLights = []
-
+        this.importantNodes.brakelights = []
+        this.importantNodes.reverselights = []
+        
         const reactiveLights = this.mesh.getObjectsByProperty('reactiveLight', true)
         for (const reactiveLight of reactiveLights) {
             if (reactiveLight.name.startsWith('headlight')) {
                 this.importantNodes.headlights.push(reactiveLight)
-            } else if (reactiveLight.name.startsWith('brakeLight')) {
-                this.importantNodes.brakeLights.push(reactiveLight)
-            } else if (reactiveLight.name.startsWith('reverseLight')) {
-                this.importantNodes.reverseLights.push(reactiveLight)
+            } else if (reactiveLight.name.startsWith('brakelight')) {
+                this.importantNodes.brakelights.push(reactiveLight)
+            } else if (reactiveLight.name.startsWith('reverselight')) {
+                this.importantNodes.reverselights.push(reactiveLight)
             }
         }
     }
