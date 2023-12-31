@@ -28,8 +28,6 @@ class MyVehicle {
         this.actualRotationVehicle = 0
         this._translateToPivotPoint()
         this.obb = new MyOBB(this.mesh)
-
-        this.obb.createHelper()
     }
 
     _translateToPivotPoint() {
