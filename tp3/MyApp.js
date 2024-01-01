@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Stats from 'three/addons/libs/stats.module.js'
-import {MyGameStateManager} from './game-state/MyGameStateManager.js';
+import { MyGameStateManager } from './game-state/MyGameStateManager.js';
 
 /**
  * This class contains the application object
@@ -39,7 +39,7 @@ class MyApp {
         document.body.appendChild(this.stats.dom)
 
         // Create a renderer with Antialiasing
-        this.renderer = new THREE.WebGLRenderer({antialias: true});
+        this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setClearColor("#000000");
 
@@ -82,14 +82,13 @@ class MyApp {
                 // Orbit controls allow the camera to orbit around a target.
                 this.controls = new OrbitControls(this.activeCamera, this.renderer.domElement);
                 this.controls.enableZoom = true;
-
-                if (this.activeCamera.positionTarget) {
-                    this.controls.target = new THREE.Vector3(...this.activeCamera.positionTarget)
-                }
-
                 this.controls.update();
             } else {
                 this.controls.object = this.activeCamera
+            }
+
+            if (this.activeCamera.positionTarget) {
+                this.controls.target = new THREE.Vector3(...this.activeCamera.positionTarget)
             }
         }
     }
@@ -159,4 +158,4 @@ class MyApp {
 }
 
 
-export {MyApp};
+export { MyApp };

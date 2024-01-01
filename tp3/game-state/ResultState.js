@@ -13,7 +13,7 @@ class ResultState extends MyGameState{
 
     _createCameras(){
         this.cameras = this.stateInfo.circuit.cameras
-        this.activeCameraName = 'general'
+        this.activeCameraName = 'podium'
     }
 }
 
