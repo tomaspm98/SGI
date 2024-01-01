@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 
-function collisionDetection(activeObject, rTree) {
+async function collisionDetection(activeObject, rTree) {
     // Collision detection broad phase
-    const selectedPassiveObjects = collisionDetectionBroadPhase(activeObject, rTree);
+    const selectedPassiveObjects = await collisionDetectionBroadPhase(activeObject, rTree);
 
     if (selectedPassiveObjects.length === 0) {
         return;
@@ -17,19 +17,21 @@ function collisionDetection(activeObject, rTree) {
 }
 
 // Implement collision detection broad phase
-function collisionDetectionBroadPhase(activeObject, rTree) {
+async function collisionDetectionBroadPhase(activeObject, rTree) {
     const bb = {
         minX: activeObject.bb.min.x,
         minY: activeObject.bb.min.z,
         maxX: activeObject.bb.max.x,
         maxY: activeObject.bb.max.z,
     }
-    const passiveObjects = rTree.search(bb);
+    const passiveObjects = await rTree.search(bb);
     return passiveObjects;
 }
 
 function collisionDetectionNarrowPhase(activeObject, passiveObjects) {
     let collisions = [];
+    console.log(passiveObjects[0].obb);
+    console.log(activeObject.obb);
     for (const passiveObject of passiveObjects) {
         if (passiveObject.obb.collision(activeObject.obb)) {
             collisions.push(passiveObject);

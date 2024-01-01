@@ -13,15 +13,19 @@ class MyActivatable {
         this.obb = null;
 
         // Set up a promise for the mesh loading process
-        this.meshPromise = this._constructMesh().then((loadedMesh) => {
+        this.meshPromise = this._constructMesh().then(async (loadedMesh) => {
             if (loadedMesh) {
                 this.mesh = loadedMesh;
 
+                console.log(this.mesh)
+
+                this.draw();
                 // Create the MyOBB instance after the mesh is fully loaded
                 this.obb = new MyOBB(this.mesh);
+                this.obb.createHelper()
+
 
                 // Call draw after the mesh and MyOBB are fully loaded
-                this.draw();
             } else {
                 console.error("Error: Loaded mesh is null or undefined.");
             }
@@ -51,7 +55,7 @@ class MyActivatable {
 
     draw() {
         // Ensure the mesh and MyOBB are loaded before trying to access their properties
-        if (this.mesh && this.obb) {
+        if (this.mesh) {
             this.mesh.position.set(...this.position);
             this.mesh.rotation.set(...this.rotation);
             this.mesh.scale.set(...this.scale);

@@ -36,7 +36,6 @@ class MyRTree {
     }
 
     async search(bb) {
-        await this.insertMany(objects);
         const results = this.tree.search(bb);
         return results.map(result => this.map[result.id]);
     }
