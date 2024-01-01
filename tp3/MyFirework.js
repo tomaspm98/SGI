@@ -3,8 +3,7 @@ import * as THREE from 'three'
 
 class MyFirework {
 
-    constructor(app, scene) {
-        this.app = app
+    constructor(scene, x,z) {
         this.scene = scene
 
         this.done     = false 
@@ -14,6 +13,8 @@ class MyFirework {
         this.colors   = null
         this.geometry = null
         this.points   = null
+        this.x=x
+        this.z=z
         
         this.material = new THREE.PointsMaterial({
             size: 0.1,
@@ -24,10 +25,10 @@ class MyFirework {
             depthTest: false,
         })
         
-        this.height = 20
+        this.height = 10
         this.speed = 60
 
-        this.launch(-2,2) 
+        this.launch(this.x,this.z,-2,2) 
 
     }
 
@@ -35,18 +36,18 @@ class MyFirework {
      * compute particle launch
      */
 
-    launch(minLim, maxLim) {
+    launch(xIni,zIni,minLim, maxLim) {
         let color = new THREE.Color()
         color.setHSL( THREE.MathUtils.randFloat( 0.1, 0.9 ), THREE.MathUtils.randFloat( 0.1, 0.9 ), THREE.MathUtils.randFloat( 0.1, 0.9 ) )
         let colors = [ color.r, color.g, color.b ]
 
-        let x = THREE.MathUtils.randFloat( -5, 5 ) 
-        let y = THREE.MathUtils.randFloat( this.height * 0.9, this.height * 1.1)
-        let z = THREE.MathUtils.randFloat( -5, 5 ) 
+        let x = THREE.MathUtils.randFloat( 5, 15 ) 
+        let y = THREE.MathUtils.randFloat( this.height * 0.8, this.height * 1.2)
+        let z = THREE.MathUtils.randFloat( 78, 82 ) 
         this.dest.push( x, y, z ) 
-        let verticeX= Math.random() * (maxLim - minLim) + minLim;
+        let verticeX= xIni + (Math.random() * (maxLim - minLim) + minLim);
         let verticeY=0
-        let verticeZ=Math.random() * (maxLim - minLim) + minLim;
+        let verticeZ=zIni + (Math.random() * (maxLim - minLim) + minLim);
         let vertices=[verticeX,verticeY,verticeZ]
         
         this.geometry = new THREE.BufferGeometry()
@@ -56,12 +57,12 @@ class MyFirework {
         this.points = new THREE.Points( this.geometry, this.material )
         this.points.castShadow = true;
         this.points.receiveShadow = true;
-        this.app.scene.add( this.points )  
+        this.scene.add( this.points )  
         console.log("firework launched")
     }
 
     explode(vector) {
-        this.app.scene.remove( this.points )
+        this.scene.remove( this.points )
         this.dest     = []; 
         this.geometry = new THREE.BufferGeometry();
         const numPoints = 80
@@ -76,9 +77,9 @@ class MyFirework {
             this.colors[i*3] = color.r
             this.colors[i*3+1] = color.g
             this.colors[i*3+2] = color.b
-            let x = THREE.MathUtils.randFloat( -5, 5 ) 
+            let x = THREE.MathUtils.randFloat( 5, 15 ) 
             let y = THREE.MathUtils.randFloat( this.height * 0.8, this.height * 1.2)
-            let z = THREE.MathUtils.randFloat( -5, 5 ) 
+            let z = THREE.MathUtils.randFloat( 78, 82 ) 
 
             this.dest.push( x, y, z);
 
@@ -91,14 +92,14 @@ class MyFirework {
         }
         this.geometry.setAttribute( 'color', new THREE.BufferAttribute( new Float32Array(this.colors), 3 ) );
         this.geometry.setAttribute( 'position',  new THREE.BufferAttribute( new Float32Array(this.positions), 3 ) );
-        this.app.scene.add( this.points );
+        this.scene.add( this.points );
 }
     /**
      * cleanup
      */
     reset() {
         console.log("firework reseted")
-        this.app.scene.remove( this.points )  
+        this.scene.remove( this.points )  
         this.dest     = [] 
         this.vertices = null
         this.colors   = null 
