@@ -210,10 +210,12 @@ class MyCircuitRenderer {
     }
 
 
-    renderActivatables(data) {
+    async renderActivatables(data) {
         for (const activatable of data.activatables) {
             const newActivatable = Utils.createActivatable(activatable.type, activatable.subtype, activatable.position, activatable.duration, activatable.rotation, activatable.scale)
             this.activatables.push(newActivatable)
+            console.log(newActivatable)
+            await newActivatable.meshPromise
             this.circuitScene.add(newActivatable.mesh)
         }
     }

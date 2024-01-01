@@ -23,7 +23,7 @@ class MyContents {
     /**
      * initializes the contents
      */
-    init() {
+    async init() {
         // create once
         //this.circuit = MyCircuit.create("scene/circuits/circuit1.xml")
         this.circuit = MyCircuit.create("scene/circuits/circuitTest.xml")
@@ -66,10 +66,14 @@ class MyContents {
             resolution: { type: 'vec2', value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
         })
 
-        this.shaderPulsate.onMaterialReady = (material) => {
+        this.shaderPulsate.onMaterialReady = async (material) => {
+            console.log(this.circuit.activatables)
             for (let i = 0; i < this.circuit.activatables.length; i++) {
+                await this.circuit.activatables[i].meshPromise;
                 if (this.circuit.activatables[i].effect == "reducedSpeed") {
+                    console.log(this.circuit.activatables[i])
                     this.circuit.activatables[i].mesh.material = material;
+                    this.circuit.activatables[i].mesh.material.needsUpdate = true;
                 }
             }
         };
@@ -109,7 +113,7 @@ class MyContents {
      * updates the contents
      * this method is called from the render method of the app
      */
-    update() {
+    async update() {
         if (this.vehicle.update()) {
             collisionDetection(this.vehicle, this.rTree)
             checkVehicleOnTrack(this.vehicle, this.circuit.track)

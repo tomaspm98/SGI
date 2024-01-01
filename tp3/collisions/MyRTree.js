@@ -8,10 +8,13 @@ class MyRTree {
         this.idCounter = 0;
     }
 
-    insert(object) {
+    async insert(object) {
+        console.log(object);
         const id = this.idCounter;
         this.idCounter++;
         this.map[id] = object;
+
+        await object.meshPromise;
 
         const boundingBox = new THREE.Box3().setFromObject(object.mesh);
         this.tree.insert({
@@ -21,15 +24,19 @@ class MyRTree {
             maxY: boundingBox.max.z,
             id: id,
         });
+
+        console.log(this.tree.toJSON());
     }
 
-    insertMany(objects) {
+    async insertMany(objects) {
         for (const object of objects) {
+            await object.meshPromise;
             this.insert(object);
         }
     }
 
-    search(bb) {
+    async search(bb) {
+        await this.insertMany(objects);
         const results = this.tree.search(bb);
         return results.map(result => this.map[result.id]);
     }

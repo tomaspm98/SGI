@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { MyActivatable } from "./MyActivatable.js";
 import { MyShader } from './MyShader.js';
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 class MyObstacle1 extends MyActivatable {
     constructor(position, rotation, scale, duration) {
@@ -8,11 +9,20 @@ class MyObstacle1 extends MyActivatable {
         this.effect = "invertedControls"
     }
 
-    _constructMesh() {
-        const geometry = new THREE.TorusGeometry(1.2, 0.4, 16, 100);
-        const material = new THREE.MeshBasicMaterial({ color: 0x101116 });
-        const mesh = new THREE.Mesh(geometry, material);
-        return mesh
+    async _constructMesh() {
+        return new Promise((resolve, reject) => {
+            const loader = new GLTFLoader();
+            loader.load('./scene/circuits/tire.glb', (gltf) => {
+                console.log(gltf);
+                const loadedMesh = gltf.scene;
+                resolve(loadedMesh); // Resolve the promise with the loaded mesh
+            },
+            undefined,
+            function (error) {
+                console.error(error);
+                reject(error); // Reject the promise if there is an error
+            });
+        });
     }
 }
 
@@ -22,7 +32,7 @@ class MyObstacle2 extends MyActivatable {
         this.effect = "reducedSpeed"
     }
 
-    _constructMesh() {
+    async _constructMesh() {
         const geometry = new THREE.CylinderGeometry(1, 1, 4, 32);
         const textureMetal = new THREE.TextureLoader().load('../scene/textures/metalTex2.jpg');
         const material = new THREE.MeshPhongMaterial({
@@ -38,6 +48,7 @@ class MyObstacle2 extends MyActivatable {
         //cube.material= this.shaderPulsate.material
         return cube
     }
+
 
     /*_constructShader(){
         this.shaderPulsate = new MyShader(this.app, 'Pulsating', "Load a texture and pulsate it", "circuit/shaders/pulsate.vert", "circuit/shaders/pulsate.frag", {
