@@ -1,5 +1,5 @@
 import { MyVehicleRenderer } from './parser/MyVehicleRenderer.js'
-import { NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState } from './ImpVehicleStates.js'
+import { NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState, OutState } from './ImpVehicleStates.js'
 import { MyOBB } from '../collisions/MyOBB.js'
 import * as THREE from 'three'
 import { AxesHelper } from 'three'
@@ -187,7 +187,8 @@ class MyVehicle {
             "normal": new NormalState(this),
             "reducedSpeed": new ReducedSpeedState(this),
             "increasedSpeed": new IncreasedSpeedState(this),
-            "invertedControls": new InvertedControlsState(this)
+            "invertedControls": new InvertedControlsState(this),
+            "speedNoReduce": new OutState(this)
         }
         this.currentState = this.states["normal"]
     }

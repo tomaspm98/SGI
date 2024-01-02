@@ -74,10 +74,12 @@
     <activatables>
         <obstacle
             id="id2" subtype="2" position="0 1.5 10" scale="1 1 1" rotation="0 0 0" duration="5000" />
-            <powerup
-            id="id1" subtype="1" position="0 0.9 -20" scale="2 2 2" rotation="0 0 0" duration="5000" />
+        <powerup
+            id="id1" subtype="1" position="0 0.9 -20" scale="2 2 2" rotation="0 0.129 0" duration="5000" />
         <obstacle
             id="id1" subtype="1" position="1 0.4 20" scale="0.1 0.1 0.1" rotation="0 0 1.5708" duration="5000" />
+        <powerup
+            id="id2" subtype="2" position="2 0.6 30" scale="1.5 1.5 1.5" rotation="0 0.129 0" duration="5000" />
 
     </activatables>
 
