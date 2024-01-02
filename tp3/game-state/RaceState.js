@@ -9,7 +9,7 @@ class RaceState extends MyGameState {
     constructor(gameStateManager, stateInfo) {
         super(gameStateManager, stateInfo)
         this.name = "race"
-        this.numLaps = 1
+        this.numLaps = 3
 
         this._loadVehicles()
         this._createPovCameras()
@@ -18,7 +18,7 @@ class RaceState extends MyGameState {
         console.log(this.stateInfo)
 
         //TODO: Change this
-        this.playerLap = 1
+        this.playerLap = 0
         this.opponentLap = 0
 
         this.playerFinished = false

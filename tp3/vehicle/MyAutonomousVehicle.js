@@ -89,8 +89,6 @@ class MyAutonomousVehicle extends MyVehicle {
         let qf = []
         this.kf_arrays = []
         let tangents = []
-        let save_added_points = []
-
 
         for (let i = 0; i < this.keyPoints.length; i++) {
             kf.push(...this.keyPoints[i])
@@ -117,7 +115,6 @@ class MyAutonomousVehicle extends MyVehicle {
         //console.log(kf)
 
         for (let i = 0; i < kf.length / 3; i++) {
-
             times.push(i * this.velocity)
         }
 
@@ -126,7 +123,7 @@ class MyAutonomousVehicle extends MyVehicle {
             tangents.push(cTangent)
         }
 
-        this.angleVariation = 0;
+        this.angleVariation = 0.129;
         for (let i = 0; i < tangents.length; i++) {
             if (i === 0) {
                 let axis = new THREE.Vector3(0, 1, 0); // You may need to adjust the axis based on your specific scenario
