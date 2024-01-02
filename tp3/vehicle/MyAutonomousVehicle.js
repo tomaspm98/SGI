@@ -50,7 +50,7 @@ class MyAutonomousVehicle extends MyVehicle {
 
     update() {
 
-        const delta = this.clock.getDelta(); // assuming you have a clock
+        const delta = this.clock.getDelta(); 
         if (this.mixer) {
             this.mixer.update(delta);
         }
@@ -71,10 +71,6 @@ class MyAutonomousVehicle extends MyVehicle {
             this.importantNodes.wheelFR.rotation.y = -Math.PI / 8
         }
 
-        if (this.currentKeyPointIndex !== this.previousKeyPointIndex) {
-            //console.log(`Vehicle passed key point ${this.currentKeyPointIndex}`);
-        }
-
         this.importantNodes.wheelBL.rotation.x += this.actualSpeed
         this.importantNodes.wheelBR.rotation.x += this.actualSpeed
         this.importantNodes.wheelFL.rotation.x += this.actualSpeed
@@ -92,17 +88,6 @@ class MyAutonomousVehicle extends MyVehicle {
 
         for (let i = 0; i < this.keyPoints.length; i++) {
             kf.push(...this.keyPoints[i])
-            /*if (i === this.keyPoints.length - 1) {
-                if (Utils.distance(this.keyPoints[i], this.keyPoints[0]) > 30) {
-                    let mediumPoint = [(this.keyPoints[i][0] + this.keyPoints[0][0]) / 2, (this.keyPoints[i][1] + this.keyPoints[0][1]) / 2, (this.keyPoints[i][2] + this.keyPoints[0][2]) / 2]
-                    kf.push(...mediumPoint)
-                    save_added_points.push(i + 1)
-                }
-            } else if (Utils.distance(this.keyPoints[i], this.keyPoints[i + 1]) > 30) {
-                let mediumPoint = [(this.keyPoints[i][0] + this.keyPoints[i + 1][0]) / 2, (this.keyPoints[i][1] + this.keyPoints[i + 1][1]) / 2, (this.keyPoints[i][2] + this.keyPoints[i + 1][2]) / 2]
-                kf.push(...mediumPoint)
-                save_added_points.push(i + 1)
-            }*/
         }
 
         for (let i = 0; i < kf.length; i++) {
@@ -137,20 +122,10 @@ class MyAutonomousVehicle extends MyVehicle {
             }
         }
 
-        /*for (let j = 0; j < save_added_points.length; j++) {
-            const index = save_added_points[j];
-            let elementToAdd = qf.slice((index - 1) * 4, (index) * 4)
-            qf.splice((index * 4) + 4, 0, ...elementToAdd);
-            this.angleVariations.splice(index, 0, 0);
-        }*/
-
-        //console.log(this.angleVariations)
-        //correction
         for (let i=0;i<this.kf_arrays.length;i++){
             this.kf_arrays[i][1]=0.2;
         }
         for (let i = 0; i < this.kf_arrays.length; i++) {
-            //console.log(i,this.kf_arrays.length)
             if (i>=this.kf_arrays.length-1){
                 break;
             }
@@ -184,10 +159,6 @@ class MyAutonomousVehicle extends MyVehicle {
         for (let i = 0; i < this.kf_arrays.length; i++) {
             new_kf.push(...this.kf_arrays[i])
         }
-
-        //console.log(new_kf)
-        //console.log(new_times)
-        //console.log(qf)
 
         const positionKF = new THREE.VectorKeyframeTrack('.position', new_times, new_kf, THREE.InterpolateCatmullRom);
         const quaternionKF = new THREE.QuaternionKeyframeTrack('.quaternion', new_times, qf, THREE.InterpolateCatmullRom);

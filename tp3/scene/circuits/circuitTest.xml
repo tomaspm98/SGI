@@ -167,7 +167,7 @@
 
         <node id="personWinner">
             <transforms>
-                <translate value3="9.6 1.6 70" />
+                <translate value3="9.6 1.6 110" />
                 <rotate value3="0 3.14159 0" />
                 <scale value3="0.015 0.015 0.015" />
             </transforms>
@@ -181,7 +181,7 @@
 
         <node id="personLoser">
             <transforms>
-                <translate value3="11 1.09 70" />
+                <translate value3="11 1.09 110" />
                 <rotate value3="0 3.14159 0" />
                 <scale value3="0.015 0.015 0.015" />
             </transforms>
