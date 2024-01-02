@@ -10,6 +10,7 @@ class ResultState extends MyGameState {
         this.picking = new MyPicking([], 0, 50, this.getActiveCamera(), this.handlePicking.bind(this), this.resetPickedObject.bind(this), ["pointerdown", "pointermove"])
         this.displayResults()
         this.fireworks = []
+        this.displayCars()
     }
 
     createScene() {
@@ -146,10 +147,34 @@ class ResultState extends MyGameState {
             firework.reset()
         }
         this.getActiveCamera().clear()
+        this.scene.remove(this.vehiclePlayer.mesh)
+        this.scene.remove(this.opponentPlayer.mesh)
     }
 
     resetPickedObject(object) {
         object.material.color.setHex(0x000000)
+    }
+
+    displayCars(){
+
+        const slots = this.stateInfo.circuit.slots.filter(slot => slot.object === "podium")
+        if (slots.length < 2) {
+            throw new Error("Not enough slots")
+        }
+
+        this.vehiclePlayer = this.stateInfo.vehicles[this.stateInfo.playerVehicle]
+        this.opponentPlayer = this.stateInfo.vehicles[this.stateInfo.opponentVehicle]
+
+        console.log(this.vehiclePlayer)
+
+        this.vehiclePlayer.setPosition({x: slots[0].position[0], y: slots[0].position[1], z: slots[0].position[2]})
+        this.vehiclePlayer.setRotation(slots[0].rotation)
+
+        this.opponentPlayer.setPosition({x: slots[1].position[0], y: slots[1].position[1], z: slots[1].position[2]})
+        this.opponentPlayer.setRotation(slots[1].rotation)
+
+        this.scene.add(this.vehiclePlayer.mesh)
+        this.scene.add(this.opponentPlayer.mesh)
     }
 }
 

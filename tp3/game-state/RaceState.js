@@ -149,8 +149,8 @@ class RaceState extends MyGameState {
             collisionDetection(this.vehiclePlayer, this.circuit.rTree);
         }
 
-        this.isGameOver();
         this.hud();
+        this.isGameOver();
     }
 
     setCheckPointsInfo() {
@@ -199,6 +199,7 @@ class RaceState extends MyGameState {
             this.playerFinished = true
             this.playerTime = this.time.getElapsedTime()
             this.scene.remove(this.vehiclePlayer.mesh)
+            this.activeCamera.clear()
             this.changeActiveCamera('general')
         }
 
@@ -257,7 +258,7 @@ class RaceState extends MyGameState {
         this.time.resume()
         setTimeout(() => {
             this.opponentVehicle.resume()
-        }, 100); // 2000 milliseconds = 2 seconds
+        }, 100); 
         console.log(this.circuit.scene)
     }
 

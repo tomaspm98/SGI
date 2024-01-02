@@ -40,6 +40,8 @@
         <slot object="parkingLot3" position="46.5 0.2 -197"/>
         <slot object="track" position="2 0.2 0" rotation="0.129" />
         <slot object="track" position="-2 0.2 0.8" rotation="0.129" />
+        <slot object="podium" position="14 1 108" rotation="4.0" />
+        <slot object="podium" position="6 1 108" rotation="-4.0" />
     </slots>
 
     <cameras initial="general">
