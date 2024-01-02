@@ -11,13 +11,14 @@ class MyGameStateManager {
     constructor(app) {
         this.app = app;
         //this.actualState = this.createNewState({ name: "choosePlayerCar", circuitPath: "scene/circuits/circuitTest.xml", difficulty: "easy", playerName: "Daniel Rodrigues", circuitName: "Yas Marina"});
-        this.actualState = this.createNewState({ name: "pause"});
+        this.actualState = this.createNewState({ name: "initial"});
         this.actualState.startDocumentListeners();
         this.savedStates = [];
         this.updateApp()
     }
 
     changeState(stateInfo) {
+        console.log(`Changing state to ${stateInfo.name}`)
         this.actualState.reset()
         this.actualState.stopDocumentListeners();
         this.savedStates.push(this.actualState);
@@ -88,7 +89,7 @@ class MyGameStateManager {
             case "result":
                 return new ResultState(this, stateInfo);
             case "pause":
-                return new PauseState(this);    
+                return new PauseState(this, stateInfo);    
             default:
                 throw new Error("Invalid state name");
         }

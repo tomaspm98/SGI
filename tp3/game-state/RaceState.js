@@ -18,8 +18,8 @@ class RaceState extends MyGameState {
 
         // The cars start beyond the first checkpoint
         // So we need to start the lap counter at -1
-        this.playerLap = 1
-        this.opponentLap = 1
+        this.playerLap = -1
+        this.opponentLap = -1
 
         this.playerFinished = false
         this.opponentFinished = false
@@ -106,13 +106,19 @@ class RaceState extends MyGameState {
         if (event.code === 'KeyT' && event.type === 'keydown') {
             this._tpToLastCheckpoint()
         } else if (event.code === 'Escape' && event.type === 'keydown') {
-            this.gameStateManager.goBackTo({name: 'initial'})
-        } else if (event.code === 'KeyP' && event.type === 'keydown') {
-
+            this.gameStateManager.changeState({
+                name: 'pause',
+                playerVehicle: this.stateInfo.playerVehicle,
+                circuit: this.stateInfo.circuit,
+                vehicles: this.stateInfo.vehicles,
+                opponentVehicle: this.stateInfo.opponentVehicle,
+                circuitName: this.stateInfo.circuitName,
+                playerName: this.stateInfo.playerName,
+                difficulty: this.stateInfo.difficulty,
+            })
         } else {
             this.vehiclePlayer.controlCar(event)
         }
-
     }
 
     _changeCamera() {
