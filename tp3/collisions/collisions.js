@@ -30,8 +30,6 @@ async function collisionDetectionBroadPhase(activeObject, rTree) {
 
 function collisionDetectionNarrowPhase(activeObject, passiveObjects) {
     let collisions = [];
-    console.log(passiveObjects[0].obb);
-    console.log(activeObject.obb);
     for (const passiveObject of passiveObjects) {
         if (passiveObject.obb.collision(activeObject.obb)) {
             collisions.push(passiveObject);

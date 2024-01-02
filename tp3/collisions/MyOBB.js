@@ -3,14 +3,11 @@ import { OBB } from 'three/addons/math/OBB.js';
 
 class MyOBB {
     constructor(mesh) {
-        console.log(mesh)
         const boundingBox = new THREE.Box3().setFromObject(mesh)
         // For this game, we only care about the x and z coordinates
         boundingBox.max.y = 0
         boundingBox.min.y = 0
-        console.log(boundingBox)
         this.actualOBB = new OBB().fromBox3(boundingBox)
-        console.log(this.actualOBB)
 
         this.actualOBB.center.y = 0
 

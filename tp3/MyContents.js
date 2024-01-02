@@ -132,22 +132,28 @@ class MyContents {
             }
         }
         
-        if(this.clock.getElapsedTime() > 30){
-            console.log("30 seconds")
+        if(this.clock.getElapsedTime() > 5){
+            console.log("5 seconds")
             this.clock.stop();
             this.clock.start();
             
+            const renderDepth = new THREE.DepthTexture();
             const renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
+            renderTarget.depthTexture = renderDepth;
+            
             this.app.renderer.setRenderTarget(renderTarget)
             this.app.renderer.render(this.app.scene, this.app.activeCamera);
             this.app.renderer.setRenderTarget(null)
             
             const texture = renderTarget.texture;
             const depthTexture = renderTarget.depthTexture;
+            console.log(depthTexture)
             
             this.shaderDisplay.updateUniformsValue("uTexture", texture);
-            this.shaderDisplay.updateUniformsValue("lgrayTexture", depthTexture);
-            this.shaderDisplay.updateUniformsValue("timeFactor", t);
+            this.shaderDisplay.updateUniformsValue("lgrayTexture", renderDepth);
+            
+            //this.app.scene.add(new THREE.Mesh(new THREE.PlaneGeometry(20, 20), new THREE.MeshDepthMaterial({map: depthTexture})))
+            //this.shaderDisplay.updateUniformsValue("timeFactor", t);
         }
         
     }

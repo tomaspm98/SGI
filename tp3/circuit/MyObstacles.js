@@ -13,7 +13,6 @@ class MyObstacle1 extends MyActivatable {
         return new Promise((resolve, reject) => {
             const loader = new GLTFLoader();
             loader.load('./scene/circuits/tire.glb', (gltf) => {
-                console.log(gltf);
                 const loadedMesh = gltf.scene;
                 resolve(loadedMesh); // Resolve the promise with the loaded mesh
             },
@@ -43,7 +42,6 @@ class MyObstacle2 extends MyActivatable {
             side: THREE.DoubleSide
         });      
         //this._constructShader() 
-        console.log(this.shaderPulsate)
         const cube = new THREE.Mesh(geometry, material);
         //cube.material= this.shaderPulsate.material
         return cube

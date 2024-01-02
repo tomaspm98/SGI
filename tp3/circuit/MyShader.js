@@ -65,7 +65,6 @@ class MyShader {
                 fragmentShader: this.fragmentShader,
             }) 
             // report built!
-            console.log("built shader from " + this.vert_url + ", " + this.frag_url)  
             this.ready = true
 
             if (this.onMaterialReady) {

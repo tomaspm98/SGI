@@ -25,7 +25,6 @@ class MyRTree {
             id: id,
         });
 
-        console.log(this.tree.toJSON());
     }
 
     async insertMany(objects) {

@@ -17,7 +17,6 @@ class MyActivatable {
             if (loadedMesh) {
                 this.mesh = loadedMesh;
 
-                console.log(this.mesh)
 
                 this.draw();
                 // Create the MyOBB instance after the mesh is fully loaded
@@ -41,7 +40,6 @@ class MyActivatable {
         return new Promise((resolve, reject) => {
             const loader = new THREE.GLTFLoader();
             loader.load('./scene/circuits/powerup.glb', (gltf) => {
-                console.log(gltf);
                 const loadedMesh = gltf.scene;
                 resolve(loadedMesh);
             },
