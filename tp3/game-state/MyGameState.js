@@ -22,11 +22,11 @@ class MyGameState {
 
     update() {
     }
-
-    createScene() {
-    }
-
+    
     createCameras() {
+    }
+    
+    createScene() {
     }
 
     _createDocumentListeners() {

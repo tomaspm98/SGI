@@ -9,16 +9,17 @@ class RaceState extends MyGameState {
     constructor(gameStateManager, stateInfo) {
         super(gameStateManager, stateInfo)
         this.name = "race"
-        this.numLaps = 3
+        this.numLaps = 1
 
         this._loadVehicles()
         this._createPovCameras()
         this.setCheckPointsInfo()
 
 
-        //TODO: Change this
-        this.playerLap = 0
-        this.opponentLap = 0
+        // The cars start beyond the first checkpoint
+        // So we need to start the lap counter at -1
+        this.playerLap = -1
+        this.opponentLap = -1
 
         this.playerFinished = false
         this.opponentFinished = false
@@ -163,7 +164,7 @@ class RaceState extends MyGameState {
                 this.widthTrack)
 
             console.log(`Checkpoint ${this.activeCheckPoint}`)
-            if (this.activeCheckPoint === 0) {
+            if (this.activeCheckPoint === 1) {
                 console.log("Player - Lap completed")
                 this.playerLap++
             }
@@ -189,6 +190,7 @@ class RaceState extends MyGameState {
             this.playerFinished = true
             this.playerTime = this.time.getElapsedTime()
             this.scene.remove(this.vehiclePlayer.mesh)
+            this.changeActiveCamera('general')
         }
 
         if (this.playerFinished && this.opponentFinished) {

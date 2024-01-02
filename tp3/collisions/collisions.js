@@ -39,7 +39,7 @@ function collisionDetectionNarrowPhase(activeObject, passiveObjects) {
 
 function checkVehicleOnTrack(vehicle, track) {
     const pos = new THREE.Vector3(vehicle.actualPosition.x, vehicle.actualPosition.y, vehicle.actualPosition.z);
-    const collisions = new THREE.Raycaster(pos, new THREE.Vector3(0, -1, 0), 0, 1).intersectObject(track.mesh);
+    const collisions = new THREE.Raycaster(pos, new THREE.Vector3(0, -0.3, 0), 0, 1).intersectObject(track.mesh);
     vehicle.offTrack = collisions.length <= 0;
 }
 

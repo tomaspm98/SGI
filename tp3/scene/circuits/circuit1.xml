@@ -184,7 +184,7 @@
 
         <node id="ground">
             <transforms>
-                <translate value3="0 -0.10 0" />
+                <translate value3="0 -0.30 0" />
                 <rotate value3="-1.5708 0 0" />
             </transforms>
 

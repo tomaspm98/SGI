@@ -30,46 +30,54 @@ class ResultState extends MyGameState {
         const title = MyGameState.textRed.transformString("Results", [0.3, 0.3])
         title.position.set(-0.2, 0.6, 0)
         resultsInfo.add(title)
-        
+
         const [first, second] = this.displayPodium([0.15, 0.15])
-        
+
         first.position.set(-1.4, 0.4, 0)
         resultsInfo.add(first)
-        
+
         second.position.set(-1.4, 0.2, 0)
         resultsInfo.add(second)
-        
+
         const circuit = MyGameState.textWhite.transformString(`Circuit: ${this.stateInfo.circuitName}`, [0.15, 0.15])
         const difficulty = MyGameState.textWhite.transformString(`Difficulty: ${this.stateInfo.difficulty}`, [0.15, 0.15])
-        
+
         circuit.position.set(-1.4, 0, 0)
         resultsInfo.add(circuit)
-        
+
         difficulty.position.set(-1.4, -0.2, 0)
         resultsInfo.add(difficulty)
-        
+
         const restartText = MyGameState.textWhite.transformString("Restart", [0.15, 0.15])
-        const restart = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.15), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.3 }))
-        
+        const restart = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.15), new THREE.MeshBasicMaterial({
+            color: 0x000000,
+            transparent: true,
+            opacity: 0.3
+        }))
+
         restartText.position.set(0.3, -0.6, 0.01)
         resultsInfo.add(restartText)
-        
+
         restart.position.set(0.45, -0.61, 0)
         restart.name = 'restart'
         this.picking.addPickableObject(restart)
         resultsInfo.add(restart)
-        
+
         const exitText = MyGameState.textWhite.transformString("Exit", [0.15, 0.15])
-        const exit = new THREE.Mesh(new THREE.PlaneGeometry(0.35, 0.15), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.3 }))
-        
+        const exit = new THREE.Mesh(new THREE.PlaneGeometry(0.35, 0.15), new THREE.MeshBasicMaterial({
+            color: 0x000000,
+            transparent: true,
+            opacity: 0.3
+        }))
+
         exitText.position.set(-0.3, -0.6, 0.01)
         resultsInfo.add(exitText)
-        
+
         exit.position.set(-0.25, -0.61, 0)
         exit.name = 'exit'
         this.picking.addPickableObject(exit)
         resultsInfo.add(exit)
-        
+
         resultsInfo.position.set(0, 0, -1)
         activeCamera.clear()
         activeCamera.add(resultsInfo)
@@ -79,11 +87,11 @@ class ResultState extends MyGameState {
         let player, opponent
         const playerTime = this._convertThreeTime(this.stateInfo.playerTime)
         const opponentTime = this._convertThreeTime(this.stateInfo.opponentTime)
-        
+
         player = MyGameState.textWhite.transformString(`${this.stateInfo.playerTime < this.stateInfo.opponentTime ? "1" : "2"}. ${this.stateInfo.playerName} ${playerTime[0]}' ${playerTime[1]}'' ${playerTime[2]}''' (${this.stateInfo.playerVehicle})`, size)
         opponent = MyGameState.textWhite.transformString(`${this.stateInfo.playerTime > this.stateInfo.opponentTime ? "1" : "2"}. Opponent ${opponentTime[0]}' ${opponentTime[1]}'' ${opponentTime[2]}''' (${this.stateInfo.opponentVehicle})`, size)
-        
-        if(this.stateInfo.playerTime > this.stateInfo.opponentTime) {
+
+        if (this.stateInfo.playerTime > this.stateInfo.opponentTime) {
             return [opponent, player]
         }
         return [player, opponent]
@@ -113,11 +121,12 @@ class ResultState extends MyGameState {
             this.fireworks[i].update()
         }
     }
-    
+
     handlePicking(object, event) {
-        if(event.type === "pointermove"){
+        if (event.type === "pointermove") {
             object.material.color.setHex(0x005ba6)
-        }else if(event.type === "pointerdown" && object.name === "restart"){
+        } else if (event.type === "pointerdown" && object.name === "restart") {
+            this.getActiveCamera().clear()
             this.gameStateManager.goBackToAndReplace("race", {
                 name: "race",
                 circuit: this.stateInfo.circuit,
@@ -128,11 +137,12 @@ class ResultState extends MyGameState {
                 playerName: this.stateInfo.playerName,
                 difficulty: this.stateInfo.difficulty,
             })
-        }else if(event.type === "pointerdown" && object.name === "exit"){
+        } else if (event.type === "pointerdown" && object.name === "exit") {
+            this.getActiveCamera().clear()
             this.gameStateManager.goBackTo({name: "initial"})
         }
     }
-    
+
     resetPickedObject(object) {
         object.material.color.setHex(0x000000)
     }

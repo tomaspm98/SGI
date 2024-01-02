@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { MyTriangle } from '../utils/MyTriangle.js';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import {MyTriangle} from '../utils/MyTriangle.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 
 class MyTrack {
     constructor(points, size, numSegments, width, texture, numCheckPoints, checkPointModel) {
@@ -8,7 +8,6 @@ class MyTrack {
         this.width = width
         this.numSegments = numSegments
         this.numCheckPoints = numCheckPoints
-        this.checkPointModel = checkPointModel
         this._loadTexture(texture)
         this._draw()
 
@@ -24,32 +23,17 @@ class MyTrack {
 
     _draw() {
         this.path = this._getCatmullRomCurve()
-        this.line = this._drawLine()
+        //this.line = this._drawLine()
         this.mesh = this._drawTrack(this.path)
         this.checkPoints = this._getCheckPoints(this.numCheckPoints)
 
         this.group = new THREE.Group()
-        this.group.add(this.line)
+        //this.group.add(this.line)
         this.group.add(this.mesh)
-
-
-        /*this.pointsGeoJSON.forEach((element) => {
-            const cube = this.createCube(); // Create a cube using the createCube function
-            cube.position.set(element[0], element[1], element[2]); // Set the cube's position based on the current element
-            this.group.add(cube); // Add the cube to the group
-        });*/
-
-    }
-
-    createCube(){
-        const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-        const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-        const cube = new THREE.Mesh( geometry, material );
-        return cube;
     }
 
 
-    _getPath(){
+    _getPath() {
         return this.path;
     }
 
@@ -126,8 +110,8 @@ class MyTrack {
             const nkVector = new THREE.Vector3()
             nkVector.crossVectors(upVector, this.path.getTangent(t))
             nkVector.multiplyScalar(this.width / 2)
-            const pkPoint1 = { x: cPoint.x + nkVector.x, y: cPoint.y + nkVector.y, z: cPoint.z + nkVector.z }
-            const pkPoint2 = { x: cPoint.x - nkVector.x, y: cPoint.y - nkVector.y, z: cPoint.z - nkVector.z }
+            const pkPoint1 = {x: cPoint.x + nkVector.x, y: cPoint.y + nkVector.y, z: cPoint.z + nkVector.z}
+            const pkPoint2 = {x: cPoint.x - nkVector.x, y: cPoint.y - nkVector.y, z: cPoint.z - nkVector.z}
             pkPoints1.push(pkPoint1)
             pkPoints2.push(pkPoint2)
             cPoints.push(cPoint)
@@ -156,7 +140,7 @@ class MyTrack {
             const pkPoints2Vector = new THREE.Vector3(pkPoints2[i].x, pkPoints2[i].y, pkPoints2[i].z)
             const cPointsVector = new THREE.Vector3(cPoints[i].x, cPoints[i].y, cPoints[i].z)
             const direction = new THREE.Vector3().subVectors(pkPoints2Vector, pkPoints1Vector).normalize()
-            checkPoints.push({ center: cPointsVector, pk1: pkPoints1Vector, pk2: pkPoints2Vector, direction: direction })
+            checkPoints.push({center: cPointsVector, pk1: pkPoints1Vector, pk2: pkPoints2Vector, direction: direction})
         }
         return checkPoints
 
@@ -197,4 +181,4 @@ class MyTrack {
     }
 }
 
-export { MyTrack };
+export {MyTrack};
