@@ -26,9 +26,11 @@ class MyActivatable {
         if (!this.active) {
             this.active = true
             this.mesh.visible = false
+            vehicle.objectCollided = this
             vehicle.changeState(this.effect)
             setTimeout(() => {
                 vehicle.changeState("normal")
+                vehicle.objectCollided = null
                 this.active = false
                 this.mesh.visible = true
             }, this.duration)

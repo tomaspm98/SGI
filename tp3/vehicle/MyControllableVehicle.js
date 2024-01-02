@@ -21,6 +21,7 @@ class MyControllableVehicle extends MyVehicle {
         this.turningRight = false
         this.reversing = false
         this.offTrack = false
+        this.objectCollided = null
 
         this._createStates()
 

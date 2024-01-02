@@ -36,7 +36,7 @@ class RaceState extends MyGameState {
 
     createCameras() {
         this.cameras = this.circuit.cameras
-        this.activeCameraName = 'podium'
+        this.activeCameraName = 'pov1'
     }
 
     _loadVehicles() {
@@ -87,6 +87,7 @@ class RaceState extends MyGameState {
 
         this.orderCameras = ['pov2', 'pov3', 'pov4', 'general', 'pov1']
         this.changeActiveCamera('pov1')
+        this.scene.add(this.cameras['pov1'])
     }
 
     _createDocumentListeners() {
@@ -149,6 +150,7 @@ class RaceState extends MyGameState {
         }
 
         this.isGameOver();
+        this.hud();
     }
 
     setCheckPointsInfo() {
@@ -216,10 +218,39 @@ class RaceState extends MyGameState {
                 })
         }
     }
+
+    hud() {
+        this.activeCamera = this.getActiveCamera()
+        const hud = new THREE.Group()
+        hud.name = 'hud'
+        if (this.playerLap === -1) {
+            this.lap = MyGameState.textWhite.transformString(`Lap: 0/${this.numLaps}`, [1, 1])
+        } else {
+            this.lap = MyGameState.textWhite.transformString(`Lap: ${this.playerLap}/${this.numLaps}`, [1, 1])
+        }
+        this.lap.position.set(8, 5, -10)
+        hud.add(this.lap)
+        const time = MyGameState.textWhite.transformString(`Time: ${this._convertThreeTime(this.time.getElapsedTime()).join(":")}`, [1, 1])
+        time.position.set(1, 5, -10)
+        hud.add(time)
+        const speed = MyGameState.textWhite.transformString(`Speed: ${(this.vehiclePlayer.actualSpeed * 100).toFixed(2)} km/h`, [1, 1])
+        speed.position.set(-6, 5, -10)
+        hud.add(speed)
+
+        if (this.vehiclePlayer.objectCollided !== null) {
+            const collision = MyGameState.textRed.transformString(`Collision!`, [1, 1]);
+            collision.position.set(-1.5, 3, -10);
+            hud.add(collision);
+        }
+
+        this.activeCamera.clear()
+        this.activeCamera.add(hud)
+    }
     
     reset() {
         this.time.pause()
         this.opponentVehicle.pause()
+        console.log(this.vehiclePlayer)
     }
     
     unpause() {
@@ -228,6 +259,13 @@ class RaceState extends MyGameState {
             this.opponentVehicle.resume()
         }, 100); // 2000 milliseconds = 2 seconds
         console.log(this.circuit.scene)
+    }
+
+    _convertThreeTime(time) {
+        const minutes = Math.floor(time / 60000)
+        const seconds = Math.floor((time / 1000) % 60)
+        const milliseconds = Math.floor(time % 1000)
+        return [minutes, seconds, milliseconds]
     }
 }
 
