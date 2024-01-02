@@ -18,8 +18,8 @@ class RaceState extends MyGameState {
 
         // The cars start beyond the first checkpoint
         // So we need to start the lap counter at -1
-        this.playerLap = -1
-        this.opponentLap = -1
+        this.playerLap = 1
+        this.opponentLap = 1
 
         this.playerFinished = false
         this.opponentFinished = false
@@ -180,13 +180,13 @@ class RaceState extends MyGameState {
     }
 
     isGameOver() {
-        if (this.opponentLap === this.numLaps && !this.opponentFinished) {
+        if (this.opponentLap >= this.numLaps && !this.opponentFinished) {
             this.opponentFinished = true
             this.opponentTime = this.time.getElapsedTime()
             this.scene.remove(this.opponentVehicle.mesh)
         }
 
-        if (this.playerLap === this.numLaps && !this.playerFinished) {
+        if (this.playerLap >= this.numLaps && !this.playerFinished) {
             this.playerFinished = true
             this.playerTime = this.time.getElapsedTime()
             this.scene.remove(this.vehiclePlayer.mesh)

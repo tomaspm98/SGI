@@ -9,8 +9,8 @@ import { ResultState } from "./ResultState.js";
 class MyGameStateManager {
     constructor(app) {
         this.app = app;
-        this.actualState = this.createNewState({ name: "choosePlayerCar", circuitPath: "scene/circuits/circuitTest.xml", difficulty: "easy", playerName: "Daniel Rodrigues", circuitName: "Yas Marina"});
-        //this.actualState = this.createNewState({ name: "initial"});
+        //this.actualState = this.createNewState({ name: "choosePlayerCar", circuitPath: "scene/circuits/circuitTest.xml", difficulty: "easy", playerName: "Daniel Rodrigues", circuitName: "Yas Marina"});
+        this.actualState = this.createNewState({ name: "initial"});
         this.actualState.startDocumentListeners();
         this.savedStates = [];
         this.updateApp()
@@ -50,6 +50,7 @@ class MyGameStateManager {
             }
             newSavedStates.push(this.savedStates[i])
         }
+        throw new Error("State not found on stack")
     }
     
     goBackToAndReplace(nameState, newStateInfo) {
@@ -66,6 +67,7 @@ class MyGameStateManager {
             }
             newSavedStates.push(this.savedStates[i])
         }
+        throw new Error("State not found on stack")
     }
 
     createNewState(stateInfo) {

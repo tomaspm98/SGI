@@ -110,9 +110,7 @@ class MyAutonomousVehicle extends MyVehicle {
                 this.kf_arrays.push(kf.slice(i, i + 3))
             }
         }
-
-        //console.log(this.kf_arrays)
-        //console.log(kf)
+        
 
         for (let i = 0; i < kf.length / 3; i++) {
             times.push(i * this.velocity)
@@ -170,7 +168,6 @@ class MyAutonomousVehicle extends MyVehicle {
             }
         }
 
-        console.log(this.kf_arrays)
 
         let new_times = [];
         for (let i = 0; i < this.kf_arrays.length; i++) {
@@ -182,8 +179,6 @@ class MyAutonomousVehicle extends MyVehicle {
             }
         }
 
-        console.log(this.kf_arrays)
-        console.log(new_times)
 
         let new_kf=[]
         for (let i = 0; i < this.kf_arrays.length; i++) {
