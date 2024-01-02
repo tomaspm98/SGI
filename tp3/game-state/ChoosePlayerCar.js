@@ -1,8 +1,8 @@
-import { MyGameState } from "./MyGameState.js";
-import { MyCircuit } from "../circuit/MyCircuit.js";
-import { openJSON } from "../utils.js";
-import { MyVehicle } from "../vehicle/MyVehicle.js";
-import { MyPicking } from "../MyPicking.js";
+import {MyGameState} from "./MyGameState.js";
+import {MyCircuit} from "../circuit/MyCircuit.js";
+import {openJSON} from "../utils.js";
+import {MyVehicle} from "../vehicle/MyVehicle.js";
+import {MyPicking} from "../MyPicking.js";
 
 class ChoosePlayerCar extends MyGameState {
     constructor(gameStateManager, stateInfo) {
@@ -39,21 +39,15 @@ class ChoosePlayerCar extends MyGameState {
             const vehicle = vehicleArray[i]
             const slot = slotsAvailable[i]
             vehicle.setRotation(slot.rotation)
-            vehicle.setPosition({ x: slot.position[0], y: slot.position[1], z: slot.position[2] })
+            vehicle.setPosition({x: slot.position[0], y: slot.position[1], z: slot.position[2]})
             this.picking.addPickableObject(vehicle.mesh)
             this.scene.add(vehicle.mesh)
         }
     }
 
-    _removeVehiclesScene() {
-        for (const vehicle of Object.values(this.vehicles)) {
-            this.scene.remove(vehicle.mesh)
-        }
-    }
 
     handlePicking(object, event) {
         if (event.type === "pointerdown") {
-            this._removeVehiclesScene()
             this.gameStateManager.changeState({
                 name: "chooseOpponentCar",
                 circuit: this.circuit,
@@ -70,7 +64,7 @@ class ChoosePlayerCar extends MyGameState {
                 if (child.material) {
                     // To save the original color of the object
                     // To later restore it when the object is no longer picked
-                    if(!child.material.originalColor){
+                    if (!child.material.originalColor) {
                         child.material.originalColor = child.material.color.clone()
                     }
                     child.material.color.setHex(0xc2db02)
@@ -100,6 +94,12 @@ class ChoosePlayerCar extends MyGameState {
             this.gameStateManager.goBack()
         }
     }
+
+    reset() {
+        for (const vehicle of Object.values(this.vehicles)) {
+            this.scene.remove(vehicle.mesh)
+        }
+    }
 }
 
-export { ChoosePlayerCar }
+export {ChoosePlayerCar}

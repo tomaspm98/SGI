@@ -126,7 +126,6 @@ class ResultState extends MyGameState {
         if (event.type === "pointermove") {
             object.material.color.setHex(0x005ba6)
         } else if (event.type === "pointerdown" && object.name === "restart") {
-            this.getActiveCamera().clear()
             this.gameStateManager.goBackToAndReplace("race", {
                 name: "race",
                 circuit: this.stateInfo.circuit,
@@ -138,9 +137,15 @@ class ResultState extends MyGameState {
                 difficulty: this.stateInfo.difficulty,
             })
         } else if (event.type === "pointerdown" && object.name === "exit") {
-            this.getActiveCamera().clear()
             this.gameStateManager.goBackTo({name: "initial"})
         }
+    }
+
+    reset() {
+        for (const firework of this.fireworks) {
+            firework.reset()
+        }
+        this.getActiveCamera().clear()
     }
 
     resetPickedObject(object) {

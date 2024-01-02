@@ -17,6 +17,7 @@ class MyGameStateManager {
     }
 
     changeState(stateInfo) {
+        this.actualState.reset()
         this.actualState.stopDocumentListeners();
         this.savedStates.push(this.actualState);
 
@@ -39,6 +40,7 @@ class MyGameStateManager {
         const newSavedStates = []
         for(let i = 0; i < this.savedStates.length; i++) {
             if(this.savedStates[i].name === stateInfo.name) {
+                this.actualState.reset()
                 this.actualState.stopDocumentListeners();
                 this.actualState = this.savedStates[i];
                 this.savedStates = newSavedStates;
@@ -54,6 +56,7 @@ class MyGameStateManager {
         const newSavedStates = []
         for(let i = 0; i < this.savedStates.length; i++) {
             if(this.savedStates[i].name === nameState) {
+                this.actualState.reset()
                 this.actualState.stopDocumentListeners();
                 this.actualState = this.createNewState(newStateInfo);
                 this.savedStates = newSavedStates;

@@ -17,6 +17,12 @@ class MyGameState {
 
         this.createScene()
         this.createCameras()
+        
+        for(const camera of Object.values(this.cameras)) {
+            this.scene.remove(camera)
+            this.scene.add(camera)
+        }
+        
         this._createDocumentListeners()
     }
 
@@ -66,6 +72,10 @@ class MyGameState {
 
     getActiveCamera() {
         return this.cameras[this.activeCameraName];
+    }
+    
+    reset(){
+
     }
 }
 
