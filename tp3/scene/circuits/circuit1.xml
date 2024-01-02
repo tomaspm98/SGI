@@ -74,8 +74,8 @@
             angle="75"
             near="0.1"
             far="1000"
-            location="10 1 62"
-            target="10 5 81" />
+            location="10 1 102"
+            target="10 5 121" />
     </cameras>
 
     <textures>
@@ -112,9 +112,9 @@
     </materials>
 
     <track filepath="scene/f1-circuits/ae-2009.geojson"
-        size="20"
-        segments="500"
-        width="4"
+        size="30"
+        segments="700"
+        width="10"
         texture="scene/textures/asphalt-texture.jpg"
     />
 
@@ -149,11 +149,11 @@
                 <noderef id="footbridge1" />
                 <noderef id="footbridge2" />
                 <noderef id="podium" />
-                <lodref id="peopleGroupLod" />
-                <lodref id="peopleGroupLod2" />
-                <lodref id="peopleGroupLod3" />
-                <lodref id="peopleGroupLod4" />
-                <lodref id="peopleGroupLod5" />
+                <noderef id="peopleGroup" />
+                <noderef id="peopleGroup2" />
+                <noderef id="peopleGroup3" />
+                <noderef id="peopleGroup4" />
+                <noderef id="peopleGroup5" />
                 <noderef id="postLight1" />
                 <noderef id="postLight2" />
                 <noderef id="postLight3" />
@@ -359,7 +359,7 @@
             <transforms>
                 <translate value3="-0.09 0.001 -0.7" />
                 <rotate value3="0 0.129 0" />
-                <scale value3="0.0312 0.001 0.003" />
+                <scale value3="0.039 0.001 0.003" />
             </transforms>
             <children>
                 <primitive>
@@ -481,7 +481,7 @@
         <node id="stands2Benches2">
             <transforms>
                 <rotate value3="0 1.1 0" />
-                <translate value3="70 0 50" />
+                <translate value3="100 0 90" />
             </transforms>
 
             <children>
@@ -533,7 +533,7 @@
         <node id="stands2Benches3">
             <transforms>
                 <rotate value3="0 4.2416 0" />
-                <translate value3="-75 0 -72" />
+                <translate value3="-120 0 -112" />
             </transforms>
 
             <children>
@@ -599,7 +599,7 @@
 
             <transforms>
                 <rotate value3="0 -0.7 0" />
-                <translate value3="-85 0 50" />
+                <translate value3="-125 0 100" />
             </transforms>
 
             <children>
@@ -626,8 +626,8 @@
 
         <node id="footbridge1">
             <transforms>
-                <translate value3="-41 0 0" />
-                <scale value3="1.5 1 1" />
+                <translate value3="-62 0 0" />
+                <scale value3="1.7 1 1" />
                 <rotate value3="0 0.129 0" />
             </transforms>
 
@@ -640,8 +640,8 @@
 
         <node id="footbridge2">
             <transforms>
-                <translate value3="140 0 9.5" />
-                <scale value3="1.5 1 1" />
+                <translate value3="210 0 14" />
+                <scale value3="1.7 1 1" />
                 <rotate value3="0 1.7 0" />
             </transforms>
 
@@ -654,7 +654,7 @@
 
         <node id="podium">
             <transforms>
-                <translate value3="10 0 70" />
+                <translate value3="10 0 110" />
                 <rotate value3="0 3.14159 0" />
                 <scale value3="3 2 3" />
             </transforms>
@@ -668,7 +668,7 @@
 
         <node id="personWinner">
             <transforms>
-                <translate value3="9.6 1.6 70" />
+                <translate value3="9.6 1.6 110" />
                 <rotate value3="0 3.14159 0" />
                 <scale value3="0.015 0.015 0.015" />
             </transforms>
@@ -682,7 +682,7 @@
 
         <node id="personLoser">
             <transforms>
-                <translate value3="11 1.09 70" />
+                <translate value3="11 1.09 110" />
                 <rotate value3="0 3.14159 0" />
                 <scale value3="0.015 0.015 0.015" />
             </transforms>
@@ -723,6 +723,9 @@
         </node>
 
         <node id="peopleGroup">
+        <transforms>
+                <translate value3="10 0 30" />
+        </transforms>        
             <children>
                 <noderef id="people" />
                 <noderef id="people2" />
@@ -759,7 +762,7 @@
 
         <node id="peopleGroup2">
             <transforms>
-                <translate value3="150 0 20" />
+                <translate value3="180 0 30" />
                 <rotate value3="0 -0.15 0" />
             </transforms>
             <children>
@@ -798,7 +801,7 @@
 
         <node id="peopleGroup3">
             <transforms>
-                <translate value3="185 0 -10" />
+                <translate value3="275 0 -5" />
                 <rotate value3="0 1.5708 0" />
             </transforms>
             <children>
@@ -809,7 +812,7 @@
 
         <node id="peopleGroup4">
             <transforms>
-                <translate value3="-35 0 -87.5" />
+                <translate value3="-50 0 -125" />
                 <rotate value3="0 0.5 0" />
                 <scale value3="0.015 0.015 0.015" />
             </transforms>
@@ -865,7 +868,7 @@
 
         <node id="peopleGroup5">
             <transforms>
-                <translate value3="-97 0 60" />
+                <translate value3="-148 0 90" />
                 <rotate value3="0 1.25 0" />
             </transforms>
             <children>
@@ -935,7 +938,7 @@
 
         <node id="postLight3">
             <transforms>
-                <translate value3="72.5 0 20" />
+                <translate value3="115 0 25" />
                 <rotate value3="0 2.129 0" />
                 <scale value3="0.005 0.005 0.005" />
             </transforms>
@@ -949,7 +952,7 @@
 
         <node id="postLight4">
             <transforms>
-                <translate value3="180 0 18" />
+                <translate value3="265 0 18" />
                 <rotate value3="0 2.129 0" />
                 <scale value3="0.005 0.005 0.005" />
             </transforms>
@@ -963,7 +966,7 @@
 
         <node id="postLight5">
             <transforms>
-                <translate value3="52.5 0 -67.5" />
+                <translate value3="110.5 0 -87.5" />
                 <rotate value3="0 -1.9 0" />
                 <scale value3="0.005 0.005 0.005" />
             </transforms>
@@ -977,7 +980,7 @@
 
         <node id="postLight6">
             <transforms>
-                <translate value3="132.5 0 -40" />
+                <translate value3="190.5 0 -60" />
                 <rotate value3="0 -1.9 0" />
                 <scale value3="0.005 0.005 0.005" />
             </transforms>
@@ -991,7 +994,7 @@
 
         <node id="postLight8">
             <transforms>
-                <translate value3="-152.5 0 40" />
+                <translate value3="-212.5 0 52" />
                 <rotate value3="0 -0.7 0" />
                 <scale value3="0.005 0.005 0.005" />
             </transforms>
@@ -1005,7 +1008,7 @@
 
         <node id="postLight7">
             <transforms>
-                <translate value3="-95 0 -50" />
+                <translate value3="-155 0 -38" />
                 <rotate value3="0 -0.7 0" />
                 <scale value3="0.005 0.005 0.005" />
             </transforms>
@@ -1019,7 +1022,7 @@
 
         <node id="postLight9">
             <transforms>
-                <translate value3="-53 0 10" />
+                <translate value3="-80 0 18" />
                 <rotate value3="0 -1.5708 0" />
                 <scale value3="0.005 0.005 0.005" />
             </transforms>
@@ -1033,7 +1036,7 @@
 
         <node id="sun">
             <transforms>
-                <translate value3="-190 80 -60" />
+                <translate value3="-250 80 -60" />
                 <scale value3="2 2 2" />
             </transforms>
 
