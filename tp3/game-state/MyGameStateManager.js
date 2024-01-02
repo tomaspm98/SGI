@@ -1,16 +1,17 @@
-import { InitialState } from "./InitialState.js";
-import { ChooseCircuitState } from "./ChooseCircuitState.js";
-import { ConfigRaceState } from "./ConfigRaceState.js";
-import { ChoosePlayerCar } from "./ChoosePlayerCar.js";
-import { ChooseOpponentCar } from "./ChooseOpponentCar.js";
-import { RaceState } from "./RaceState.js";
-import { ResultState } from "./ResultState.js";
-import { PauseState } from "./PauseState.js";
+import {InitialState} from "./InitialState.js";
+import {ChooseCircuitState} from "./ChooseCircuitState.js";
+import {ConfigRaceState} from "./ConfigRaceState.js";
+import {ChoosePlayerCar} from "./ChoosePlayerCar.js";
+import {ChooseOpponentCar} from "./ChooseOpponentCar.js";
+import {RaceState} from "./RaceState.js";
+import {ResultState} from "./ResultState.js";
+import {PauseState} from "./PauseState.js";
+import {ChooseObstacle} from "./ChooseObstacle.js";
 
 class MyGameStateManager {
     constructor(app) {
         this.app = app;
-        this.actualState = this.createNewState({ name: "initial"});
+        this.actualState = this.createNewState({name: "initial"});
         //this.actualState = this.createNewState({ name: "choosePlayerCar", circuitPath: "scene/circuits/circuitTest.xml", difficulty: "easy", playerName: "Daniel Rodrigues", circuitName: "Yas Marina"});
         this.actualState.startDocumentListeners();
         this.savedStates = [];
@@ -41,8 +42,8 @@ class MyGameStateManager {
 
     goBackTo(stateInfo) {
         const newSavedStates = []
-        for(let i = 0; i < this.savedStates.length; i++) {
-            if(this.savedStates[i].name === stateInfo.name) {
+        for (let i = 0; i < this.savedStates.length; i++) {
+            if (this.savedStates[i].name === stateInfo.name) {
                 this.actualState.reset()
                 this.actualState.stopDocumentListeners();
                 this.actualState = this.savedStates[i];
@@ -56,11 +57,11 @@ class MyGameStateManager {
         }
         throw new Error("State not found on stack")
     }
-    
+
     goBackToAndReplace(nameState, newStateInfo) {
         const newSavedStates = []
-        for(let i = 0; i < this.savedStates.length; i++) {
-            if(this.savedStates[i].name === nameState) {
+        for (let i = 0; i < this.savedStates.length; i++) {
+            if (this.savedStates[i].name === nameState) {
                 this.actualState.reset()
                 this.actualState.stopDocumentListeners();
                 this.actualState = this.createNewState(newStateInfo);
@@ -79,7 +80,7 @@ class MyGameStateManager {
             case "initial":
                 return new InitialState(this);
             case "chooseCircuit":
-                return new ChooseCircuitState(this, { path: "scene/circuits.json" });
+                return new ChooseCircuitState(this, {path: "scene/circuits.json"});
             case "configRace":
                 return new ConfigRaceState(this, stateInfo);
             case "choosePlayerCar":
@@ -91,7 +92,9 @@ class MyGameStateManager {
             case "result":
                 return new ResultState(this, stateInfo);
             case "pause":
-                return new PauseState(this, stateInfo);    
+                return new PauseState(this, stateInfo);
+            case "chooseObstacle":
+                return new ChooseObstacle(this, stateInfo);
             default:
                 throw new Error("Invalid state name");
         }
@@ -109,4 +112,4 @@ class MyGameStateManager {
     }
 }
 
-export { MyGameStateManager }
+export {MyGameStateManager}

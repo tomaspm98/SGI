@@ -57,6 +57,8 @@ class PauseState extends MyGameState {
                     playerName: this.stateInfo.playerName,
                     difficulty: this.stateInfo.difficulty,
                 })
+            } else if (object.name === "obstacle") {
+                this.gameStateManager.changeState({name: "chooseObstacle", circuit: this.stateInfo.circuit})
             } else {
                 this.gameStateManager.changeState({name: "initial"})
             }
@@ -99,9 +101,9 @@ class PauseState extends MyGameState {
         this.scene.add(resetText)
     }
 
-    _createObstacle(){
+    _createObstacle() {
         const obstacleGeometry = new THREE.PlaneGeometry(500, 100);
-        const obstacleMaterial = new THREE.MeshBasicMaterial({ color: "#000000", transparent: true, opacity: 0.5 });
+        const obstacleMaterial = new THREE.MeshBasicMaterial({color: "#000000", transparent: true, opacity: 0.5});
         const obstacle = new THREE.Mesh(obstacleGeometry, obstacleMaterial);
         obstacle.name = "obstacle"
         const obstacleText = MyGameState.textWhite.transformString("Obstacle", [100, 100])
@@ -114,7 +116,7 @@ class PauseState extends MyGameState {
         this.scene.add(obstacleText)
     }
 
-    _createExit(){
+    _createExit() {
         const exitGeometry = new THREE.PlaneGeometry(500, 100);
         const exitMaterial = new THREE.MeshBasicMaterial({color: "#000000", transparent: true, opacity: 0.5});
         const exit = new THREE.Mesh(exitGeometry, exitMaterial);
@@ -129,7 +131,7 @@ class PauseState extends MyGameState {
         this.scene.add(exitText)
     }
 
-    
+
 }
 
 export {PauseState}
