@@ -229,9 +229,9 @@ class MyApp {
         requestAnimationFrame(this.render.bind(this));
 
         if (this.clock.getElapsedTime()>=60){
-            console.log("NICE")
             this.clock.stop()
             this.clock.start()
+            
             const rgbDataURL = this.renderer.domElement.toDataURL();
             const rgbImage = new Image();
             rgbImage.src = rgbDataURL;
