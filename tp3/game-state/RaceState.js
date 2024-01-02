@@ -227,6 +227,7 @@ class RaceState extends MyGameState {
         setTimeout(() => {
             this.opponentVehicle.resume()
         }, 100); // 2000 milliseconds = 2 seconds
+        console.log(this.circuit.scene)
     }
 }
 

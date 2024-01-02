@@ -11,6 +11,7 @@ class MyObstacle1 extends MyActivatable {
         const geometry = new THREE.BoxGeometry(1, 1, 1);
         const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
         const cube = new THREE.Mesh(geometry, material);
+        cube.name = "1"
         return cube
     }
 }
@@ -25,6 +26,7 @@ class MyObstacle2 extends MyActivatable {
         const geometry = new THREE.BoxGeometry(1, 1, 1);
         const material = new THREE.MeshBasicMaterial({ color: 0x005500 });
         const cube = new THREE.Mesh(geometry, material);
+        cube.name = "2"
         return cube
     }
 }

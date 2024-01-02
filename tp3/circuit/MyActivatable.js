@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { MyOBB } from '../collisions/MyOBB.js';
+import {MyOBB} from '../collisions/MyOBB.js';
 
 class MyActivatable {
     constructor(position, rotation, scale, duration) {
@@ -16,7 +16,8 @@ class MyActivatable {
 
     draw() {
         this.mesh = this._constructMesh()
-        this.mesh.position.set(...this.position)
+        this.mesh.position.setX(this.position[0])
+        this.mesh.position.setZ(this.position[2])
         this.mesh.rotation.set(...this.rotation)
         this.mesh.scale.set(...this.scale)
     }
@@ -35,4 +36,4 @@ class MyActivatable {
     }
 }
 
-export { MyActivatable };
+export {MyActivatable};
