@@ -40,10 +40,10 @@ class MyFirework {
         color.setHSL(THREE.MathUtils.randFloat(0.1, 0.9), THREE.MathUtils.randFloat(0.1, 0.9), THREE.MathUtils.randFloat(0.1, 0.9))
         let colors = [color.r, color.g, color.b]
 
-        let x = THREE.MathUtils.randFloat(5, 15)
-        let y = THREE.MathUtils.randFloat(this.height * 0.8, this.height * 1.2)
-        let z = THREE.MathUtils.randFloat(78, 82)
-        this.dest.push(x, y, z)
+        this.xDest = THREE.MathUtils.randFloat(5, 15)
+        this.yDest = THREE.MathUtils.randFloat(this.height * 0.8, this.height * 1.2)
+        this.zDest = THREE.MathUtils.randFloat(78, 82)
+        this.dest.push( this.xDest, this.yDest, this.zDest ) 
         let verticeX = xIni + (Math.random() * (maxLim - minLim) + minLim);
         let verticeY = 0
         let verticeZ = zIni + (Math.random() * (maxLim - minLim) + minLim);
@@ -75,9 +75,9 @@ class MyFirework {
             this.colors[i * 3] = color.r
             this.colors[i * 3 + 1] = color.g
             this.colors[i * 3 + 2] = color.b
-            let x = THREE.MathUtils.randFloat(5, 15)
-            let y = THREE.MathUtils.randFloat(this.height * 0.8, this.height * 1.2)
-            let z = THREE.MathUtils.randFloat(78, 82)
+            let x = THREE.MathUtils.randFloat( this.xDest-5, this.xDest+5 ) 
+            let y = THREE.MathUtils.randFloat( this.height * 0.7, this.height * 1.3)
+            let z = THREE.MathUtils.randFloat( this.zDest-5, this.zDest+5 ) 
 
             this.dest.push(x, y, z);
 
