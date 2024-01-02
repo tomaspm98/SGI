@@ -219,10 +219,14 @@ class RaceState extends MyGameState {
     
     reset() {
         this.time.pause()
+        this.opponentVehicle.pause()
     }
     
     unpause() {
         this.time.resume()
+        setTimeout(() => {
+            this.opponentVehicle.resume()
+        }, 100); // 2000 milliseconds = 2 seconds
     }
 }
 

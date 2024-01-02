@@ -211,6 +211,18 @@ class MyAutonomousVehicle extends MyVehicle {
 
         return minDistanceIndex;
     }
+
+    pause(){
+        for (let i = 0; i < this.mixer._actions.length; i++) {
+            this.mixer._actions[i].paused = true;
+        }
+    }
+
+    resume() {
+        for (let i = 0; i < this.mixer._actions.length; i++) {
+            this.mixer._actions[i].paused = false;
+        }
+    }
 }
 
 export {MyAutonomousVehicle};
