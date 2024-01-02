@@ -10,7 +10,7 @@ import { PauseState } from "./PauseState.js";
 class MyGameStateManager {
     constructor(app) {
         this.app = app;
-        this.actualState = this.createNewState({ name: "choosePlayerCar", circuitPath: "scene/circuits/circuit1.xml", difficulty: "easy", playerName: "Daniel Rodrigues", circuitName: "Yas Marina"});
+        this.actualState = this.createNewState({ name: "choosePlayerCar", circuitPath: "scene/circuits/circuitTest.xml", difficulty: "easy", playerName: "Daniel Rodrigues", circuitName: "Yas Marina"});
         //this.actualState = this.createNewState({ name: "pause"});
         this.actualState.startDocumentListeners();
         this.savedStates = [];

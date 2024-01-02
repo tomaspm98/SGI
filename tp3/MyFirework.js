@@ -42,7 +42,7 @@ class MyFirework {
 
         this.xDest = THREE.MathUtils.randFloat(5, 15)
         this.yDest = THREE.MathUtils.randFloat(this.height * 0.8, this.height * 1.2)
-        this.zDest = THREE.MathUtils.randFloat(78, 82)
+        this.zDest = THREE.MathUtils.randFloat(118, 122)
         this.dest.push( this.xDest, this.yDest, this.zDest ) 
         let verticeX = xIni + (Math.random() * (maxLim - minLim) + minLim);
         let verticeY = 0
