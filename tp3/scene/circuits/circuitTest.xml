@@ -69,8 +69,8 @@
             angle="75"
             near="0.1"
             far="1000"
-            location="10 1 62"
-            target="10 5 81" />
+            location="10 1 102"
+            target="10 5 121" />
     </cameras>
 
     <textures>
@@ -153,7 +153,7 @@
 
         <node id="podium">
             <transforms>
-                <translate value3="10 0 70" />
+                <translate value3="10 0 110" />
                 <rotate value3="0 3.14159 0" />
                 <scale value3="3 2 3" />
             </transforms>

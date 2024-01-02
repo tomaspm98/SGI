@@ -106,7 +106,7 @@ class ResultState extends MyGameState {
 
     update() {
         if (Math.random() < 0.05) {
-            this.fireworks.push(new MyFirework(this.scene, 10, 80))
+            this.fireworks.push(new MyFirework(this.scene, 10, 120))
         }
 
 
