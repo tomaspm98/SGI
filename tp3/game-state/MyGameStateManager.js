@@ -5,12 +5,13 @@ import { ChoosePlayerCar } from "./ChoosePlayerCar.js";
 import { ChooseOpponentCar } from "./ChooseOpponentCar.js";
 import { RaceState } from "./RaceState.js";
 import { ResultState } from "./ResultState.js";
+import { PauseState } from "./PauseState.js";
 
 class MyGameStateManager {
     constructor(app) {
         this.app = app;
         //this.actualState = this.createNewState({ name: "choosePlayerCar", circuitPath: "scene/circuits/circuitTest.xml", difficulty: "easy", playerName: "Daniel Rodrigues", circuitName: "Yas Marina"});
-        this.actualState = this.createNewState({ name: "initial"});
+        this.actualState = this.createNewState({ name: "pause"});
         this.actualState.startDocumentListeners();
         this.savedStates = [];
         this.updateApp()
@@ -86,6 +87,8 @@ class MyGameStateManager {
                 return new RaceState(this, stateInfo);
             case "result":
                 return new ResultState(this, stateInfo);
+            case "pause":
+                return new PauseState(this);    
             default:
                 throw new Error("Invalid state name");
         }
