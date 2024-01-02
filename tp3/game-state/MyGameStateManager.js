@@ -9,8 +9,8 @@ import { ResultState } from "./ResultState.js";
 class MyGameStateManager {
     constructor(app) {
         this.app = app;
-        this.actualState = this.createNewState({ name: "choosePlayerCar", circuitPath: "scene/circuits/circuitTest.xml", difficulty: "easy", playerName: "Daniel Rodrigues", circuitName: "Yas Marina"});
-        //this.actualState = this.createNewState({ name: "result"});
+        //this.actualState = this.createNewState({ name: "choosePlayerCar", circuitPath: "scene/circuits/circuitTest.xml", difficulty: "easy", playerName: "Daniel Rodrigues", circuitName: "Yas Marina"});
+        this.actualState = this.createNewState({ name: "initial"});
         this.actualState.startDocumentListeners();
         this.savedStates = [];
         this.updateApp()
@@ -41,6 +41,22 @@ class MyGameStateManager {
             if(this.savedStates[i].name === stateInfo.name) {
                 this.actualState.stopDocumentListeners();
                 this.actualState = this.savedStates[i];
+                this.savedStates = newSavedStates;
+                this.actualState.startDocumentListeners();
+                this.updateApp()
+                return
+            }
+            newSavedStates.push(this.savedStates[i])
+        }
+    }
+    
+    goBackToAndReplace(nameState, newStateInfo) {
+        console.log("HELLO")
+        const newSavedStates = []
+        for(let i = 0; i < this.savedStates.length; i++) {
+            if(this.savedStates[i].name === nameState) {
+                this.actualState.stopDocumentListeners();
+                this.actualState = this.createNewState(newStateInfo);
                 this.savedStates = newSavedStates;
                 this.actualState.startDocumentListeners();
                 this.updateApp()

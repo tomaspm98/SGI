@@ -1,12 +1,14 @@
 import {MyGameState} from "./MyGameState.js";
 import * as THREE from 'three'
 import {MyFirework} from "../MyFirework.js";
+import {MyPicking} from "../MyPicking.js";
 
 class ResultState extends MyGameState {
     constructor(gameStateManager, stateInfo) {
         super(gameStateManager, stateInfo)
         console.log(stateInfo)
         this.name = "result"
+        this.picking = new MyPicking([], 0, 50, this.getActiveCamera(), this.handlePicking.bind(this), this.resetPickedObject.bind(this), ["pointerdown", "pointermove"])
         this.displayResults()
         this.fireworks = []
     }
@@ -46,7 +48,29 @@ class ResultState extends MyGameState {
         
         difficulty.position.set(-1.4, -0.2, 0)
         resultsInfo.add(difficulty)
-
+        
+        const restartText = MyGameState.textWhite.transformString("Restart", [0.15, 0.15])
+        const restart = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.15), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.3 }))
+        
+        restartText.position.set(0.3, -0.6, 0.01)
+        resultsInfo.add(restartText)
+        
+        restart.position.set(0.45, -0.61, 0)
+        restart.name = 'restart'
+        this.picking.addPickableObject(restart)
+        resultsInfo.add(restart)
+        
+        const exitText = MyGameState.textWhite.transformString("Exit", [0.15, 0.15])
+        const exit = new THREE.Mesh(new THREE.PlaneGeometry(0.35, 0.15), new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.3 }))
+        
+        exitText.position.set(-0.3, -0.6, 0.01)
+        resultsInfo.add(exitText)
+        
+        exit.position.set(-0.25, -0.61, 0)
+        exit.name = 'exit'
+        this.picking.addPickableObject(exit)
+        resultsInfo.add(exit)
+        
         resultsInfo.position.set(0, 0, -1)
         activeCamera.clear()
         activeCamera.add(resultsInfo)
@@ -89,6 +113,29 @@ class ResultState extends MyGameState {
             // otherwise upsdate  firework
             this.fireworks[i].update()
         }
+    }
+    
+    handlePicking(object, event) {
+        if(event.type === "pointermove"){
+            object.material.color.setHex(0x005ba6)
+        }else if(event.type === "pointerdown" && object.name === "restart"){
+            this.gameStateManager.goBackToAndReplace("raceState", {
+                name: "raceState",
+                circuit: this.stateInfo.circuit,
+                vehicles: this.stateInfo.vehicles,
+                playerVehicle: this.stateInfo.playerVehicle,
+                opponentVehicle: this.stateInfo.opponentVehicle,
+                circuitName: this.stateInfo.circuitName,
+                playerName: this.stateInfo.playerName,
+                difficulty: this.stateInfo.difficulty,
+            })
+        }else if(event.type === "pointerdown" && object.name === "exit"){
+            this.gameStateManager.goBackTo({name: "initial"})
+        }
+    }
+    
+    resetPickedObject(object) {
+        object.material.color.setHex(0x000000)
     }
 }
 

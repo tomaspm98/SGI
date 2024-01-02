@@ -1,7 +1,7 @@
-import { MyGameState } from "./MyGameState.js"
-import { collisionDetection, checkVehicleOnTrack, checkCollisionVehicleOnVehicle } from "../collisions/collisions.js"
-import { MyAutonomousVehicle } from "../vehicle/MyAutonomousVehicle.js";
-import { MyControllableVehicle } from "../vehicle/MyControllableVehicle.js";
+import {MyGameState} from "./MyGameState.js"
+import {collisionDetection, checkVehicleOnTrack, checkCollisionVehicleOnVehicle} from "../collisions/collisions.js"
+import {MyAutonomousVehicle} from "../vehicle/MyAutonomousVehicle.js";
+import {MyControllableVehicle} from "../vehicle/MyControllableVehicle.js";
 
 import * as THREE from 'three'
 
@@ -14,6 +14,8 @@ class RaceState extends MyGameState {
         this._loadVehicles()
         this._createPovCameras()
         this.setCheckPointsInfo()
+
+        console.log(this.stateInfo)
 
         //TODO: Change this
         this.playerLap = 1
@@ -46,10 +48,10 @@ class RaceState extends MyGameState {
         this.opponentVehicle = MyAutonomousVehicle.fromVehicle(this.stateInfo.vehicles[this.stateInfo.opponentVehicle], this.circuit.track.pointsGeoJSON, this.circuit.track._getPath(), this.stateInfo.difficulty)
 
         this.vehiclePlayer.setRotation(slots[0].rotation)
-        this.vehiclePlayer.setPosition({ x: slots[0].position[0], y: slots[0].position[1], z: slots[0].position[2] })
+        this.vehiclePlayer.setPosition({x: slots[0].position[0], y: slots[0].position[1], z: slots[0].position[2]})
 
         this.opponentVehicle.setRotation(slots[1].rotation)
-        this.opponentVehicle.setPosition({ x: slots[1].position[0], y: slots[1].position[1], z: slots[1].position[2] })
+        this.opponentVehicle.setPosition({x: slots[1].position[0], y: slots[1].position[1], z: slots[1].position[2]})
 
         this.scene.add(this.vehiclePlayer.mesh)
         this.scene.add(this.opponentVehicle.mesh)
@@ -104,7 +106,7 @@ class RaceState extends MyGameState {
         if (event.code === 'KeyT' && event.type === 'keydown') {
             this._tpToLastCheckpoint()
         } else if (event.code === 'Escape' && event.type === 'keydown') {
-            this.gameStateManager.goBackTo({ name: 'initial' })
+            this.gameStateManager.goBackTo({name: 'initial'})
         } else if (event.code === 'KeyP' && event.type === 'keydown') {
 
         } else {
@@ -178,6 +180,18 @@ class RaceState extends MyGameState {
     }
 
     isGameOver() {
+        if (this.opponentLap === this.numLaps && !this.opponentFinished) {
+            this.opponentFinished = true
+            this.opponentTime = this.time.getElapsedTime()
+            this.scene.remove(this.opponentVehicle.mesh)
+        }
+
+        if (this.playerLap === this.numLaps && !this.playerFinished) {
+            this.playerFinished = true
+            this.playerTime = this.time.getElapsedTime()
+            this.scene.remove(this.vehiclePlayer.mesh)
+        }
+
         if (this.playerFinished && this.opponentFinished) {
             this.gameStateManager.changeState(
                 {
@@ -189,18 +203,11 @@ class RaceState extends MyGameState {
                     playerTime: this.playerTime,
                     opponentTime: this.opponentTime,
                     playerName: this.stateInfo.playerName,
-                    difficulty: this.stateInfo.difficulty
+                    difficulty: this.stateInfo.difficulty,
+                    vehicles: this.stateInfo.vehicles
                 })
-        } else if (this.opponentLap === this.numLaps && !this.opponentFinished) {
-            this.opponentFinished = true
-            this.opponentTime = this.time.getElapsedTime()
-            this.scene.remove(this.opponentVehicle.mesh)
-        } else if (this.playerLap === this.numLaps && !this.playerFinished) {
-            this.playerFinished = true
-            this.playerTime = this.time.getElapsedTime()
-            this.scene.remove(this.vehiclePlayer.mesh)
         }
     }
 }
 
-export { RaceState }
+export {RaceState}
