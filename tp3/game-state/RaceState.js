@@ -18,11 +18,7 @@ class RaceState extends MyGameState {
 
         //TODO: Change this
         this.playerLap = 0
-<<<<<<< HEAD
-        this.opponentLap = 1
-=======
         this.opponentLap = 0
->>>>>>> fb766edbfb9422326a243b3710d01a3a8136715d
 
         this.playerFinished = false
         this.opponentFinished = false
