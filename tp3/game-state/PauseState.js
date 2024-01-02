@@ -12,6 +12,7 @@ class PauseState extends MyGameState {
         this._createResume();
         this._createReset();
         this._createExit();
+        this._createObstacle();
     }
 
     createScene() {
@@ -81,12 +82,27 @@ class PauseState extends MyGameState {
         reset.name = "reset"
         const resetText = MyGameState.textWhite.transformString("Reset", [100, 100])
 
-        reset.position.set(0, -50, 0)
-        resetText.position.set(-45, -45, 0)
+        reset.position.set(0, 20, 0)
+        resetText.position.set(-45, 25, 0)
 
         this.picking.addPickableObject(reset)
         this.scene.add(reset)
         this.scene.add(resetText)
+    }
+
+    _createObstacle(){
+        const obstacleGeometry = new THREE.PlaneGeometry(500, 100);
+        const obstacleMaterial = new THREE.MeshBasicMaterial({ color: "#000000", transparent: true, opacity: 0.5 });
+        const obstacle = new THREE.Mesh(obstacleGeometry, obstacleMaterial);
+        obstacle.name = "obstacle"
+        const obstacleText = MyGameState.textWhite.transformString("Obstacle", [100, 100])
+
+        obstacle.position.set(0, -110, 0)
+        obstacleText.position.set(-100, -105, 0)
+
+        this.picking.addPickableObject(obstacle)
+        this.scene.add(obstacle)
+        this.scene.add(obstacleText)
     }
 
     _createExit(){
@@ -96,13 +112,15 @@ class PauseState extends MyGameState {
         exit.name = "exit"
         const exitText = MyGameState.textWhite.transformString("Exit", [100, 100])
 
-        exit.position.set(0, -250, 0)
-        exitText.position.set(-30, -245, 0)
+        exit.position.set(0, -240, 0)
+        exitText.position.set(-30, -235, 0)
 
         this.picking.addPickableObject(exit)
         this.scene.add(exit)
         this.scene.add(exitText)
     }
+
+    
 
     
 }
