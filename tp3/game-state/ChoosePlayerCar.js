@@ -13,12 +13,12 @@ class ChoosePlayerCar extends MyGameState {
         this._displayVehicles()
     }
 
-    _createScene() {
+    createScene() {
         this.circuit = MyCircuit.create(this.stateInfo.circuitPath);
         this.scene = this.circuit.scene;
     }
 
-    _createCameras() {
+    createCameras() {
         this.cameras = this.circuit.cameras
         this.activeCameraName = 'parkingLotCam1'
     }

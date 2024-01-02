@@ -57,7 +57,7 @@ class MyFirework {
         this.points.castShadow = true;
         this.points.receiveShadow = true;
         this.scene.add(this.points)
-        console.log("firework launched")
+        //console.log("firework launched")
     }
 
     explode(vector) {
@@ -97,7 +97,7 @@ class MyFirework {
      * cleanup
      */
     reset() {
-        console.log("firework reseted")
+        //console.log("firework reseted")
         this.scene.remove(this.points)
         this.dest = []
         this.vertices = null

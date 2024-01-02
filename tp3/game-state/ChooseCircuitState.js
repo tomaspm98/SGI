@@ -14,7 +14,7 @@ class ChooseCircuitState extends MyGameState {
         this._createGoBack();
     }
 
-    _createScene() {
+    createScene() {
         const planeGeometry = new THREE.PlaneGeometry(1920, 1080); // Adjust size as needed
         const wallpaper = new THREE.TextureLoader().load("scene/wallpaper.jpg")
         const planeMaterial = new THREE.MeshBasicMaterial({ map: wallpaper });
@@ -28,7 +28,7 @@ class ChooseCircuitState extends MyGameState {
         this.scene.add(title);
     }
 
-    _createCameras() {
+    createCameras() {
         this.cameras = [];
 
         const camera1 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);

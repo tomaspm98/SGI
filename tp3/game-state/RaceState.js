@@ -26,12 +26,12 @@ class RaceState extends MyGameState {
         this.time.start()
     }
 
-    _createScene() {
+    createScene() {
         this.circuit = this.stateInfo.circuit
         this.scene = this.circuit.scene
     }
 
-    _createCameras() {
+    createCameras() {
         this.cameras = this.circuit.cameras
         this.activeCameraName = 'podium'
     }
@@ -183,6 +183,7 @@ class RaceState extends MyGameState {
                 {
                     name: 'result',
                     circuit: this.stateInfo.circuit,
+                    circuitName: this.stateInfo.circuitName,
                     playerVehicle: this.stateInfo.playerVehicle,
                     opponentVehicle: this.stateInfo.opponentVehicle,
                     playerTime: this.playerTime,

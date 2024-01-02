@@ -8,7 +8,7 @@ class InitialState extends MyGameState {
         this.name = "initial";
     }
 
-    _createScene() {
+    createScene() {
         const planeGeometry = new THREE.PlaneGeometry(1920, 1080); // Adjust size as needed
         const wallpaper = new THREE.TextureLoader().load("scene/wallpaper.jpg")
         const planeMaterial = new THREE.MeshBasicMaterial({map: wallpaper});
@@ -48,7 +48,7 @@ class InitialState extends MyGameState {
         this.scene.add(startText);
     }
 
-    _createCameras() {
+    createCameras() {
         this.cameras = [];
 
         const camera1 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);

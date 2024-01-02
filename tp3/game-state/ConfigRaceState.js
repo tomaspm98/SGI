@@ -19,7 +19,7 @@ class ConfigRaceState extends MyGameState {
         this._createNext()
     }
 
-    _createScene() {
+    createScene() {
         const planeGeometry = new THREE.PlaneGeometry(1920, 1080); // Adjust size as needed
         const wallpaper = new THREE.TextureLoader().load("scene/wallpaper.jpg")
         const planeMaterial = new THREE.MeshBasicMaterial({map: wallpaper});
@@ -122,7 +122,7 @@ class ConfigRaceState extends MyGameState {
         this.scene.add(nextText)
     }
 
-    _createCameras() {
+    createCameras() {
         this.cameras = [];
 
         const camera1 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);

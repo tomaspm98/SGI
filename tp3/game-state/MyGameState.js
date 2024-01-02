@@ -15,18 +15,30 @@ class MyGameState {
         this.stateInfo = stateInfo;
 
         
-        this._createScene()
-        this._createCameras()
+        this.createSceneWrapper()
+        this.createCamerasWrapper()
         this._createDocumentListeners()
     }
 
     update() {
     }
 
-    _createScene() {
+    createSceneWrapper() {
+        this.createScene()
+        this.scene = this.scene.clone()
     }
 
-    _createCameras() {
+    createCamerasWrapper() {
+        this.createCameras()
+        for(let cameraName in this.cameras) {
+            this.scene.add(this.cameras[cameraName])
+        }
+    }
+    
+    createScene() {
+    }
+    
+    createCameras() {
     }
     
     _createDocumentListeners() {

@@ -12,13 +12,13 @@ class ChooseOpponentCar extends MyGameState {
         this._displayVehicles()
     }
 
-    _createScene() {
+    createScene() {
         this.circuit = this.stateInfo.circuit;
         this.scene = this.circuit.scene;
         this.vehicles = this.stateInfo.vehicles;
     }
 
-    _createCameras() {
+    createCameras() {
         this.cameras = this.circuit.cameras
         this.activeCameraName = 'parkingLotCam2'
     }

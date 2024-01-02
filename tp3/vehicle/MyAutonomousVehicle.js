@@ -113,8 +113,8 @@ class MyAutonomousVehicle extends MyVehicle {
             }
         }
 
-        console.log(this.kf_arrays)
-        console.log(kf)
+        //console.log(this.kf_arrays)
+        //console.log(kf)
 
         for (let i = 0; i < kf.length / 3; i++) {
 
