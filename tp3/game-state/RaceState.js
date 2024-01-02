@@ -2,7 +2,7 @@ import {MyGameState} from "./MyGameState.js"
 import {collisionDetection, checkVehicleOnTrack, checkCollisionVehicleOnVehicle} from "../collisions/collisions.js"
 import {MyAutonomousVehicle} from "../vehicle/MyAutonomousVehicle.js";
 import {MyControllableVehicle} from "../vehicle/MyControllableVehicle.js";
-import {MyClock} from "../../MyClock.js";
+import {MyClock} from "../MyClock.js";
 
 import * as THREE from 'three'
 
