@@ -32,20 +32,20 @@ class MyAutonomousVehicle extends MyVehicle {
     adaptDifficulty(difficulty) {
         switch (difficulty) {
             case 'easy':
-                this.timeScale = 1;
+                this.velocity = 10;
                 break;
             case 'medium':
-                this.timeScale = 2;
+                this.velocity = 20;
                 break;
             case 'hard':
-                this.timeScale = 3;
+                this.velocity = 30;
                 break;
             default:
                 throw new Error(`Invalid difficulty: ${difficulty}`);
         }
 
-        this.timeScale = 2;
-        this.actualSpeed = 1 / (2 * this.timeScale);
+        this.velocity = 30;
+        this.actualSpeed = 1 / (2 * this.velocity);
     }
 
     update() {
@@ -118,7 +118,7 @@ class MyAutonomousVehicle extends MyVehicle {
 
         for (let i = 0; i < kf.length / 3; i++) {
 
-            times.push(i * this.timeScale)
+            times.push(i * this.velocity)
         }
 
         for (let i = 0; i <= 1; i += 1 / 132) {
@@ -129,8 +129,10 @@ class MyAutonomousVehicle extends MyVehicle {
         this.angleVariation = 0;
         for (let i = 0; i < tangents.length; i++) {
             if (i === 0) {
-                qf.push(0, 0, 0, 1)
-                this.angleVariations.push(0)
+                let axis = new THREE.Vector3(0, 1, 0); // You may need to adjust the axis based on your specific scenario
+                let quaternion = new THREE.Quaternion().setFromAxisAngle(axis, 0.129);
+                qf.push(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+                this.angleVariations.push(0.129)
             } else {
                 this.angleVariation += Utils.calculateAngleVariation(tangents[i - 1], tangents[i]);
                 this.angleVariations.push(Utils.calculateAngleVariation(tangents[i - 1], tangents[i]))
@@ -171,22 +173,20 @@ class MyAutonomousVehicle extends MyVehicle {
             }
         }
 
+        console.log(this.kf_arrays)
+
         let new_times = [];
         for (let i = 0; i < this.kf_arrays.length; i++) {
-            if (i === this.kf_arrays.length - 1) {
-                if (Utils.distance(this.kf_arrays[i], this.kf_arrays[0]) > 30) {
-                    new_times.push(new_times[i-1]+(2*this.timeScale)); // Double the time
-                } else {
-                    new_times.push(new_times[i-1]+this.timeScale);
-                }
-            } else if (i === 0) {
+            if (i === 0) {
                 new_times.push(0);
-            } else if (Utils.distance(this.kf_arrays[i], this.kf_arrays[i + 1]) > 30) {
-                new_times.push(new_times[i-1]+(2*this.timeScale)); // Double the time
             } else {
-                new_times.push(new_times[i-1]+this.timeScale);
+                const distance = Utils.distance(this.kf_arrays[i - 1], this.kf_arrays[i]);
+                new_times.push(new_times[i - 1] + (distance / this.velocity));
             }
         }
+
+        console.log(this.kf_arrays)
+        console.log(new_times)
 
         let new_kf=[]
         for (let i = 0; i < this.kf_arrays.length; i++) {
