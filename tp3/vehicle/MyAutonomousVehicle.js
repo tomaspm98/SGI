@@ -148,7 +148,10 @@ class MyAutonomousVehicle extends MyVehicle {
         }*/
 
         //console.log(this.angleVariations)
-
+        //correction
+        for (let i=0;i<this.kf_arrays.length;i++){
+            this.kf_arrays[i][1]=0.2;
+        }
         for (let i = 0; i < this.kf_arrays.length; i++) {
             //console.log(i,this.kf_arrays.length)
             if (i>=this.kf_arrays.length-1){
