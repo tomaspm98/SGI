@@ -38,7 +38,7 @@ class MyAutonomousVehicle extends MyVehicle {
                 this.velocity = 30;
                 break;
             case 'hard':
-                this.velocity = 40;
+                this.velocity = 100;
                 break;
             default:
                 throw new Error(`Invalid difficulty: ${difficulty}`);

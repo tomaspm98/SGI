@@ -2,6 +2,7 @@ import {MyGameState} from "./MyGameState.js"
 import {collisionDetection, checkVehicleOnTrack, checkCollisionVehicleOnVehicle} from "../collisions/collisions.js"
 import {MyAutonomousVehicle} from "../vehicle/MyAutonomousVehicle.js";
 import {MyControllableVehicle} from "../vehicle/MyControllableVehicle.js";
+import {MyClock} from "../../MyClock.js";
 
 import * as THREE from 'three'
 
@@ -24,7 +25,7 @@ class RaceState extends MyGameState {
         this.playerFinished = false
         this.opponentFinished = false
 
-        this.time = new THREE.Clock()
+        this.time = new MyClock()
         this.time.start()
     }
 
@@ -214,6 +215,14 @@ class RaceState extends MyGameState {
                     vehicles: this.stateInfo.vehicles
                 })
         }
+    }
+    
+    reset() {
+        this.time.pause()
+    }
+    
+    unpause() {
+        this.time.resume()
     }
 }
 

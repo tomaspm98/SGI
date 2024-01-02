@@ -98,9 +98,9 @@ class ResultState extends MyGameState {
     }
 
     _convertThreeTime(time) {
-        const minutes = Math.floor(time / 60)
-        const seconds = Math.floor(time % 60)
-        const milliseconds = Math.floor(time * 1000 % 1000)
+        const minutes = Math.floor(time / 60000)
+        const seconds = Math.floor((time / 1000) % 60)
+        const milliseconds = Math.floor(time % 1000)
         return [minutes, seconds, milliseconds]
     }
 

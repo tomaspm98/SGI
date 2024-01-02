@@ -34,6 +34,7 @@ class MyGameStateManager {
 
         this.actualState = this.savedStates.pop();
         this.actualState.startDocumentListeners();
+        this.actualState.unpause()
 
         this.updateApp()
     }
@@ -47,6 +48,7 @@ class MyGameStateManager {
                 this.actualState = this.savedStates[i];
                 this.savedStates = newSavedStates;
                 this.actualState.startDocumentListeners();
+                this.actualState.unpause()
                 this.updateApp()
                 return
             }

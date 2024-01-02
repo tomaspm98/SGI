@@ -77,6 +77,9 @@ class MyGameState {
     reset(){
 
     }
+    
+    unpause(){
+    }
 }
 
 export {MyGameState}
