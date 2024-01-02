@@ -32,7 +32,8 @@ class MyGameStateManager {
 
     goBack() {
         this.actualState.stopDocumentListeners();
-
+        this.actualState.reset()
+        
         this.actualState = this.savedStates.pop();
         this.actualState.startDocumentListeners();
         this.actualState.unpause()

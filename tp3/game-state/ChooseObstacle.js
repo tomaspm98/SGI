@@ -92,10 +92,10 @@ class ChooseObstacle extends MyGameState {
 
         const bbTrack = new THREE.Box3().setFromObject(this.circuit.track.mesh)
 
-        let sensorMesh = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 2))
+        let sensorMesh = new THREE.Mesh(new THREE.BoxGeometry(5, 0.1, 5))
 
-        for (let x = bbTrack.min.x; x < bbTrack.max.x; x += 2) {
-            for (let z = bbTrack.min.z; z < bbTrack.max.z; z += 2) {
+        for (let x = bbTrack.min.x; x < bbTrack.max.x; x += 5) {
+            for (let z = bbTrack.min.z; z < bbTrack.max.z; z += 5) {
                 const sensor = sensorMesh.clone()
                 sensor.position.set(x, 0, z)
                 sensor.visible = false
@@ -110,9 +110,7 @@ class ChooseObstacle extends MyGameState {
 
     reset() {
         this.circuit.scene.remove(this.obstacles)
-        this.trackSensors.forEach(sensor => {
-            this.circuit.scene.remove(sensor)
-        })
+        this.trackSensors.forEach(sensor => this.circuit.scene.remove(sensor))
     }
     
     putObstacle(pos) {
