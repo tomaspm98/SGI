@@ -12,6 +12,7 @@ class ChooseObstacle extends MyGameState {
         this.picking = new MyPicking([], 0, 200, this.getActiveCamera(), this.handlePicking.bind(this), this.resetPickedObject.bind(this), ["pointerdown", "pointermove"]);
         this.picking.updateLayer(0)
         this.displayObstacles()
+        this.clock = new THREE.Clock()
     }
 
     createScene() {
@@ -57,9 +58,15 @@ class ChooseObstacle extends MyGameState {
             this.state = "pickingPosition"
             this.createTrackSensors()
         } else if (event.type === "pointerdown" && this.state === "pickingPosition") {
-            this.putObstacle(object.position)
+            console.log(this.selectedObstacle)
+            console.log(object)
+            this.animation(object)
+            setTimeout(() => {
+                this.putObstacle(object.position)
+            }, 7200);
         }
     }
+    
 
     resetPickedObject(object) {
         object.traverse(child => {
@@ -121,6 +128,37 @@ class ChooseObstacle extends MyGameState {
         this.circuit.rTree.insert(newObstacle)
         this.circuit.scene.add(newObstacle.mesh)
         this.gameStateManager.goBack()
+    }
+
+    animation(object){
+        let kf = []
+
+        kf.push(...this.selectedObstacle.position)
+        kf.push(this.selectedObstacle.position.x, this.selectedObstacle.position.y+20, this.selectedObstacle.position.z)
+        kf.push(object.position.x, object.position.y+20, object.position.z)
+        kf.push(object.position.x, object.position.y+0.5, object.position.z)
+
+        let times=[]
+        times.push(0)
+        times.push(1)
+        times.push(5)
+        times.push(6)
+
+        console.log(kf)
+
+        const positionKF = new THREE.VectorKeyframeTrack('.position', times, kf, THREE.InterpolateLinear);
+        this.mixer = new THREE.AnimationMixer(this.selectedObstacle);
+        console.log(this.selectedObstacle)
+        this.clip = new THREE.AnimationClip('positionAnimation', 10, [positionKF]);
+        const action = this.mixer.clipAction(this.clip);
+        action.play();
+    }
+
+    update(){
+        const delta = this.clock.getDelta(); 
+        if (this.mixer) {
+            this.mixer.update(delta);
+        }
     }
 }
 
