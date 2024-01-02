@@ -38,7 +38,7 @@ class MyAutonomousVehicle extends MyVehicle {
                 this.timeScale = 2;
                 break;
             case 'hard':
-                this.timeScale = 3;
+                this.timeScale = 7;
                 break;
             default:
                 throw new Error(`Invalid difficulty: ${difficulty}`);

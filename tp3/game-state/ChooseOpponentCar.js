@@ -49,7 +49,7 @@ class ChooseOpponentCar extends MyGameState {
         if (event.type === "pointerdown") {
             this._removeVehiclesScene()
             this.gameStateManager.changeState({
-                name: "raceState",
+                name: "race",
                 circuit: this.circuit,
                 vehicles: this.vehicles,
                 playerVehicle: this.stateInfo.playerVehicle,

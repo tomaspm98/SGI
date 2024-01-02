@@ -6,7 +6,6 @@ import {MyPicking} from "../MyPicking.js";
 class ResultState extends MyGameState {
     constructor(gameStateManager, stateInfo) {
         super(gameStateManager, stateInfo)
-        console.log(stateInfo)
         this.name = "result"
         this.picking = new MyPicking([], 0, 50, this.getActiveCamera(), this.handlePicking.bind(this), this.resetPickedObject.bind(this), ["pointerdown", "pointermove"])
         this.displayResults()
@@ -119,8 +118,8 @@ class ResultState extends MyGameState {
         if(event.type === "pointermove"){
             object.material.color.setHex(0x005ba6)
         }else if(event.type === "pointerdown" && object.name === "restart"){
-            this.gameStateManager.goBackToAndReplace("raceState", {
-                name: "raceState",
+            this.gameStateManager.goBackToAndReplace("race", {
+                name: "race",
                 circuit: this.stateInfo.circuit,
                 vehicles: this.stateInfo.vehicles,
                 playerVehicle: this.stateInfo.playerVehicle,

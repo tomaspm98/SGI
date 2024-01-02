@@ -51,7 +51,6 @@ class MyGameStateManager {
     }
     
     goBackToAndReplace(nameState, newStateInfo) {
-        console.log("HELLO")
         const newSavedStates = []
         for(let i = 0; i < this.savedStates.length; i++) {
             if(this.savedStates[i].name === nameState) {
@@ -78,7 +77,7 @@ class MyGameStateManager {
                 return new ChoosePlayerCar(this, stateInfo);
             case "chooseOpponentCar":
                 return new ChooseOpponentCar(this, stateInfo);
-            case "raceState":
+            case "race":
                 return new RaceState(this, stateInfo);
             case "result":
                 return new ResultState(this, stateInfo);

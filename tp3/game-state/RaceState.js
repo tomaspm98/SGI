@@ -15,11 +15,10 @@ class RaceState extends MyGameState {
         this._createPovCameras()
         this.setCheckPointsInfo()
 
-        console.log(this.stateInfo)
 
         //TODO: Change this
-        this.playerLap = 1
-        this.opponentLap = 0
+        this.playerLap = 0
+        this.opponentLap = 1
 
         this.playerFinished = false
         this.opponentFinished = false
