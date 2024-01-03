@@ -648,15 +648,20 @@ class MyCircuitReader {
 		this.data.setSkybox(this.loadXmlItem({ elem: elem, descriptor: this.data.descriptors["skybox"], extras: [["type", "skybox"]] }))
 	}
 
+	/**
+	 * Load track element
+	 * @param {*} rootElement the root element to load track from
+	 */
+
 	loadTrack(rootElement) {
 		let elem = this.getAndCheck(rootElement, 'track')
 		this.data.setTrack(this.loadXmlItem({ elem: elem, descriptor: this.data.descriptors["track"], extras: [["type", "track"]] }))
 
 	}
 
-	/*
+	/**
 	 * Load fog element
-	 * 
+	 * @param {*} rootElement the root element to load fog from
 	 */
 	loadFog(rootElement) {
 		let elem = this.getAndCheck(rootElement, 'fog', 0, 1)
@@ -666,7 +671,7 @@ class MyCircuitReader {
 
 	/**
 	 * Load the textures element
-	 * @param {*} rootElement 
+	 * @param {*} rootElement  the root element to load textures from
 	 */
 	loadTextures(rootElement) {
 
@@ -676,7 +681,7 @@ class MyCircuitReader {
 
 	/**
 	 * Load the materials element
-	 * @param {*} rootElement 
+	 * @param {*} rootElement  the root element to load materials from
 	 */
 	loadMaterials(rootElement) {
 
@@ -684,11 +689,21 @@ class MyCircuitReader {
 		this.loadXmlItems(elem, 'material', this.data.descriptors["material"], [["type", "material"]], this.data.addMaterial)
 	}
 
+	/**
+	 * Loads activatable elements from the specified root element.
+	 * 
+	 * @param {Element} rootElement - The root element to load activatables from.
+	 */
 	loadActivatables(rootElement) {
 		let elem = this.getAndCheck(rootElement, 'activatables')
 		this.loadXmlItems(elem, 'powerup', this.data.descriptors["powerup"], [["type", "powerup"]], this.data.addActivatable)
 		this.loadXmlItems(elem, 'obstacle', this.data.descriptors["obstacle"], [["type", "obstacle"]], this.data.addActivatable)
 	}
+
+	/**
+	 * Load slots element
+	 * @param {*} rootElement 
+	 */
 
 	loadSlots(rootElement) {
 		let elem = this.getAndCheck(rootElement, 'slots')

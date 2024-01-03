@@ -1,4 +1,7 @@
 class MyClock {
+    /**
+     * Creates an instance of MyClock.
+     */
     constructor() {
         this.startTime = 0;
         this.pauseTime = 0;
@@ -6,6 +9,9 @@ class MyClock {
         this.isRunning = false;
     }
 
+    /**
+     * Starts the clock.
+     */
     start() {
         if (!this.isRunning) {
             this.startTime = performance.now();
@@ -15,6 +21,9 @@ class MyClock {
         }
     }
 
+    /**
+     * Pauses the clock.
+     */
     pause() {
         if (this.isRunning) {
             this.pauseTime = performance.now();
@@ -22,6 +31,9 @@ class MyClock {
         }
     }
 
+    /**
+     * Resumes the clock after being paused.
+     */
     resume() {
         if (!this.isRunning) {
             this.timePaused += performance.now() - this.pauseTime;
@@ -29,6 +41,11 @@ class MyClock {
         }
     }
 
+    /**
+     * Gets the elapsed time in milliseconds.
+     * @returns {number} The elapsed time.
+     * @throws {Error} If the clock is not running.
+     */
     getElapsedTime() {
         if (this.isRunning) {
             return performance.now() - this.startTime - this.timePaused
@@ -37,6 +54,9 @@ class MyClock {
         }
     }
 
+    /**
+     * Resets the clock to its initial state.
+     */
     reset() {
         this.startTime = 0;
         this.pauseTime = 0;

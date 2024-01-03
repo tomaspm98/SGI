@@ -2,12 +2,28 @@ import {MyVehicleRenderer} from './parser/MyVehicleRenderer.js'
 import {MyOBB} from '../collisions/MyOBB.js'
 
 class MyVehicle {
+    /**
+     * Creates an instance of MyVehicle from a file using MyVehicleRenderer.
+     * @param {string} file - The file path or content representing the vehicle.
+     * @returns {MyVehicle} - The vehicle instance.
+     */
     static create(file) {
         const vehicleRenderer = new MyVehicleRenderer()
         const [mesh, specs] = vehicleRenderer.render(file)
         return new MyVehicle(mesh, specs.name, specs.topSpeed, specs.minSpeed, specs.acceleration, specs.deceleration, specs.turnRate, specs.brakingRate)
     }
 
+    /**
+     * Constructs an instance of MyVehicle.
+     * @param {THREE.Mesh} mesh - The mesh representing the vehicle.
+     * @param {string} name - The name of the vehicle.
+     * @param {number} topSpeed - The top speed of the vehicle.
+     * @param {number} minSpeed - The minimum speed of the vehicle.
+     * @param {number} accelerationRate - The acceleration rate of the vehicle.
+     * @param {number} coastingRate - The coasting rate of the vehicle.
+     * @param {number} turnRate - The turn rate of the vehicle.
+     * @param {number} brakingRate - The braking rate of the vehicle.
+     */
     constructor(mesh, name, topSpeed, minSpeed, accelerationRate, coastingRate, turnRate, brakingRate) {
         // Variables that describe the vehicle
         this.mesh = mesh
@@ -30,6 +46,11 @@ class MyVehicle {
         this.obb = new MyOBB(this.mesh)
     }
 
+    /**
+     * Translates the child meshes of the vehicle group to the center of the wheels.
+     * This allows the vehicle to rotate around its center.
+     * @private
+     */
     _translateToPivotPoint() {
         // This function translates the child meshes of vehicle group
         // to the center of the wheels
@@ -48,6 +69,9 @@ class MyVehicle {
         }
     }
 
+    /**
+     * Creates important nodes for wheels and lights.
+     */
     _createImportantNodes() {
         this.importantNodes = {}
         this.importantNodes.wheelFL = this.mesh.getObjectByName('wheelFL')
@@ -76,6 +100,10 @@ class MyVehicle {
         }
     }
 
+    /**
+     * Sets the position of the vehicle.
+     * @param {Object} pos - The position object {x, y, z}.
+     */
     setPosition(pos) {
         this.mesh.position.setX(pos.x)
         this.mesh.position.setZ(pos.z)
@@ -86,6 +114,10 @@ class MyVehicle {
         this.obb.update(this.mesh.matrixWorld)
     }
 
+    /**
+     * Sets the rotation of the vehicle.
+     * @param {number} rot - The rotation angle in radians.
+     */
     setRotation(rot) {
         this.mesh.rotation.y = rot
         this.actualRotationVehicle = rot

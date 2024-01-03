@@ -3,6 +3,11 @@ import { MyPicking } from "../MyPicking.js";
 import * as THREE from 'three';
 
 class ChooseCircuitState extends MyGameState {
+    /**
+     * Constructs an instance of ChooseCircuitState.
+     * @param {MyGameStateManager} gameStateManager - The game state manager.
+     * @param {Object} stateInfo - Additional information for the state.
+     */
     constructor(gameStateManager, stateInfo) {
         super(gameStateManager, stateInfo);
         this.name = "chooseMap";
@@ -14,6 +19,9 @@ class ChooseCircuitState extends MyGameState {
         this._createGoBack();
     }
 
+     /**
+     * Creates the scene for the ChooseCircuitState.
+     */
     createScene() {
         const planeGeometry = new THREE.PlaneGeometry(1920, 1080); // Adjust size as needed
         const wallpaper = new THREE.TextureLoader().load("scene/wallpaper.jpg")
@@ -28,6 +36,9 @@ class ChooseCircuitState extends MyGameState {
         this.scene.add(title);
     }
 
+    /**
+     * Creates cameras for ChooseCircuitState.
+     */
     createCameras() {
         this.cameras = [];
 
@@ -41,6 +52,11 @@ class ChooseCircuitState extends MyGameState {
         this.activeCameraName = "Perspective";
     }
 
+    /**
+     * Opens and parses a JSON file.
+     * @param {string} file - The path to the JSON file.
+     * @returns {Object[]} The parsed JSON data.
+     */
     _openJSON(file) {
         let request = new XMLHttpRequest();
         request.open('GET', file, false);
@@ -53,6 +69,9 @@ class ChooseCircuitState extends MyGameState {
         }
     }
 
+    /**
+     * Displays circuits in the scene and adds them to the picking system.
+     */
     _displayCircuits() {
         let row, col
         for (let i = 0; i < this.circuits.length && i < 6; i++) {
@@ -75,6 +94,11 @@ class ChooseCircuitState extends MyGameState {
         }
     }
 
+    /**
+     * Handles object picking events.
+     * @param {Object} object - The picked object.
+     * @param {PointerEvent} event - The pointer event.
+     */
     handlePicking(object, event) {
         if (event.type === "pointerdown") {
             if (object.name === "goBack") {
@@ -87,10 +111,17 @@ class ChooseCircuitState extends MyGameState {
         }
     }
 
+    /**
+     * Resets the opacity of the picked object.
+     * @param {Object} object - The picked object.
+     */
     resetPickedObject(object) {
         object.material.opacity = 0.5;
     }
 
+    /**
+     * Creates the "Go Back" button.
+     */
     _createGoBack() {
         const goBackGeometry = new THREE.PlaneGeometry(100, 100);
         const goBackMaterial = new THREE.MeshBasicMaterial({ color: "#000000", transparent: true, opacity: 0.5 });

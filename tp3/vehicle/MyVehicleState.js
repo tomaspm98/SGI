@@ -3,12 +3,18 @@ class MyVehicleState {
         this.vehicle = vehicle;
     }
 
+    /**
+     * Accelerates the vehicle if the acceleration key is pressed.
+     */
     accelerate() {
         if (this.vehicle.accelerating) {
             this.vehicle.actualSpeed = Math.min(this.vehicle.actualSpeed + this.vehicle.accelerationRate, this.vehicle.topSpeed)
         }
     }
 
+    /**
+     * Adjusts the speed when braking or reversing.
+     */
     brake() {
         if (this.vehicle.braking && this.vehicle.actualSpeed > 0) {
             this.vehicle.actualSpeed = Math.max(this.vehicle.actualSpeed - this.vehicle.brakingRate, 0)
@@ -17,12 +23,18 @@ class MyVehicleState {
         }
     }
 
+    /**
+     * Reverses the vehicle if the reverse key is pressed.
+     */
     reverse() {
         if (this.vehicle.reversing) {
             this.vehicle.actualSpeed = Math.max(this.vehicle.actualSpeed - this.vehicle.accelerationRate, this.vehicle.minSpeed)
         }
     }
 
+    /**
+     * Handles left turns.
+     */
     turnLeft() {
         if (this.vehicle.turningLeft) {
             this.vehicle.actualRotationWheel = Math.max(- this.vehicle.turnRate * 2 + this.vehicle.actualRotationWheel, -0.7)
@@ -35,6 +47,9 @@ class MyVehicleState {
         }
     }
 
+    /**
+     * Handles right turns.
+     */
     turnRight() {
         if (this.vehicle.turningRight) {
             this.vehicle.actualRotationWheel = Math.min(this.vehicle.turnRate * 2 + this.vehicle.actualRotationWheel, 0.7)
@@ -47,6 +62,9 @@ class MyVehicleState {
         }
     }
 
+    /**
+     * Simulates coasting when no acceleration, braking, or reversing keys are pressed.
+     */
     coast() {
         if (this.vehicle.coasting) {
             this.vehicle.actualSpeed += this.vehicle.coastingRate * - Math.sign(this.vehicle.actualSpeed)
@@ -57,6 +75,9 @@ class MyVehicleState {
         }
     }
 
+    /**
+     * Resets the wheel rotation when not turning.
+     */
     resetWheel() {
         if (!this.vehicle.turningLeft && !this.vehicle.turningRight) {
             if (this.vehicle.actualRotationWheel > 0) {
@@ -67,6 +88,9 @@ class MyVehicleState {
         }
     }
 
+    /**
+     * Updates the state of the vehicle based on user input and other factors.
+     */
     update() {
         this.accelerate()
         this.brake()

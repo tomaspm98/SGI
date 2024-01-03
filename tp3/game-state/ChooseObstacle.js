@@ -5,6 +5,11 @@ import {createActivatable} from "../circuit/parser/utils.js";
 import * as THREE from "three";
 
 class ChooseObstacle extends MyGameState {
+    /**
+     * Constructs an instance of ChooseObstacle.
+     * @param {MyGameStateManager} gameStateManager - The game state manager.
+     * @param {Object} stateInfo - Additional information for the state.
+     */
     constructor(gameStateManager, stateInfo) {
         super(gameStateManager, stateInfo);
         this.name = "chooseOpponentCar";
@@ -15,16 +20,25 @@ class ChooseObstacle extends MyGameState {
         this.clock = new THREE.Clock()
     }
 
+    /**
+     * Creates the scene for ChooseObstacle.
+     */
     createScene() {
         this.circuit = this.stateInfo.circuit;
         this.scene = this.circuit.scene;
     }
 
+    /**
+     * Creates cameras for ChooseObstacle.
+     */
     createCameras() {
         this.cameras = this.circuit.cameras
         this.activeCameraName = 'parkingLotCam3'
     }
 
+    /**
+     * Displays obstacles in the scene and adds them to the picking system.
+     */
     displayObstacles() {
         this.avaibleSlots = this.circuit.slots.filter(slot => slot.object === "parkingLot3")
         this.obstacles = new THREE.Group()
@@ -43,6 +57,11 @@ class ChooseObstacle extends MyGameState {
         this.scene.add(this.obstacles)
     }
 
+    /**
+     * Handles object picking events.
+     * @param {Object} object - The picked object.
+     * @param {PointerEvent} event - The pointer event.
+     */
     handlePicking(object, event) {
         if (event.type === "pointermove" && this.state === "pickingObstacle") {
             object.traverse((child) => {
@@ -68,6 +87,10 @@ class ChooseObstacle extends MyGameState {
     }
     
 
+    /**
+     * Resets the appearance of the picked object.
+     * @param {Object} object - The picked object.
+     */
     resetPickedObject(object) {
         object.traverse(child => {
             if (child.material) {
@@ -78,6 +101,9 @@ class ChooseObstacle extends MyGameState {
     }
 
 
+    /**
+     * Creates document listeners for key events.
+     */
     _createDocumentListeners() {
         this.listeners.push({
             type: 'keydown',
@@ -85,12 +111,19 @@ class ChooseObstacle extends MyGameState {
         })
     }
 
+    /**
+     * Handles key events for navigation.
+     * @param {KeyboardEvent} event - The keyboard event.
+     */
     keyHandler(event) {
         if (event.code === "KeyB" && event.type === "keydown") {
             this.gameStateManager.goBack()
         }
     }
 
+    /**
+     * Creates track sensors for obstacle placement.
+     */
     createTrackSensors() {
         this.changeActiveCamera("general")
         this.picking.updateLayer(1)
@@ -115,11 +148,19 @@ class ChooseObstacle extends MyGameState {
         }
     }
 
+    
+    /**
+     * Resets the ChooseObstacle state.
+     */
     reset() {
         this.circuit.scene.remove(this.obstacles)
         this.trackSensors.forEach(sensor => this.circuit.scene.remove(sensor))
     }
     
+    /**
+     * Places the selected obstacle in the scene.
+     * @param {Vector3} pos - The position to place the obstacle.
+     */
     putObstacle(pos) {
         console.log("Adding obstacle")
         console.log(pos)
@@ -130,6 +171,10 @@ class ChooseObstacle extends MyGameState {
         this.gameStateManager.goBack()
     }
 
+     /**
+     * Initiates the animation for obstacle placement.
+     * @param {Object} object - The target object for the animation.
+     */
     animation(object){
         let kf = []
 
@@ -154,6 +199,9 @@ class ChooseObstacle extends MyGameState {
         action.play();
     }
 
+    /**
+     * Updates the state.
+     */
     update(){
         const delta = this.clock.getDelta(); 
         if (this.mixer) {

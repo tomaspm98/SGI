@@ -2,6 +2,11 @@ import { MyCircuitRenderer } from "./parser/MyCircuitRenderer.js";
 import { MyRTree } from '../collisions/MyRTree.js';
 
 class MyCircuit {
+    /**
+     * Creates a new circuit.
+     * @param {*} filePath - The path to the circuit file. 
+     * @returns A new circuit.
+     */
     static create(filePath) {
         const renderer = new MyCircuitRenderer();
         const [circuitScene, activatables, track, cameras, slots] = renderer.render(filePath);

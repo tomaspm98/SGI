@@ -14,6 +14,9 @@ class MyActivatable {
         this.active = false
     }
 
+    /**
+     * Function to construct the mesh of the activatable.
+     */
     draw() {
         this.mesh = this._constructMesh()
         this.mesh.position.setX(this.position[0])
@@ -22,6 +25,10 @@ class MyActivatable {
         this.mesh.scale.set(...this.scale)
     }
 
+    /**
+     * Funtion to activate the effect of the activatable on the vehicle
+     * @param {*} vehicle - The vehicle with the effect on.
+     */
     activate(vehicle) {
         if (!this.active) {
             this.active = true
