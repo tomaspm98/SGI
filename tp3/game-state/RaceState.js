@@ -1,9 +1,9 @@
-import {MyGameState} from "./MyGameState.js"
-import {collisionDetection, checkVehicleOnTrack, checkCollisionVehicleOnVehicle} from "../collisions/collisions.js"
-import {MyAutonomousVehicle} from "../vehicle/MyAutonomousVehicle.js";
-import {MyControllableVehicle} from "../vehicle/MyControllableVehicle.js";
-import {MyClock} from "../MyClock.js";
-import {MyShader} from "../circuit/MyShader.js";
+import { MyGameState } from "./MyGameState.js"
+import { collisionDetection, checkVehicleOnTrack, checkCollisionVehicleOnVehicle } from "../collisions/collisions.js"
+import { MyAutonomousVehicle } from "../vehicle/MyAutonomousVehicle.js";
+import { MyControllableVehicle } from "../vehicle/MyControllableVehicle.js";
+import { MyClock } from "../MyClock.js";
+import { MyShader } from "../circuit/MyShader.js";
 
 import * as THREE from 'three'
 
@@ -57,34 +57,34 @@ class RaceState extends MyGameState {
     createScene() {
         this.circuit = this.stateInfo.circuit
 
-        const textureScreen = new THREE.TextureLoader().load('scene/ferrari.jpg' )
+        const textureScreen = new THREE.TextureLoader().load('scene/ferrari.jpg')
         textureScreen.wrapS = THREE.RepeatWrapping;
         textureScreen.wrapT = THREE.RepeatWrapping;
-        
-        const textureScreenBW = new THREE.TextureLoader().load('scene/ferrari_bump.jpg' )
+
+        const textureScreenBW = new THREE.TextureLoader().load('scene/ferrari_bump.jpg')
 
 
         this.shaderDisplay = new MyShader('Displacement Shader',
-        'circuit/shaders/bump.vert', 'circuit/shaders/bump.frag', {
+            'circuit/shaders/bump.vert', 'circuit/shaders/bump.frag', {
             uTexture: { type: 'sampler2D', value: textureScreen },
             lgrayTexture: { type: 'sampler2D', value: textureScreenBW },
-            normScale: { type: 'f', value: 0.1 },
-                blendScale: { type: 'f', value: 0.5 },
-                timeFactor: { type: 'f', value: 0.0 },
-                resolution: { type: 'vec2', value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+            normScale: { type: 'f', value: 0.9 },
+            blendScale: { type: 'f', value: 0.5 },
+            timeFactor: { type: 'f', value: 0.0 },
+            resolution: { type: 'vec2', value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
         })
 
         this.shaderDisplay.onMaterialReady = (material) => {
-            for (let i=0;i<this.circuit.scene.children.length;i++){
-            if (this.circuit.scene.children[i].name == "scenario"){
-                for (let j=0;j<this.circuit.scene.children[i].children.length;j++){
-                    if (this.circuit.scene.children[i].children[j].name == "screenFull"){
-                        this.circuit.scene.children[i].children[j].children[0].children[0].material = material;
-                        this.circuit.scene.children[i].children[j].children[0].children[0].material.needsUpdate = true;
+            for (let i = 0; i < this.circuit.scene.children.length; i++) {
+                if (this.circuit.scene.children[i].name == "scenario") {
+                    for (let j = 0; j < this.circuit.scene.children[i].children.length; j++) {
+                        if (this.circuit.scene.children[i].children[j].name == "screenFull") {
+                            this.circuit.scene.children[i].children[j].children[0].children[0].material = material;
+                            this.circuit.scene.children[i].children[j].children[0].children[0].material.needsUpdate = true;
+                        }
+                    }
                 }
-        }
-    }
-}
+            }
         }
 
         this.scene = this.circuit.scene
@@ -111,10 +111,10 @@ class RaceState extends MyGameState {
         this.opponentVehicle = MyAutonomousVehicle.fromVehicle(this.stateInfo.vehicles[this.stateInfo.opponentVehicle], this.circuit.track.pointsGeoJSON, this.circuit.track._getPath(), this.stateInfo.difficulty)
 
         this.vehiclePlayer.setRotation(slots[0].rotation)
-        this.vehiclePlayer.setPosition({x: slots[0].position[0], y: slots[0].position[1], z: slots[0].position[2]})
+        this.vehiclePlayer.setPosition({ x: slots[0].position[0], y: slots[0].position[1], z: slots[0].position[2] })
 
         this.opponentVehicle.setRotation(slots[1].rotation)
-        this.opponentVehicle.setPosition({x: slots[1].position[0], y: slots[1].position[1], z: slots[1].position[2]})
+        this.opponentVehicle.setPosition({ x: slots[1].position[0], y: slots[1].position[1], z: slots[1].position[2] })
 
         this.scene.add(this.vehiclePlayer.mesh)
         this.scene.add(this.opponentVehicle.mesh)
@@ -238,32 +238,31 @@ class RaceState extends MyGameState {
 
         let t = this.imageClock.getElapsedTime()
 
-        if(this.imageClock.getElapsedTime() > 50){
+        if (this.imageClock.getElapsedTime() > 50) {
             this.imageClock.stop();
             this.imageClock.start();
-            
+
             //const renderDepth = new THREE.DepthTexture();
             const renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
             renderTarget.depthTexture = new THREE.DepthTexture();
             this.gameStateManager.app.renderer.setRenderTarget(renderTarget)
             this.gameStateManager.app.renderer.render(this.gameStateManager.app.scene, this.gameStateManager.app.activeCamera);
             this.gameStateManager.app.renderer.setRenderTarget(null)
-            
+
             const texture = renderTarget.texture;
             const depthTexture = renderTarget.depthTexture;
-            
+
             this.shaderDisplay.updateUniformsValue("lgrayTexture", depthTexture);
             this.shaderDisplay.updateUniformsValue("uTexture", texture);
-            this.shaderDisplay.updateUniformsValue("timeFactor", t);
         }
 
 
-        for (let i=0;i<this.circuit.rTree.map.length;i++) {
+        for (let i = 0; i < this.circuit.rTree.map.length; i++) {
             if (this.circuit.rTree.map[i].mesh.name === '2') {
                 this.circuit.rTree.map[i].update();
+            }
         }
-    }
-        
+
         this.updateHud()
         this.isGameOver();
     }
@@ -391,7 +390,7 @@ class RaceState extends MyGameState {
 
         const miniDotGeometry = new THREE.CylinderGeometry(5, 5, 0.1)
 
-        this.minimapVehicle1 = new THREE.Mesh(miniDotGeometry, new THREE.MeshBasicMaterial({color: 0x00ff00}))
+        this.minimapVehicle1 = new THREE.Mesh(miniDotGeometry, new THREE.MeshBasicMaterial({ color: 0x00ff00 }))
         this.minimapVehicle1.name = 'minimapVehicle1'
         minimap.add(this.minimapVehicle1)
 
@@ -431,7 +430,7 @@ class RaceState extends MyGameState {
         this.speedHUD.add(MyGameState.textWhite.transformString(`${(this.vehiclePlayer.actualSpeed * 1000).toFixed(2)} km/h`, [1, 1]))
 
         this.minimapVehicle1.position.set(this.vehiclePlayer.actualPosition.x, 0, this.vehiclePlayer.actualPosition.z)
-        
+
         if (this.vehiclePlayer.objectCollided) {
             this.collision = true;
             this.clockCollision.start();
@@ -479,4 +478,4 @@ class RaceState extends MyGameState {
     }
 }
 
-export {RaceState}
+export { RaceState }
