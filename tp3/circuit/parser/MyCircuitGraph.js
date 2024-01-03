@@ -317,7 +317,6 @@ class MyCircuitGraph {
         newMaterial.name = nameMaterial
         sceneNode.material = newMaterial
         this.materials[nameMaterial] = newMaterial
-        console.log(newMaterial)
     }
 
 }
