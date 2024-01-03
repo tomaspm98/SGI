@@ -4,6 +4,7 @@ import { MyTriangle } from '../../utils/MyTriangle.js';
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MyObstacle1, MyObstacle2 } from '../MyObstacles.js';
 import { MyPowerUp1 } from '../MyPowerUps.js';
+import { MyPowerUp2 } from '../MyPowerUps.js';
 
 /**
  * Function to load a 3d model
@@ -370,6 +371,8 @@ function createActivatable(type, subtype, position, duration, rotation = [0, 0, 
     } else if (type === 'powerup') {
         if (subtype === '1') {
             return new MyPowerUp1(position, rotation, scale, duration)
+        } else if (subtype === '2'){
+            return new MyPowerUp2(position, rotation, scale, duration)      
         } else {
             throw new Error('Invalid subtype of powerUp')
         }

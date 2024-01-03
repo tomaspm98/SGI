@@ -39,17 +39,19 @@ class ChooseObstacle extends MyGameState {
     /**
      * Displays obstacles in the scene and adds them to the picking system.
      */
-    displayObstacles() {
+    async displayObstacles() {
         this.avaibleSlots = this.circuit.slots.filter(slot => slot.object === "parkingLot3")
         this.obstacles = new THREE.Group()
         this.obstacles.name = "obstacles"
 
-        const obstacle1 = new MyObstacle1(this.avaibleSlots[0].position, [0, 0, 0], [1, 1, 1], 5000)
+        const obstacle1 = new MyObstacle1(this.avaibleSlots[0].position, [0, 0, 1.5708], [0.1, 0.1, 0.1], 5000)
+        await obstacle1.meshPromise
         this.picking.addPickableObject(obstacle1.mesh)
         obstacle1.mesh.layers.enable(0)
         this.obstacles.add(obstacle1.mesh)
 
         const obstacle2 = new MyObstacle2(this.avaibleSlots[1].position, [0, 0, 0], [1, 1, 1], 5000)
+        await obstacle2.meshPromise
         this.picking.addPickableObject(obstacle2.mesh)
         obstacle2.mesh.layers.enable(0)
         this.obstacles.add(obstacle2.mesh)
@@ -74,6 +76,7 @@ class ChooseObstacle extends MyGameState {
             })
         } else if (event.type === "pointerdown" && this.state === "pickingObstacle") {
             this.selectedObstacle = object
+            console.log(this.selectedObstacle)
             this.state = "pickingPosition"
             this.createTrackSensors()
         } else if (event.type === "pointerdown" && this.state === "pickingPosition") {
@@ -161,13 +164,27 @@ class ChooseObstacle extends MyGameState {
      * Places the selected obstacle in the scene.
      * @param {Vector3} pos - The position to place the obstacle.
      */
-    putObstacle(pos) {
+    async putObstacle(pos) {
         console.log("Adding obstacle")
         console.log(pos)
-        const posList = [pos.x, 0.2, pos.z]
+        const posList = [pos.x, 0, pos.z]
         const newObstacle = createActivatable('obstacle', this.selectedObstacle.name, posList, 5000)
         this.circuit.rTree.insert(newObstacle)
+        console.log(newObstacle)
+        await newObstacle.meshPromise
+        if (newObstacle.mesh.name === "1") {
+            newObstacle.mesh.position.y=0.4
+            newObstacle.mesh.rotation.z=1.5708
+            newObstacle.mesh.scale.set(0.1, 0.1, 0.1)
+        }
+        else if (newObstacle.mesh.name === "2") {
+            newObstacle.mesh.position.y=1.6
+        }
+        else {
+            console.log("Error")
+        }
         this.circuit.scene.add(newObstacle.mesh)
+        console.log(newObstacle.mesh)
         this.gameStateManager.goBack()
     }
 
@@ -178,10 +195,15 @@ class ChooseObstacle extends MyGameState {
     animation(object){
         let kf = []
 
+        console.log(this.selectedObstacle)
         kf.push(...this.selectedObstacle.position)
         kf.push(this.selectedObstacle.position.x, this.selectedObstacle.position.y+20, this.selectedObstacle.position.z)
         kf.push(object.position.x, object.position.y+20, object.position.z)
-        kf.push(object.position.x, object.position.y+0.5, object.position.z)
+        if (this.selectedObstacle.name === "1") {
+            kf.push(object.position.x, object.position.y+0.4, object.position.z)
+        } else if (this.selectedObstacle.name === "2") {
+            kf.push(object.position.x, object.position.y+2, object.position.z)
+        }
 
         let times=[]
         times.push(0)
