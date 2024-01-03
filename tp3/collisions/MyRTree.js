@@ -23,7 +23,7 @@ class MyRTree {
         await object.meshPromise;
 
         const boundingBox = new THREE.Box3().setFromObject(object.mesh);
-        this.tree.insert({
+        await this.tree.insert({
             minX: boundingBox.min.x,
             minY: boundingBox.min.z,
             maxX: boundingBox.max.x,
@@ -39,7 +39,7 @@ class MyRTree {
     async insertMany(objects) {
         for (const object of objects) {
             await object.meshPromise;
-            this.insert(object);
+            await this.insert(object);
         }
     }
 

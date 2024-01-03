@@ -2,10 +2,9 @@ import * as THREE from 'three';
 
 /** Represents a plane with nrDivs divisions along both axis, with center at (0,0) */
 class MyShader {
-	constructor(name, description = "no description provided", vert_url, frag_url, uniformValues = null) {
+	constructor(name, vert_url, frag_url, uniformValues = null) {
 		
         this.name = name
-        this.description = description
         this.vert_url = vert_url;
         this.frag_url = frag_url;
         this.uniformValues = uniformValues
@@ -36,7 +35,7 @@ class MyShader {
         }
         let obj = this
         xmlhttp.onreadystatechange=function() {
-            if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                 
                 if (isVertex) { 
                     console.log("loaded vs " + theUrl)  

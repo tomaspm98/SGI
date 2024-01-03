@@ -70,8 +70,7 @@ class MyTrack {
         for (const [x, _, z] of this.pointsGeoJSON) {
             points.push(new THREE.Vector3(x, _, z))
         }
-        const path = new THREE.CatmullRomCurve3(points)
-        return path
+        return new THREE.CatmullRomCurve3(points)
     }
 
     /**
@@ -198,7 +197,7 @@ class MyTrack {
         // normal vector to the plane defined by the triangle
         const normal = new THREE.Vector3().crossVectors(vAB, vAC)
 
-        // if the y component of normal vector is negative, then the triangle is facing down
+        // if the y component of normal vector is negative, then the triangle is facing down,
         // so we need to swap the order of the points
         if (normal.y > 0) {
             return [pA, pB, pC]

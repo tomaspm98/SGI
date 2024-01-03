@@ -66,27 +66,6 @@ class MyOBB {
         this.helper.rotation.copy(this.initialOBB.rotation)
         this.helperOriginal = this.helper.clone()
     }
-
-    /**
-     * Recalculates the OBB based on a new mesh.
-     * @param {THREE.Mesh} mesh - The new mesh for which to recalculate the OBB.
-     */
-    recalculate(mesh) {
-        const boundingBox = new THREE.Box3().setFromObject(mesh)
-        // For this game, we only care about the x and z coordinates
-        boundingBox.max.y = 0
-        boundingBox.min.y = 0
-
-        this.actualOBB = new OBB().fromBox3(boundingBox)
-
-        this.actualOBB.center.y = 0
-
-        this.initialOBB = this.actualOBB.clone()
-        if (this.helper) {
-            this.createHelper()
-        }
-
-    }
 }
 
 export {MyOBB}
