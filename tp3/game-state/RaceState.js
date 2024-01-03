@@ -238,7 +238,7 @@ class RaceState extends MyGameState {
 
         let t = this.imageClock.getElapsedTime()
 
-        if(this.imageClock.getElapsedTime() > 5){
+        if(this.imageClock.getElapsedTime() > 50){
             this.imageClock.stop();
             this.imageClock.start();
             

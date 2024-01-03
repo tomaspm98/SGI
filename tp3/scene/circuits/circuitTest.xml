@@ -111,24 +111,6 @@
             specular="0 0 0 0"
             shininess="0"
         />
-
-        <material id="screenApp"
-            emissive="0.0 0.0 0.0 1.0"
-            color="1.0 1.0 1.0 1.0"
-            specular="1.0 1.0 1.0 1.0"
-            shininess="0"
-            twosided="true"
-        />
-
-        <material id="metalApp"
-                  emissive="0.0 0.0 0.0 1"
-                  color="0.478 0.498 0.502 1.0"
-                  specular="0.478 0.498 0.502 1.0"
-                  shininess="20"
-                  textureref="metal2Tex"
-                  shading="flat"/>
-
-
     </materials>
 
     <track filepath="scene/f1-circuits/ae-2009.geojson"
@@ -248,7 +230,7 @@
 
             <children>
                 <primitive>
-                  <box xyz1="0 0 0" xyz2="10 5 0.0001" />
+                  <rectangle xy1="0 0" xy2="10 5" parts_x="50" parts_y="50" />
                 </primitive>
             </children>
         </node>
