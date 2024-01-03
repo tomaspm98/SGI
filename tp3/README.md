@@ -12,8 +12,8 @@ The circuit is defined by a YASF file encompassing both the scenarios and the tr
 through a GeoJSON file, allowing for easy creation and modification using a GeoJSON editor. The game accommodates
 multiple circuits by appending the name and file path to the JSON file [circuits.json](./scene/circuits.json). To
 incorporate new features seamlessly, we developed a new parser specifically for the YASF file.
-The track contains checkpoints, represented by cones, that are used as checkpoints. The player needs to pass throught
-all the checkpoints in order to complete a lap. If the player misses a checkpoint, he can press `t` to teleport to the
+The track contains checkpoints, represented by cones, that are used as checkpoints. The player needs to pass thought
+all the checkpoints to complete a lap. If the player misses a checkpoint, he can press `t` to teleport to the
 last checkpoint passed.
 
 ### Power Ups and Obstacles
@@ -34,8 +34,8 @@ YASF file, allowing us to incorporate these new features seamlessly.
 
 ### Outdoor Display
 
-To be more convinient for the user, instead creating a outdoor display we created a HUD Display that shows the minimap,
-the speed, the time, the lap and the time remaining of an obstacle or power up.
+To be more convenient for the user, instead of creating an outdoor display we created a HUD Display that shows the minimap,
+the speed, the time, the lap and the time remaining of an obstacle or power-up.
 
 ### Picking
 
@@ -45,11 +45,10 @@ within the circuit.
 
 ### Keyframe Animation
 
-For the movement of the autonomous car, we implemented a key-frame animation. Inside this car animation, it was necessary to have 2 animations: one for the car positions over time and another for the car rotation (when he turns). 
-For the positions animation, we implemented a function that computes the euclidean distance between 2 points, and given some velocity the user chooses (difficulty), we could know how much time the car would take to move between 2 points and keep its velocity constant.
-For the rotation animation, we had the need to work more on it, so we started by creating a function that calculates the angle variation between 2 vectors. Then, we would access to the key-points of the curve, get the tangents, and calculate the angle variation between them, so that we could know how much should the car rotate.
+For the movement of the autonomous car, we implemented a key-frame animation. Inside this car animation, it was necessary to have 2 animations: one for the car positions over time and another for the car rotation (when he turns). For the animation of the position, we implemented a function that computes the Euclidean distance between 2 points, and given some velocity the user chooses (difficulty), we could know how much time the car would take to move between 2 points and keep its velocity constant.
+For the rotation animation, we needed to work more on it, so we started by creating a function that calculates the angle variation between 2 vectors. Then, we would access the key points of the curve, get the tangents, and calculate the angle variation between them, so that we could know how much should the car rotate.
 
-This is implemented on the class [MyAutonomousVehicle.js](./vehicle/MyAutonomousVehicle.js).
+This is implemented in the class [MyAutonomousVehicle.js](./vehicle/MyAutonomousVehicle.js).
 
 We also used key-frame animation to create a simple animation when the user chooses an obstacle to put on the track, that is on the class [ChooseObstacle.js](./game-state/ChooseObstacle.js), on the method animation.
 
@@ -57,7 +56,7 @@ We also used key-frame animation to create a simple animation when the user choo
 
 #### Detect if the car is inside the track
 
-We implemented a ray cast to determine if the car is inside the track. This involves projecting a ray from the
+We implemented a ray cast to determine if the car was inside the track. This involves projecting a ray from the
 center of the car's rear axis downwards. If the ray intersects with the track, then the car is inside the track.
 
 #### Detect if the car is colliding with an obstacle
@@ -82,14 +81,14 @@ class, [MyText3D.js](./MyText3D.js) that consolidates the logic for creating 3D 
 
 ### Shaders
 
-We have designed 2 shaders: one to make an obstacle pulsate, and another that gives a slightly relief to an image. We applied the first one to our "manual" desgined object, that has a cylinder geometry to represent a pillar, and that pulsates over time. The 2nd shader we ended up by using on a advertising panel, making the car have a little of relief.
+We have designed 2 shaders: one to make an obstacle pulsate, and another that gives a slight relief to an image. We applied the first one to our "manual" designed object, which has a cylinder geometry to represent a pillar, that pulsates over time. The 2nd shader we ended up by using on an advertising panel, gave the car a little relief.
 
 They are implemented on the folder shaders.
 
 ### Particles
 
-We implemented a system of particles to simulate fireworks, when the race finished and the podium is presented.
-For that, we got inspired on the tutorial the teachers made available, and we made some changes to fit our personal requirements.
+We implemented a system of particles to simulate fireworks when the race finished and the podium was presented.
+For that, we got inspired by the tutorial the teachers made available, and we made some changes to fit our requirements.
 The code for that is on the class [MyFirework.js](./MyFirework.js)
 
 
@@ -97,7 +96,7 @@ The code for that is on the class [MyFirework.js](./MyFirework.js)
 
 We've developed a StateManager responsible for storing the game's current and previous states, along with the
 functionality to switch between them. This implementation enables actions like reverting to the previous state,
-resetting the current state, go to main menu, etc. Additionally, we've created multiple states as
+resetting the current state, going to the main menu, etc. Additionally, we've created multiple states as
 subclasses of MyClass.js, that are responsible for keeping the logic and menu/scene of each state described in the
 assignment.
 
