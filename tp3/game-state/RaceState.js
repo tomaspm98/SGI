@@ -25,6 +25,9 @@ class RaceState extends MyGameState {
         this.playerFinished = false
         this.opponentFinished = false
 
+        this.clockCollision = new MyClock();
+        this.collision = false;
+
         this.time = new MyClock()
         this.time.start()
     }
@@ -239,9 +242,19 @@ class RaceState extends MyGameState {
         hud.add(speed)
 
         if (this.vehiclePlayer.objectCollided !== null) {
-            const collision = MyGameState.textRed.transformString(`Collision!`, [1, 1]);
-            collision.position.set(-1.5, 3, -10);
+            this.collision = true;
+            this.clockCollision.start();
+            const duration = this.vehiclePlayer.objectCollided.duration;
+            const remainingTime = Math.max(0,duration - this.clockCollision.getElapsedTime());
+            const formattedTime = this._convertThreeTime(remainingTime).join(":");
+            const collision = MyGameState.textRed.transformString(`Collision! Time Left: ${formattedTime}`, [1, 1]);
+            collision.position.set(-5, 3, -10);
             hud.add(collision);
+        }
+
+        if (this.vehiclePlayer.objectCollided === null && this.collision) {
+            this.collision = false;
+            this.clockCollision.reset();
         }
 
         this.activeCamera.clear()
