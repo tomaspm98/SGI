@@ -60,6 +60,10 @@ class MyFirework {
         //console.log("firework launched")
     }
 
+    /**
+     * Deals with the explosion of one particle
+     * @param {*} vector Particle position that exploded
+     */
     explode(vector) {
         this.scene.remove(this.points)
         this.dest = [];
@@ -127,20 +131,6 @@ class MyFirework {
 
             }
             verticesAtribute.needsUpdate = true
-
-            /*if (this.geometry){
-                let verticesAtribute2 = this.geometry.getAttribute( 'position' )
-                let vertices2 = verticesAtribute.array
-                let count2 = verticesAtribute.count
-
-                for( let i = 0; i < vertices2.length; i+=3 ) {
-                    vertices2[i] += ( this.dest[i] - vertices2[i] ) /this.speed
-                    vertices2[i+1] += ( this.dest[i+1] - vertices2[i+1] ) /this.speed
-                    vertices2[i+2] += ( this.dest[i+2] - vertices2[i+2] ) /this.speed
-
-                }
-                verticesAtribute2.needsUpdate = true
-            }*/
 
             // only one particle?
             if (count === 1) {

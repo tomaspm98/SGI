@@ -28,7 +28,11 @@ class MyCircuitRenderer {
         return [this.circuitScene, this.activatables, this.track, this.cameras, this.slots]
     }
 
-
+    
+    /**
+     * Renders the circuit file.
+     * @param {*} data - The data object containing the circuit file.
+     */
     _renderCircuitFile(data) {
         this.renderTrack(data)
         this.renderCameras(data)
@@ -133,6 +137,10 @@ class MyCircuitRenderer {
         }
     }
 
+    /**
+     * Function to render the background.
+     * @param {*} data - The data object containing background options.
+     */
     renderBackground(data) {
         if (data.options.type === 'globals') {
             const ambientLight = new THREE.AmbientLight(data.options.ambient)
@@ -194,6 +202,11 @@ class MyCircuitRenderer {
         return video;
     }
 
+    /**
+     *  Function to open a JSON file.
+     * @param {*} file - The file to open.
+     * @returns The JSON object.
+     */
     _openJSON(file) {
         var request = new XMLHttpRequest();
         request.open('GET', file, false);
@@ -206,6 +219,10 @@ class MyCircuitRenderer {
         }
     }
 
+    /**
+     * Function to render the track.
+     * @param {*} data - The data object containing the track.
+     */
     renderTrack(data) {
         const geoJSON = this._openJSON(data.track['filepath'])
         const points = geoJSON["features"][0]["geometry"]["coordinates"]
@@ -213,7 +230,10 @@ class MyCircuitRenderer {
         this.circuitScene.add(this.track.group)
     }
 
-
+    /**
+     * Function to render activatables.
+     * @param {*} data - The data object containing activatables. 
+     */
     renderActivatables(data) {
         for (const activatable of data.activatables) {
             const newActivatable = Utils.createActivatable(activatable.type, activatable.subtype, activatable.position, activatable.duration, activatable.rotation, activatable.scale)
@@ -222,6 +242,10 @@ class MyCircuitRenderer {
         }
     }
 
+    /**
+     * Function to render slots.
+     * @param {*} data - The data object containing slots.
+     */
     renderSlots(data) {
         for (const slot of data.slots) {
             this.slots.push({ object: slot.object, position: slot.position, rotation: slot.rotation })

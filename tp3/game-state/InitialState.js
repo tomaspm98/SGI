@@ -3,11 +3,19 @@ import {MyText3D} from "../MyText3D.js";
 import * as THREE from 'three';
 
 class InitialState extends MyGameState {
+    /**
+     * Constructs an instance of InitialState.
+     * @param {MyGameStateManager} gameStateManager - The game state manager.
+     * @param {Object} stateInfo - Additional information for the state.
+     */
     constructor(gameStateManager, stateInfo) {
         super(gameStateManager, stateInfo);
         this.name = "initial";
     }
 
+    /**
+     * Creates the scene for InitialState.
+     */
     createScene() {
         const planeGeometry = new THREE.PlaneGeometry(1920, 1080); // Adjust size as needed
         const wallpaper = new THREE.TextureLoader().load("scene/wallpaper.jpg")
@@ -48,6 +56,9 @@ class InitialState extends MyGameState {
         this.scene.add(startText);
     }
 
+    /**
+     * Creates the cameras for InitialState.
+     */
     createCameras() {
         this.cameras = [];
 
@@ -61,10 +72,16 @@ class InitialState extends MyGameState {
         this.activeCameraName = "Perspective";
     }
     
+    /**
+     * Creates the lights for InitialState.
+     */
     _createDocumentListeners() {
         this.listeners.push({type: "keypress", handler: this.handleKeyPress.bind(this)})
     }
 
+    /**
+     * Handles key press events.
+     */
     handleKeyPress(event) {
         if (event.code === "Enter") {
             this.gameStateManager.changeState({name: "chooseCircuit"});

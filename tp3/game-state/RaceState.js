@@ -7,6 +7,11 @@ import {MyClock} from "../MyClock.js";
 import * as THREE from 'three'
 
 class RaceState extends MyGameState {
+    /**
+     * Constructs an instance of RaceState.
+     * @param {MyGameStateManager} gameStateManager - The game state manager.
+     * @param {Object} stateInfo - Information about the state.
+     */
     constructor(gameStateManager, stateInfo) {
         super(gameStateManager, stateInfo)
         this.name = "race"
@@ -32,16 +37,25 @@ class RaceState extends MyGameState {
         this.time.start()
     }
 
+    /**
+     * Creates the scene for the race state.
+     */
     createScene() {
         this.circuit = this.stateInfo.circuit
         this.scene = this.circuit.scene
     }
 
+    /**
+     * Creates cameras for the race state.
+     */
     createCameras() {
         this.cameras = this.circuit.cameras
         this.activeCameraName = 'pov1'
     }
 
+    /**
+     * Loads vehicles onto the track.
+     */
     _loadVehicles() {
         const slots = this.circuit.slots.filter(slot => slot.object === "track")
         if (slots.length < 2) {
@@ -61,6 +75,9 @@ class RaceState extends MyGameState {
         this.scene.add(this.opponentVehicle.mesh)
     }
 
+    /**
+     * Creates point-of-view cameras for the race state.
+     */
     _createPovCameras() {
         const pov1 = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000)
         const pov2 = pov1.clone()
@@ -93,6 +110,9 @@ class RaceState extends MyGameState {
         this.scene.add(this.cameras['pov1'])
     }
 
+     /**
+     * Creates document event listeners for key events.
+     */
     _createDocumentListeners() {
         this.listeners.push({
             type: 'keydown',
@@ -104,6 +124,10 @@ class RaceState extends MyGameState {
         })
     }
 
+    /**
+     * Handles key events for controlling the vehicle and changing cameras.
+     * @param {Object} event - The key event.
+     */
     keyHandler(event) {
         if (event.code === 'KeyV' && event.type === 'keydown') {
             this._changeCamera()
@@ -126,12 +150,18 @@ class RaceState extends MyGameState {
         }
     }
 
+    /**
+     * Changes the active camera.
+     */
     _changeCamera() {
         const newActiveCamera = this.orderCameras.shift()
         this.changeActiveCamera(newActiveCamera)
         this.orderCameras.push(newActiveCamera)
     }
 
+    /**
+     * Updates the race state.
+     */
     update() {
         if (!this.opponentFinished) {
             this.opponentVehicle.update();
@@ -156,6 +186,9 @@ class RaceState extends MyGameState {
         this.isGameOver();
     }
 
+    /**
+     * Sets information about checkpoints for the race.
+     */
     setCheckPointsInfo() {
         this.checkPoints = this.circuit.track.checkPoints
         this.widthTrack = this.circuit.track.width
@@ -166,6 +199,9 @@ class RaceState extends MyGameState {
             this.widthTrack)
     }
 
+    /**
+     * Updates the active checkpoint for the vehicle.
+     */
     updateCheckPoint() {
         if (this.activeRayCheckPoint.intersectObject(this.vehiclePlayer.mesh).length > 0) {
             this.activeCheckPoint = (this.activeCheckPoint + 1) % this.checkPoints.length
@@ -183,6 +219,9 @@ class RaceState extends MyGameState {
         }
     }
 
+    /**
+     * Teleports the vehicle to the last checkpoint.
+     */
     _tpToLastCheckpoint() {
         const lastI = this.activeCheckPoint === 0 ? this.checkPoints.length - 1 : this.activeCheckPoint - 1
         const pos = this.checkPoints[lastI].center
@@ -191,6 +230,9 @@ class RaceState extends MyGameState {
         this.vehiclePlayer.setSpeed(0)
     }
 
+    /**
+     * Checks if the game is over and transitions to the result state if necessary.
+     */
     isGameOver() {
         if (this.opponentLap >= this.numLaps && !this.opponentFinished) {
             this.opponentFinished = true
@@ -223,6 +265,9 @@ class RaceState extends MyGameState {
         }
     }
 
+     /**
+     * Updates the HUD (Heads-Up Display) with lap, time, speed, and collision information.
+     */
     hud() {
         this.activeCamera = this.getActiveCamera()
         const hud = new THREE.Group()
@@ -261,12 +306,18 @@ class RaceState extends MyGameState {
         this.activeCamera.add(hud)
     }
     
+    /**
+     * Deals with the race elements when the user pauses the game
+     */
     reset() {
         this.time.pause()
         this.opponentVehicle.pause()
         console.log(this.vehiclePlayer)
     }
     
+    /**
+     * Deals with the race elements when the user unpauses the game
+     */
     unpause() {
         this.time.resume()
         setTimeout(() => {

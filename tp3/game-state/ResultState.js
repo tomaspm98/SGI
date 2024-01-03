@@ -4,6 +4,11 @@ import {MyFirework} from "../MyFirework.js";
 import {MyPicking} from "../MyPicking.js";
 
 class ResultState extends MyGameState {
+    /**
+     * Constructs an instance of ResultState.
+     * @param {MyGameStateManager} gameStateManager - The game state manager.
+     * @param {Object} stateInfo - Information about the state.
+     */
     constructor(gameStateManager, stateInfo) {
         super(gameStateManager, stateInfo)
         this.name = "result"
@@ -13,15 +18,24 @@ class ResultState extends MyGameState {
         this.displayCars()
     }
 
+    /**
+     * Creates the scene for the result state.
+     */
     createScene() {
         this.scene = this.stateInfo.circuit.scene
     }
 
+    /**
+     * Creates cameras for the result state.
+     */
     createCameras() {
         this.cameras = this.stateInfo.circuit.cameras
         this.activeCameraName = 'podium'
     }
 
+    /**
+     * Displays the race results and podium information.
+     */
     displayResults() {
         const activeCamera = this.getActiveCamera()
 
@@ -84,6 +98,11 @@ class ResultState extends MyGameState {
         activeCamera.add(resultsInfo)
     }
 
+    /**
+     * Displays podium positions based on race results.
+     * @param {Array} size - Size of the podium positions.
+     * @returns {Array} - First and second podium positions.
+     */
     displayPodium(size) {
         let player, opponent
         const playerTime = this._convertThreeTime(this.stateInfo.playerTime)
@@ -98,6 +117,11 @@ class ResultState extends MyGameState {
         return [player, opponent]
     }
 
+    /**
+     * Converts time in milliseconds to an array of minutes, seconds, and milliseconds.
+     * @param {number} time - Time in milliseconds.
+     * @returns {Array} - Array of minutes, seconds, and milliseconds.
+     */
     _convertThreeTime(time) {
         const minutes = Math.floor(time / 60000)
         const seconds = Math.floor((time / 1000) % 60)
@@ -105,6 +129,9 @@ class ResultState extends MyGameState {
         return [minutes, seconds, milliseconds]
     }
 
+    /**
+     * Updates the result state, adding fireworks to the scene.
+     */
     update() {
         if (Math.random() < 0.05) {
             this.fireworks.push(new MyFirework(this.scene, 10, 120))
@@ -123,6 +150,11 @@ class ResultState extends MyGameState {
         }
     }
 
+    /**
+     * Handles object picking events.
+     * @param {Object} object - The picked object.
+     * @param {Object} event - The picking event.
+     */
     handlePicking(object, event) {
         if (event.type === "pointermove") {
             object.material.color.setHex(0x005ba6)
@@ -142,6 +174,9 @@ class ResultState extends MyGameState {
         }
     }
 
+    /**
+     * Resets the result state.
+     */
     reset() {
         for (const firework of this.fireworks) {
             firework.reset()
@@ -151,10 +186,17 @@ class ResultState extends MyGameState {
         this.scene.remove(this.opponentPlayer.mesh)
     }
 
+    /**
+     * Resets the material color when picking is finished.
+     * @param {Object} object - The picked object.
+     */
     resetPickedObject(object) {
         object.material.color.setHex(0x000000)
     }
 
+    /**
+     * Displays cars on the podium.
+     */
     displayCars(){
 
         const slots = this.stateInfo.circuit.slots.filter(slot => slot.object === "podium")

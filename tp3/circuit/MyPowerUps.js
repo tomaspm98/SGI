@@ -7,6 +7,10 @@ class MyPowerUp1 extends MyActivatable {
         this.effect = "increasedSpeed"
     }
 
+    /**
+     * Function to construct the mesh of the power up 1.
+     * @returns the mesh of the power up 1.
+     */
     _constructMesh() {
         const geometry = new THREE.BoxGeometry(1, 1, 1);
         const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });

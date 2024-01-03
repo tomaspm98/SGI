@@ -4,6 +4,14 @@ import * as Utils from '../utils.js'
 
 class MyAutonomousVehicle extends MyVehicle {
 
+    /**
+     * Constructs an instance of MyAutonomousVehicle.
+     * @param {THREE.Mesh} mesh - The mesh representing the vehicle.
+     * @param {string} name - The name of the vehicle.
+     * @param {Array} keyPoints - The key points defining the path.
+     * @param {THREE.Curve} pathCurve - The curve representing the path.
+     * @param {string} difficulty - The difficulty level of the vehicle.
+     */
     constructor(mesh, name, keyPoints, pathCurve, difficulty) {
         // Variables that describe the vehicle
         super(mesh, name)
@@ -21,6 +29,14 @@ class MyAutonomousVehicle extends MyVehicle {
         this.controlCarOpponent();
     }
     
+    /**
+     * Creates an instance of MyAutonomousVehicle from an existing vehicle.
+     * @param {MyVehicle} vehicle - The original vehicle.
+     * @param {Array} keyPoints - The key points defining the path.
+     * @param {THREE.Curve} pathCurve - The curve representing the path.
+     * @param {string} difficulty - The difficulty level of the vehicle.
+     * @returns {MyAutonomousVehicle} - The autonomous vehicle instance.
+     */
     static fromVehicle(vehicle, keyPoints, pathCurve, difficulty) {
         vehicle.mesh.position.x = 0
         vehicle.mesh.position.z = 0
@@ -29,6 +45,10 @@ class MyAutonomousVehicle extends MyVehicle {
         return new MyAutonomousVehicle(vehicle.mesh, vehicle.name, keyPoints, pathCurve, difficulty)
     }
 
+    /**
+     * Adapts the vehicle's speed based on the difficulty level.
+     * @param {string} difficulty - The difficulty level.
+     */
     adaptDifficulty(difficulty) {
         switch (difficulty) {
             case 'easy':
@@ -48,6 +68,9 @@ class MyAutonomousVehicle extends MyVehicle {
         this.actualSpeed = 1 / (2 * this.velocity);
     }
 
+    /**
+     * Updates the vehicle's state and animation.
+     */
     update() {
 
         const delta = this.clock.getDelta(); 
@@ -79,6 +102,9 @@ class MyAutonomousVehicle extends MyVehicle {
         this.obb.update(this.mesh.matrixWorld)
     }
 
+    /**
+     * Controls the autonomous vehicle's movement along the predefined path.
+     */
     controlCarOpponent() {
         let times = []
         let kf = []
@@ -171,6 +197,10 @@ class MyAutonomousVehicle extends MyVehicle {
         rotationAction.play();
     }
 
+    /**
+     * Gets the index of the current key point based on the vehicle's position.
+     * @returns {number} - The index of the current key point.
+     */
     getCurrentKeyPointIndex() {
         const currentPosition = this.mesh.position.clone();
 
@@ -183,12 +213,18 @@ class MyAutonomousVehicle extends MyVehicle {
         return minDistanceIndex;
     }
 
+    /**
+     * Pauses the vehicle's animation.
+     */
     pause(){
         for (let i = 0; i < this.mixer._actions.length; i++) {
             this.mixer._actions[i].paused = true;
         }
     }
 
+    /**
+     * Resumes the vehicle's animation.
+     */
     resume() {
         for (let i = 0; i < this.mixer._actions.length; i++) {
             this.mixer._actions[i].paused = false;

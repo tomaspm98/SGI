@@ -5,7 +5,11 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MyObstacle1, MyObstacle2 } from '../MyObstacles.js';
 import { MyPowerUp1 } from '../MyPowerUps.js';
 
-
+/**
+ * Function to load a 3d model
+ * @param {*} filepath - path to the model file
+ * @param {*} parent - parent node to which the model is to be added
+ */
 function loadModel(filepath, parent) {
     const loader = new GLTFLoader();
     loader.load(filepath, function (gltf) {
@@ -343,6 +347,16 @@ function createPolygon(stacks, slices, radius, centerColor, edgeColor) {
     return geometry
 }
 
+/**
+ * Function responsible for creating an activatable
+ * @param {*} type - type of activatable (obstacle or powerup)
+ * @param {*} subtype - subtype of activatable (1, 2, 3, etc.)
+ * @param {*} position - position of activatable on the scene
+ * @param {*} duration - duration of activatable
+ * @param {*} rotation - rotation of activatable object on the scene
+ * @param {*} scale - scale of activatable object on the scene
+ * @returns 
+ */
 function createActivatable(type, subtype, position, duration, rotation = [0, 0, 0], scale = [1, 1, 1]) {
     if (type === 'obstacle') {
         if (subtype === '1') {

@@ -3,6 +3,11 @@ import {MyPicking} from "../MyPicking.js";
 import * as THREE from 'three';
 
 class PauseState extends MyGameState {
+    /**
+     * Constructs an instance of PauseState.
+     * @param {MyGameStateManager} gameStateManager - The game state manager.
+     * @param {Object} stateInfo - Information about the state.
+     */
     constructor(gameStateManager, stateInfo) {
         super(gameStateManager, stateInfo);
         this.name = "pause";
@@ -15,6 +20,9 @@ class PauseState extends MyGameState {
         this._createObstacle();
     }
 
+    /**
+     * Creates the scene for the paused state.
+     */
     createScene() {
         const planeGeometry = new THREE.PlaneGeometry(1920, 1080); // Adjust size as needed
         const wallpaper = new THREE.TextureLoader().load("scene/wallpaper.jpg")
@@ -29,6 +37,9 @@ class PauseState extends MyGameState {
         this.scene.add(title);
     }
 
+    /**
+     * Creates cameras for the paused state.
+     */
     createCameras() {
         this.cameras = [];
 
@@ -42,6 +53,11 @@ class PauseState extends MyGameState {
         this.activeCameraName = "Perspective";
     }
 
+    /**
+     * Handles object picking events.
+     * @param {Object} object - The picked object.
+     * @param {Object} event - The picking event.
+     */
     handlePicking(object, event) {
         if (event.type === "pointerdown") {
             if (object.name === "resume") {
@@ -67,10 +83,17 @@ class PauseState extends MyGameState {
         }
     }
 
+    /**
+     * Resets the appearance of a picked object.
+     * @param {Object} object - The picked object.
+     */
     resetPickedObject(object) {
         object.material.opacity = 0.5;
     }
 
+    /**
+     * Creates the "Resume" UI element.
+     */
     _createResume() {
         const resumeGeometry = new THREE.PlaneGeometry(500, 100);
         const resumeMaterial = new THREE.MeshBasicMaterial({color: "#000000", transparent: true, opacity: 0.5});
@@ -86,6 +109,9 @@ class PauseState extends MyGameState {
         this.scene.add(resumeText)
     }
 
+    /**
+     * Creates the "Reset" UI element.
+     */
     _createReset() {
         const resetGeometry = new THREE.PlaneGeometry(500, 100);
         const resetMaterial = new THREE.MeshBasicMaterial({color: "#000000", transparent: true, opacity: 0.5});
@@ -101,6 +127,9 @@ class PauseState extends MyGameState {
         this.scene.add(resetText)
     }
 
+    /**
+     * Creates the "Obstacle" UI element.
+     */
     _createObstacle() {
         const obstacleGeometry = new THREE.PlaneGeometry(500, 100);
         const obstacleMaterial = new THREE.MeshBasicMaterial({color: "#000000", transparent: true, opacity: 0.5});
@@ -116,6 +145,9 @@ class PauseState extends MyGameState {
         this.scene.add(obstacleText)
     }
 
+    /**
+     * Creates the "Exit" UI element.
+     */
     _createExit() {
         const exitGeometry = new THREE.PlaneGeometry(500, 100);
         const exitMaterial = new THREE.MeshBasicMaterial({color: "#000000", transparent: true, opacity: 0.5});

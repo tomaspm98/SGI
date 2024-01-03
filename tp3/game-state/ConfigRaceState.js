@@ -4,6 +4,11 @@ import {MyPicking} from "../MyPicking.js";
 import * as THREE from 'three';
 
 class ConfigRaceState extends MyGameState {
+    /**
+     * Constructs an instance of ConfigRaceState.
+     * @param {MyGameStateManager} gameStateManager - The game state manager.
+     * @param {Object} stateInfo - Additional information for the state.
+     */
     constructor(gameStateManager, stateInfo) {
         super(gameStateManager, stateInfo);
         this.name = "configRace";
@@ -18,7 +23,9 @@ class ConfigRaceState extends MyGameState {
         this._displayDifficulty()
         this._createNext()
     }
-
+    /**
+     * Creates the scene for ConfigRaceState.
+     */
     createScene() {
         const planeGeometry = new THREE.PlaneGeometry(1920, 1080); // Adjust size as needed
         const wallpaper = new THREE.TextureLoader().load("scene/wallpaper.jpg")
@@ -45,6 +52,9 @@ class ConfigRaceState extends MyGameState {
         this.scene.add(difficultyText);
     }
 
+    /**
+     * Displays the circuit name.
+     */
     _displayCircuitName() {
         const circuitName = MyGameState.textWhite.transformString(this.stateInfo.circuitName, [150, 150]);
         circuitName.position.set(-300, 225, 0);
@@ -52,6 +62,10 @@ class ConfigRaceState extends MyGameState {
         this.scene.add(circuitName);
     }
 
+    /**
+     * Displays the player name.
+     * @param {*} name - The player name.
+     */
     _displayPlayerName(name) {
         for (const child of this.scene.children) {
             if (child.name === "playerName") {
@@ -67,6 +81,9 @@ class ConfigRaceState extends MyGameState {
         this.scene.add(playerName);
     }
 
+    /**
+     * Displays the difficulty options.
+     */
     _displayDifficulty() {
         const easyText = MyGameState.textWhite.transformString("Easy", [150, 150]);
         easyText.position.set(-800, -150, 1);
@@ -107,6 +124,9 @@ class ConfigRaceState extends MyGameState {
         this.picking.addPickableObject(hardRectangle)
     }
 
+    /**
+     * Creates the "Next" button.
+     */
     _createNext() {
         const nextGeometry = new THREE.PlaneGeometry(275, 125);
         const nextMaterial = new THREE.MeshBasicMaterial({color: "#000000", transparent: true, opacity: 0.5});
@@ -122,6 +142,9 @@ class ConfigRaceState extends MyGameState {
         this.scene.add(nextText)
     }
 
+    /**
+     * Creates the cameras for ConfigRaceState.
+     */
     createCameras() {
         this.cameras = [];
 
@@ -135,6 +158,11 @@ class ConfigRaceState extends MyGameState {
         this.activeCameraName = "Perspective";
     }
 
+    /**
+     * Handles picking events for interactive objects.
+     * @param {Object} object - The picked object.
+     * @param {PointerEvent} event - The pointer event.
+     */
     handlePicking(object, event) {
         object.material.opacity = 0.7;
         if (object.name === "goBack" && event.type === "pointerdown") {
@@ -154,10 +182,17 @@ class ConfigRaceState extends MyGameState {
         }
     }
 
+    /**
+     * Resets the appearance of the picked object.
+     * @param {Object} object - The picked object.
+     */
     resetPickedObject(object) {
         object.material.opacity = 0.25;
     }
 
+    /**
+     * Creates the "Go Back" button in the scene.
+     */
     _createGoBack() {
         const text = new MyText3D("scene/sprite_sheet_white.png", [1020, 1020], [102, 102]);
 
@@ -175,6 +210,10 @@ class ConfigRaceState extends MyGameState {
         this.scene.add(goBackText)
     }
 
+    /**
+     * Handles text input for player name.
+     * @param {KeyboardEvent} event - The keyboard event.
+     */
     handleTextInput(event) {
         if (event.code === "Backspace" && this.playerName.length > 0) {
             this.playerName = this.playerName.slice(0, -1)
@@ -185,6 +224,9 @@ class ConfigRaceState extends MyGameState {
         }
     }
 
+    /**
+     * Creates document listeners for key events.
+     */
     _createDocumentListeners() {
         this.listeners.push({type: "keydown", handler: this.handleTextInput.bind(this)})
     }

@@ -5,6 +5,11 @@ import {MyVehicle} from "../vehicle/MyVehicle.js";
 import {MyPicking} from "../MyPicking.js";
 
 class ChoosePlayerCar extends MyGameState {
+    /**
+     * Constructs an instance of ChoosePlayerCar.
+     * @param {MyGameStateManager} gameStateManager - The game state manager.
+     * @param {Object} stateInfo - Additional information for the state.
+     */
     constructor(gameStateManager, stateInfo) {
         super(gameStateManager, stateInfo);
         this.name = "choosePlayerCar";
@@ -13,16 +18,25 @@ class ChoosePlayerCar extends MyGameState {
         this._displayVehicles()
     }
 
+    /**
+     * Creates the scene for ChoosePlayerCar.
+     */
     createScene() {
         this.circuit = MyCircuit.create(this.stateInfo.circuitPath);
         this.scene = this.circuit.scene;
     }
 
+    /**
+     * Creates cameras for ChoosePlayerCar.
+     */
     createCameras() {
         this.cameras = this.circuit.cameras
         this.activeCameraName = 'parkingLotCam1'
     }
 
+    /**
+     * Loads vehicle data from the vehicles.json file.
+     */
     _loadVehicles() {
         this.vehicles = []
         const vehiclePaths = openJSON('scene/vehicles.json')
@@ -32,6 +46,10 @@ class ChoosePlayerCar extends MyGameState {
         }
     }
 
+    /**
+     * Displays available player vehicles in the scene.
+     * Picks up vehicles for selection.
+     */
     _displayVehicles() {
         const slotsAvailable = this.circuit.slots.filter(slot => slot.object === "parkingLot1")
         let vehicleArray = Object.values(this.vehicles)
@@ -46,6 +64,11 @@ class ChoosePlayerCar extends MyGameState {
     }
 
 
+    /**
+     * Handles object picking events.
+     * @param {Object} object - The picked object.
+     * @param {PointerEvent} event - The pointer event.
+     */
     handlePicking(object, event) {
         if (event.type === "pointerdown") {
             this.gameStateManager.changeState({
@@ -73,6 +96,10 @@ class ChoosePlayerCar extends MyGameState {
         }
     }
 
+    /**
+     * Resets the appearance of the picked object.
+     * @param {Object} object - The picked object.
+     */
     resetPickedObject(object) {
         object.traverse(child => {
             if (child.material) {
@@ -82,6 +109,9 @@ class ChoosePlayerCar extends MyGameState {
         })
     }
 
+    /**
+     * Creates document listeners for key events.
+     */
     _createDocumentListeners() {
         this.listeners.push({
             type: 'keydown',
@@ -89,12 +119,19 @@ class ChoosePlayerCar extends MyGameState {
         })
     }
 
+    /**
+     * Handles key events for navigation.
+     * @param {KeyboardEvent} event - The keyboard event.
+     */
     keyHandler(event) {
         if (event.code === 'KeyB' && event.type === 'keydown') {
             this.gameStateManager.goBack()
         }
     }
 
+    /**
+     * Resets the ChoosePlayerCar state.
+     */
     reset() {
         for (const vehicle of Object.values(this.vehicles)) {
             this.scene.remove(vehicle.mesh)

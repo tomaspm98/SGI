@@ -21,6 +21,9 @@ class MyTrack {
         }
     }
 
+    /**
+     * Function to draw the track.
+     */
     _draw() {
         this.path = this._getCatmullRomCurve()
         //this.line = this._drawLine()
@@ -32,11 +35,20 @@ class MyTrack {
         this.group.add(this.mesh)
     }
 
-
+    /**
+     * Function to get the path of the track.
+     * @returns The path of the track.
+     */
     _getPath() {
         return this.path;
     }
 
+    /**
+     * Normalize the points of the track
+     * @param {*} points The points of the track 
+     * @param {*} size The size of the track 
+     * @returns The normalized points 
+     */
     _normalizePoints(points, size = 1) {
         size = size * 1000 // the original points have a scale of 1/1000
         const pointsNormalized = [];
@@ -49,6 +61,10 @@ class MyTrack {
         return pointsNormalized;
     }
 
+    /**
+     * Function to get the catmull rom curve of the track 
+     * @returns The catmull rom curve of the track
+     */
     _getCatmullRomCurve() {
         const points = []
         for (const [x, _, z] of this.pointsGeoJSON) {
@@ -58,12 +74,20 @@ class MyTrack {
         return path
     }
 
+    /**
+     * Function to draw the line of the track 
+     * @returns The line of the track
+     */
     _drawLine() {
         const points = this.path.getPoints(this.numSegments)
         const bGeometry = new THREE.BufferGeometry().setFromPoints(points)
         return new THREE.Line(bGeometry)
     }
 
+    /**
+     * Function to draw the track
+     * @returns The track 
+     */
     _drawTrack() {
         const track = new THREE.Group()
 
@@ -99,6 +123,11 @@ class MyTrack {
         return track
     }
 
+    /**
+     * Function to get the points of the track
+     * @param {*} numPoints The number of points
+     * @returns The points of the track 
+     */
     _getPointsCurve(numPoints) {
         // The pk points are defined using the algorithm described in the class
         const pkPoints1 = []
@@ -119,6 +148,10 @@ class MyTrack {
         return [pkPoints1, pkPoints2, cPoints]
     }
 
+    /**
+     * Function to load a texture
+     * @param {*} textureFile The texture file 
+     */
     _loadTexture(textureFile) {
         const texture = new THREE.TextureLoader().load(textureFile);
         texture.wrapS = THREE.MirroredRepeatWrapping;
@@ -132,6 +165,11 @@ class MyTrack {
             });
     }
 
+    /**
+     * Function to get the check points on the track
+     * @param {*} numCheckPoints The number of check points 
+     * @returns The check points on the track 
+     */
     _getCheckPoints(numCheckPoints) {
         const checkPoints = []
         const [pkPoints1, pkPoints2, cPoints] = this._getPointsCurve(numCheckPoints)
@@ -146,6 +184,13 @@ class MyTrack {
 
     }
 
+    /**
+     * Function to order the points of the triangle
+     * @param {*} pA Point 1 
+     * @param {*} pB Point 2
+     * @param {*} pC Point 3
+     * @returns Returns order of the points
+     */
     _orderPoints(pA, pB, pC) {
         const vAB = new THREE.Vector3(pB.x - pA.x, pB.y - pA.y, pB.z - pA.z)
         const vAC = new THREE.Vector3(pC.x - pA.x, pC.y - pA.y, pC.z - pA.z)
@@ -162,6 +207,10 @@ class MyTrack {
         }
     }
 
+    /**
+     * Function to add the check points model to the circuit
+     * @param {*} gltf The gltf model 
+     */
     _addCheckPointsModel(gltf) {
         const checkPointsGroup = new THREE.Group()
         checkPointsGroup.name = 'checkPoints'

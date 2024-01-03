@@ -1,5 +1,11 @@
 import * as THREE from 'three';
 
+/**
+ * Detects collisions in our program
+ * @param {*} activeObject the active object that dinamically moves
+ * @param {*} rTree the RTree with all the passive objects 
+ * @returns  
+ */
 function collisionDetection(activeObject, rTree) {
     // Collision detection broad phase
     const selectedPassiveObjects = collisionDetectionBroadPhase(activeObject, rTree);
@@ -27,6 +33,12 @@ function collisionDetectionBroadPhase(activeObject, rTree) {
     return rTree.search(bb);
 }
 
+/**
+ * Implement collision detection narrow phase
+ * @param {*} activeObject the active object that dinamically moves 
+ * @param {*} passiveObjects the passive objects that have fixed positions
+ * @returns the collisions between the active object and the passive objects 
+ */
 function collisionDetectionNarrowPhase(activeObject, passiveObjects) {
     let collisions = [];
     for (const passiveObject of passiveObjects) {
@@ -37,12 +49,22 @@ function collisionDetectionNarrowPhase(activeObject, passiveObjects) {
     return collisions;
 }
 
+/**
+ * Checks if a vehicle is off the track limits
+ * @param {*} vehicle the player vehicle 
+ * @param {*} track the track of the circuit
+ */
 function checkVehicleOnTrack(vehicle, track) {
     const pos = new THREE.Vector3(vehicle.actualPosition.x, vehicle.actualPosition.y, vehicle.actualPosition.z);
     const collisions = new THREE.Raycaster(pos, new THREE.Vector3(0, -0.3, 0), 0, 1).intersectObject(track.mesh);
     vehicle.offTrack = collisions.length <= 0;
 }
 
+/**
+ * Checks for collisions between both vehicles
+ * @param {*} playerVehicle vehicle used by the player
+ * @param {*} opponentVehicle vehicle used by the opponent 
+ */
 function checkCollisionVehicleOnVehicle(playerVehicle, opponentVehicle) {
     if(playerVehicle.obb.collision(opponentVehicle.obb)){
         console.log("COLLISION")

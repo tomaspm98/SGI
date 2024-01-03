@@ -7,6 +7,10 @@ class MyObstacle1 extends MyActivatable {
         this.effect = "invertedControls"
     }
 
+    /**
+     * Function to construct the mesh of the obstacle 1.
+     * @returns The mesh of the obstacle 1.
+     */
     _constructMesh() {
         const geometry = new THREE.BoxGeometry(1, 1, 1);
         const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
@@ -22,6 +26,10 @@ class MyObstacle2 extends MyActivatable {
         this.effect = "reducedSpeed"
     }
 
+    /**
+     * Function to construct the mesh of the obstacle 2.
+     * @returns The mesh of the obstacle 2.
+     */
     _constructMesh() {
         const geometry = new THREE.BoxGeometry(1, 1, 1);
         const material = new THREE.MeshBasicMaterial({ color: 0x005500 });
