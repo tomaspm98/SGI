@@ -81,7 +81,7 @@ class RaceState extends MyGameState {
      * Creates point-of-view cameras for the race state.
      */
     _createPovCameras() {
-        const pov1 = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000)
+        const pov1 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
         const pov2 = pov1.clone()
         const pov3 = pov1.clone()
         const pov4 = pov1.clone()
@@ -112,7 +112,7 @@ class RaceState extends MyGameState {
         this.scene.add(this.cameras['pov1'])
     }
 
-     /**
+    /**
      * Creates document event listeners for key events.
      */
     _createDocumentListeners() {
@@ -156,9 +156,18 @@ class RaceState extends MyGameState {
      * Changes the active camera.
      */
     _changeCamera() {
+        if (this.activeCameraName === 'pov1') {
+            this.cameras['pov1'].clear()
+            this.scene.remove(this.cameras['pov1'])
+        }
+
         const newActiveCamera = this.orderCameras.shift()
         this.changeActiveCamera(newActiveCamera)
         this.orderCameras.push(newActiveCamera)
+
+        if (this.activeCameraName === 'pov1') {
+            this.scene.add(this.cameras['pov1'])
+        }
     }
 
     /**
@@ -272,36 +281,36 @@ class RaceState extends MyGameState {
 
         const lapText = MyGameState.textWhite.transformString(`Lap:`, [1, 1])
         lapText.name = 'lapText'
-        lapText.position.set(9, 5, -10)
+        lapText.position.set(9, 7, -10)
 
         this.lapHUD = new THREE.Object3D()
         this.lapHUD.name = 'lap'
-        this.lapHUD.position.set(10.7, 5, -10)
+        this.lapHUD.position.set(10.7, 7, -10)
 
         const timeText = MyGameState.textWhite.transformString(`Time:`, [1, 1])
         timeText.name = 'timeText'
-        timeText.position.set(4, 5, -10)
+        timeText.position.set(4, 7, -10)
 
         this.timeHUD = new THREE.Object3D()
         this.timeHUD.name = 'time'
-        this.timeHUD.position.set(6, 5, -10)
+        this.timeHUD.position.set(6, 7, -10)
 
         const speedText = MyGameState.textWhite.transformString(`Speed:`, [1, 1])
         speedText.name = 'speedText'
-        speedText.position.set(-3.5, 5, -10)
+        speedText.position.set(-3.5, 7, -10)
 
         this.speedHUD = new THREE.Object3D()
         this.speedHUD.name = 'speed'
-        this.speedHUD.position.set(-1, 5, -10)
+        this.speedHUD.position.set(-1, 7, -10)
 
         this.collisionText = MyGameState.textRed.transformString(`Collision! Time Left:`, [1, 1])
         this.collisionText.name = 'collisionText'
-        this.collisionText.position.set(-3.5, 4, -10)
+        this.collisionText.position.set(-3.5, 6, -10)
         this.collisionText.visible = false
 
         this.collisionHUD = new THREE.Object3D()
         this.collisionHUD.name = 'collision'
-        this.collisionHUD.position.set(5.5, 4, -10)
+        this.collisionHUD.position.set(5.5, 6, -10)
         this.collisionHUD.visible = false
 
         this.hud.add(this.lapHUD)
@@ -357,12 +366,14 @@ class RaceState extends MyGameState {
         }
         this.hudTimer.start()
     }
+
     reset() {
         this.time.pause()
         this.opponentVehicle.pause()
         this.cameras['pov1'].clear()
         this.scene.remove(this.cameras['pov1'])
     }
+
     unpause() {
         this.time.resume()
         setTimeout(() => {
