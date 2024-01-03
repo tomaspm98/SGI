@@ -12,6 +12,9 @@ The circuit is defined by a YASF file encompassing both the scenarios and the tr
 through a GeoJSON file, allowing for easy creation and modification using a GeoJSON editor. The game accommodates
 multiple circuits by appending the name and file path to the JSON file [circuits.json](./scene/circuits.json). To
 incorporate new features seamlessly, we developed a new parser specifically for the YASF file.
+The track contains checkpoints, represented by cones, that are used as checkpoints. The player needs to pass throught
+all the checkpoints in order to complete a lap. If the player misses a checkpoint, he can press `t` to teleport to the
+last checkpoint passed.
 
 ### Power Ups and Obstacles
 
@@ -75,8 +78,13 @@ class, [MyText3D.js](./MyText3D.js) that consolidates the logic for creating 3D 
 
 ### Interaction
 
-
+We've developed a StateManager responsible for storing the game's current and previous states, along with the
+functionality to switch between them. This implementation enables actions like reverting to the previous state,
+resetting the current state, go to main menu, etc. Additionally, we've created multiple states as
+subclasses of MyClass.js, that are responsible for keeping the logic and menu/scene of each state described in the
+assignment.
 
 ## Issues
 
-Converting a recursive DFS to an iterative DFS.
+- Creating the OBB for collision detection.
+- Shaders.
