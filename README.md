@@ -86,5 +86,24 @@ Converting a recursive DFS to an iterative DFS.
 ----
 
 ### [TP3 - ...](tp3)
-- (items briefly describing main strong points)
+
+#### Description
+
+For this project, we developed a F1 based racing game.
+
+On this game, we have:
+
+- 2 circuits: one focusing on design, the other more to analyze race mechanics.
+- 3 parking lots to choose cars and obstacles
+- A controllable by the player car
+- An automatic movement car
+- Powerups and obstacles to give more animation
+
+#### Important aspects of the developed code
+We implemented states for each phase of the game, which is a dynamic way to deal with the different game phases. Also we used key-frame not just for the autonomous car animation, but to create a little animation when an obstacle in put on the track middle game.
+
+#### Issues
+
+- Creating the OBB for collision detection.
+- Shaders (mainly the second one).
 
