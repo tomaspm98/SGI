@@ -4,12 +4,16 @@
 
 The team created a Formula 1 web-based game.
 
+![Circuit](screenshots/circuit_scene.png)
+
+The manual is available [here](./manual.md) and contains several images of the game.
+
 ## Important aspects of the developed code
 
 ### Circuit
 
 The circuit is defined by a YASF file encompassing both the scenarios and the track. The track itself is represented
-through a GeoJSON file, allowing for easy creation and modification using a GeoJSON editor. The game accommodates
+through a GeoJSON file, allowing for easy creation and modification using a GeoJSON editor. To draw the track, we used only triangles and followed the most efficient method taught in the class. The game accommodates
 multiple circuits by appending the name and file path to the JSON file [circuits.json](./scene/circuits.json). To
 incorporate new features seamlessly, we developed a new parser specifically for the YASF file.
 The track contains checkpoints, represented by cones, that are used as checkpoints. The player needs to pass through all the checkpoints to complete a lap. If the player misses a checkpoint, he can press `t` to teleport to the
