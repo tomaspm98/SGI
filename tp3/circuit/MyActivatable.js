@@ -62,6 +62,10 @@ class MyActivatable {
             }, this.duration)
         }
     }
+
+    update(){
+        
+    }
 }
 
 export {MyActivatable};

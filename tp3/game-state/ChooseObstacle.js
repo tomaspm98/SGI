@@ -67,6 +67,7 @@ class ChooseObstacle extends MyGameState {
     handlePicking(object, event) {
         if (event.type === "pointermove" && this.state === "pickingObstacle") {
             object.traverse((child) => {
+                console.log(child)
                 if (child.material) {
                     if (!child.material.originalColor) {
                         child.material.originalColor = child.material.color.clone()
@@ -229,6 +230,12 @@ class ChooseObstacle extends MyGameState {
         if (this.mixer) {
             this.mixer.update(delta);
         }
+        for (let i=0;i<this.circuit.rTree.map.length;i++) {
+            if (this.circuit.rTree.map[i].mesh.name === '2') {
+                this.circuit.rTree.map[i].update();
+                console.log("NICE")
+        }
+    }
     }
 }
 

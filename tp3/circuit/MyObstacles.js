@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { MyActivatable } from "./MyActivatable.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { MyShader } from "./MyShader.js";
 
 class MyObstacle1 extends MyActivatable {
     constructor(position, rotation, scale, duration) {
@@ -36,6 +37,7 @@ class MyObstacle1 extends MyActivatable {
 class MyObstacle2 extends MyActivatable {
     constructor(position, rotation, scale, duration) {
         super(position, rotation, scale, duration)
+        this.clock = new THREE.Clock()
         this.effect = "reducedSpeed"
     }
 
@@ -53,14 +55,38 @@ class MyObstacle2 extends MyActivatable {
             color: 0x7A7F80, 
             side: THREE.DoubleSide
         });      
+
+        this.shaderPulsate = new MyShader('Pulsating', "Load a texture and pulsate it", "circuit/shaders/pulsate.vert", "circuit/shaders/pulsate.frag", {
+            normScale: { type: 'f', value: 0.1 },
+            displacement: { type: 'f', value: 0.0 },
+            normalizationFactor: { type: 'f', value: 1 },
+            blendScale: { type: 'f', value: 0.5 },
+            timeFactor: { type: 'f', value: 0.0 },
+        });
+
+
         //this._constructShader() 
         const cube = new THREE.Mesh(geometry, material);
+        this.shaderPulsate.onMaterialReady = (material) => {
+            cube.material = material
+        }
         //cube.material= this.shaderPulsate.material
         cube.name="2"
         console.log(cube)
         cube.position.y=1.5
         return cube
     }
+
+    update(){
+        let t = this.clock.getElapsedTime()
+        if (this.shaderPulsate) {
+            if (this.shaderPulsate.hasUniform("timeFactor")) {
+                this.shaderPulsate.updateUniformsValue("timeFactor", t  );
+            }
+
+    }
+
+}
 }
 
 export { MyObstacle1, MyObstacle2 };

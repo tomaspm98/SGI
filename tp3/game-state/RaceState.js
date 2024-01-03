@@ -52,6 +52,7 @@ class RaceState extends MyGameState {
      */
     createScene() {
         this.circuit = this.stateInfo.circuit
+        console.log(this.circuit)
         this.scene = this.circuit.scene
     }
 
@@ -200,6 +201,14 @@ class RaceState extends MyGameState {
             }
             collisionDetection(this.vehiclePlayer, this.circuit.rTree);
         }
+
+        for (let i=0;i<this.circuit.rTree.map.length;i++) {
+            if (this.circuit.rTree.map[i].mesh.name === '2') {
+                this.circuit.rTree.map[i].update();
+                console.log("NICE")
+        }
+    }
+        
         this.updateHud()
         this.isGameOver();
     }
