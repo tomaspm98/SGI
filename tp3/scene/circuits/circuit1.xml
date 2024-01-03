@@ -191,6 +191,7 @@
                 <noderef id="sun" />
                 <noderef id="personWinner" />
                 <noderef id="personLoser" />
+                <noderef id="screenFull" />
             </children>
         </node>
 
@@ -1071,6 +1072,71 @@
                 <primitive>
                     <sphere radius="5" slices="32" stacks="32" />
                 </primitive>
+            </children>
+        </node>
+
+        <node id ="screen">
+            <transforms>
+                <translate value3="-15 5 0" />
+                <scale value3="1 1 1" />
+                <rotate value3="0 1.5708 0" />
+            </transforms>    
+
+            <children>
+                <primitive>
+                  <rectangle xy1="0 0" xy2="10 5" parts_x="50" parts_y="50" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="screenSupportBase">
+            <transforms>
+                <scale value3="1 10 1" />
+            </transforms>    
+
+            <materialref id="metalApp" />
+
+            <children>
+                <primitive>
+                  <box xyz1="0 0 0" xyz2="0.5 0.5 0.5" />
+                </primitive>
+            </children>
+        </node>
+
+        <node id="screenSupport1">
+            <transforms>
+                <translate value3="-15.25 0 -0.5" />
+                <scale value3="1 1 1" />
+                <rotate value3="0 0 0" />
+            </transforms>    
+
+            <children>
+                <noderef id="screenSupportBase" />
+            </children>
+        </node>
+
+        <node id="screenSupport2">
+            <transforms>
+                <translate value3="-15.25 0 -10" />
+                <scale value3="1 1 1" />
+                <rotate value3="0 0 0" />
+            </transforms>    
+
+            <children>
+                <noderef id="screenSupportBase" />
+            </children>
+        </node>
+
+        <node id="screenFull">
+        <transforms>
+                <translate value3="-5 0 -50" />
+                <rotate value3="0 0.129 0" />
+         </transforms>
+
+            <children>
+                <noderef id="screen" />
+                <noderef id="screenSupport1" />
+                <noderef id="screenSupport2" />
             </children>
         </node>
 
