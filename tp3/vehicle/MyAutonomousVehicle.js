@@ -52,19 +52,17 @@ class MyAutonomousVehicle extends MyVehicle {
     adaptDifficulty(difficulty) {
         switch (difficulty) {
             case 'easy':
-                this.velocity = 20;
+                this.velocity = 5;
                 break;
             case 'medium':
-                this.velocity = 30;
+                this.velocity = 10;
                 break;
             case 'hard':
-                this.velocity = 50;
+                this.velocity = 15;
                 break;
             default:
                 throw new Error(`Invalid difficulty: ${difficulty}`);
         }
-
-        this.velocity = 30;
         this.actualSpeed = 1 / (2 * this.velocity);
     }
 

@@ -38,8 +38,8 @@
         <slot object="parkingLot3" position="41.5 0.2 -197"/>
         <slot object="parkingLot3" position="44 0.2 -197"/>
         <slot object="parkingLot3" position="46.5 0.2 -197"/>
-        <slot object="track" position="2 0.2 0" rotation="0.129" />
-        <slot object="track" position="-2 0.2 0.8" rotation="0.129" />
+        <slot object="track" position="2 0.2 -4.5" rotation="0.129"/>
+        <slot object="track" position="-2 0.2 -5.3" rotation="0.129"/>
         <slot object="podium" position="14 1 108" rotation="4.0" />
         <slot object="podium" position="6 1 108" rotation="-4.0" />
     </slots>
@@ -122,7 +122,7 @@
         checkpointModel="scene/circuits/cone.glb"
     />
 
-        <activatables>
+    <activatables>
         <obstacle
             id="id2" subtype="2" position="0 1.5 10" scale="1 1 1" rotation="0 0 0" duration="5000" />
         <powerup
@@ -138,9 +138,7 @@
         <powerup
             id="id5" subtype="1" position="-145 0.9 -20" scale="2 2 2" rotation="0 2.5708 0" duration="6000" />    
         <powerup
-            id="id6" subtype="1" position="120 0.9 10" scale="2 2 2" rotation="0 1.5708 0" duration="4000" />     
-
-            
+            id="id6" subtype="1" position="120 0.9 10" scale="2 2 2" rotation="0 1.5708 0" duration="4000" />            
     </activatables>
 
     <graph rootid="scenario">
