@@ -14,7 +14,7 @@ class ChooseObstacle extends MyGameState {
         super(gameStateManager, stateInfo);
         this.name = "chooseOpponentCar";
         this.state = "pickingObstacle"
-        this.picking = new MyPicking([], 0, 200, this.getActiveCamera(), this.handlePicking.bind(this), this.resetPickedObject.bind(this), ["pointerdown", "pointermove"]);
+        this.picking = new MyPicking([], 0, 200, this.getActiveCamera(), this.handlePicking.bind(this), this.resetPickedObject.bind(this), ["pointerdown"]);
         this.picking.updateLayer(0)
         this.displayObstacles()
         this.clock = new THREE.Clock()
@@ -65,17 +65,7 @@ class ChooseObstacle extends MyGameState {
      * @param {PointerEvent} event - The pointer event.
      */
     handlePicking(object, event) {
-        if (event.type === "pointermove" && this.state === "pickingObstacle") {
-            object.traverse((child) => {
-                console.log(child)
-                if (child.material) {
-                    if (!child.material.originalColor) {
-                        child.material.originalColor = child.material.color.clone()
-                    }
-                    child.material.color.setHex(0xc2db02)
-                }
-            })
-        } else if (event.type === "pointerdown" && this.state === "pickingObstacle") {
+        if (event.type === "pointerdown" && this.state === "pickingObstacle") {
             this.selectedObstacle = object
             console.log(this.selectedObstacle)
             this.state = "pickingPosition"
@@ -89,19 +79,14 @@ class ChooseObstacle extends MyGameState {
             }, 7200);
         }
     }
-    
+
 
     /**
      * Resets the appearance of the picked object.
      * @param {Object} object - The picked object.
      */
     resetPickedObject(object) {
-        object.traverse(child => {
-            if (child.material) {
-                child.material.color.set(child.material.originalColor)
-                child.material.originalColor = null
-            }
-        })
+
     }
 
 
@@ -152,7 +137,7 @@ class ChooseObstacle extends MyGameState {
         }
     }
 
-    
+
     /**
      * Resets the ChooseObstacle state.
      */
@@ -160,7 +145,7 @@ class ChooseObstacle extends MyGameState {
         this.circuit.scene.remove(this.obstacles)
         this.trackSensors.forEach(sensor => this.circuit.scene.remove(sensor))
     }
-    
+
     /**
      * Places the selected obstacle in the scene.
      * @param {Vector3} pos - The position to place the obstacle.
@@ -174,14 +159,12 @@ class ChooseObstacle extends MyGameState {
         console.log(newObstacle)
         await newObstacle.meshPromise
         if (newObstacle.mesh.name === "1") {
-            newObstacle.mesh.position.y=0.4
-            newObstacle.mesh.rotation.z=1.5708
+            newObstacle.mesh.position.y = 0.4
+            newObstacle.mesh.rotation.z = 1.5708
             newObstacle.mesh.scale.set(0.1, 0.1, 0.1)
-        }
-        else if (newObstacle.mesh.name === "2") {
-            newObstacle.mesh.position.y=1.6
-        }
-        else {
+        } else if (newObstacle.mesh.name === "2") {
+            newObstacle.mesh.position.y = 1.6
+        } else {
             console.log("Error")
         }
         this.circuit.scene.add(newObstacle.mesh)
@@ -189,24 +172,24 @@ class ChooseObstacle extends MyGameState {
         this.gameStateManager.goBack()
     }
 
-     /**
+    /**
      * Initiates the animation for obstacle placement.
      * @param {Object} object - The target object for the animation.
      */
-    animation(object){
+    animation(object) {
         let kf = []
 
         console.log(this.selectedObstacle)
         kf.push(...this.selectedObstacle.position)
-        kf.push(this.selectedObstacle.position.x, this.selectedObstacle.position.y+20, this.selectedObstacle.position.z)
-        kf.push(object.position.x, object.position.y+20, object.position.z)
+        kf.push(this.selectedObstacle.position.x, this.selectedObstacle.position.y + 20, this.selectedObstacle.position.z)
+        kf.push(object.position.x, object.position.y + 20, object.position.z)
         if (this.selectedObstacle.name === "1") {
-            kf.push(object.position.x, object.position.y+0.4, object.position.z)
+            kf.push(object.position.x, object.position.y + 0.4, object.position.z)
         } else if (this.selectedObstacle.name === "2") {
-            kf.push(object.position.x, object.position.y+2, object.position.z)
+            kf.push(object.position.x, object.position.y + 2, object.position.z)
         }
 
-        let times=[]
+        let times = []
         times.push(0)
         times.push(1)
         times.push(5)
@@ -225,17 +208,17 @@ class ChooseObstacle extends MyGameState {
     /**
      * Updates the state.
      */
-    update(){
-        const delta = this.clock.getDelta(); 
+    update() {
+        const delta = this.clock.getDelta();
         if (this.mixer) {
             this.mixer.update(delta);
         }
-        for (let i=0;i<this.circuit.rTree.map.length;i++) {
+        for (let i = 0; i < this.circuit.rTree.map.length; i++) {
             if (this.circuit.rTree.map[i].mesh.name === '2') {
                 this.circuit.rTree.map[i].update();
                 console.log("NICE")
+            }
         }
-    }
     }
 }
 
