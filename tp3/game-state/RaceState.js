@@ -3,6 +3,7 @@ import {collisionDetection, checkVehicleOnTrack, checkCollisionVehicleOnVehicle}
 import {MyAutonomousVehicle} from "../vehicle/MyAutonomousVehicle.js";
 import {MyControllableVehicle} from "../vehicle/MyControllableVehicle.js";
 import {MyClock} from "../MyClock.js";
+import {MyShader} from "../circuit/MyShader.js";
 
 import * as THREE from 'three'
 
@@ -36,6 +37,9 @@ class RaceState extends MyGameState {
         this.time = new MyClock()
         this.time.start()
 
+        this.imageClock = new THREE.Clock()
+        this.imageClock.start()
+
         this.hudTimer = new THREE.Clock()
         this.renderTargetMinimap = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
             minFilter: THREE.LinearFilter,
@@ -53,6 +57,40 @@ class RaceState extends MyGameState {
     createScene() {
         this.circuit = this.stateInfo.circuit
         console.log(this.circuit)
+
+        const textureScreen = new THREE.TextureLoader().load('scene/ferrari.jpg' )
+        textureScreen.wrapS = THREE.RepeatWrapping;
+        textureScreen.wrapT = THREE.RepeatWrapping;
+        
+        const textureScreenBW = new THREE.TextureLoader().load('scene/ferrari_bump.jpg' )
+
+
+        this.shaderDisplay = new MyShader('Displacement Shader',
+        'circuit/shaders/bump.vert', 'circuit/shaders/bump.frag', {
+            uTexture: { type: 'sampler2D', value: textureScreen },
+            lgrayTexture: { type: 'sampler2D', value: textureScreenBW },
+            normScale: { type: 'f', value: 0.1 },
+                blendScale: { type: 'f', value: 0.5 },
+                timeFactor: { type: 'f', value: 0.0 },
+                resolution: { type: 'vec2', value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+        })
+
+        this.shaderDisplay.onMaterialReady = (material) => {
+            console.log(material)
+            for (let i=0;i<this.circuit.scene.children.length;i++){
+                console.log(this.circuit.scene.children)
+            if (this.circuit.scene.children[i].name == "scenario"){
+                for (let j=0;j<this.circuit.scene.children[i].children.length;j++){
+                    if (this.circuit.scene.children[i].children[j].name == "screenFull"){
+                        console.log(this.circuit.scene.children[i].children[j])
+                        this.circuit.scene.children[i].children[j].children[0].children[0].material = material;
+                        this.circuit.scene.children[i].children[j].children[0].children[0].material.needsUpdate = true;
+                }
+        }
+    }
+}
+        }
+
         this.scene = this.circuit.scene
     }
 
@@ -202,10 +240,32 @@ class RaceState extends MyGameState {
             collisionDetection(this.vehiclePlayer, this.circuit.rTree);
         }
 
+        let t = this.imageClock.getElapsedTime()
+
+        if(this.imageClock.getElapsedTime() > 5){
+            console.log("30 seconds")
+            this.imageClock.stop();
+            this.imageClock.start();
+            
+            //const renderDepth = new THREE.DepthTexture();
+            const renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
+            renderTarget.depthTexture = new THREE.DepthTexture();
+            this.gameStateManager.app.renderer.setRenderTarget(renderTarget)
+            this.gameStateManager.app.renderer.render(this.gameStateManager.app.scene, this.gameStateManager.app.activeCamera);
+            this.gameStateManager.app.renderer.setRenderTarget(null)
+            
+            const texture = renderTarget.texture;
+            const depthTexture = renderTarget.depthTexture;
+            
+            this.shaderDisplay.updateUniformsValue("lgrayTexture", depthTexture);
+            this.shaderDisplay.updateUniformsValue("uTexture", texture);
+            this.shaderDisplay.updateUniformsValue("timeFactor", t);
+        }
+
+
         for (let i=0;i<this.circuit.rTree.map.length;i++) {
             if (this.circuit.rTree.map[i].mesh.name === '2') {
                 this.circuit.rTree.map[i].update();
-                console.log("NICE")
         }
     }
         

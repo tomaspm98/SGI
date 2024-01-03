@@ -56,7 +56,7 @@ class MyObstacle2 extends MyActivatable {
             side: THREE.DoubleSide
         });      
 
-        this.shaderPulsate = new MyShader('Pulsating', "Load a texture and pulsate it", "circuit/shaders/pulsate.vert", "circuit/shaders/pulsate.frag", {
+        this.shaderPulsate = new MyShader('Pulsating', "circuit/shaders/pulsate.vert", "circuit/shaders/pulsate.frag", {
             normScale: { type: 'f', value: 0.1 },
             displacement: { type: 'f', value: 0.0 },
             normalizationFactor: { type: 'f', value: 1 },
