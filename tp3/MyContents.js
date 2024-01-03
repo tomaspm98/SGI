@@ -6,6 +6,7 @@ import {collisionDetection, checkVehicleOnTrack} from "./collisions/collisions.j
 import {MyRTree} from "./collisions/MyRTree.js";
 import {MyText3D} from "./MyText3D.js";
 import {MyShader} from "./circuit/MyShader.js";
+import {BoxGeometry, MeshBasicMaterial, PlaneGeometry} from "three";
 
 /**
  *  This class contains the contents of out application
@@ -131,31 +132,81 @@ class MyContents {
                 this.shaderDisplay.updateUniformsValue("timeFactor", t);
             }
         }
-        
-        if(this.clock.getElapsedTime() > 5){
+
+        if (this.clock.getElapsedTime() > 5) {
             console.log("5 seconds")
             this.clock.stop();
             this.clock.start();
+
+            /*const dpr = window.devicePixelRatio;
+            const framebufferTextureSize = new THREE.Vector2(
+                window.innerWidth * dpr,
+                window.innerHeight * dpr
+            );
+            const framebufferVector = new THREE.Vector2()
+            const framebufferTexture = new THREE.FramebufferTexture(framebufferTextureSize.x, framebufferTextureSize.y);
+
+
             
-            const renderDepth = new THREE.DepthTexture();
+            renderTarget.texture.minFilter = THREE.NearestFilter;
+            renderTarget.texture.magFilter = THREE.NearestFilter;
+
+            
+            renderTarget.depthTexture.type = THREE.UnsignedShortType;
+            renderTarget.depthTexture.format = THREE.DepthFormat;
+
+
+            framebufferVector.x = (window.innerWidth * dpr) / 2 -
+                framebufferTextureSize.x / 2
+
+            framebufferVector.y = (window.innerHeight * dpr) / 2 -
+                framebufferTextureSize.y / 2
+
+            this.app.renderer.copyFramebufferToTexture(
+                framebufferVector,
+                framebufferTexture
+            )*/
+            
             const renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
-            renderTarget.depthTexture = renderDepth;
+            renderTarget.depthTexture = new THREE.DepthTexture();
             
             this.app.renderer.setRenderTarget(renderTarget)
             this.app.renderer.render(this.app.scene, this.app.activeCamera);
             this.app.renderer.setRenderTarget(null)
-            
+
             const texture = renderTarget.texture;
             const depthTexture = renderTarget.depthTexture;
-            console.log(depthTexture)
+
+            /*const mesh = new THREE.Mesh(
+                new BoxGeometry(8, 4, 0.01, 100, 100, 100),
+                new THREE.ShaderMaterial({
+                    uniforms: {
+                        tDiffuse: {
+                            value: texture,
+                        },
+                        tDepth: {
+                            value: depthTexture,
+                        },
+                        cameraNear: {
+                            value: this.app.activeCamera.near,
+                        },
+                        cameraFar: {
+                            value: this.app.activeCamera.far,
+                        },
+                    },
+
+                    vertexShader:
+                    document.getElementById("vertexShader").textContent,
+                    fragmentShader:
+                    document.getElementById("fragmentShader").textContent,
+                })
+            )*/
             
+            this.shaderDisplay.updateUniformsValue("lgrayTexture", depthTexture);
             this.shaderDisplay.updateUniformsValue("uTexture", texture);
-            this.shaderDisplay.updateUniformsValue("lgrayTexture", renderDepth);
-            
-            //this.app.scene.add(new THREE.Mesh(new THREE.PlaneGeometry(20, 20), new THREE.MeshDepthMaterial({map: depthTexture})))
-            //this.shaderDisplay.updateUniformsValue("timeFactor", t);
+            this.shaderDisplay.updateUniformsValue("timeFactor", t);
         }
-        
+
     }
 }
 
