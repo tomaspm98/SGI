@@ -37,6 +37,14 @@ class RaceState extends MyGameState {
         this.time.start()
 
         this.hudTimer = new THREE.Clock()
+        this.renderTargetMinimap = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
+            minFilter: THREE.LinearFilter,
+            magFilter: THREE.NearestFilter,
+            format: THREE.RGBAFormat,
+            depthBuffer: false,
+            stencilBuffer: false
+        });
+        this.minimapScene = new THREE.Scene();
     }
 
     /**
@@ -313,11 +321,28 @@ class RaceState extends MyGameState {
         this.collisionHUD.position.set(5.5, 6, -10)
         this.collisionHUD.visible = false
 
+        const minimap = this.circuit.track.mesh.clone()
+        minimap.name = 'minimap'
+        minimap.rotation.set(Math.PI / 2, 0, 0)
+        minimap.scale.set(0.015, 0.015, 0.015)
+        minimap.position.set(-12, 5.5, -10)
+
+        const miniDotGeometry = new THREE.CylinderGeometry(5, 5, 0.1)
+
+        this.minimapVehicle1 = new THREE.Mesh(miniDotGeometry, new THREE.MeshBasicMaterial({color: 0x00ff00}))
+        this.minimapVehicle1.name = 'minimapVehicle1'
+        minimap.add(this.minimapVehicle1)
+
+        /*this.minimapVehicle2 = new THREE.Mesh(miniDotGeometry, new THREE.MeshBasicMaterial({color: 0xff0000}))
+        this.minimapVehicle2.name = 'minimapVehicle2'
+        minimap.add(this.minimapVehicle2)*/
+
         this.hud.add(this.lapHUD)
         this.hud.add(this.timeHUD)
         this.hud.add(this.speedHUD)
         this.hud.add(this.collisionHUD)
 
+        this.hud.add(minimap)
         this.hud.add(lapText)
         this.hud.add(timeText)
         this.hud.add(speedText)
@@ -343,6 +368,8 @@ class RaceState extends MyGameState {
         this.speedHUD.clear()
         this.speedHUD.add(MyGameState.textWhite.transformString(`${(this.vehiclePlayer.actualSpeed * 1000).toFixed(2)} km/h`, [1, 1]))
 
+        this.minimapVehicle1.position.set(this.vehiclePlayer.actualPosition.x, 0, this.vehiclePlayer.actualPosition.z)
+        
         if (this.vehiclePlayer.objectCollided) {
             this.collision = true;
             this.clockCollision.start();
