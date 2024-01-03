@@ -1,4 +1,4 @@
-import {NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState} from './ImpVehicleStates.js'
+import {NormalState, ReducedSpeedState, IncreasedSpeedState, InvertedControlsState, OutState} from './ImpVehicleStates.js'
 import {MyVehicle} from './MyVehicle.js'
 import * as THREE from 'three'
 import {MyVehicleRenderer} from "./parser/MyVehicleRenderer.js";
@@ -194,7 +194,8 @@ class MyControllableVehicle extends MyVehicle {
             "normal": new NormalState(this),
             "reducedSpeed": new ReducedSpeedState(this),
             "increasedSpeed": new IncreasedSpeedState(this),
-            "invertedControls": new InvertedControlsState(this)
+            "invertedControls": new InvertedControlsState(this),
+            "speedNoReduce": new OutState(this)
         }
         this.currentState = this.states["normal"]
     }

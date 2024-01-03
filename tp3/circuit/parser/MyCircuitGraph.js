@@ -296,7 +296,7 @@ class MyCircuitGraph {
 
         const newMaterial = sceneNode.material.clone();
         newMaterial.map = sceneNode.material.map.clone()
-        newMaterial.map.repeat.set(width / textlength_s, height / textlength_t)
+        newMaterial.map.repeat.set(textlength_s, textlength_t)
         newMaterial.map.wrapS = THREE.RepeatWrapping
         newMaterial.map.wrapT = THREE.RepeatWrapping
 
@@ -317,6 +317,7 @@ class MyCircuitGraph {
         newMaterial.name = nameMaterial
         sceneNode.material = newMaterial
         this.materials[nameMaterial] = newMaterial
+        console.log(newMaterial)
     }
 
 }

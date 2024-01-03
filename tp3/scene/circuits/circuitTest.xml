@@ -32,8 +32,8 @@
         <slot object="parkingLot2" position="20.6 0.2 -203.5" />
         <slot object="parkingLot2" position="22.6 0.2 -203.5" />
         <slot object="parkingLot2" position="24.4 0.2 -203.5" />
-         <slot object="parkingLot3" position="34 0.2 -197"/>
-        <slot object="parkingLot3" position="36.5 0.2 -197"/>
+         <slot object="parkingLot3" position="34 0 -197"/>
+        <slot object="parkingLot3" position="36.5 1.6 -197"/>
         <slot object="parkingLot3" position="39 0.2 -197"/>
         <slot object="parkingLot3" position="41.5 0.2 -197"/>
         <slot object="parkingLot3" position="44 0.2 -197"/>
@@ -91,14 +91,18 @@
 
     <textures>
         <texture id="grassTex" filepath="scene/textures/grassTex.jpg" />
+        <texture id ="sandTex" filepath="scene/textures/sand.jpg" />
     </textures>
 
     <materials>
         <material id="groundApp"
-            color="0.0 0.314 0.0 1.0"
-            emissive="0.0 0.0 0.0 1"
-            specular="0 0 0 0"
-            shininess="0"
+            color="0.9 0.8 0.7 1.0"
+            emissive="0 0 0 1.0"
+            specular="0 0 0 1.0"
+            shininess="1"
+            textureref="sandTex"
+            texlength_s="600"
+            texlength_t="600"
         />
 
         <material id="roadApp"
@@ -118,9 +122,15 @@
         checkpointModel="scene/circuits/cone.glb"
     />
 
-    <activatables>
+        <activatables>
         <obstacle
-            id="id1" subtype="1" position="2 0 5" scale="1 1 1" rotation="0 0 0" duration="5000" />
+            id="id2" subtype="2" position="0 1.5 10" scale="1 1 1" rotation="0 0 0" duration="5000" />
+        <powerup
+            id="id1" subtype="1" position="0 0.9 -20" scale="2 2 2" rotation="0 0 0" duration="5000" />
+        <obstacle
+            id="id1" subtype="1" position="1 0.4 20" scale="0.1 0.1 0.1" rotation="0 0 1.5708" duration="5000" />
+        <powerup
+            id="id2" subtype="2" position="2 0.6 30" scale="1.5 1.5 1.5" rotation="0 0.129 0" duration="5000" />
     </activatables>
 
     <graph rootid="scenario">

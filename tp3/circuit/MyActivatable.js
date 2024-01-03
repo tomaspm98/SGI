@@ -1,35 +1,54 @@
 import * as THREE from 'three';
 import {MyOBB} from '../collisions/MyOBB.js';
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 class MyActivatable {
     constructor(position, rotation, scale, duration) {
-        this.position = position
-        this.rotation = rotation
-        this.scale = scale
-        this.duration = duration
+        this.position = position;
+        this.rotation = rotation;
+        this.scale = scale;
+        this.duration = duration;
 
-        this.draw()
+        this.obb = null;
+        this.meshPromise = this._constructMesh().then(async (loadedMesh) => {
+            if (loadedMesh) {
+                this.mesh = loadedMesh;
 
-        this.obb = new MyOBB(this.mesh)
-        this.active = false
+                // Call draw after the mesh and MyOBB are fully loaded
+                this.draw();
+
+                // Create the MyOBB instance after the mesh is fully loaded
+                this.obb = new MyOBB(this.mesh);
+            } else {
+                console.error("Error: Loaded mesh is null or undefined.");
+            }
+
+            // Return the loaded mesh for further use if needed
+            return this.mesh;
+        });
+
+        this.active = false;
     }
 
     /**
      * Function to construct the mesh of the activatable.
      */
     draw() {
-        this.mesh = this._constructMesh()
-        this.mesh.position.setX(this.position[0])
-        this.mesh.position.setZ(this.position[2])
-        this.mesh.rotation.set(...this.rotation)
-        this.mesh.scale.set(...this.scale)
+        if (this.mesh) {
+            this.mesh.position.set(...this.position);
+            this.mesh.rotation.set(...this.rotation);
+            this.mesh.scale.set(...this.scale);
+        }
     }
+
 
     /**
      * Funtion to activate the effect of the activatable on the vehicle
      * @param {*} vehicle - The vehicle with the effect on.
      */
-    activate(vehicle) {
+    async activate(vehicle) {
+        await this.meshPromise;
+
         if (!this.active) {
             this.active = true
             this.mesh.visible = false
