@@ -12,8 +12,7 @@ The circuit is defined by a YASF file encompassing both the scenarios and the tr
 through a GeoJSON file, allowing for easy creation and modification using a GeoJSON editor. The game accommodates
 multiple circuits by appending the name and file path to the JSON file [circuits.json](./scene/circuits.json). To
 incorporate new features seamlessly, we developed a new parser specifically for the YASF file.
-The track contains checkpoints, represented by cones, that are used as checkpoints. The player needs to pass thought
-all the checkpoints to complete a lap. If the player misses a checkpoint, he can press `t` to teleport to the
+The track contains checkpoints, represented by cones, that are used as checkpoints. The player needs to pass through all the checkpoints to complete a lap. If the player misses a checkpoint, he can press `t` to teleport to the
 last checkpoint passed.
 
 ### Power Ups and Obstacles
