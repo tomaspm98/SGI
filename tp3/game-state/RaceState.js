@@ -14,8 +14,8 @@ class RaceState extends MyGameState {
 
         this._loadVehicles()
         this._createPovCameras()
+        this.createHud()
         this.setCheckPointsInfo()
-
 
         // The cars start beyond the first checkpoint
         // So we need to start the lap counter at -1
@@ -30,6 +30,8 @@ class RaceState extends MyGameState {
 
         this.time = new MyClock()
         this.time.start()
+
+        this.hudTimer = new THREE.Clock()
     }
 
     createScene() {
@@ -151,8 +153,7 @@ class RaceState extends MyGameState {
             }
             collisionDetection(this.vehiclePlayer, this.circuit.rTree);
         }
-
-        this.hud();
+        this.updateHud()
         this.isGameOver();
     }
 
@@ -202,7 +203,7 @@ class RaceState extends MyGameState {
             this.playerFinished = true
             this.playerTime = this.time.getElapsedTime()
             this.scene.remove(this.vehiclePlayer.mesh)
-            this.activeCamera.clear()
+            this.cameras['pov1'].clear()
             this.changeActiveCamera('general')
         }
 
@@ -223,56 +224,111 @@ class RaceState extends MyGameState {
         }
     }
 
-    hud() {
-        this.activeCamera = this.getActiveCamera()
-        const hud = new THREE.Group()
-        hud.name = 'hud'
-        if (this.playerLap === -1) {
-            this.lap = MyGameState.textWhite.transformString(`Lap: 0/${this.numLaps}`, [1, 1])
-        } else {
-            this.lap = MyGameState.textWhite.transformString(`Lap: ${this.playerLap}/${this.numLaps}`, [1, 1])
-        }
-        this.lap.position.set(8, 5, -10)
-        hud.add(this.lap)
-        const time = MyGameState.textWhite.transformString(`Time: ${this._convertThreeTime(this.time.getElapsedTime()).join(":")}`, [1, 1])
-        time.position.set(1, 5, -10)
-        hud.add(time)
-        const speed = MyGameState.textWhite.transformString(`Speed: ${(this.vehiclePlayer.actualSpeed * 100).toFixed(2)} km/h`, [1, 1])
-        speed.position.set(-6, 5, -10)
-        hud.add(speed)
+    createHud() {
+        this.hud = new THREE.Group()
+        this.hud.name = 'hud'
 
-        if (this.vehiclePlayer.objectCollided !== null) {
+        const lapText = MyGameState.textWhite.transformString(`Lap:`, [1, 1])
+        lapText.name = 'lapText'
+        lapText.position.set(9, 5, -10)
+
+        this.lapHUD = new THREE.Object3D()
+        this.lapHUD.name = 'lap'
+        this.lapHUD.position.set(10.7, 5, -10)
+
+        const timeText = MyGameState.textWhite.transformString(`Time:`, [1, 1])
+        timeText.name = 'timeText'
+        timeText.position.set(4, 5, -10)
+
+        this.timeHUD = new THREE.Object3D()
+        this.timeHUD.name = 'time'
+        this.timeHUD.position.set(6, 5, -10)
+
+        const speedText = MyGameState.textWhite.transformString(`Speed:`, [1, 1])
+        speedText.name = 'speedText'
+        speedText.position.set(-3.5, 5, -10)
+
+        this.speedHUD = new THREE.Object3D()
+        this.speedHUD.name = 'speed'
+        this.speedHUD.position.set(-1, 5, -10)
+
+        this.collisionText = MyGameState.textRed.transformString(`Collision! Time Left:`, [1, 1])
+        this.collisionText.name = 'collisionText'
+        this.collisionText.position.set(-3.5, 4, -10)
+        this.collisionText.visible = false
+
+        this.collisionHUD = new THREE.Object3D()
+        this.collisionHUD.name = 'collision'
+        this.collisionHUD.position.set(5.5, 4, -10)
+        this.collisionHUD.visible = false
+
+        this.hud.add(this.lapHUD)
+        this.hud.add(this.timeHUD)
+        this.hud.add(this.speedHUD)
+        this.hud.add(this.collisionHUD)
+
+        this.hud.add(lapText)
+        this.hud.add(timeText)
+        this.hud.add(speedText)
+        this.hud.add(this.collisionText)
+    }
+
+    updateHud() {
+        if (this.activeCameraName !== 'pov1') return
+
+        if (this.hudTimer.getElapsedTime() < 0.5) return
+
+        if (this.cameras['pov1'].children.length === 0) {
+            this.cameras['pov1'].add(this.hud)
+        }
+
+        this.lapHUD.clear()
+        this.lapHUD.add(MyGameState.textWhite.transformString(`${this.playerLap <= 0 ? 0 : this.playerLap}/${this.numLaps}`, [1, 1]))
+
+        this.timeHUD.clear()
+        const time = this._convertThreeTime(this.time.getElapsedTime())
+        this.timeHUD.add(MyGameState.textWhite.transformString(`${time[0]}'${time[1]}''`, [1, 1]))
+
+        this.speedHUD.clear()
+        this.speedHUD.add(MyGameState.textWhite.transformString(`${(this.vehiclePlayer.actualSpeed * 1000).toFixed(2)} km/h`, [1, 1]))
+
+        if (this.vehiclePlayer.objectCollided) {
             this.collision = true;
             this.clockCollision.start();
-            const duration = this.vehiclePlayer.objectCollided.duration;
-            const remainingTime = Math.max(0,duration - this.clockCollision.getElapsedTime());
-            const formattedTime = this._convertThreeTime(remainingTime).join(":");
-            const collision = MyGameState.textRed.transformString(`Collision! Time Left: ${formattedTime}`, [1, 1]);
-            collision.position.set(-5, 3, -10);
-            hud.add(collision);
-        }
 
-        if (this.vehiclePlayer.objectCollided === null && this.collision) {
+            const duration = this.vehiclePlayer.objectCollided.duration;
+            const remainingTime = Math.max(0, duration - this.clockCollision.getElapsedTime());
+            const convertedTime = this._convertThreeTime(remainingTime);
+
+            this.collisionHUD.clear()
+            this.collisionHUD.add(MyGameState.textRed.transformString(`${convertedTime[0]}'${convertedTime[1]}''`, [1, 1]));
+
+            this.collisionText.visible = true
+            this.collisionHUD.visible = true
+        } else if (this.collision) {
+            this.collisionHUD.clear()
+            this.collisionHUD.visible = false
+            this.collisionText.visible = false
+
             this.collision = false;
             this.clockCollision.reset();
         }
-
-        this.activeCamera.clear()
-        this.activeCamera.add(hud)
+        this.hudTimer.start()
     }
-    
+
     reset() {
         this.time.pause()
         this.opponentVehicle.pause()
-        console.log(this.vehiclePlayer)
+        this.cameras['pov1'].clear()
+        this.scene.remove(this.cameras['pov1'])
     }
-    
+
     unpause() {
         this.time.resume()
         setTimeout(() => {
             this.opponentVehicle.resume()
-        }, 100); 
-        console.log(this.circuit.scene)
+        }, 100);
+        this.scene.add(this.cameras['pov1'])
     }
 
     _convertThreeTime(time) {
