@@ -1,7 +1,7 @@
-import {MyGameState} from "./MyGameState.js";
-import {MyPicking} from "../MyPicking.js";
-import {MyObstacle1, MyObstacle2} from "../circuit/MyObstacles.js";
-import {createActivatable} from "../circuit/parser/utils.js";
+import { MyGameState } from "./MyGameState.js";
+import { MyPicking } from "../MyPicking.js";
+import { MyObstacle1, MyObstacle2 } from "../circuit/MyObstacles.js";
+import { createActivatable } from "../circuit/parser/utils.js";
 import * as THREE from "three";
 
 class ChooseObstacle extends MyGameState {
@@ -158,7 +158,7 @@ class ChooseObstacle extends MyGameState {
             newObstacle.mesh.scale.set(0.1, 0.1, 0.1)
         } else if (newObstacle.mesh.name === "2") {
             newObstacle.mesh.position.y = 1.6
-        } 
+        }
         this.circuit.scene.add(newObstacle.mesh)
         this.gameStateManager.goBack()
     }
@@ -200,12 +200,13 @@ class ChooseObstacle extends MyGameState {
         if (this.mixer) {
             this.mixer.update(delta);
         }
-        for (let i = 0; i < this.circuit.rTree.map.length; i++) {
-            if (this.circuit.rTree.map[i].mesh.name === '2') {
-                this.circuit.rTree.map[i].update();
+        for (const activatable of this.circuit.activatables) {
+            if (activatable.mesh.name === '2') {
+                console.log("hello")
+                activatable.update()
             }
         }
     }
 }
 
-export {ChooseObstacle}
+export { ChooseObstacle }

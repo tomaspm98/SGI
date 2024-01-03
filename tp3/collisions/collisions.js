@@ -13,6 +13,7 @@ async function collisionDetection(activeObject, rTree) {
     if (selectedPassiveObjects.length === 0) {
         return;
     }
+
     
     // Collision detection narrow phase
     const collisions = collisionDetectionNarrowPhase(activeObject, selectedPassiveObjects);

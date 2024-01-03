@@ -19,26 +19,26 @@
     />
 
     <slots>
-        <slot object="parkingLot1" position="-5 0.2 -203"/>
-        <slot object="parkingLot1" position="-3.2 0.2 -203"/>
-        <slot object="parkingLot1" position="-1.2 0.2 -203"/>
-        <slot object="parkingLot1" position="0.6 0.2 -203"/>
-        <slot object="parkingLot1" position="2.6 0.2 -203"/>
-        <slot object="parkingLot1" position="4.4 0.2 -203"/>
-        <slot object="parkingLot2" position="15 0.2 -203.5"/>
-        <slot object="parkingLot2" position="16.8 0.2 -203.5"/>
-        <slot object="parkingLot2" position="18.8 0.2 -203.5"/>
-        <slot object="parkingLot2" position="20.6 0.2 -203.5"/>
-        <slot object="parkingLot2" position="22.6 0.2 -203.5"/>
-        <slot object="parkingLot2" position="24.4 0.2 -203.5"/>
-        <slot object="parkingLot3" position="34 0 -197"/>
-        <slot object="parkingLot3" position="36.5 1.6 -197"/>
-        <slot object="parkingLot3" position="39 0.2 -197"/>
-        <slot object="parkingLot3" position="41.5 0.2 -197"/>
-        <slot object="parkingLot3" position="44 0.2 -197"/>
-        <slot object="parkingLot3" position="46.5 0.2 -197"/>
-        <slot object="track" position="2 0.2 -4.5" rotation="0.129"/>
-        <slot object="track" position="-2 0.2 -5.3" rotation="0.129"/>
+        <slot object="parkingLot1" position="-5 0.2 -203" />
+        <slot object="parkingLot1" position="-3.2 0.2 -203" />
+        <slot object="parkingLot1" position="-1.2 0.2 -203" />
+        <slot object="parkingLot1" position="0.6 0.2 -203" />
+        <slot object="parkingLot1" position="2.6 0.2 -203" />
+        <slot object="parkingLot1" position="4.4 0.2 -203" />
+        <slot object="parkingLot2" position="15 0.2 -203.5" />
+        <slot object="parkingLot2" position="16.8 0.2 -203.5" />
+        <slot object="parkingLot2" position="18.8 0.2 -203.5" />
+        <slot object="parkingLot2" position="20.6 0.2 -203.5" />
+        <slot object="parkingLot2" position="22.6 0.2 -203.5" />
+        <slot object="parkingLot2" position="24.4 0.2 -203.5" />
+        <slot object="parkingLot3" position="34 0 -197" />
+        <slot object="parkingLot3" position="36.5 1.6 -197" />
+        <slot object="parkingLot3" position="39 0.2 -197" />
+        <slot object="parkingLot3" position="41.5 0.2 -197" />
+        <slot object="parkingLot3" position="44 0.2 -197" />
+        <slot object="parkingLot3" position="46.5 0.2 -197" />
+        <slot object="track" position="2 0.2 -4.5" rotation="0.129" />
+        <slot object="track" position="-2 0.2 -5.3" rotation="0.129" />
         <slot object="podium" position="14 1 108" rotation="4.0" />
         <slot object="podium" position="6 1 108" rotation="-4.0" />
     </slots>
@@ -72,14 +72,14 @@
             location="40 10 -185"
             target="40 0 -201" />
 
-            <perspective id="podium"
+        <perspective id="podium"
             angle="75"
             near="0.1"
             far="1000"
             location="10 1 102"
             target="10 5 121" />
-            
-            <perspective id="minimap"
+
+        <perspective id="minimap"
             angle="75"
             near="0.1"
             far="1000"
@@ -90,7 +90,7 @@
     <textures>
         <texture id="grassTex" filepath="scene/textures/grassTex.jpg" />
         <texture id="sunTex" filepath=" scene/textures/sunTex.jpg" />
-        <texture id ="sandTex" filepath="scene/textures/sand.jpg" />
+        <texture id="sandTex" filepath="scene/textures/sand.jpg" />
     </textures>
 
     <materials>
@@ -129,6 +129,7 @@
         segments="700"
         width="10"
         texture="scene/textures/asphalt-texture.jpg"
+        checkpointModel="scene/circuits/cone.glb"
     />
 
 
@@ -136,19 +137,26 @@
         <obstacle
             id="id2" subtype="2" position="0 1.5 10" scale="1 1 1" rotation="0 0 0" duration="5000" />
         <powerup
-            id="id1" subtype="1" position="-2 0.9 -40" scale="2 2 2" rotation="0 0 0" duration="5000" />
+            id="id1" subtype="1" position="-2 0.9 -40" scale="2 2 2" rotation="0 0 0"
+            duration="5000" />
         <obstacle
-            id="id1" subtype="1" position="3 0.4 20" scale="0.1 0.1 0.1" rotation="0 0 1.5708" duration="5000" />
+            id="id1" subtype="1" position="3 0.4 20" scale="0.1 0.1 0.1" rotation="0 0 1.5708"
+            duration="5000" />
         <powerup
-            id="id2" subtype="2" position="7 0.6 70" scale="1.5 1.5 1.5" rotation="0 0.129 0" duration="5000" />
+            id="id2" subtype="2" position="7 0.6 70" scale="1.5 1.5 1.5" rotation="0 0.129 0"
+            duration="5000" />
         <powerup
-            id="id3" subtype="1" position="200 0.9 -30" scale="2 2 2" rotation="0 1.4 0" duration="7000" />   
+            id="id3" subtype="1" position="200 0.9 -30" scale="2 2 2" rotation="0 1.4 0"
+            duration="7000" />
         <powerup
-            id="id4" subtype="2" position="-67 0.6 -40" scale="2 2 2" rotation="0 0 0" duration="5000" />    
+            id="id4" subtype="2" position="-67 0.6 -40" scale="2 2 2" rotation="0 0 0"
+            duration="5000" />
         <powerup
-            id="id5" subtype="1" position="-145 0.9 -20" scale="2 2 2" rotation="0 2.5708 0" duration="6000" />    
+            id="id5" subtype="1" position="-145 0.9 -20" scale="2 2 2" rotation="0 2.5708 0"
+            duration="6000" />
         <powerup
-            id="id6" subtype="1" position="120 0.9 10" scale="2 2 2" rotation="0 1.5708 0" duration="4000" />            
+            id="id6" subtype="1" position="120 0.9 10" scale="2 2 2" rotation="0 1.5708 0"
+            duration="4000" />
     </activatables>
 
     <graph rootid="scenario">
@@ -749,9 +757,9 @@
         </node>
 
         <node id="peopleGroup">
-        <transforms>
+            <transforms>
                 <translate value3="10 0 30" />
-        </transforms>        
+            </transforms>
             <children>
                 <noderef id="people" />
                 <noderef id="people2" />
@@ -1075,16 +1083,16 @@
             </children>
         </node>
 
-        <node id ="screen">
+        <node id="screen">
             <transforms>
                 <translate value3="-15 5 0" />
                 <scale value3="1 1 1" />
                 <rotate value3="0 1.5708 0" />
-            </transforms>    
+            </transforms>
 
             <children>
                 <primitive>
-                  <rectangle xy1="0 0" xy2="10 5" parts_x="50" parts_y="50" />
+                    <rectangle xy1="0 0" xy2="10 5" parts_x="50" parts_y="50" />
                 </primitive>
             </children>
         </node>
@@ -1092,13 +1100,13 @@
         <node id="screenSupportBase">
             <transforms>
                 <scale value3="1 10 1" />
-            </transforms>    
+            </transforms>
 
             <materialref id="metalApp" />
 
             <children>
                 <primitive>
-                  <box xyz1="0 0 0" xyz2="0.5 0.5 0.5" />
+                    <box xyz1="0 0 0" xyz2="0.5 0.5 0.5" />
                 </primitive>
             </children>
         </node>
@@ -1108,7 +1116,7 @@
                 <translate value3="-15.25 0 -0.5" />
                 <scale value3="1 1 1" />
                 <rotate value3="0 0 0" />
-            </transforms>    
+            </transforms>
 
             <children>
                 <noderef id="screenSupportBase" />
@@ -1120,7 +1128,7 @@
                 <translate value3="-15.25 0 -10" />
                 <scale value3="1 1 1" />
                 <rotate value3="0 0 0" />
-            </transforms>    
+            </transforms>
 
             <children>
                 <noderef id="screenSupportBase" />
@@ -1128,10 +1136,10 @@
         </node>
 
         <node id="screenFull">
-        <transforms>
+            <transforms>
                 <translate value3="-5 0 -50" />
                 <rotate value3="0 0.129 0" />
-         </transforms>
+            </transforms>
 
             <children>
                 <noderef id="screen" />
