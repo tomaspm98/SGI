@@ -45,6 +45,14 @@ within the circuit.
 
 ### Keyframe Animation
 
+For the movement of the autonomous car, we implemented a key-frame animation. Inside this car animation, it was necessary to have 2 animations: one for the car positions over time and another for the car rotation (when he turns). 
+For the positions animation, we implemented a function that computes the euclidean distance between 2 points, and given some velocity the user chooses (difficulty), we could know how much time the car would take to move between 2 points and keep its velocity constant.
+For the rotation animation, we had the need to work more on it, so we started by creating a function that calculates the angle variation between 2 vectors. Then, we would access to the key-points of the curve, get the tangents, and calculate the angle variation between them, so that we could know how much should the car rotate.
+
+This is implemented on the class [MyAutonomousVehicle.js](./vehicle/MyAutonomousVehicle.js).
+
+We also used key-frame animation to create a simple animation when the user chooses an obstacle to put on the track, that is on the class [ChooseObstacle.js](./game-state/ChooseObstacle.js), on the method animation.
+
 ### Collision Detection
 
 #### Detect if the car is inside the track
@@ -67,14 +75,23 @@ To support these checks, we introduced two new classes:
 
 Inside [MyRtree.js](./collisions/MyRtree.js), we've utilized the [rbush](https://www.npmjs.com/package/rbus) library.
 
-### Spitesheets
+### Spritesheets
 
 We've implemented spritesheets to create 3D text. For this purpose, we've created a new
 class, [MyText3D.js](./MyText3D.js) that consolidates the logic for creating 3D text.
 
 ### Shaders
 
+We have designed 2 shaders: one to make an obstacle pulsate, and another that gives a slightly relief to an image. We applied the first one to our "manual" desgined object, that has a cylinder geometry to represent a pillar, and that pulsates over time. The 2nd shader we ended up by using on a advertising panel, making the car have a little of relief.
+
+They are implemented on the folder shaders.
+
 ### Particles
+
+We implemented a system of particles to simulate fireworks, when the race finished and the podium is presented.
+For that, we got inspired on the tutorial the teachers made available, and we made some changes to fit our personal requirements.
+The code for that is on the class [MyFirework.js](./MyFirework.js)
+
 
 ### Interaction
 
@@ -87,4 +104,5 @@ assignment.
 ## Issues
 
 - Creating the OBB for collision detection.
-- Shaders.
+- Shaders (mainly the second one).
+
