@@ -50,7 +50,7 @@ class MyText3D {
         const spriteSheetClone = this.spriteSheetTexture.clone();
 
         const geometry = new THREE.PlaneGeometry(width, height);
-        const material = new THREE.MeshBasicMaterial({ map: spriteSheetClone, transparent: true });
+        const material = new THREE.MeshBasicMaterial({map: spriteSheetClone, transparent: true});
         const mesh = new THREE.Mesh(geometry, material);
 
         mesh.material.map.offset.set(u, v);
@@ -76,4 +76,4 @@ class MyText3D {
     }
 }
 
-export { MyText3D };
+export {MyText3D};

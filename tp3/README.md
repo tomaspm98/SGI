@@ -1,18 +1,82 @@
-# SGI DEMO - Camull-Rom curve as a path
+# TP3 - Race Game
 
-This demo presents one possible approach to creating flat 3D objects from a catmull-rom curve, using TubeGeometry with 3 slices.
-In the context of TP3, this provides insight into how a race track can be created using this type of curve.
+## Description
 
-## How it was implemented
+The team created a Formula 1 web-based game.
 
-TubeGeometry receives a curve and creates a hollow cylinder around it, with a variable number of radial and tubular segments (we usually call these slices and stacks). Using 2 radial segments provides a flat geometry, but controlling the direction that the surface is facing can be complicated. So in this example we use 3 radial segments, which creates a triangular shape, and then scale it to flatten it down. This makes the process of creating a flat curved object easier, but has some downsides/conditions, as described below.
+## Important aspects of the developed code
 
-## Important notes
-When using this for TP3, it is important to note:
+### Circuit
 
-- The catmull-rom curve used for the geometry is not closed (start/end point are not the same). This example shows how the tube geometry deals with this situation according to its closed parameter (test the closedCurve checkbox). Note how the resulting geometry changes a bit when this parameter changes.
-- The way the texture is mapped in the geometry (wrapping on the front and back of the curve). The repeat factor in V is 3, so that it is fully displayed in the visible face.
-- Sharp curves may lead to problems in the polygons (e.g., overlapping polygons), so the curve points must be defined with this in mind.
-- We have many unnecessary polygons due to the number of segments (triple the necessary number).
+The circuit is defined by a YASF file encompassing both the scenarios and the track. The track itself is represented
+through a GeoJSON file, allowing for easy creation and modification using a GeoJSON editor. The game accommodates
+multiple circuits by appending the name and file path to the JSON file [circuits.json](./scene/circuits.json). To
+incorporate new features seamlessly, we developed a new parser specifically for the YASF file.
 
-This approach can be a good starting point, but we suggest exploring other more efficient methods (i.e., creating a BufferGeometry and calculating the necessary vertices from the curve points).
+### Power Ups and Obstacles
+
+We've created two types of power-ups and two types of obstacles. These are represented by a
+superclass, [MyActivatable.js](./circuit/MyActivatable.js), which contains shared methods and attributes. Users have the
+flexibility to enhance the circuit by dragging and dropping obstacles from the obstacle park directly onto the circuit.
+
+### Vehicle
+
+Just like the track, the car is also represented by a YASF file, making it easy to create or modify. The game supports
+multiple vehicles by adding YASF path to the JSON file [vehicles.json](./scene/vehicles.json). Each vehicle can
+incorporate lights (brake, front, and reverse) that respond to the vehicle's state (braking, reversing, or
+user-activated front lights). When creating a vehicle, the user assigns a specific name to the node, and the parser
+interprets its function (whether it's a wheel, light, etc.). Additionally, the user can specify parameters like
+acceleration, turn rate, etc. within the YASF file. To enable these functionalities, we developed a new parser for the
+YASF file, allowing us to incorporate these new features seamlessly.
+
+### Outdoor Display
+
+To be more convinient for the user, instead creating a outdoor display we created a HUD Display that shows the minimap,
+the speed, the time, the lap and the time remaining of an obstacle or power up.
+
+### Picking
+
+The [MyPicking.js](./MyPicking.js) class consolidates the picking logic. The picking is used for several
+purposes, including menu navigation, vehicle selection, and the process of selecting new obstacles to be positioned
+within the circuit.
+
+### Keyframe Animation
+
+### Collision Detection
+
+#### Detect if the car is inside the track
+
+We implemented a ray cast to determine if the car is inside the track. This involves projecting a ray from the
+center of the car's rear axis downwards. If the ray intersects with the track, then the car is inside the track.
+
+#### Detect if the car is colliding with an obstacle
+
+Our collision detection involves a two-step process:
+
+1. **Broad-Phase:** Initially, we use the R-tree to check for potential collisions between the car and obstacles.
+2. **Narrow-Phase:** Following the broad-phase check, we employ an oriented bounding box (OBB) to confirm actual
+   collisions between the car and identified obstacles.
+
+To support these checks, we introduced two new classes:
+
+- [MyOBB.js](./collisions/MyOBB.js) for managing the oriented bounding box.
+- [MyRtree.js](./collisions/MyRtree.js) for handling the R-tree structure.
+
+Inside [MyRtree.js](./collisions/MyRtree.js), we've utilized the [rbush](https://www.npmjs.com/package/rbus) library.
+
+### Spitesheets
+
+We've implemented spritesheets to create 3D text. For this purpose, we've created a new
+class, [MyText3D.js](./MyText3D.js) that consolidates the logic for creating 3D text.
+
+### Shaders
+
+### Particles
+
+### Interaction
+
+
+
+## Issues
+
+Converting a recursive DFS to an iterative DFS.
