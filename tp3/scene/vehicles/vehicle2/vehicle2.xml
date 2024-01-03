@@ -4,9 +4,9 @@
     <specs
         name="Vehicle 2"
         topSpeed="0.5"
-        minSpeed="-0.01"
-        acceleration="0.01"
-        deceleration="0.01"
+        minSpeed="-0.1"
+        acceleration="0.0005"
+        deceleration="0.002"
         turnRate="0.01"
         brakingRate="0.01"
     />
