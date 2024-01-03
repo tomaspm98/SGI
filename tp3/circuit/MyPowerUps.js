@@ -16,7 +16,6 @@ class MyPowerUp1 extends MyActivatable {
         return new Promise((resolve, reject) => {
             const loader = new GLTFLoader();
             loader.load('./scene/circuits/powerup.glb', (gltf) => {
-                console.log(gltf);
                 const loadedMesh = gltf.scene;
                 resolve(loadedMesh); // Resolve the promise with the loaded mesh
             },
@@ -40,7 +39,6 @@ class MyPowerUp2 extends MyActivatable {
         return new Promise((resolve, reject) => {
             const loader = new GLTFLoader();
             loader.load('./scene/circuits/powerup_2.glb', (gltf) => {
-                console.log(gltf);
                 const loadedMesh = gltf.scene;
                 resolve(loadedMesh); // Resolve the promise with the loaded mesh
             },

@@ -207,7 +207,6 @@ class ResultState extends MyGameState {
         this.vehiclePlayer = this.stateInfo.vehicles[this.stateInfo.playerVehicle]
         this.opponentPlayer = this.stateInfo.vehicles[this.stateInfo.opponentVehicle]
 
-        console.log(this.vehiclePlayer)
 
         this.vehiclePlayer.setPosition({x: slots[0].position[0], y: slots[0].position[1], z: slots[0].position[2]})
         this.vehiclePlayer.setRotation(slots[0].rotation)

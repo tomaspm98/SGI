@@ -27,7 +27,6 @@ class MyGameStateManager {
      * @param {Object} stateInfo - Information about the new state.
      */
     changeState(stateInfo) {
-        console.log(`Changing state to ${stateInfo.name}`)
         this.actualState.reset()
         this.actualState.stopDocumentListeners();
         this.savedStates.push(this.actualState);

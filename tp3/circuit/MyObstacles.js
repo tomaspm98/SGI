@@ -17,7 +17,6 @@ class MyObstacle1 extends MyActivatable {
         return new Promise((resolve, reject) => {
             const loader = new GLTFLoader();
             loader.load('./scene/circuits/tire.glb', (gltf) => {
-                console.log(gltf);
                 const loadedMesh = gltf.scene;
                 loadedMesh.name = "1"
                 loadedMesh.scale.set(0.1, 0.1, 0.1)
@@ -72,7 +71,6 @@ class MyObstacle2 extends MyActivatable {
         }
         //cube.material= this.shaderPulsate.material
         cube.name="2"
-        console.log(cube)
         cube.position.y=1.5
         return cube
     }

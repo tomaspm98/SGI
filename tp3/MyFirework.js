@@ -52,12 +52,10 @@ class MyFirework {
         this.geometry = new THREE.BufferGeometry()
         this.geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(vertices), 3));
         this.geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3));
-        //console.log(this.geometry)
         this.points = new THREE.Points(this.geometry, this.material)
         this.points.castShadow = true;
         this.points.receiveShadow = true;
         this.scene.add(this.points)
-        //console.log("firework launched")
     }
 
     /**
@@ -101,7 +99,6 @@ class MyFirework {
      * cleanup
      */
     reset() {
-        //console.log("firework reseted")
         this.scene.remove(this.points)
         this.dest = []
         this.vertices = null
@@ -137,7 +134,6 @@ class MyFirework {
                 //is YY coordinate higher close to destination YY? 
                 if (Math.ceil(vertices[1]) > (this.dest[1] * 0.95)) {
                     // add n particles departing from the location at (vertices[0], vertices[1], vertices[2])
-                    //console.log(vertices)
                     this.explode(vertices)
                 }
             }

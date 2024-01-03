@@ -24,7 +24,6 @@ class ChoosePlayerCar extends MyGameState {
     createScene() {
         this.circuit = MyCircuit.create(this.stateInfo.circuitPath);
         this.scene = this.circuit.scene;
-        console.log(this.scene)
     }
 
     /**

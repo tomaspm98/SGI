@@ -67,12 +67,9 @@ class ChooseObstacle extends MyGameState {
     handlePicking(object, event) {
         if (event.type === "pointerdown" && this.state === "pickingObstacle") {
             this.selectedObstacle = object
-            console.log(this.selectedObstacle)
             this.state = "pickingPosition"
             this.createTrackSensors()
         } else if (event.type === "pointerdown" && this.state === "pickingPosition") {
-            console.log(this.selectedObstacle)
-            console.log(object)
             this.animation(object)
             setTimeout(() => {
                 this.putObstacle(object.position)
@@ -151,12 +148,9 @@ class ChooseObstacle extends MyGameState {
      * @param {Vector3} pos - The position to place the obstacle.
      */
     async putObstacle(pos) {
-        console.log("Adding obstacle")
-        console.log(pos)
         const posList = [pos.x, 0, pos.z]
         const newObstacle = createActivatable('obstacle', this.selectedObstacle.name, posList, 5000)
         this.circuit.rTree.insert(newObstacle)
-        console.log(newObstacle)
         await newObstacle.meshPromise
         if (newObstacle.mesh.name === "1") {
             newObstacle.mesh.position.y = 0.4
@@ -164,11 +158,8 @@ class ChooseObstacle extends MyGameState {
             newObstacle.mesh.scale.set(0.1, 0.1, 0.1)
         } else if (newObstacle.mesh.name === "2") {
             newObstacle.mesh.position.y = 1.6
-        } else {
-            console.log("Error")
-        }
+        } 
         this.circuit.scene.add(newObstacle.mesh)
-        console.log(newObstacle.mesh)
         this.gameStateManager.goBack()
     }
 
@@ -179,7 +170,6 @@ class ChooseObstacle extends MyGameState {
     animation(object) {
         let kf = []
 
-        console.log(this.selectedObstacle)
         kf.push(...this.selectedObstacle.position)
         kf.push(this.selectedObstacle.position.x, this.selectedObstacle.position.y + 20, this.selectedObstacle.position.z)
         kf.push(object.position.x, object.position.y + 20, object.position.z)
@@ -195,11 +185,8 @@ class ChooseObstacle extends MyGameState {
         times.push(5)
         times.push(6)
 
-        console.log(kf)
-
         const positionKF = new THREE.VectorKeyframeTrack('.position', times, kf, THREE.InterpolateLinear);
         this.mixer = new THREE.AnimationMixer(this.selectedObstacle);
-        console.log(this.selectedObstacle)
         this.clip = new THREE.AnimationClip('positionAnimation', 10, [positionKF]);
         const action = this.mixer.clipAction(this.clip);
         action.play();
@@ -216,7 +203,6 @@ class ChooseObstacle extends MyGameState {
         for (let i = 0; i < this.circuit.rTree.map.length; i++) {
             if (this.circuit.rTree.map[i].mesh.name === '2') {
                 this.circuit.rTree.map[i].update();
-                console.log("NICE")
             }
         }
     }

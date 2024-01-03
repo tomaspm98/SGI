@@ -56,7 +56,6 @@ class RaceState extends MyGameState {
      */
     createScene() {
         this.circuit = this.stateInfo.circuit
-        console.log(this.circuit)
 
         const textureScreen = new THREE.TextureLoader().load('scene/ferrari.jpg' )
         textureScreen.wrapS = THREE.RepeatWrapping;
@@ -76,13 +75,10 @@ class RaceState extends MyGameState {
         })
 
         this.shaderDisplay.onMaterialReady = (material) => {
-            console.log(material)
             for (let i=0;i<this.circuit.scene.children.length;i++){
-                console.log(this.circuit.scene.children)
             if (this.circuit.scene.children[i].name == "scenario"){
                 for (let j=0;j<this.circuit.scene.children[i].children.length;j++){
                     if (this.circuit.scene.children[i].children[j].name == "screenFull"){
-                        console.log(this.circuit.scene.children[i].children[j])
                         this.circuit.scene.children[i].children[j].children[0].children[0].material = material;
                         this.circuit.scene.children[i].children[j].children[0].children[0].material.needsUpdate = true;
                 }
@@ -243,7 +239,6 @@ class RaceState extends MyGameState {
         let t = this.imageClock.getElapsedTime()
 
         if(this.imageClock.getElapsedTime() > 5){
-            console.log("30 seconds")
             this.imageClock.stop();
             this.imageClock.start();
             
@@ -298,9 +293,7 @@ class RaceState extends MyGameState {
                 0,
                 this.widthTrack)
 
-            console.log(`Checkpoint ${this.activeCheckPoint}`)
             if (this.activeCheckPoint === 1) {
-                console.log("Player - Lap completed")
                 this.playerLap++
             }
         }
